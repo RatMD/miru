@@ -20,7 +20,7 @@ drop-in elements to drive your next project forward quickly.
 The `[a]` marked requirements are only necessary, when using the adaptive integration solution,
 as further designed under [Getting Started](/guide/getting-started).
 
-- Vue3
+- Vue v3.3+
 - `[a]` tailwind v3.3+
-- `[a]` postcss v8.0+
+- `[a]` postcss v8.3+
 - `[a]` postcss-import v16.0+

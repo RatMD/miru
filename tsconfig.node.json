@@ -2,6 +2,7 @@
     "extends": "@tsconfig/node18/tsconfig.json",
     "include": [
         "package.json",
+        "build/*",
         "vite.config.*",
         "vitest.config.*",
         "cypress.config.*",

@@ -1,62 +1,15 @@
-import type { PreRenderedAsset, PreRenderedChunk } from 'rollup';
+import type { PreRenderedAsset } from 'rollup';
 
-import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
-import { defineConfig } from 'vite';
+
 import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
+import { pkg, collect } from './build';
 
-
-/**
- * Collect Entries
- */
-const components: { [key: string]: string } = {};
-function collectEntries(): { [key: string]: string } {
-    const entries: { [key: string]: string } = {};
-    const root = path.resolve(__dirname, 'src');
-
-    // Fetch Components
-    let componentsPath = path.join(root, 'components');
-    for (const component of fs.readdirSync(componentsPath)) {
-        if (component.startsWith('_')) {
-            continue;
-        }
-
-        let entryPath = path.join(componentsPath, component);
-        for (const entry of fs.readdirSync(entryPath)) {
-            if (entry.endsWith('.stories.ts')) {
-                continue;
-            }
-            const entryName = entry.endsWith('.vue') ? entry.slice(0, -4) : entry.slice(0, -3);
-            components[entryName] = component;
-            entries[`${component}/${entryName}`] = `src/components/${component}/${entry}`;
-        }
-    }
-
-    // Fetch Composables
-    let composablesPath = path.join(root, 'composables');
-    for (const composable of fs.readdirSync(composablesPath)) {
-        entries[`composables/${composable.slice(0, -3)}`] = `src/composables/${composable}`;
-    }
-
-    // Fetch Constants
-    let constantsPath = path.join(root, 'constants');
-    for (const constant of fs.readdirSync(constantsPath)) {
-        entries[`constants/${constant.slice(0, -3)}`] = `src/constants/${constant}`;
-    }
-
-    // Fetch Utilities
-    let utilsPath = path.join(root, 'utils');
-    for (const util of fs.readdirSync(utilsPath)) {
-        entries[`utils/${util.slice(0, -3)}`] = `src/utils/${util}`;
-    }
-
-    // Fetch Main Plugin
-    entries['index'] = 'src/miru.ts';
-
-    // Return entries
-    return entries;
-}
+// Collect components and entries
+const { components, entries } = collect(path.resolve(__dirname, 'src'));
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -71,6 +24,28 @@ export default defineConfig({
     },
     plugins: [
         vue(),
+        pkg(),
+        dts({
+            beforeWriteFile(filePath: string, content: string) {
+                const mainPath = path.resolve(__dirname, 'dist', 'miru.d.ts').replace(/\\/g, '/');
+                if (filePath.startsWith(mainPath)) {
+                    return {
+                        filePath: filePath.replace('/miru.d.ts', '/index.d.ts'),
+                        content
+                    }     
+                }
+
+                const componentsPath = path.resolve(__dirname, 'dist', 'components').replace(/\\/g, '/');
+                if (filePath.startsWith(componentsPath)) {
+                    return {
+                        filePath: filePath.replace('/components/', '/'),
+                        content
+                    }                    
+                }
+            },
+            cleanVueFileName: true,
+            tsconfigPath: 'tsconfig.types.json'
+        }),
     ],
     resolve: {
         alias: {
@@ -80,7 +55,7 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         lib: {
-            entry: collectEntries(),
+            entry: entries,
             name: 'miru',
             formats: ['es']
         },
