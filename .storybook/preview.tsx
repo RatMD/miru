@@ -1,5 +1,5 @@
 import './preview.css';
-import '../src/styles/mira.css';
+import '../src/styles/miru.css';
 
 import { DocsContainer } from '@storybook/addon-docs';
 import { Title, Subtitle, Description, Primary, Controls, Stories } from '@storybook/blocks';

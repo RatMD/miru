@@ -3,7 +3,7 @@ import { create } from '@storybook/theming/create';
 
 export default create({
     base: 'light',
-    brandTitle: 'mira.ink',
-    brandUrl: 'https://mira.ink',
+    brandTitle: 'miru.ink',
+    brandUrl: 'https://miru.ink',
     brandTarget: '_self',
 });
