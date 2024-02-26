@@ -1,3 +1,4 @@
+import type { NormalizedOutputOptions, OutputBundle } from 'rollup';
 import type { Plugin } from 'vite';
 
 import fs from 'node:fs';
@@ -72,6 +73,31 @@ export function pkg(): Plugin {
             content.types = 'index.d.ts';
             content.typings = 'index.d.ts';
             fs.writeFileSync('dist/package.json', JSON.stringify(content, void 0, 4));
+            fs.copyFileSync('CHANGELOG.md', 'dist/CHANGELOG.md');
+            fs.copyFileSync('LICENSE.md', 'dist/LICENSE.md');
+            fs.copyFileSync('README.md', 'dist/README.md');
+        }
+    };
+}
+
+/**
+ * VITE styles Plugin
+ */
+export function sty(): Plugin {
+    return {
+        name: 'sty',
+        apply: 'build',
+
+        writeBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
+            const stylings = [];
+            for (const [key, file] of Object.entries(bundle)) {
+                if (!key.endsWith('.css')) {
+                    continue;
+                }
+                stylings.push((file as any).source);
+            }
+            fs.mkdirSync('dist/themes')
+            fs.writeFileSync('dist/themes/miru.min.css', stylings.join(''));
         }
     };
 }

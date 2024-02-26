@@ -6,7 +6,7 @@ import { fileURLToPath, URL } from 'node:url';
 import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import { pkg, collect } from './build';
+import { collect, pkg, sty } from './build';
 
 // Collect components and entries
 const { components, entries } = collect(path.resolve(__dirname, 'src'));
@@ -25,6 +25,7 @@ export default defineConfig({
     plugins: [
         vue(),
         pkg(),
+        sty(),
         dts({
             beforeWriteFile(filePath: string, content: string) {
                 const mainPath = path.resolve(__dirname, 'dist', 'miru.d.ts').replace(/\\/g, '/');
