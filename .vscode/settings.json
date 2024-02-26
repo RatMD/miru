@@ -1,0 +1,24 @@
+{
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.associations": {
+        "*.manifest": "json"
+    },
+    "todo-tree.general.tags": [
+        "@bug",
+        "@fix",
+        "@fixme",
+        "@todo"
+    ],
+    "todo-tree.general.statusBar": "top three",
+    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|\\*|^|/\\*\\*|^[ \\t]*(-|\\d+.))\\s*($TAGS)",
+    "todo-tree.regex.regexCaseSensitive": false,
+    "[typoscript]": {
+        "editor.tabSize": 4
+    },
+    "[yaml]": {
+        "editor.tabSize": 4
+    }
+}

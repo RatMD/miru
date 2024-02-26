@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "vue.volar",
+        "vue.vscode-typescript-vue-plugin",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "heybourn.headwind",
+        "bradlc.vscode-tailwindcss",
+        "unifiedjs.vscode-mdx",
+        "gruntfuggly.todo-tree"
+    ]
+}
