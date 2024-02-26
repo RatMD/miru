@@ -5,12 +5,12 @@
         'icon-left': (props.iconPlacement || 'right') == 'left',
         'icon-right': (props.iconPlacement || 'right') == 'right'
     }">
-        <slot name="header" v-bind="props">
-            <button ref="accordionHeader" 
-                class="accordion-header"
-                :aria-expanded="isVisible ? 'true' : 'false'" 
-                :aria-controls="`${accordionId}-pane`" 
-                @click="isVisible = !isVisible">
+        <button ref="accordionHeader" 
+            class="accordion-header"
+            :aria-expanded="isVisible ? 'true' : 'false'" 
+            :aria-controls="`${accordionId}-pane`" 
+            @click="isVisible = !isVisible">
+            <slot name="header" v-bind="props">
                 <template v-if="(props.icon !== null && (props.iconPlacement || 'right') == 'left')">
                     <component :is="props.icon" v-bind="props.iconProps" class="header-icon" v-if="props.icon" />
                     <ChevronDown :stroke-width="1.5" class="header-icon" v-else />
@@ -22,8 +22,8 @@
                     <component :is="props.icon" v-bind="props.iconProps" class="header-icon" v-if="props.icon" />
                     <ChevronDown :stroke-width="1.5" class="header-icon" v-else />
                 </template>
-            </button>
-        </slot>
+            </slot>
+        </button>
 
         <div ref="accordionPane" :id="`${accordionId}-pane`" class="accordion-pane">
             <CollapseSupport 
@@ -170,11 +170,11 @@ const accordionPane = ref<HTMLElement>();
 .accordion-header {
     @apply flex flex-row items-center gap-3;
 
-    & :slotted(.header-label) {
+    & .header-label {
         @apply text-lg font-semibold font-header select-none cursor-pointer;
     }
 
-    & :slotted(.header-icon) {
+    & .header-icon {
         @apply duration-300 ease-in-out transition-transform;
         @apply -rotate-90;
 

@@ -320,7 +320,7 @@ defineExpose({
         @apply p-4;
     }
 
-    & :slotted(.offcanvas-title) {
+    & .offcanvas-title {
         @apply text-lg font-semibold font-header;
     }
 

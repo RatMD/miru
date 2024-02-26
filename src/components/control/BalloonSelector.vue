@@ -362,7 +362,7 @@ function onSelect(option: BalloonSelectorOptionTypes) {
         @apply invisible absolute right-0 w-0 h-0;
     }
 
-    & :slotted(.item-label) {
+    & .item-label {
         @apply h-full inline-flex flex-row gap-2 text-sm font-semibold px-5 items-center;
         padding-top: calc(0.875rem - 1px);
         padding-bottom: calc(0.875rem - 1px);
@@ -371,14 +371,14 @@ function onSelect(option: BalloonSelectorOptionTypes) {
 
 /** Sizes */
 .field-balloon-selector.field-sm {
-    & .balloon-item :slotted(.item-label) {
+    & .balloon-item .item-label {
         @apply text-xs px-3.5;
         padding-top: calc(0.75rem - 1px);
         padding-bottom: calc(0.75rem - 1px);
     }
 }
 .field-balloon-selector.field-lg {
-    & .balloon-item :slotted(.item-label) {
+    & .balloon-item .item-label {
         @apply text-base px-7;
         padding-top: calc(1.0rem - 1px);
         padding-bottom: calc(1.0rem - 1px);

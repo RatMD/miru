@@ -59,7 +59,7 @@ const slots = defineSlots<BaseCardSlots>();
 }
 
 .card-header {
-    &:slotted(.card-title) {
+    &.card-title {
         @apply font-semibold;
     }
 }

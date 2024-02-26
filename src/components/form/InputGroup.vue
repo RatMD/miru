@@ -46,31 +46,31 @@ const slots = defineSlots<InputGroupSlots>();
     }
 
     @media (max-width: 767px) {
-        &:not(.group-row) :slotted(> *:not(:first-child)) {
+        &:not(.group-row) > *:not(:first-child) {
             @apply -mt-px;
         }
-        &:not(.group-row) :slotted(> *:first-child:not(:last-child)) {
+        &:not(.group-row) > *:first-child:not(:last-child) {
             @apply !rounded-b-none;
         }
-        &:not(.group-row) :slotted(> *:last-child:not(:first-child)) {
+        &:not(.group-row) > *:last-child:not(:first-child) {
             @apply !rounded-t-none;
         }
-        &:not(.group-row) :slotted(> *:not(:first-child):not(:last-child)) {
+        &:not(.group-row) > *:not(:first-child):not(:last-child) {
             @apply !rounded-none;
         }
     }
 
     @media (min-width: 768px) {
-        &:not(.group-row) :slotted(> *:not(:first-child)) {
+        &:not(.group-row) > *:not(:first-child) {
             @apply -ml-px;
         }
-        &:not(.group-row) :slotted(> *:first-child:not(:last-child)) {
+        &:not(.group-row) > *:first-child:not(:last-child) {
             @apply !rounded-r-none;
         }
-        &:not(.group-row) :slotted(> *:last-child:not(:first-child)) {
+        &:not(.group-row) > *:last-child:not(:first-child) {
             @apply !rounded-l-none;
         }
-        &:not(.group-row) :slotted(> *:not(:first-child):not(:last-child)) {
+        &:not(.group-row) > *:not(:first-child):not(:last-child) {
             @apply !rounded-none;
         }
     }
@@ -78,13 +78,13 @@ const slots = defineSlots<InputGroupSlots>();
     &.group-row {
         @apply flex-row;
         
-        & :slotted(> *:first-child:not(:last-child)) {
+        & > *:first-child:not(:last-child) {
             @apply !rounded-r-none;
         }
-        & :slotted(> *:last-child:not(:first-child)) {
+        & > *:last-child:not(:first-child) {
             @apply !rounded-l-none;
         }
-        & :slotted(> *:not(:first-child):not(:last-child)) {
+        & > *:not(:first-child):not(:last-child) {
             @apply !rounded-none;
         }
     }
