@@ -16,7 +16,7 @@ bun add miru.ink
 ```
 
 ```sh
-yarn add miru.ink
+yarn config set enableTelemetry 0 && yarn add miru.ink
 ```
 
 
