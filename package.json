@@ -1,14 +1,32 @@
 {
-    "name": "@miru/ink",
+    "name": "miru.ink",
     "version": "0.1.0",
-    "description": "Miru",
+    "description": "A Open-Source Vue3 / Tailwind CSS component framework and function library.",
     "keywords": [
-        "ui"
+        "ui",
+        "front-end",
+        "design",
+        "framework",
+        "vue"
     ],
-    "author": "miru.ink <help@miru.ink> (https://miru.ink)",
-    "license": "proprietary",
+    "homepage": "https://miru.ink",
+    "license": "MIT",
+    "author": "rat.md <info@rat.md> (https://rat.md)",
+    "bugs": {
+        "url": "https://www.github.com/rat.md/miru",
+        "email": "info@rat.md"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rat.md/miru"
+    },
+    "funding": [
+        "https://www.buymeacoffee.com/ratmd"
+    ],
+    "main": "index.js",
     "type": "module",
     "scripts": {
+        "prepare": "npm run build",
         "dev": "vite dev --host --cors",
         "build": "run-p type-check build-only",
         "build-only": "vite build",
@@ -16,7 +34,10 @@
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore --ignore-path .eslintignore",
         "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
         "storybook": "storybook dev -p 6006 --no-open",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build",
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build docs",
+        "docs:preview": "vitepress preview docs"
     },
     "dependencies": {
         "@floating-ui/vue": "^1.0.6",
@@ -56,6 +77,7 @@
         "typescript": "~5.3.3",
         "vite": "^5.1.4",
         "vite-plugin-browser-sync": "^3.0.0",
+        "vitepress": "^1.0.0-rc.44",
         "vue-tsc": "^1.8.27"
     }
 }
