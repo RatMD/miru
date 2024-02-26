@@ -173,7 +173,14 @@ const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().
 
 /** Sizes */
 .field-select.field-sm {
-    @apply h-10 py-1.5 text-sm;
+    @apply h-10 py-1.5;
+    /* required to prevent zoom-behaviour on apple devices, added here too for consistency */
+    /* @see https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/ */
+    font-size: 16px;
+
+    @screen md {
+        @apply text-sm;
+    }
 }
 .field-select.field-lg {
     @apply h-14 py-4 text-lg;

@@ -265,7 +265,14 @@ const isDateTime = computed<boolean>(() => {
 
 /** Sizes */
 .field-input.field-sm {
-    @apply h-10 py-1.5 text-sm;
+    @apply h-10 py-1.5;
+    /* required to prevent zoom-behaviour on apple devices */
+    /* @see https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/ */
+    font-size: 16px;
+
+    @screen md {
+        @apply text-sm;
+    }
 }
 .field-input.field-lg {
     @apply h-14 py-4 text-lg;
