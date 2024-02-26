@@ -90,7 +90,7 @@ watch(() => slots.default, async () => {
 }, { immediate: true });
 </script>
 
-<style>
+<style scoped>
 .btn-group {
     @apply w-full flex gap-2;
 

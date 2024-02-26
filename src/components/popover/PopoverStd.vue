@@ -10,5 +10,5 @@
 // Vue Setup
 </script>
 
-<style>
+<style scoped>
 </style>

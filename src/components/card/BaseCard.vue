@@ -53,13 +53,13 @@ const props = defineProps<BaseCardProps>();
 const slots = defineSlots<BaseCardSlots>();
 </script>
 
-<style>
+<style scoped>
 .card {
     @apply flex flex-col;
 }
 
 .card-header {
-    &.card-title {
+    &:slotted(.card-title) {
         @apply font-semibold;
     }
 }

@@ -57,7 +57,7 @@ const stylings = computed<{ [key: string]: string }>(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .skeleton {
     @apply relative overflow-hidden;
     @apply bg-gray-200 dark:bg-gray-700;

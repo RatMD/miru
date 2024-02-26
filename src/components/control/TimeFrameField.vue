@@ -231,5 +231,5 @@ function subBetween(value: string) {
 }
 </script>
 
-<style>
+<style scoped>
 </style>

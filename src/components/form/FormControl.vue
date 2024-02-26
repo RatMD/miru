@@ -154,12 +154,12 @@ const descriptionVisible = computed<boolean>(() => {
 })
 </script>
 
-<style>
+<style scoped>
 .form-control {
     @apply flex flex-col gap-2;
 }
 
-.control-label {
+:slotted(.control-label) {
     @apply px-1 font-semibold text-sm;    
 }
 
@@ -170,13 +170,13 @@ const descriptionVisible = computed<boolean>(() => {
 .control-footer {
     @apply px-1;
     
-    & .footer-text {
+    & :slotted(.footer-text) {
         @apply text-sm;
     }
-    & .invalid-text {
+    & :slotted(.invalid-text) {
         @apply text-danger-600;
     }
-    & .valid-text {
+    & :slotted(.valid-text) {
         @apply text-success-600;
     }
 }

@@ -111,7 +111,7 @@ const value = computed({
 const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().replace(/\-/g, '')}`);
 </script>
 
-<style>
+<style scoped>
 .field-input {
     @apply w-full px-4 py-2.5 border border-solid rounded-md outline-none shadow-none resize-y;
     @apply duration-300 ease-in-out;

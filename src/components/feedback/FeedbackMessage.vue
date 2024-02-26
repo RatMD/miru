@@ -22,5 +22,5 @@ export default {
 const props = defineProps<FeedbackMessageProps>();
 </script>
 
-<style>
+<style scoped>
 </style>

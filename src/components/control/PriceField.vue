@@ -272,7 +272,7 @@ function onIncrease() {
 }
 </script>
 
-<style>
+<style scoped>
 .field-group {
     @apply w-full relative;
 }

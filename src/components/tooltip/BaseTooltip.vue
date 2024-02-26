@@ -57,7 +57,7 @@ defineExpose({
 });
 </script>
 
-<style>
+<style scoped>
 .tooltip {
     @apply w-max flex px-3 py-1.5 text-xs font-semibold opacity-100 rounded pointer-events-none;
     @apply bg-gray-800 text-gray-50 dark:bg-gray-200 dark:text-gray-800;

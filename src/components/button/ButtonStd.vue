@@ -129,7 +129,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .btn {
     @apply w-auto h-12 px-8 py-2.5 inline-flex items-center gap-3 border border-solid rounded-lg cursor-pointer text-base;
     @apply duration-300 ease-in-out;

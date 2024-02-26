@@ -107,7 +107,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .badge {
     @apply inline-flex flex-row gap-2 items-center px-4 py-1.5 rounded-lg;
     @apply text-gray-900 bg-gray-200 dark:text-gray-300 dark:bg-gray-700;
@@ -117,11 +117,11 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
     }
 }
 
-.badge .badge-dot {
+.badge :slotted(.badge-dot) {
     @apply w-3 h-3 rounded-full bg-current;
 }
 
-.badge .badge-label {
+.badge :slotted(.badge-label) {
     @apply text-sm font-semibold;
 }
 
@@ -133,11 +133,11 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         @apply px-1.5;
     }
 
-    & .badge-dot {
+    & :slotted(.badge-dot) {
         @apply w-2 h-2;
     }
 
-    & .badge-label {
+    & :slotted(.badge-label) {
         @apply text-xs;
     }
 }
@@ -149,11 +149,11 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         @apply px-2.5;
     }
 
-    & .badge-dot {
+    & :slotted(.badge-dot) {
         @apply w-4 h-4;
     }
     
-    & .badge-label {
+    & :slotted(.badge-label) {
         @apply text-base;
     }
 }

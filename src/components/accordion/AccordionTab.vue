@@ -162,7 +162,7 @@ const accordionHeader = ref<HTMLElement>();
 const accordionPane = ref<HTMLElement>();
 </script>
 
-<style>
+<style scoped>
 .accordion-tab {
     @apply w-full flex flex-col;
 }
@@ -170,11 +170,11 @@ const accordionPane = ref<HTMLElement>();
 .accordion-header {
     @apply flex flex-row items-center gap-3;
 
-    & .header-label {
+    & :slotted(.header-label) {
         @apply text-lg font-semibold font-header select-none cursor-pointer;
     }
 
-    & .header-icon {
+    & :slotted(.header-icon) {
         @apply duration-300 ease-in-out transition-transform;
         @apply -rotate-90;
 

@@ -110,7 +110,7 @@ const value = computed({
 });
 </script>
 
-<style>
+<style scoped>
 .field-group {
     @apply w-full relative;
 }

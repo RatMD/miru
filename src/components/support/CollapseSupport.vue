@@ -129,7 +129,7 @@ async function calculate() {
 }
 </script>
 
-<style>
+<style scoped>
 .content {
     @apply h-0 overflow-hidden;
     @apply duration-300 ease-in-out;

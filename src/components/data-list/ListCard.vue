@@ -21,5 +21,5 @@ export default {
 const props = defineProps<ListCardProps>();
 </script>
 
-<style>
+<style scoped>
 </style>

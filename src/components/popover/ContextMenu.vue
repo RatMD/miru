@@ -21,5 +21,5 @@ export default {
 const props = defineProps<ContextMenuProps>();
 </script>
 
-<style>
+<style scoped>
 </style>

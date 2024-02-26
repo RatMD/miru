@@ -21,5 +21,5 @@ export default {
 const props = defineProps<TabsProps>();
 </script>
 
-<style>
+<style scoped>
 </style>

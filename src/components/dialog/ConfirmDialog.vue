@@ -21,5 +21,5 @@ export default {
 const props = defineProps<ConfirmDialogProps>();
 </script>
 
-<style>
+<style scoped>
 </style>

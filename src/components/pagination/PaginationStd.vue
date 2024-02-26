@@ -21,5 +21,5 @@ export default {
 const props = defineProps<PaginationProps>();
 </script>
 
-<style>
+<style scoped>
 </style>

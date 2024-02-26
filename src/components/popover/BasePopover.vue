@@ -115,7 +115,7 @@ defineExpose({
 });
 </script>
 
-<style>
+<style scoped>
 .popover {
     @apply w-max flex text-xs font-semibold rounded-md;
     @apply bg-white text-gray-800 shadow-gray-300 dark:bg-gray-100 dark:shadow-gray-900;

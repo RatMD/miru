@@ -210,7 +210,7 @@ defineExpose({
 });
 </script>
 
-<style>
+<style scoped>
 .offcanvas {
     @apply fixed flex flex-col max-h-full;
     @apply duration-300 ease-in-out transition-transform;
@@ -320,7 +320,7 @@ defineExpose({
         @apply p-4;
     }
 
-    & .offcanvas-title {
+    & :slotted(.offcanvas-title) {
         @apply text-lg font-semibold font-header;
     }
 

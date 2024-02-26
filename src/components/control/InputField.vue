@@ -224,7 +224,7 @@ const isDateTime = computed<boolean>(() => {
 });
 </script>
 
-<style>
+<style scoped>
 .field-input {
     @apply w-full h-12 px-4 py-2.5 border border-solid rounded-md outline-none shadow-none;
     @apply duration-300 ease-in-out;

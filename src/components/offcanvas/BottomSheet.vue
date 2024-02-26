@@ -21,5 +21,5 @@ export default {
 const props = defineProps<BottomSheetProps>();
 </script>
 
-<style>
+<style scoped>
 </style>

@@ -90,7 +90,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 });
 </script>
   
-<style>
+<style scoped>
 .btn.btn-shadow {
     @apply w-10 h-10 flex items-center justify-center relative p-0 border-0 outline-none rounded-full cursor-pointer;
     @apply duration-300 ease-in-out transition-colors;

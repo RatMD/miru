@@ -146,7 +146,7 @@ defineExpose({
 })
 </script>
 
-<style>
+<style scoped>
 .tooltip {
     @apply absolute opacity-0 duration-300 ease-in-out;
     z-index: 90;

@@ -21,5 +21,5 @@ export default {
 const props = defineProps<ListTableColumnProps>();
 </script>
 
-<style>
+<style scoped>
 </style>

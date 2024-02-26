@@ -121,7 +121,7 @@ const value = computed({
 const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().replace(/\-/g, '')}`);
 </script>
 
-<style>
+<style scoped>
 .field-radio {
     @apply inline-flex;
 }

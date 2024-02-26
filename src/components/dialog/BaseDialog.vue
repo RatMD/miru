@@ -245,7 +245,7 @@ defineExpose({
 });
 </script>
 
-<style>
+<style scoped>
 .modal {
     @apply inset-0 fixed w-full h-full flex justify-center items-center py-10;
     @apply overflow-x-hidden overflow-y-auto outline-none;

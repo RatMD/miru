@@ -95,6 +95,6 @@ function breakpoints(string: string): number | null {
 }
 </script>
 
-<style>
+<style scoped>
 /* Scoped Stylings */
 </style>
