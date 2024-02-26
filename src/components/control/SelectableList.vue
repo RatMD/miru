@@ -206,7 +206,7 @@ function onSelect(option: SelectableListOptionTypes) {
 }
 </script>
 
-<style scoped>
+<style>
 .field-selectable-list {
     @apply flex flex-col gap-2;
 }

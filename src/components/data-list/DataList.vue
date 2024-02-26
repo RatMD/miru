@@ -21,5 +21,5 @@ export default {
 const props = defineProps<DataListProps>();
 </script>
 
-<style scoped>
+<style>
 </style>

@@ -210,7 +210,7 @@ defineExpose({
 });
 </script>
 
-<style scoped>
+<style>
 .offcanvas {
     @apply fixed flex flex-col max-h-full;
     @apply duration-300 ease-in-out transition-transform;

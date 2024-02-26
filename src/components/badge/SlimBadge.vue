@@ -63,7 +63,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 });
 </script>
 
-<style scoped>
+<style>
 .badge {
     @apply flex flex-row gap-2 items-center justify-center rounded-full w-6 h-6;
     @apply text-gray-900 bg-gray-200 dark:text-gray-300 dark:bg-gray-700;

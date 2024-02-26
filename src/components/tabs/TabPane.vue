@@ -21,5 +21,5 @@ export default {
 const props = defineProps<TabsPaneProps>();
 </script>
 
-<style scoped>
+<style>
 </style>

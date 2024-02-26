@@ -89,7 +89,7 @@ function onShow(idx: number) {
 }
 </script>
 
-<style scoped>
+<style>
 .accordion {
     @apply flex flex-col gap-2;
 }

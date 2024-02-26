@@ -162,7 +162,7 @@ const accordionHeader = ref<HTMLElement>();
 const accordionPane = ref<HTMLElement>();
 </script>
 
-<style scoped>
+<style>
 .accordion-tab {
     @apply w-full flex flex-col;
 }

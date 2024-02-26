@@ -33,4 +33,3 @@ function levenshtein(string1: string, string2: string): number {
 
 // Export Module
 export default levenshtein;
-export { levenshtein };

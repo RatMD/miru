@@ -21,5 +21,5 @@ export default {
 const props = defineProps<DateTimePickerProps>();
 </script>
 
-<style scoped>
+<style>
 </style>

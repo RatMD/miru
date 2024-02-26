@@ -3,7 +3,7 @@ const UUID_MAP: Map<string|Symbol, string> = new Map();
 
 /**
  * Create random UUID
- * @param {string | Symbol | null} id Additional unique ID, associated with the generated UUID,
+ * @param {string | Symbol | null} id Additional unique ID, associated with the generated UUID.
  * @returns {string}
  */
 function uuid(id?: string | Symbol | null): string {
@@ -22,4 +22,3 @@ function uuid(id?: string | Symbol | null): string {
 
 // Export Module
 export default uuid;
-export { uuid };

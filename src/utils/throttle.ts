@@ -3,8 +3,9 @@ export type ThrottleCallback = (...args: any) => void | Promise<void>;
 
 /**
  * Wraps a callback function into a throttle handler.
+ * The throttle handler limits the rate at which the passed function is called.
  * @param {Function} callback The desired function to call.
- * @param {numbet} ms The amount of milliseconds the function should be called.
+ * @param {number} ms The number of ms to throttle/wait until the callback function is called.
  * @returns {Function}
  */
 function throttle(callback: ThrottleCallback, ms: number): Function {
@@ -27,4 +28,3 @@ function throttle(callback: ThrottleCallback, ms: number): Function {
 
 // Export Module
 export default throttle;
-export { throttle };

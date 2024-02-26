@@ -1,5 +1,7 @@
 import type { Plugin } from "vue";
 
+import FilesizeDirective from '@/directives/filesize';
+
 /**
  * Miru Vue3 Plugin
  */
@@ -10,7 +12,7 @@ const MiruPlugin = {
      * @param options 
      */
     install(app, ...options) {
-        
+        app.directive('filesize', FilesizeDirective)
     },
 } as Plugin;
 
@@ -22,5 +24,4 @@ function createMiru() {
 }
 
 // Export Module
-export default MiruPlugin;
 export { MiruPlugin, createMiru };

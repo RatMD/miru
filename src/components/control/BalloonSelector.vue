@@ -279,7 +279,7 @@ function onSelect(option: BalloonSelectorOptionTypes) {
 }
 </script>
 
-<style scoped>
+<style>
 .field-balloon-selector {
     @apply flex flex-col gap-2;
 

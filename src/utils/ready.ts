@@ -18,4 +18,3 @@ function ready(factory?: (this: Document, ev?: Event) => any): void | Promise<nu
 
 // Export Module
 export default ready;
-export { ready };

@@ -21,5 +21,5 @@ export default {
 const props = defineProps<RangeSliderProps>();
 </script>
 
-<style scoped>
+<style>
 </style>

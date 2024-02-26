@@ -11,4 +11,3 @@ function select(selector: string, context?: HTMLElement | Document): HTMLElement
 
 // Export Module
 export default select;
-export { select };

@@ -154,7 +154,7 @@ const descriptionVisible = computed<boolean>(() => {
 })
 </script>
 
-<style scoped>
+<style>
 .form-control {
     @apply flex flex-col gap-2;
 }

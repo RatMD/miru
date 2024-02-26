@@ -37,7 +37,7 @@ const props = defineProps<InputGroupProps>();
 const slots = defineSlots<InputGroupSlots>();
 </script>
 
-<style scoped>
+<style>
 .input-group {
     @apply flex flex-col;
 

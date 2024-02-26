@@ -21,5 +21,5 @@ export default {
 const props = defineProps<FormFieldsetProps>();
 </script>
 
-<style scoped>
+<style>
 </style>

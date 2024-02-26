@@ -21,5 +21,5 @@ export default {
 const props = defineProps<ColorPickerProps>();
 </script>
 
-<style scoped>
+<style>
 </style>

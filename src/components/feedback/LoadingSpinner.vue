@@ -35,7 +35,7 @@ export default {
 const props = defineProps<LoadingSpinnerProps>();
 </script>
 
-<style scoped>
+<style>
 .loading-spinner {
     @apply relative;
 }

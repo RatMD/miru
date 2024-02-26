@@ -21,5 +21,5 @@ export default {
 const props = defineProps<DividerProps>();
 </script>
 
-<style scoped>
+<style>
 </style>

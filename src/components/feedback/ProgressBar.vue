@@ -23,5 +23,5 @@ export default {
 const props = defineProps<ProgressBarProps>();
 </script>
 
-<style scoped>
+<style>
 </style>

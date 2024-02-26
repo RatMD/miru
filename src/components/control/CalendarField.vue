@@ -643,7 +643,7 @@ function onSelect(date: Date) {
 }
 </script>
 
-<style scoped>
+<style>
 .field-calendar {
     @apply w-full flex flex-col border border-solid rounded-md;
     @apply bg-transparent border-gray-300;

@@ -53,7 +53,7 @@ const props = defineProps<BaseCardProps>();
 const slots = defineSlots<BaseCardSlots>();
 </script>
 
-<style scoped>
+<style>
 .card {
     @apply flex flex-col;
 }
