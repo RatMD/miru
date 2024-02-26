@@ -54,9 +54,9 @@ import ButtonStd from 'miru.ink/button';
 
 ## Use adaptive
 
-The more adaptive way allows you to configure the styling aspects and apply your corporate identity 
-and design. However, this requires your project to implement tailwind with postcss, and is currently 
-only tested with Vite as bundler engine.
+The more adaptive way allows you to configure the styling aspects to apply your corporate design. 
+However, this requires your project to implement tailwind with postcss, and is currently only tested 
+with Vite as bundler engine.
 
 Make sure you've installed `tailwindcss`, `postcss` and `postcss-import` in your project, and added
 the `tailwindcss/nesting` package in your PostCSS configuration file.
