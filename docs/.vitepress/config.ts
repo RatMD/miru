@@ -24,7 +24,7 @@ export default defineConfig({
         },
 
         socialLinks: [
-            { icon: 'github', link: 'https://github.com/rat.md/miru' }
+            { icon: 'github', link: 'https://github.com/ratmd/miru' }
         ]
     },
     vite: {

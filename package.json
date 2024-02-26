@@ -13,12 +13,12 @@
     "license": "MIT",
     "author": "rat.md <info@rat.md> (https://rat.md)",
     "bugs": {
-        "url": "https://www.github.com/rat.md/miru",
+        "url": "https://www.github.com/ratmd/miru",
         "email": "info@rat.md"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/rat.md/miru"
+        "url": "https://github.com/ratmd/miru"
     },
     "funding": [
         "https://www.buymeacoffee.com/ratmd"
