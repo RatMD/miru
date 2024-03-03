@@ -53,7 +53,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useClient } from '@/composables/client';
+import { useClient } from '@/composables/use-client';
 import {
     BREAKPOINT_XXS,
     BREAKPOINT_XS,
