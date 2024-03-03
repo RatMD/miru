@@ -1,5 +1,13 @@
 
-
+/**
+ * Internal Equality Check
+ * @source https://github.com/NickGard/tiny-isequal/blob/master/src/index.js
+ * 
+ * @param a 
+ * @param b 
+ * @param refs 
+ * @returns 
+ */
 function _equals(a: any, b: any, refs: any[]) {
     const aType = Object.prototype.toString.call(a);
     const bType = Object.prototype.toString.call(b);
