@@ -364,6 +364,7 @@ export function useForm<T extends object>(
     /**
      * Submit Form handler.
      * @todo Handle Request
+     * 
      * @param newValues 
      * @returns 
      */
@@ -371,18 +372,25 @@ export function useForm<T extends object>(
         if (!action.value || !method.value) {
             return false;
         }
-        touched.value = true;
-
-        if (!validate()) {
-            return false;
-        }
         if (loading.value) {
             return false;
         }
+        touched.value = true;
+
+        // Validate Data
+        let result = validate();
+        if (!result.valid) {
+            return {
+                status: 'error',
+                message: 'invalid',
+                details: result.results
+            };
+        }
         loading.value = true;
 
+        // Submit Data
         try {
-            const response = await request(method.value, payload.value);
+            const response = await request(action.value, payload.value);
             return response;
         } catch (err) {
             return {
