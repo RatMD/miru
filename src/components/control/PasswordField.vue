@@ -1,7 +1,7 @@
 <template>
     <div class="field-group">
         <InputField v-bind="props" :type="visible ? 'text' : 'password'" v-model="value" />
-        <ActionButton :icon="visible ? Eye : EyeOff" :size="props.size || 'md'" @click="visible = !visible" />
+        <ActionButton :icon="visible ? LucideEyeOn : LucideEyeOff" :size="props.size || 'md'" @click="visible = !visible" />
     </div>
 </template>
 
@@ -89,10 +89,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { Eye, EyeOff } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import ActionButton from '@/components/button/ActionButton.vue';
 import InputField from '@/components/control/InputField.vue';
+import LucideEyeOn from '@/components/lucide/EyeOn.vue';
+import LucideEyeOff from '@/components/lucide/EyeOff.vue';
 
 // Define Component
 const props = defineProps<PasswordFieldProps>();

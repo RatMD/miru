@@ -20,3 +20,4 @@ function debounce(callback: Function, ms: number): Function {
 
 // Export Module
 export default debounce;
+export { debounce };

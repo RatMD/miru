@@ -1,8 +1,8 @@
 <template>
     <div class="field-group">
-        <ActionButton :icon="Minus" :size="props.size || 'md'" @click="onDecrease" :disabled="reachedMin" />
+        <ActionButton :icon="LucideMinusSign" :size="props.size || 'md'" @click="onDecrease" :disabled="reachedMin" />
         <InputField v-bind="props" type="text" @keydown="onKeyDown" @input.prevent="onInput" inputmode="numeric" v-model="value" />
-        <ActionButton :icon="Plus" :size="props.size || 'md'" @click="onIncrease" :disabled="reachedMax" />
+        <ActionButton :icon="LucidePlusSign" :size="props.size || 'md'" @click="onIncrease" :disabled="reachedMax" />
     </div>
 </template>
 
@@ -104,10 +104,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { Minus, Plus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import ActionButton from '@/components/button/ActionButton.vue';
 import InputField from '@/components/control/InputField.vue';
+import LucideMinusSign from '@/components/lucide/MinusSign.vue';
+import LucidePlusSign from '@/components/lucide/PlusSign.vue';
 
 // Define Component
 const props = defineProps<NumberFieldProps>();

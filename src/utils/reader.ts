@@ -18,3 +18,4 @@ function reader(file: File): Promise<string|ArrayBuffer> {
 
 // Export Module
 export default reader;
+export { reader };

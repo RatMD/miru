@@ -8,7 +8,7 @@
                 <slot name="header" v-bind="props" :visible="isVisible" :open="open" :close="close" :toggle="toggle">
                     <div class="offcanvas-title">{{ props.title }}</div>
                 </slot>
-                <ShadowButton :icon="X" @click="close" />
+                <ShadowButton :icon="LucideXSign" @click="close" />
             </header>
 
             <article ref="offcanvasContent" class="offcanvas-content">
@@ -109,11 +109,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {
-    X
-} from 'lucide-vue-next';
-import Scrollbar from 'smooth-scrollbar';
 import { computed, nextTick, ref, watch } from 'vue';
+import LucideXSign from '@/components/lucide/XSign.vue';
 
 import ShadowButton from '@/components/button/ShadowButton.vue';
 
@@ -161,15 +158,6 @@ const isVisible = computed({
         setTimeout(() => {
             visibleDelay.value = false;
         }, 300);
-    }
-});
-
-/**
- * Watch Offcanvas Content
- */
-watch(offcanvasContent, () => {
-    if (offcanvasContent.value) {
-        Scrollbar.init(offcanvasContent.value);
     }
 });
 

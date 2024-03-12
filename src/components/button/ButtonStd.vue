@@ -13,7 +13,7 @@
         :title="props.title || void 0"
         :disabled="toValue(props.disabled || false) || toValue(props.loading || false)">
 
-        <component :is="props.iconLoading ? props.iconLoading : Loader2" class="btn-icon spin" v-bind="iconBinding" v-if="toValue(props.loading || false)" />
+        <component :is="props.iconLoading ? props.iconLoading : LucideLoaderCircle" class="btn-icon spin" v-bind="iconBinding" v-if="toValue(props.loading || false)" />
         <template v-if="props.icon && placement != 'right'">
             <component :is="icon" class="btn-icon" v-bind="iconBinding" />
         </template>
@@ -103,8 +103,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { Loader2 } from 'lucide-vue-next';
 import { computed, toValue } from 'vue';
+import LucideLoaderCircle from '@/components/lucide/LoaderCircle.vue';
 
 // Define Component
 const props = withDefaults(defineProps<ButtonProps>(), {

@@ -1,8 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-import { AlignCenter, AlignLeft, AlignRight } from 'lucide-vue-next';
 import { ref } from 'vue';
 import BalloonSelector from './BalloonSelector.vue';
+
+const AlignLeft = {
+    template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-left"><line x1="21" x2="3" y1="6" y2="6"/><line x1="15" x2="3" y1="12" y2="12"/><line x1="17" x2="3" y1="18" y2="18"/></svg>'
+}
+const AlignCenter = {
+    template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-center"><line x1="21" x2="3" y1="6" y2="6"/><line x1="17" x2="7" y1="12" y2="12"/><line x1="19" x2="5" y1="18" y2="18"/></svg>'
+}
+const AlignRight = {
+    template: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-right"><line x1="21" x2="3" y1="6" y2="6"/><line x1="21" x2="9" y1="12" y2="12"/><line x1="21" x2="7" y1="18" y2="18"/></svg>'
+}
+
 
 /**
  * The **BalloonSelector** form control field works similar to the [**SelectableList**](/docs/form-controls-selectablelist--docs)

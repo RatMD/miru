@@ -29,3 +29,4 @@ function query(selector: string, context_or_callback?: HTMLElement | Document | 
 
 // Export Module
 export default query;
+export { query };

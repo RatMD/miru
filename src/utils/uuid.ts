@@ -22,3 +22,4 @@ function uuid(id?: string | Symbol | null): string {
 
 // Export Module
 export default uuid;
+export { uuid };

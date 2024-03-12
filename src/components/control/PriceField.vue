@@ -9,16 +9,16 @@
             @blur="onBlur" 
             inputmode="numeric"
             v-model="value" />
-        <Currency v-if="props.icon == 'currency'" v-bind="iconBinding" class="field-currency-icon" />
-        <Bitcoin v-else-if="props.icon == 'bitcoin'" v-bind="iconBinding" class="field-currency-icon" />
-        <DollarSign v-else-if="props.icon == 'dollar'" v-bind="iconBinding" class="field-currency-icon" />
-        <Euro v-else-if="props.icon == 'euro'" v-bind="iconBinding" class="field-currency-icon" />
-        <Gem v-else-if="props.icon == 'gem'" v-bind="iconBinding" class="field-currency-icon" />
-        <JapaneseYen v-else-if="props.icon == 'yen'" v-bind="iconBinding" class="field-currency-icon" />
-        <Percent v-else-if="props.icon == 'percent'" v-bind="iconBinding" class="field-currency-icon" />
-        <PoundSterling v-else-if="props.icon == 'sterling'" v-bind="iconBinding" class="field-currency-icon" />
-        <RussianRuble v-else-if="props.icon == 'ruble'" v-bind="iconBinding" class="field-currency-icon" />
-        <SwissFranc v-else-if="props.icon == 'franc'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyBitcoin v-if="props.icon == 'bitcoin'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyDefault v-else-if="props.icon == 'currency'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyDollar v-else-if="props.icon == 'dollar'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyEuro v-else-if="props.icon == 'euro'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyFranc v-else-if="props.icon == 'franc'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyGem v-else-if="props.icon == 'gem'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyPercent v-else-if="props.icon == 'percent'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyRuble v-else-if="props.icon == 'ruble'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencySterling v-else-if="props.icon == 'sterling'" v-bind="iconBinding" class="field-currency-icon" />
+        <LucideCurrencyYen v-else-if="props.icon == 'yen'" v-bind="iconBinding" class="field-currency-icon" />
         <component v-else-if="props.icon" :is="icon" v-bind="iconBinding" class="field-currency-icon" />
     </div>
 </template>
@@ -136,20 +136,18 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { 
-    Bitcoin, 
-    Currency, 
-    DollarSign, 
-    Euro, 
-    Gem, 
-    JapaneseYen, 
-    Percent, 
-    PoundSterling,
-    RussianRuble,
-    SwissFranc
-} from 'lucide-vue-next';
 import { computed } from 'vue';
 import InputField from '@/components/control/InputField.vue';
+import LucideCurrencyBitcoin from '@/components/lucide/CurrencyBitcoin.vue';
+import LucideCurrencyDefault from '@/components/lucide/CurrencyDefault.vue';
+import LucideCurrencyDollar from '@/components/lucide/CurrencyDollar.vue';
+import LucideCurrencyEuro from '@/components/lucide/CurrencyEuro.vue';
+import LucideCurrencyFranc from '@/components/lucide/CurrencyFranc.vue';
+import LucideCurrencyGem from '@/components/lucide/CurrencyGem.vue';
+import LucideCurrencyPercent from '@/components/lucide/CurrencyPercent.vue';
+import LucideCurrencySterling from '@/components/lucide/CurrencySterling.vue';
+import LucideCurrencyRuble from '@/components/lucide/CurrencyRuble.vue';
+import LucideCurrencyYen from '@/components/lucide/CurrencyYen.vue';
 
 // Define Component
 const props = withDefaults(defineProps<PriceFieldProps>(), {

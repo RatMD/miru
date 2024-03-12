@@ -5,10 +5,8 @@ import { DocsContainer } from '@storybook/addon-docs';
 import { Title, Subtitle, Description, Primary, Controls, Stories } from '@storybook/blocks';
 import { themes } from '@storybook/theming';
 import { setup, type Preview } from '@storybook/vue3';
-import { createPinia } from 'pinia';
 import React from 'react';
 import { useDarkMode } from 'storybook-dark-mode';
-import { createRouter, createWebHistory } from 'vue-router';
 
 import DarkTheme from './themes/DarkTheme';
 import LightTheme from './themes/LightTheme';
@@ -55,13 +53,7 @@ const preview: Preview = {
 };
 
 setup(async (app) => {
-    const piniaPlugin = createPinia();
-    const routerPlugin = createRouter({
-      history: createWebHistory(),
-      routes: []
-    });
-    app.use(piniaPlugin);
-    app.use(routerPlugin);
+    
 });
 
 export default preview;

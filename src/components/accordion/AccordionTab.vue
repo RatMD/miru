@@ -13,14 +13,14 @@
             <slot name="header" v-bind="props">
                 <template v-if="(props.icon !== null && (props.iconPlacement || 'right') == 'left')">
                     <component :is="props.icon" v-bind="props.iconProps" class="header-icon" v-if="props.icon" />
-                    <ChevronDown :stroke-width="1.5" class="header-icon" v-else />
+                    <LucideChevronDown :stroke-width="1.5" class="header-icon" v-else />
                 </template>
 
                 <span class="header-label">{{ props.label }}</span>
 
                 <template v-if="(props.icon !== null && (props.iconPlacement || 'right') == 'right')">
                     <component :is="props.icon" v-bind="props.iconProps" class="header-icon" v-if="props.icon" />
-                    <ChevronDown :stroke-width="1.5" class="header-icon" v-else />
+                    <LucideChevronDown :stroke-width="1.5" class="header-icon" v-else />
                 </template>
             </slot>
         </button>
@@ -138,8 +138,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ChevronDown } from 'lucide-vue-next';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
+import LucideChevronDown from '@/components/lucide/ChevronDown.vue';
 import CollapseSupport from '@/components/support/CollapseSupport.vue';
 
 // Define Component

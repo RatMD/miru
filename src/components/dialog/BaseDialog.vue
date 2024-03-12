@@ -9,7 +9,7 @@
                     <div class="dialog-title" v-else-if="props.title">{{ props.title }}</div>
 
                     <button type="button" class="dialog-close" @click="close" v-if="props.closable">
-                        <X :stroke-width="1.5" />
+                        <LucideXSign :stroke-width="1.5" />
                     </button>
                 </header>
 
@@ -122,8 +122,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { X } from 'lucide-vue-next';
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import LucideXSign from '@/components/lucide/XSign.vue';
 import wait from '@/utils/wait';
 
 // Define Component

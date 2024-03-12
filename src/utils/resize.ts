@@ -37,3 +37,4 @@ function resize(content: string, maxWidth: number, maxHeight: number): Promise<s
 
 // Export Module
 export default resize;
+export { resize };

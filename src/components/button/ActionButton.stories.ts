@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-import { Check, Trash } from 'lucide-vue-next';
 import ActionButton from './ActionButton.vue';
+
+const icon = {
+    template: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rat"><path d="M17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .8.3 1.5.8 2H11c-3.9 0-7 3.1-7 7v0c0 2.2 1.8 4 4 4"/><path d="M16.8 3.9c.3-.3.6-.5 1-.7 1.5-.6 3.3.1 3.9 1.6.6 1.5-.1 3.3-1.6 3.9l1.6 2.8c.2.3.2.7.2 1-.2.8-.9 1.2-1.7 1.1 0 0-1.6-.3-2.7-.6H17c-1.7 0-3 1.3-3 3"/><path d="M13.2 18a3 3 0 0 0-2.2-5"/><path d="M13 22H4a2 2 0 0 1 0-4h12"/><path d="M16 9h.01"/></svg>'
+};
 
 /**
  * The ActionButton component is usually used within another component, that offers less space for
@@ -40,7 +43,7 @@ export default meta;
  * @returns 
  */
 const sharedColorRenderer = (args: any) => ({
-    components: { ActionButton, Check },
+    components: { ActionButton, icon },
     setup() {
         return { args };
     },
@@ -70,7 +73,7 @@ const sharedColorRenderer = (args: any) => ({
  */
 export const Default: Story = {
     args: {
-        icon: Trash
+        icon: icon
     },
 };
 
@@ -79,7 +82,7 @@ export const Default: Story = {
  */
 export const DefaultSet: Story = {
     args: {
-        icon: Check,
+        icon: icon,
     },
     render: sharedColorRenderer
 };
@@ -90,7 +93,7 @@ export const DefaultSet: Story = {
 export const PrimarySet: Story = {
     args: {
         color: 'primary',
-        icon: Check,
+        icon: icon,
     },
     render: sharedColorRenderer
 };
@@ -101,7 +104,7 @@ export const PrimarySet: Story = {
 export const SecondarySet: Story = {
     args: {
         color: 'secondary',
-        icon: Check,
+        icon: icon,
     },
     render: sharedColorRenderer
 };
@@ -112,7 +115,7 @@ export const SecondarySet: Story = {
 export const DangerSet: Story = {
     args: {
         color: 'danger',
-        icon: Check,
+        icon: icon,
     },
     render: sharedColorRenderer
 };
@@ -123,7 +126,7 @@ export const DangerSet: Story = {
 export const WarningSet: Story = {
     args: {
         color: 'warning',
-        icon: Check,
+        icon: icon,
     },
     render: sharedColorRenderer
 };
@@ -134,7 +137,7 @@ export const WarningSet: Story = {
 export const SuccessSet: Story = {
     args: {
         color: 'success',
-        icon: Check,
+        icon: icon,
     },
     render: sharedColorRenderer
 };
@@ -145,7 +148,7 @@ export const SuccessSet: Story = {
 export const InfoSet: Story = {
     args: {
         color: 'info',
-        icon: Check,
+        icon: icon,
     },
     render: sharedColorRenderer
 };

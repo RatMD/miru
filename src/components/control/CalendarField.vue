@@ -2,7 +2,7 @@
     <div class="field-calendar">
         <div class="calendar-header">
             <button type="button" class="header-btn" @click="onPrevMonth()">
-                <ChevronLeft :size="16" />
+                <LucideChevronLeft :size="16" />
             </button>
 
             <button type="button" class="header-btn header-label">
@@ -10,7 +10,7 @@
             </button>
 
             <button type="button" class="header-btn" @click="onNextMonth()">
-                <ChevronRight :size="16" />
+                <LucideChevronRight :size="16" />
             </button>
         </div>
 
@@ -295,9 +295,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { computed, ref, watch } from 'vue';
-import InputField from './InputField.vue';
+import LucideChevronLeft from '@/components/lucide/ChevronLeft.vue';
+import LucideChevronRight from '@/components/lucide/ChevronRight.vue';
+import InputField from '@/components/control/InputField.vue';
 
 // Define Component
 const props = withDefaults(defineProps<CalendarFieldProps>(), {

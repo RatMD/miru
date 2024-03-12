@@ -17,7 +17,7 @@ function throttle(callback: ThrottleCallback, ms: number): Function {
         }
         paused = true;
 
-        let result = callback.apply(this, arguments);
+        let result = callback.apply(this, Array.from(arguments));
         if (typeof result !== 'undefined' && result instanceof Promise) {
             result.then(() => setTimeout(() => paused = false, ms));
         } else {
@@ -28,3 +28,4 @@ function throttle(callback: ThrottleCallback, ms: number): Function {
 
 // Export Module
 export default throttle;
+export { throttle };

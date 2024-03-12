@@ -29,3 +29,4 @@ function filesize(bytes: number, si: boolean = false, dp: number = 1): string {
 
 // Export Module
 export default filesize;
+export { filesize };

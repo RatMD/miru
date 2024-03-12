@@ -12,3 +12,4 @@ function wait(ms: number): Promise<null> {
 
 // Export Module
 export default wait;
+export { wait };

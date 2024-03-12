@@ -93,9 +93,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ArrowLeftRight } from 'lucide-vue-next';
 import { computed, nextTick, ref, watch } from 'vue';
-import ButtonStd from '@/components/button/ButtonStd.vue';
 import InputField from '@/components/control/InputField.vue';
 import InputGroup from '@/components/form/InputGroup.vue';
 
