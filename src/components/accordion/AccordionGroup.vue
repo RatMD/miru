@@ -53,7 +53,7 @@ export interface AccordionSlots {
 
 // Default Export, used for IDE-related auto-import features
 export default {
-    name: 'AccordionStd'
+    name: 'AccordionGroup'
 }
 </script>
 

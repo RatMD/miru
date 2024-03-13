@@ -6,7 +6,7 @@ import AccordionTab from './AccordionTab.vue';
  * The **AccordionTab** component is a vertically collapsing element and is perfect for presenting 
  * longer content in a structured way without overwhelming the user with a flood of data. This 
  * component can be used individually, when using multiple instances of this component it's 
- * recommended using the **AccordionStd** component as parent.
+ * recommended using the **AccordionGroup** component as parent.
  * 
  * Internally, the **AccordionTab** component relies on **CollapseSupport** to integrate the 
  * expanding / collapsing behavior.

@@ -1,6 +1,6 @@
 
-import AccordionStd from './AccordionStd.vue';
+import AccordionGroup from './AccordionGroup.vue';
 import AccordionTab from './AccordionTab.vue';
 
-export default AccordionStd;
-export { AccordionStd, AccordionTab };
+export default AccordionGroup;
+export { AccordionGroup, AccordionTab };
