@@ -1,7 +1,6 @@
 
-import ButtonStd from './ButtonStd.vue';
 import ActionButton from './ActionButton.vue';
+import ButtonStd from './ButtonStd.vue';
 import ShadowButton from './ShadowButton.vue';
 
-export default ButtonStd;
-export { ButtonStd, ActionButton, ShadowButton };
+export { ActionButton, ButtonStd, ShadowButton };

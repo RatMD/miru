@@ -5,7 +5,7 @@
         :class="[
             props.color ? `btn-${props.color}` : '',
             props.size ? `btn-${props.size}` : '',
-            toValue(props.active || false) ? 'btn-active' : '',
+            toValue(props.active || false) ? 'active' : '',
             toValue(props.disabled || false) ? 'btn-disabled' : '',
             toValue(props.loading || false) ? 'btn-loading' : ''
         ]"
@@ -30,7 +30,7 @@ export interface ActionButtonProps {
     /**
      * The desired color used for this button.
      */
-    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | null;
 
     /**
      * Additional properties passed to the icon component, such as `size` or `stroke-width`.
@@ -91,12 +91,19 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 </script>
 
 <style scoped>
-.btn.btn-action {
+.btn-action {
     @apply w-8 h-8 flex items-center justify-center border border-solid rounded-md cursor-pointer;
     @apply duration-300 ease-in-out;
     @apply outline-none shadow-none;
 
+    & svg,
+    & .btn-icon {
+        @apply z-20 pointer-events-none;
+    }
+
     &:disabled {
+        @apply cursor-not-allowed;
+        @apply bg-gray-100 border-gray-300 text-gray-500;
     }
 
     &:not(:disabled) {
@@ -122,52 +129,83 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 }
 
 /** Sizes */
-.btn.btn-action.btn-sm {
+.btn-action.btn-sm {
     @apply w-6 h-6;
 }
-.btn.btn-action.btn-lg {
+.btn-action.btn-lg {
     @apply w-10 h-10;
 }
 
 /** Colors */
-.btn.btn-action.btn-primary {
-    &:hover {
-        @apply bg-indigo-50 text-indigo-700 border-indigo-700;
-        @apply dark:bg-indigo-700 dark:text-black dark:border-indigo-700;
+.btn-action.btn-primary {
+    &:not(:disabled):hover {
+        @apply bg-primary-50 text-primary-700 border-primary-700;
+        @apply dark:bg-primary-700 dark:text-black dark:border-primary-700;
+    }
+
+    &:not(:disabled):active,
+    &:not(:disabled).active {
+        @apply bg-primary-700 text-primary-50 border-primary-900;
     }
 }
 
-.btn.btn-action.btn-secondary {
-    &:hover {
+.btn-action.btn-secondary {
+    &:not(:disabled):hover {
+        @apply bg-gray-100 border-gray-500 text-gray-900;
+        @apply dark:bg-gray-800 dark:border-gray-800 dark:text-gray-200;
+    }
 
+    &:not(:disabled):active,
+    &:not(:disabled).active {
+        @apply bg-gray-600 text-gray-50 border-gray-800;
     }
 }
 
-.btn.btn-action.btn-danger {
-    &:hover {
-        @apply bg-red-50 text-red-700 border-red-700;
-        @apply dark:bg-red-700 dark:text-black dark:border-red-700;
+.btn-action.btn-danger {
+    &:not(:disabled):hover {
+        @apply bg-danger-50 text-danger-700 border-danger-700;
+        @apply dark:bg-danger-700 dark:text-black dark:border-danger-700;
+    }
+
+    &:not(:disabled):active,
+    &:not(:disabled).active {
+        @apply bg-danger-700 text-danger-50 border-danger-900;
     }
 }
 
-.btn.btn-action.btn-warning {
-    &:hover {
-        @apply bg-amber-50 text-amber-700 border-amber-700;
-        @apply dark:bg-amber-700 dark:text-black dark:border-amber-700;
+.btn-action.btn-warning {
+    &:not(:disabled):hover {
+        @apply bg-warning-50 text-warning-700 border-warning-700;
+        @apply dark:bg-warning-700 dark:text-black dark:border-warning-700;
+    }
+
+    &:not(:disabled):active,
+    &:not(:disabled).active {
+        @apply bg-warning-700 text-warning-50 border-warning-900;
     }
 }
 
-.btn.btn-action.btn-success {
-    &:hover {
-        @apply bg-lime-50 text-lime-700 border-lime-700;
-        @apply dark:bg-lime-700 dark:text-black dark:border-lime-700;
+.btn-action.btn-success {
+    &:not(:disabled):hover {
+        @apply bg-success-50 text-success-700 border-success-700;
+        @apply dark:bg-success-700 dark:text-black dark:border-success-700;
+    }
+
+    &:not(:disabled):active,
+    &:not(:disabled).active {
+        @apply bg-success-700 text-success-50 border-success-900;
     }
 }
 
-.btn.btn-action.btn-info {
-    &:hover {
-        @apply bg-sky-50 text-sky-700 border-sky-700;
-        @apply dark:bg-sky-700 dark:text-black dark:border-sky-700;
+.btn-action.btn-info {
+    &:not(:disabled):hover {
+        @apply bg-info-50 text-info-700 border-info-700;
+        @apply dark:bg-info-700 dark:text-black dark:border-info-700;
+    }
+
+    &:not(:disabled):active,
+    &:not(:disabled).active {
+        @apply bg-info-700 text-info-50 border-info-900;
     }
 }
 </style>

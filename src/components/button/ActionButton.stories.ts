@@ -53,16 +53,19 @@ const sharedColorRenderer = (args: any) => ({
                 <ActionButton v-bind="args" size="sm" />
                 <ActionButton v-bind="args" size="sm" disabled />
                 <ActionButton v-bind="args" size="sm" loading />
+                <ActionButton v-bind="args" size="sm" active />
             </div>
             <div class="flex gap-2">
                 <ActionButton v-bind="args" />
                 <ActionButton v-bind="args" disabled />
                 <ActionButton v-bind="args" loading />
+                <ActionButton v-bind="args" active />
             </div>
             <div class="flex gap-2">
                 <ActionButton v-bind="args" size="lg" />
                 <ActionButton v-bind="args" size="lg" disabled />
                 <ActionButton v-bind="args" size="lg" loading />
+                <ActionButton v-bind="args" size="lg" active />
             </div>
         </div>
     `
