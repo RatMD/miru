@@ -4,11 +4,16 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
     title: "miru.ink",
     description: "Vue3 Component Library",
+
+    // https://vitepress.dev/reference/default-theme-config
     themeConfig: {
-        // https://vitepress.dev/reference/default-theme-config
+        search: {
+            provider: 'local'
+        },
+
         nav: [
             { text: 'Home', link: '/' },
-            { text: 'Guide', link: '/guide/' }
+            { text: 'Guide', link: '/guide/', activeMatch: '/guide/' }
         ],
 
         sidebar: {

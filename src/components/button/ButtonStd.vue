@@ -131,7 +131,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 
 <style scoped>
 .btn {
-    @apply w-auto h-12 px-8 py-2.5 inline-flex items-center gap-3 border border-solid rounded-lg cursor-pointer text-base;
+    @apply w-auto h-10 px-6 py-2.5 inline-flex items-center gap-3 border border-solid rounded-lg cursor-pointer text-base;
     @apply duration-300 ease-in-out;
     @apply outline-none shadow-none;
     transition-property: background-color, border-color, box-shadow, color;
@@ -194,8 +194,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 }
 
 .btn.btn-lg {
-    @apply py-4 px-12 text-lg;
-    height: 60px;
+    @apply h-14 py-4 px-10 text-lg;
 }
 
 .btn.btn-fullwidth {
@@ -204,14 +203,14 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 
 /** Specials */
 .btn.btn-icon-only {
-    @apply px-0 w-12 items-center justify-center;
+    @apply px-0 w-10 items-center justify-center;
 
     &.btn-sm {
         @apply w-8 px-0;
     }
+
     &.btn-lg {
-        @apply px-0;
-        width: 60px;
+        @apply w-14 px-0;
     }
 }
 

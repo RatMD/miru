@@ -1,5 +1,6 @@
 <template>
     <div ref="accordionTab" :id="accordionId" class="accordion-tab" :class="{
+        'condensed': props.condensed,
         'is-visible': isVisible,
         'has-icon': props.icon !== null,
         'icon-left': (props.iconPlacement || 'right') == 'left',
@@ -82,6 +83,11 @@ export interface AccordionTabProps {
      * The visibility state of the accordion pane content, must be passed as v-model value.
      */
     visible?: boolean;
+
+    /**
+     * Whether to apply the condensed stylings or not.
+     */
+    condensed?: boolean;
 }
 
 /**
@@ -186,6 +192,22 @@ const accordionPane = ref<HTMLElement>();
         .is-visible.icon-right & {
             @apply rotate-0;
         }
+    }
+}
+
+.accordion-pane {
+    @apply leading-relaxed;
+}
+
+/* Condensed Stylings */
+.accordion-tab.condensed {
+    & .accordion-header {
+        & :slotted(.header-label) {
+            @apply text-base;
+        }
+    }
+    & .accordion-pane {
+        @apply text-sm;
     }
 }
 </style>

@@ -67,7 +67,7 @@ export default meta;
  */
 export const Default: Story = {
     args: {
-        default: "Content"
+        default: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     },
 };
 
@@ -78,7 +78,18 @@ export const Default: Story = {
  */
 export const LeftIcon: Story = {
     args: {
-        default: "Content",
+        default: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         iconPlacement: 'left'
     },
+};
+
+/**
+ * The condensed styling reduces spacing, font sizes and sometimes also simplifies some design 
+ * elements, depending on the component.
+ */
+export const Condensed: Story = {
+    args: {
+        default: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        condensed: true
+    }
 };

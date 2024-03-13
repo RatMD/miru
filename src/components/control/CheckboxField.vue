@@ -226,6 +226,7 @@ const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().
     
     &::before {
         @apply w-4 h-4;
+        background-size: 12px 12px;
     }
 
     & span {
@@ -238,6 +239,7 @@ const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().
 
     &::before {
         @apply w-8 h-8;
+        background-size: 24px 24px;
     }
 
     & span {

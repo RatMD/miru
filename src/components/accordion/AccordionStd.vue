@@ -1,8 +1,9 @@
 <template>
-    <div :id="accordionId" class="accordion">
+    <div :id="accordionId" class="accordion" :class="[props.condensed ? 'condensed' : '']">
         <component v-for="(tab, idx) of accordionTabs" :key="`${accordionId}-tab-${idx}`"
             :is="tab" 
             :id="`${accordionId}-tab-${idx}`"
+            :condensed="props.condensed"
             v-bind="props.pass"
             v-model:visible="accordionStates[idx]" 
             @show="() => onShow(idx)" />
@@ -32,6 +33,11 @@ export interface AccordionProps {
      * Pass shared properties to the individual AccordionTab components.
      */
     pass?: Omit<AccordionTabProps, 'id' | 'label' | 'visible'>;
+
+    /**
+     * Whether to apply the condensed stylings or not.
+     */
+    condensed?: boolean;
 }
 
 /**
@@ -91,6 +97,35 @@ function onShow(idx: number) {
 
 <style scoped>
 .accordion {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col;
+}
+
+.accordion {
+    & :deep(.accordion-tab) {
+        @apply border-y;
+    }
+
+    & :deep(.accordion-tab .accordion-header) {
+        @apply py-4;
+    }
+
+    & :deep(.accordion-tab .accordion-pane) {
+        @apply -mt-4 mb-4;
+    }
+
+    & :deep(.accordion-tab:not(:first-child)) {
+        @apply -mt-px;
+    }
+}
+
+/* Condensed */
+.accordion.condensed {
+    & :deep(.accordion-tab .accordion-header) {
+        @apply py-2;
+    }
+
+    & :deep(.accordion-tab .accordion-pane) {
+        @apply -mt-2 mb-2;
+    }
 }
 </style>
