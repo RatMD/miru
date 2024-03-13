@@ -16,7 +16,29 @@ const meta = {
     component: SlimBadge,
     tags: ['autodocs'],
     argTypes: {
-
+        color: {
+            control: 'select',
+            options: [null, 'primary', 'secondary', 'success', 'warning', 'danger', 'info']
+        },
+        label: {
+            control: 'text'
+        },
+        icon: {
+            control: 'object'
+        },
+        iconProps: {
+            control: 'object'
+        },
+        size: {
+            control: 'radio',
+            options: ['sm', 'md', 'lg']
+        },
+        pill: {
+            control: 'boolean'
+        },
+        fill: {
+            control: 'boolean'
+        },
     },
     args: {
         
@@ -104,6 +126,100 @@ export const IconVariants: Story = {
                     <SlimBadge v-bind="args" :label="null" size="sm" color="warning" />
                     <SlimBadge v-bind="args" :label="null" size="sm" color="danger" />
                     <SlimBadge v-bind="args" :label="null" size="sm" color="info" />
+                </div>
+                <div class="flex gap-2">
+                    <SlimBadge v-bind="args" />
+                    <SlimBadge v-bind="args" color="primary" />
+                    <SlimBadge v-bind="args" color="secondary" />
+                    <SlimBadge v-bind="args" color="success" />
+                    <SlimBadge v-bind="args" color="warning" />
+                    <SlimBadge v-bind="args" color="danger" />
+                    <SlimBadge v-bind="args" color="info" />
+                </div>
+                <div class="flex gap-2">
+                    <SlimBadge v-bind="args" size="lg" />
+                    <SlimBadge v-bind="args" size="lg" color="primary" />
+                    <SlimBadge v-bind="args" size="lg" color="secondary" />
+                    <SlimBadge v-bind="args" size="lg" color="success" />
+                    <SlimBadge v-bind="args" size="lg" color="warning" />
+                    <SlimBadge v-bind="args" size="lg" color="danger" />
+                    <SlimBadge v-bind="args" size="lg" color="info" />
+                </div>
+            </div>
+        `
+    })
+};
+
+/**
+ * Pill Variant
+ */
+export const Pills: Story = {
+    args: {
+        label: '42',
+        pill: true
+    },
+    render: (args: any) => ({
+        components: { SlimBadge },
+        setup() {
+            return { args };
+        },
+        template: `
+            <div class="flex flex-col gap-2">
+                <div class="flex gap-2">
+                    <SlimBadge v-bind="args" size="sm" />
+                    <SlimBadge v-bind="args" size="sm" color="primary" />
+                    <SlimBadge v-bind="args" size="sm" color="secondary" />
+                    <SlimBadge v-bind="args" size="sm" color="success" />
+                    <SlimBadge v-bind="args" size="sm" color="warning" />
+                    <SlimBadge v-bind="args" size="sm" color="danger" />
+                    <SlimBadge v-bind="args" size="sm" color="info" />
+                </div>
+                <div class="flex gap-2">
+                    <SlimBadge v-bind="args" />
+                    <SlimBadge v-bind="args" color="primary" />
+                    <SlimBadge v-bind="args" color="secondary" />
+                    <SlimBadge v-bind="args" color="success" />
+                    <SlimBadge v-bind="args" color="warning" />
+                    <SlimBadge v-bind="args" color="danger" />
+                    <SlimBadge v-bind="args" color="info" />
+                </div>
+                <div class="flex gap-2">
+                    <SlimBadge v-bind="args" size="lg" />
+                    <SlimBadge v-bind="args" size="lg" color="primary" />
+                    <SlimBadge v-bind="args" size="lg" color="secondary" />
+                    <SlimBadge v-bind="args" size="lg" color="success" />
+                    <SlimBadge v-bind="args" size="lg" color="warning" />
+                    <SlimBadge v-bind="args" size="lg" color="danger" />
+                    <SlimBadge v-bind="args" size="lg" color="info" />
+                </div>
+            </div>
+        `
+    })
+};
+
+/**
+ * Fill Color Variant
+ */
+export const FillColor: Story = {
+    args: {
+        label: '42',
+        fill: true
+    },
+    render: (args: any) => ({
+        components: { SlimBadge },
+        setup() {
+            return { args };
+        },
+        template: `
+            <div class="flex flex-col gap-2">
+                <div class="flex gap-2">
+                    <SlimBadge v-bind="args" size="sm" />
+                    <SlimBadge v-bind="args" size="sm" color="primary" />
+                    <SlimBadge v-bind="args" size="sm" color="secondary" />
+                    <SlimBadge v-bind="args" size="sm" color="success" />
+                    <SlimBadge v-bind="args" size="sm" color="warning" />
+                    <SlimBadge v-bind="args" size="sm" color="danger" />
+                    <SlimBadge v-bind="args" size="sm" color="info" />
                 </div>
                 <div class="flex gap-2">
                     <SlimBadge v-bind="args" />

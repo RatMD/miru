@@ -7,13 +7,13 @@ const icon = {
 };
 
 /**
- * Our **BadgeStd** component offers enough space to elegantly present small pieces of information,
+ * The **BadgeStd** component offers enough space to elegantly present small pieces of information,
  * such as counters, without taking too much focus away from the content itself. If you are looking 
  * for bootstrap-familiar overlaying (counter) badge, usable on top of other elements, then take a 
  * look at the **SlimBadge** component instead.
  */
 const meta = {
-    title: 'Components/Badges/Badge',
+    title: 'Components/Badges/BadgeStd',
     component: BadgeStd,
     tags: ['autodocs'],
     argTypes: {

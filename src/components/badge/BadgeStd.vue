@@ -37,7 +37,7 @@ export interface BadgeProps {
     /**
      * The desired label text for this badge.
      */
-    label?: string | null;
+    label?: string | number | null;
 
     /**
      * An additional icon which is displayed next to the label, if available.
