@@ -1,12 +1,9 @@
 import './preview.css';
 import '../src/styles/miru.css';
 
-import { DocsContainer } from '@storybook/addon-docs';
 import { Title, Subtitle, Description, Primary, Controls, Stories } from '@storybook/blocks';
-import { themes } from '@storybook/theming';
 import { setup, type Preview } from '@storybook/vue3';
 import React from 'react';
-import { useDarkMode } from 'storybook-dark-mode';
 
 import DarkTheme from './themes/DarkTheme';
 import LightTheme from './themes/LightTheme';
@@ -28,12 +25,6 @@ const preview: Preview = {
             stylePreview: true
         },
         docs: {
-            container: (props) => {
-                const isDark = useDarkMode();
-                const currentProps = { ...props };
-                currentProps.theme = isDark ? themes.dark : themes.light;
-                return React.createElement(DocsContainer, currentProps);
-            },
             page: () => (
                 <>
                     <Title />
