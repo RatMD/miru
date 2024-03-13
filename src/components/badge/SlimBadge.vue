@@ -1,12 +1,14 @@
 <template>
-    <div class="badge badge-slim" :class="[
+    <div class="slim-badge" :class="[
         props.color ? `badge-${props.color}`: '', 
         props.size ? `badge-${props.size}` : '',
         props.pill ? `badge-pill` : '',
         props.fill ? `badge-fill` : '',
     ]">
-        <component :is="icon" class="badge-icon" v-bind="iconBinding" v-if="props.icon" />
-        <span class="badge-label" v-else>{{ props.label }}</span>
+        <slot name="default">
+            <component :is="props.icon" class="badge-icon" v-bind="iconBinding" v-if="props.icon" />
+            <span class="badge-label" v-else>{{ props.label }}</span>
+        </slot>
     </div>
 </template>
 
@@ -14,9 +16,9 @@
 import type { Component } from 'vue';
 
 /**
- * Badge Properties
+ * SlimBadge Properties
  */
-export interface BadgeProps {
+export interface SlimBadgeProps {
     /**
      * The desired color used for this badge.
      */
@@ -53,9 +55,19 @@ export interface BadgeProps {
     fill?: boolean;
 }
 
+/**
+ * SlimBadge Slots
+ */
+export interface SlimBadgeSlots {
+    /**
+     * Default content slot, used instead of the label property.
+     */
+    default(props: SlimBadgeProps): any;
+}
+
 // Default Export, used for IDE-related auto-import features
 export default {
-    name: 'BadgeStd'
+    name: 'SlimBadge'
 }
 </script>
 
@@ -63,7 +75,8 @@ export default {
 import { computed } from 'vue';
 
 // Define Component
-const props = defineProps<BadgeProps>();
+const props = defineProps<SlimBadgeProps>();
+const slots = defineSlots<SlimBadgeSlots>();
 
 // States
 const iconBinding = computed<{ [key: string]: any }>(() => {
@@ -76,28 +89,29 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 </script>
 
 <style scoped>
-.badge {
+.slim-badge {
     @apply inline-flex flex-row gap-2 items-center justify-center self-center rounded-full w-6 h-6;
     @apply text-gray-900 bg-gray-200 dark:text-gray-300 dark:bg-gray-700;
-}
-.badge-label {
-    @apply text-xs font-semibold;
+
+    & :slotted(.badge-label) {
+        @apply text-xs font-semibold;
+    }
 }
 
 /** Sizes */
-.badge.badge-sm {
+.slim-badge.badge-sm {
     @apply w-4 h-4;
 }
-.badge.badge-lg {
+.slim-badge.badge-lg {
     @apply w-8 h-8;
 
-    & .badge-label {
+    & :slotted(.badge-label) {
         @apply text-sm;
     }
 }
 
 /** Pill */
-.badge.badge-pill {
+.slim-badge.badge-pill {
     @apply w-auto px-4;
     
     &.badge-sm {
@@ -110,7 +124,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 }
 
 /** Colors */
-.badge.badge-primary {
+.slim-badge.badge-primary {
     @apply text-primary-600 bg-primary-100;
     @apply dark:text-primary-200 dark:bg-primary-800/50;
     
@@ -118,7 +132,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         @apply text-primary-50 bg-primary-600;
     }
 }
-.badge.badge-secondary {
+.slim-badge.badge-secondary {
     @apply text-gray-600 bg-gray-100;
     @apply dark:text-gray-200 dark:bg-gray-700;
     
@@ -126,7 +140,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         @apply text-gray-50 bg-gray-600;
     }
 }
-.badge.badge-success {
+.slim-badge.badge-success {
     @apply text-success-600 bg-success-100;
     @apply dark:text-success-200 dark:bg-success-800/50;
     
@@ -134,7 +148,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         @apply text-success-50 bg-success-600;
     }
 }
-.badge.badge-warning {
+.slim-badge.badge-warning {
     @apply text-warning-600 bg-warning-100;
     @apply dark:text-warning-200 dark:bg-warning-800/50;
     
@@ -142,7 +156,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         @apply text-warning-50 bg-warning-600;
     }
 }
-.badge.badge-danger {
+.slim-badge.badge-danger {
     @apply text-danger-600 bg-danger-100;
     @apply dark:text-danger-200 dark:bg-danger-800/50;
     
@@ -150,7 +164,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         @apply text-danger-50 bg-danger-600;
     }
 }
-.badge.badge-info {
+.slim-badge.badge-info {
     @apply text-info-600 bg-info-100;
     @apply dark:text-info-200 dark:bg-info-800/50;
     
