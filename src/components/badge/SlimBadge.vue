@@ -60,7 +60,8 @@ export interface SlimBadgeProps {
  */
 export interface SlimBadgeSlots {
     /**
-     * Default content slot, used instead of the label property.
+     * Default content slot, used instead of the label property
+     * @param props 
      */
     default(props: SlimBadgeProps): any;
 }
