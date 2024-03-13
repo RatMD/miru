@@ -13,7 +13,7 @@ import AccordionTab from './AccordionTab.vue';
  * expanding / collapsing behavior.
  */
 const meta = {
-    title: 'Components/Accordions/Accordion',
+    title: 'Components/Accordions/AccordionStd',
     component: AccordionStd,
     tags: ['autodocs'],
     argTypes: {
