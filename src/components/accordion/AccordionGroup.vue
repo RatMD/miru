@@ -1,5 +1,8 @@
 <template>
-    <div :id="accordionId" class="accordion" :class="[props.condensed ? 'condensed' : '']">
+    <div :id="accordionId" class="accordion" :class="{
+        'accordion-condensed': props.condensed,
+        'accordion-clean': props.clean,
+    }">
         <component v-for="(tab, idx) of accordionTabs" :key="`${accordionId}-tab-${idx}`"
             :is="tab" 
             :id="`${accordionId}-tab-${idx}`"
@@ -38,6 +41,11 @@ export interface AccordionProps {
      * Whether to apply the condensed stylings or not.
      */
     condensed?: boolean;
+
+    /**
+     * Whether to apply the clean stylings or not.
+     */
+    clean?: boolean;
 }
 
 /**
@@ -100,9 +108,9 @@ function onShow(idx: number) {
     @apply flex flex-col;
 }
 
-.accordion {
+.accordion:not(.accordion-clean) {
     & :deep(.accordion-tab) {
-        @apply border-y;
+        @apply border-y border-gray-300 dark:border-gray-500;
     }
 
     & :deep(.accordion-tab .accordion-header) {
@@ -119,7 +127,7 @@ function onShow(idx: number) {
 }
 
 /* Condensed */
-.accordion.condensed {
+.accordion.accordion-condensed:not(.accordion-clean) {
     & :deep(.accordion-tab .accordion-header) {
         @apply py-2;
     }

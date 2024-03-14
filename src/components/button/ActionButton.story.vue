@@ -59,7 +59,7 @@
     </Story>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { h } from 'vue';
 import ActionButton from './ActionButton.vue';
 

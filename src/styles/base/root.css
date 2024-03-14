@@ -12,3 +12,11 @@ html body {
     @apply relative;
     -webkit-text-size-adjust: none;
 }
+
+html {
+    @apply bg-gray-50 text-gray-900;
+}
+
+html.dark {
+    @apply bg-gray-800 text-gray-300;
+}
