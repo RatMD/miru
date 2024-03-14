@@ -1,3 +1,4 @@
+/// <reference types="@histoire/plugin-vue/components" />
 /// <reference types="vite/client" />
 
 declare const __BREAKPOINT_XXS__: number;

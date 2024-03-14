@@ -32,11 +32,14 @@
         "watch": "vite build --watch",
         "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore --ignore-path .eslintignore",
         "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
-        "storybook": "storybook dev -p 6006 --no-open",
-        "build-storybook": "storybook build",
         "docs:dev": "vitepress dev docs",
         "docs:build": "vitepress build docs",
-        "docs:preview": "vitepress preview docs"
+        "docs:preview": "vitepress preview docs",
+        "story:dev": "histoire dev --host",
+        "story:build": "histoire build",
+        "story:preview": "histoire preview",
+        "storybook:dev": "storybook dev -p 6006 --no-open",
+        "storybook:build": "storybook build"
     },
     "dependencies": {
         "@floating-ui/vue": "^1.0.6",
@@ -44,6 +47,7 @@
         "zod": "^3.22.4"
     },
     "devDependencies": {
+        "@histoire/plugin-vue": "^0.17.13",
         "@rushstack/eslint-patch": "^1.7.2",
         "@storybook/addon-essentials": "^8.0.0",
         "@storybook/addon-interactions": "^8.0.0",
@@ -61,6 +65,7 @@
         "eslint": "^8.57.0",
         "eslint-plugin-storybook": "^0.8.0",
         "eslint-plugin-vue": "^9.23.0",
+        "histoire": "^0.17.9",
         "npm-run-all2": "^6.1.2",
         "postcss": "^8.4.35",
         "postcss-import": "^16.0.1",
