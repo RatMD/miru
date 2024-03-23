@@ -1,3 +1,5 @@
+/// <reference types="histoire" />
+
 import type { PreRenderedAsset } from 'rollup';
 
 import path from 'node:path';
@@ -46,7 +48,7 @@ export default defineConfig({
             },
             cleanVueFileName: true,
             tsconfigPath: 'tsconfig.types.json'
-        }),
+        })
     ],
     resolve: {
         alias: {

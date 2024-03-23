@@ -122,7 +122,9 @@ export function sty(): Plugin {
                 }
                 stylings.push((file as any).source);
             }
-            fs.mkdirSync('dist/themes')
+            if (!fs.existsSync('dist/themes')) {
+                fs.mkdirSync('dist/themes')
+            }
             fs.writeFileSync('dist/themes/miru.min.css', stylings.join(''));
         }
     };

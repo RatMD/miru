@@ -1,2 +1,12 @@
+import "./src/styles/miru.css";
+import { defineSetupVue3 } from "@histoire/plugin-vue";
 
-import './src/styles/miru.css';
+declare module "histoire" {
+    interface CommonMeta {
+        wrapper?: boolean;
+    }
+}
+
+export const setupVue3 = defineSetupVue3(({ app, addWrapper }) => {
+
+});
