@@ -88,6 +88,32 @@ export function sty(): Plugin {
         name: 'sty',
         apply: 'build',
 
+        /**
+         * Append .vue files to dist
+         * @param options 
+         * @param bundle 
+         */
+        generateBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
+            for (const [key, chunk] of Object.entries(bundle)) {
+                let moduleId = ((chunk as any).facadeModuleId ?? null);
+
+                if (moduleId && moduleId.includes('/components/') && moduleId.endsWith('.vue')) {
+                    bundle[`${key.slice(0, -2)}vue`] = {
+                        fileName: `${key.slice(0, -2)}vue`,
+                        name: undefined,
+                        needsCodeReference: false,
+                        source: fs.readFileSync(moduleId),
+                        type: 'asset'
+                    };
+                }
+            }
+        },
+
+        /**
+         * Collect & Write stylesheet to dist
+         * @param options 
+         * @param bundle 
+         */
         writeBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
             const stylings = [];
             for (const [key, file] of Object.entries(bundle)) {
