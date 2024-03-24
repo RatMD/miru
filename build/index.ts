@@ -114,18 +114,22 @@ export function sty(): Plugin {
          * @param options 
          * @param bundle 
          */
-        writeBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
+        async writeBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
             const stylings = [];
+
+            // Append Stylings
             for (const [key, file] of Object.entries(bundle)) {
                 if (!key.endsWith('.css')) {
                     continue;
                 }
+                console.log(key);
                 stylings.push((file as any).source);
             }
             if (!fs.existsSync('dist/themes')) {
                 fs.mkdirSync('dist/themes')
             }
             fs.writeFileSync('dist/themes/miru.min.css', stylings.join(''));
+            fs.cpSync('src/styles', 'dist/styles', { recursive: true });
         }
     };
 }

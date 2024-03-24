@@ -3,20 +3,21 @@
 /*  Root Stylings
 /*--- ----------------------------------------*/
 
-html,
-body {
-    @apply m-0 p-0;
+html {
+    overscroll-behavior: none;
+    @apply bg-gray-50 text-gray-900;
+
+    &.dark {
+        @apply bg-gray-800 text-gray-300;
+    }
 }
 
 html body {
     @apply relative;
+    height: -webkit-fill-available;
     -webkit-text-size-adjust: none;
-}
 
-html {
-    @apply bg-gray-50 text-gray-900;
-}
-
-html.dark {
-    @apply bg-gray-800 text-gray-300;
+    @supports (height: 100svh) {
+        height: 100svh;
+    }
 }

@@ -9,6 +9,7 @@ import vue from '@vitejs/plugin-vue';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { collect, pkg, sty } from './build';
+import packageJson from './package.json' with { type: 'json' };
 
 // Collect components and entries
 const { components, entries } = collect(path.resolve(__dirname, 'src'));
@@ -16,6 +17,7 @@ const { components, entries } = collect(path.resolve(__dirname, 'src'));
 // https://vitejs.dev/config/
 export default defineConfig({
     define: {
+        __MIRU_VERSION__: JSON.stringify(packageJson.version),
         __BREAKPOINT_XXS__: JSON.stringify(364),
         __BREAKPOINT_XS__: JSON.stringify(576),
         __BREAKPOINT_SM__: JSON.stringify(640),

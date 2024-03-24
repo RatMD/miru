@@ -3,6 +3,7 @@ miru.ink / Changelog
 
 ## Version 0.0.7 - Experimental
 - Fix: Minor histoire issues.
+- Fix: CSS-Bundle and Distribution-Generation process.
 
 ## Version 0.0.6 - Experimental
 - Info: Switch from storybook to histoire.
