@@ -1,6 +1,6 @@
 {
     "name": "miru.ink",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "A Open-Source Vue3 / Tailwind CSS component framework and function library.",
     "keywords": [
         "ui",

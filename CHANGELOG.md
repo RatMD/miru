@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.8 - Experimental
+- Add: MiruStorage class and helper composable.
+
 ## Version 0.0.7 - Experimental
 - Fix: Minor histoire issues.
 - Fix: CSS-Bundle and Distribution-Generation process.
