@@ -1,5 +1,5 @@
 <template>
-    <Story title="Components/Badge/SlimBadge" :layout="{ type: 'grid', width: '800px' }">
+    <Story title="Components/Badge/BadgeStd" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default Variants">
             <div class="flex flex-col gap-2">
                 <div class="flex gap-2">

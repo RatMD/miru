@@ -1,4 +1,5 @@
 import "./src/styles/miru.css";
+import "./.histoire/styles.css";
 import { defineSetupVue3 } from "@histoire/plugin-vue";
 
 declare module "histoire" {
