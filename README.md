@@ -28,4 +28,4 @@ _Work in Progress_
 License
 -------
 Published under the MIT License\
-Copyright © 2022 - 2024 rat.md <sam@rat.md>
+Copyright © 2023 - 2024 rat.md <sam@rat.md>
