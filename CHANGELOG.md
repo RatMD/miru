@@ -5,6 +5,7 @@ miru.ink / Changelog
 - Fix: Minor histoire issues.
 - Fix: CSS-Bundle and Distribution-Generation process.
 - Fix: Turn absolute import paths to relative ones, fixing broken `@/`-links on projects.
+- Remove: Module-relative index.ts exports.
 
 ## Version 0.0.6 - Experimental
 - Info: Switch from storybook to histoire.

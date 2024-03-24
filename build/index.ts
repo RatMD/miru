@@ -122,7 +122,6 @@ export function sty(): Plugin {
                 if (!key.endsWith('.css')) {
                     continue;
                 }
-                console.log(key);
                 stylings.push((file as any).source);
             }
             if (!fs.existsSync('dist/themes')) {
