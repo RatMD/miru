@@ -60,7 +60,7 @@ export interface CollapseSupportEmits {
 
 <script lang="ts" setup>
 import { nextTick, reactive, ref, watch } from 'vue';
-import wait from '@/utils/wait';
+import wait from '../../utils/wait';
 
 // Define Component
 const props = defineProps<CollapseSupportProps>();

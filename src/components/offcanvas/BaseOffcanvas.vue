@@ -110,9 +110,9 @@ export default {
 
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue';
-import LucideXSign from '@/components/lucide/XSign.vue';
+import LucideXSign from '../lucide/XSign.vue';
 
-import ShadowButton from '@/components/button/ShadowButton.vue';
+import ShadowButton from '../button/ShadowButton.vue';
 
 // Define Component
 const props = defineProps<BaseOffcanvasProps>();

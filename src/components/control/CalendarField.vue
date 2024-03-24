@@ -296,9 +296,9 @@ export default {
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import LucideChevronLeft from '@/components/lucide/ChevronLeft.vue';
-import LucideChevronRight from '@/components/lucide/ChevronRight.vue';
-import InputField from '@/components/control/InputField.vue';
+import LucideChevronLeft from '../lucide/ChevronLeft.vue';
+import LucideChevronRight from '../lucide/ChevronRight.vue';
+import InputField from '../control/InputField.vue';
 
 // Define Component
 const props = withDefaults(defineProps<CalendarFieldProps>(), {

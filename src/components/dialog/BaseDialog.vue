@@ -123,8 +123,8 @@ export default {
 
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
-import LucideXSign from '@/components/lucide/XSign.vue';
-import wait from '@/utils/wait';
+import LucideXSign from '../lucide/XSign.vue';
+import wait from '../../utils/wait';
 
 // Define Component
 const props = defineProps<BaseDialogProps>();

@@ -14,8 +14,8 @@
 </template>
 
 <script lang="ts">
-import type AccordionTab from '@/components/accordion/AccordionTab.vue';
-import type { AccordionTabProps } from '@/components/accordion/AccordionTab.vue';
+import type AccordionTab from './AccordionTab.vue';
+import type { AccordionTabProps } from './AccordionTab.vue';
 
 /**
  * Accordion Properties
@@ -67,7 +67,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, reactive, ref, watch } from 'vue';
-import uuid from '@/utils/uuid';
+import uuid from '../../utils/uuid';
 
 // Define Component
 const props = defineProps<AccordionProps>();

@@ -104,7 +104,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, toValue } from 'vue';
-import LucideLoaderCircle from '@/components/lucide/LoaderCircle.vue';
+import LucideLoaderCircle from '../lucide/LoaderCircle.vue';
 
 // Define Component
 const props = withDefaults(defineProps<ButtonProps>(), {

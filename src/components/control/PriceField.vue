@@ -137,17 +137,17 @@ export default {
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import InputField from '@/components/control/InputField.vue';
-import LucideCurrencyBitcoin from '@/components/lucide/CurrencyBitcoin.vue';
-import LucideCurrencyDefault from '@/components/lucide/CurrencyDefault.vue';
-import LucideCurrencyDollar from '@/components/lucide/CurrencyDollar.vue';
-import LucideCurrencyEuro from '@/components/lucide/CurrencyEuro.vue';
-import LucideCurrencyFranc from '@/components/lucide/CurrencyFranc.vue';
-import LucideCurrencyGem from '@/components/lucide/CurrencyGem.vue';
-import LucideCurrencyPercent from '@/components/lucide/CurrencyPercent.vue';
-import LucideCurrencySterling from '@/components/lucide/CurrencySterling.vue';
-import LucideCurrencyRuble from '@/components/lucide/CurrencyRuble.vue';
-import LucideCurrencyYen from '@/components/lucide/CurrencyYen.vue';
+import InputField from '../control/InputField.vue';
+import LucideCurrencyBitcoin from '../lucide/CurrencyBitcoin.vue';
+import LucideCurrencyDefault from '../lucide/CurrencyDefault.vue';
+import LucideCurrencyDollar from '../lucide/CurrencyDollar.vue';
+import LucideCurrencyEuro from '../lucide/CurrencyEuro.vue';
+import LucideCurrencyFranc from '../lucide/CurrencyFranc.vue';
+import LucideCurrencyGem from '../lucide/CurrencyGem.vue';
+import LucideCurrencyPercent from '../lucide/CurrencyPercent.vue';
+import LucideCurrencySterling from '../lucide/CurrencySterling.vue';
+import LucideCurrencyRuble from '../lucide/CurrencyRuble.vue';
+import LucideCurrencyYen from '../lucide/CurrencyYen.vue';
 
 // Define Component
 const props = withDefaults(defineProps<PriceFieldProps>(), {

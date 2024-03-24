@@ -94,8 +94,8 @@ export default {
 
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue';
-import InputField from '@/components/control/InputField.vue';
-import InputGroup from '@/components/form/InputGroup.vue';
+import InputField from '../control/InputField.vue';
+import InputGroup from '../form/InputGroup.vue';
 
 // Define Component
 const props = withDefaults(defineProps<TimeFrameFieldProps>(), {

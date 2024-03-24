@@ -129,9 +129,9 @@ export default {
 
 <script lang="ts" setup>
 import { computed, toValue } from 'vue';
-import CheckboxField from '@/components/control/CheckboxField.vue';
-import RadioField from '@/components/control/RadioField.vue';
-import uuid from '@/utils/uuid';
+import CheckboxField from '../control/CheckboxField.vue';
+import RadioField from '../control/RadioField.vue';
+import uuid from '../../utils/uuid';
 
 // Define Component
 const props = defineProps<SelectableListProps>();

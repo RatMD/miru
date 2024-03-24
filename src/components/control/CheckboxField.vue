@@ -104,7 +104,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, toValue } from 'vue';
-import uuid from '@/utils/uuid';
+import uuid from '../../utils/uuid';
 
 // Define Component
 const props = defineProps<CheckboxFieldProps>();

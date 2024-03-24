@@ -105,10 +105,10 @@ export default {
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import ActionButton from '@/components/button/ActionButton.vue';
-import InputField from '@/components/control/InputField.vue';
-import LucideMinusSign from '@/components/lucide/MinusSign.vue';
-import LucidePlusSign from '@/components/lucide/PlusSign.vue';
+import ActionButton from '../button/ActionButton.vue';
+import InputField from '../control/InputField.vue';
+import LucideMinusSign from '../lucide/MinusSign.vue';
+import LucidePlusSign from '../lucide/PlusSign.vue';
 
 // Define Component
 const props = defineProps<NumberFieldProps>();

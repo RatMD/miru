@@ -145,9 +145,9 @@ export default {
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import LucideChevronDown from '@/components/lucide/ChevronDown.vue';
-import CollapseSupport from '@/components/support/CollapseSupport.vue';
-import uuid from '@/utils/uuid';
+import LucideChevronDown from '../lucide/ChevronDown.vue';
+import CollapseSupport from '../support/CollapseSupport.vue';
+import uuid from '../../utils/uuid';
 
 // Define Component
 const props = defineProps<AccordionTabProps>();

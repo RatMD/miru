@@ -90,10 +90,10 @@ export default {
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
-import ActionButton from '@/components/button/ActionButton.vue';
-import InputField from '@/components/control/InputField.vue';
-import LucideEyeOn from '@/components/lucide/EyeOn.vue';
-import LucideEyeOff from '@/components/lucide/EyeOff.vue';
+import ActionButton from '../button/ActionButton.vue';
+import InputField from '../control/InputField.vue';
+import LucideEyeOn from '../lucide/EyeOn.vue';
+import LucideEyeOff from '../lucide/EyeOff.vue';
 
 // Define Component
 const props = defineProps<PasswordFieldProps>();
