@@ -1,6 +1,5 @@
 import type { Plugin } from "vue";
 
-import 'polyfill-crypto-methods';
 import FilesizeDirective from '@/directives/filesize';
 
 /**

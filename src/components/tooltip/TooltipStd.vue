@@ -4,7 +4,7 @@
     <BaseTooltip ref="tooltip" 
         :color="props.color"
         :label="$slots.label ? void 0 : (props.label || void 0)" 
-        :class="[`tooltip-${placement}`, visible ? `is-visible` : '']" 
+        :class="[`tooltip-${placementClass}`, visible ? `is-visible` : '']" 
         :style="floatingStyles">
         <template #default v-if="$slots.label">{{ slots.label(props) }}</template>
     </BaseTooltip>
@@ -67,7 +67,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useFloating, offset } from '@floating-ui/vue';
+import { useFloating, offset as offsetPlugin } from '@floating-ui/vue';
 import { nextTick, ref, watch } from 'vue';
 import BaseTooltip from './BaseTooltip.vue';
 
@@ -83,13 +83,13 @@ const target = ref<HTMLElement>();
 const tooltip = ref<InstanceType<typeof BaseTooltip>>();
 const tooltipPlacement = ref<Placement>(props.placement);
 const tooltipMiddleware = ref<Middleware[]>([
-    offset(props.offset || 0)
+    offsetPlugin(props.offset || 0)
 ]);
 const timeout = ref<number>();
 const visible = ref<boolean>(false);
 
 // Calculate Tooltip Position
-const { floatingStyles, placement } = useFloating(target, tooltip, {
+const { floatingStyles, placement: placementClass } = useFloating(target, tooltip, {
     placement: tooltipPlacement,
     middleware: tooltipMiddleware
 });
@@ -100,7 +100,7 @@ const { floatingStyles, placement } = useFloating(target, tooltip, {
 watch(props, () => {
     tooltipPlacement.value = props.placement || tooltipPlacement.value;
     tooltipMiddleware.value = [
-        offset(props.offset || 0)
+        offsetPlugin(props.offset || 0)
     ];
 });
 

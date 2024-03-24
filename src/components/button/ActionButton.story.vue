@@ -90,3 +90,10 @@ const icon = {
     }
 };
 </script>
+
+<docs lang="md">
+The ActionButton component is usually used within another component, that offers less space for
+huge (labeled) actions, such as within a table or a next to the title of a panel. However,
+ActionButton's have the characteristic of not supporting a direct label, instead speaking icons
+and (at least on desktop devices) delayed tooltips are used.
+</docs>

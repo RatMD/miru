@@ -147,6 +147,7 @@ export default {
 import { computed, ref } from 'vue';
 import LucideChevronDown from '@/components/lucide/ChevronDown.vue';
 import CollapseSupport from '@/components/support/CollapseSupport.vue';
+import uuid from '@/utils/uuid';
 
 // Define Component
 const props = defineProps<AccordionTabProps>();
@@ -162,7 +163,7 @@ const isVisible = computed<boolean>({
         emits('update:visible', value);
     }
 });
-const accordionId = computed<string>(() => props.id || `accordion-tab-${crypto.randomUUID().replace(/\-/g, '')}`);
+const accordionId = computed<string>(() => props.id || `accordion-tab-${uuid().replace(/-/g, '')}`);
 const accordionTab = ref<HTMLElement>();
 const accordionHeader = ref<HTMLElement>();
 const accordionPane = ref<HTMLElement>();
@@ -170,7 +171,7 @@ const accordionPane = ref<HTMLElement>();
 
 <style scoped>
 .accordion-tab {
-    @apply w-full flex flex-col;
+    @apply w-full flex flex-col overflow-hidden;
 }
 
 .accordion-header {

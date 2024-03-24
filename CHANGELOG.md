@@ -1,6 +1,12 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.6 - Experimental
+- Info: Switch from storybook to histoire.
+- Add: EsLint rules + Fix current issues.
+- Fix: Minor changes and fixes.
+- Remove: Storybook dependencies.
+
 ## Version 0.0.5 - Experimental
 - Add: `.vue` files to distribution bundle.
 

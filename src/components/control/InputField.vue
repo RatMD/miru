@@ -198,6 +198,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, toValue } from 'vue';
+import uuid from '@/utils/uuid';
 
 // Define Component
 const props = withDefaults(defineProps<InputFieldProps>(), {
@@ -214,7 +215,7 @@ const value = computed({
         emits('update:modelValue', value);
     }
 });
-const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().replace(/\-/g, '')}`);
+const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
 
 /**
  * Check for datetime inputs for required 'step' attribute iOS fix

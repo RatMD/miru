@@ -7,6 +7,7 @@ for (const [p, ver] of Object.entries(pkg.dependencies)) {
     let val = ver.slice(0, 1);
     if (ver.slice(1) != pkgLock.packages[`node_modules/${p}`].version) {
         pkg.dependencies[p] = val + pkgLock.packages[`node_modules/${p}`].version;
+        console.log(`  - Updated ${p} from ${ver} to ${pkgLock.packages[`node_modules/${p}`].version}`);
     }
 }
 
@@ -14,6 +15,7 @@ for (const [p, ver] of Object.entries(pkg.devDependencies)) {
     let val = ver.slice(0, 1);
     if (ver.slice(1) != pkgLock.packages[`node_modules/${p}`].version) {
         pkg.devDependencies[p] = val + pkgLock.packages[`node_modules/${p}`].version;
+        console.log(`  - Updated ${p} from ${ver} to ${pkgLock.packages[`node_modules/${p}`].version}`);
     }
 }
 

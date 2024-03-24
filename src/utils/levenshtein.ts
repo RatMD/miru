@@ -29,7 +29,7 @@ function levenshtein(string1: string, string2: string): number {
         }
     }
     return track[string2.length][string1.length];
-};
+}
 
 // Export Module
 export default levenshtein;

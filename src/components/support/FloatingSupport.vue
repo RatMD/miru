@@ -1,6 +1,8 @@
 
 <template>
-    <!-- Template -->
+    <div>
+        <!-- Template -->
+    </div>
 </template>
 
 <script lang="ts">

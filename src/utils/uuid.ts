@@ -1,3 +1,4 @@
+import 'polyfill-crypto-methods';
 
 const UUID_MAP: Map<string|Symbol, string> = new Map();
 
@@ -11,7 +12,7 @@ function uuid(id?: string | Symbol | null): string {
         if (UUID_MAP.has(id)) {
             return UUID_MAP.get(id) as string;
         } else {
-            let result = crypto.randomUUID();
+            const result = crypto.randomUUID();
             UUID_MAP.set(id, result);
             return result;
         }

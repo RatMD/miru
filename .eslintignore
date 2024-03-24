@@ -1,0 +1,7 @@
+/.histoire/**/*
+/dist/**/*
+/src/components/_SkeletonStd.vue
+/package-update.js
+/postcss.config.cjs
+/tailwind.config.js
+/vite.config.ts

@@ -178,7 +178,7 @@ export function useForm<T extends object>(
      * Set Form Details
      */
     const form = computed<HTMLFormElement|null>(() => {
-        let temp = unref(element);
+        const temp = unref(element);
         return temp instanceof HTMLElement && temp?.localName == 'form' ? temp : null;
     });
     const action = computed<string|null>(
@@ -280,8 +280,8 @@ export function useForm<T extends object>(
      * @param key 
      */
     function isDirty(key: keyof T) {
-        let original = originals[key];
-        let value = toRaw((values as any)[key]);
+        const original = originals[key];
+        const value = toRaw((values as any)[key]);
         return !equals(original, value);
     }
 
@@ -334,8 +334,8 @@ export function useForm<T extends object>(
         const ruleSet = validator.value(z as typeof zod, payload.value);
 
         let valid = true;
-        let results: { [Property in keyof T]: SafeParseReturnType<any, any> } = {} as any;
-        let errors: { [Property in keyof T]: string[] } = {} as any;
+        const results: { [Property in keyof T]: SafeParseReturnType<any, any> } = {} as any;
+        const errors: { [Property in keyof T]: string[] } = {} as any;
 
         for (const [key, rule] of Object.entries(ruleSet)) {
             if (typeof keys != 'undefined') {
@@ -344,7 +344,7 @@ export function useForm<T extends object>(
                 }
             }
 
-            let result = (rule as ZodTypeAny).safeParse((values as any)[key]);
+            const result = (rule as ZodTypeAny).safeParse((values as any)[key]);
             
             if (!result.success) {
                 if (valid) {
@@ -378,7 +378,7 @@ export function useForm<T extends object>(
         touched.value = true;
 
         // Validate Data
-        let result = validate();
+        const result = validate();
         if (!result.valid) {
             return {
                 status: 'error',
@@ -462,4 +462,4 @@ export function useForm<T extends object>(
         update,
         reset
     }
-};
+}

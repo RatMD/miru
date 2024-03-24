@@ -19,7 +19,7 @@
                 <slot name="footer" v-bind="props" :visible="isVisible" :open="open" :close="close" :toggle="toggle" />
             </header>
         </div>
-        <div ref="backdrop" class="offcanvas-backdrop" @click="onClickOutside" v-if="props.backdrop"></div>
+        <div ref="backdropElement" class="offcanvas-backdrop" @click="onClickOutside" v-if="props.backdrop"></div>
     </teleport>
 </template>
 
@@ -121,7 +121,7 @@ const emits = defineEmits<BaseOffcanvasEmits>();
 
 // States
 const visibleDelay = ref<boolean>(false);
-const backdrop = ref<HTMLElement>();
+const backdropElement = ref<HTMLElement>();
 const offcanvas = ref<HTMLElement>();
 const offcanvasContent = ref<HTMLDivElement>();
 const isVisible = computed({
@@ -144,12 +144,12 @@ const isVisible = computed({
         if (offcanvas.value) {
             offcanvas.value.classList.add('offcanvas-visible');
         }
-        if (backdrop.value) {
-            backdrop.value.classList.add('backdrop-visible');
+        if (backdropElement.value) {
+            backdropElement.value.classList.add('backdrop-visible');
         }
     } else {
-        if (backdrop.value) {
-            backdrop.value.classList.remove('backdrop-visible');
+        if (backdropElement.value) {
+            backdropElement.value.classList.remove('backdrop-visible');
         }
         if (offcanvas.value) {
             offcanvas.value.classList.remove('offcanvas-visible');

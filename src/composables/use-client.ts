@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, shallowRef } from 'vue'
+import { onMounted, onUnmounted, ref, shallowRef } from 'vue';
 
 /**
  * Use Client Details
@@ -41,7 +41,7 @@ export function useClient() {
 
     // Mounted
     onMounted(() => {
-        let details = detectClientDetails();
+        const details = detectClientDetails();
         agent.value = details.agent;
         browser.value = details.browser;
         browserVersion.value = details.browserVersion;
@@ -96,7 +96,7 @@ export function useClient() {
         isWindows,
         isMobile
     };
-};
+}
 
 /**
  * Detect client details.
@@ -104,7 +104,7 @@ export function useClient() {
  * @returns 
  */
 function detectClientDetails() {
-    let agent = navigator.userAgent;
+    const agent = navigator.userAgent;
     let browser = navigator.appName;
     let version = parseFloat(navigator.appVersion).toString();
 
@@ -175,7 +175,7 @@ function detectClientDetails() {
         version = version.substring(0, ix);
     }
 
-    let browserVersion = parseFloat(version).toString();
+    const browserVersion = parseFloat(version).toString();
     let browserMajorVersion = parseInt(version, 10);
     if (isNaN(browserMajorVersion)) {
         browserMajorVersion = parseInt(version, 10);
@@ -192,7 +192,7 @@ function detectClientDetails() {
     let isApple: boolean = false;
     let isLinux: boolean = false;
     let isWindows: boolean = false;
-    let isMobile = /Mobile|mini|Fennec|Android|iP(ad|od|hone)/.test(agent);
+    const isMobile = /Mobile|mini|Fennec|Android|iP(ad|od|hone)/.test(agent);
     for (const regex of OS_REGEXP) {
         if (regex.regexp.test(agent)) {
             os = regex.label;
@@ -206,20 +206,22 @@ function detectClientDetails() {
     // Detect osVersion
     let osVersion: string | null = null;
     if (typeof os == 'string' && /Windows/.test(os)) {
-        let temp = /Windows (.*)/.exec(os);
+        const temp = /Windows (.*)/.exec(os);
         osVersion = (temp && temp.length > 1) ? temp[1] : null;
     }
     switch (os) {
         case 'Mac OS':
         case 'Mac OS X':
-        case 'Android':
-            let temp1 = /(?:Android|Mac OS|Mac OS X|MacPPC|MacIntel|Mac_PowerPC|Macintosh) ([\.\_\d]+)/.exec(agent);
+        case 'Android': {
+            const temp1 = /(?:Android|Mac OS|Mac OS X|MacPPC|MacIntel|Mac_PowerPC|Macintosh) ([._\d]+)/.exec(agent);
             osVersion = temp1 && temp1.length > 1 ? temp1[1] : null;
             break;
-        case 'iOS':
-            let temp2 = /OS (\d+)_(\d+)_?(\d+)?/.exec(agent) as string[];
+        }
+        case 'iOS': {
+            const temp2 = /OS (\d+)_(\d+)_?(\d+)?/.exec(agent) as string[];
             osVersion = temp2 && temp2.length > 1 ? `${temp2[1]}.${temp2[2] || 0}.${temp2[3] || 0}` : null;
             break;
+        }
     }
 
     // return;

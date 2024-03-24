@@ -67,13 +67,14 @@ export default {
 
 <script lang="ts" setup>
 import { computed, reactive, ref, watch } from 'vue';
+import uuid from '@/utils/uuid';
 
 // Define Component
 const props = defineProps<AccordionProps>();
 const slots = defineSlots<AccordionSlots>();
 
 // States
-const accordionId = computed<string>(() => props.id || `accordion-${crypto.randomUUID().replace(/\-/g, '')}`);
+const accordionId = computed<string>(() => props.id || `accordion-${uuid().replace(/-/g, '')}`);
 const accordionTabs = ref<InstanceType<typeof AccordionTab>[]>([]);
 const accordionStates = reactive<{ [key: string]: boolean }>({});
 
@@ -105,7 +106,7 @@ function onShow(idx: number) {
 
 <style scoped>
 .accordion {
-    @apply flex flex-col;
+    @apply flex flex-col overflow-hidden;
 }
 
 .accordion:not(.accordion-clean) {

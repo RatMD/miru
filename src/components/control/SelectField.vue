@@ -14,7 +14,7 @@
         :invalid="props.validation == 'invalid' ? true : void 0"
         v-model="value">
         <option v-if="props.placeholder" :value="null" disabled>{{ props.placeholder }}</option>
-        <option v-for="(option, idx) of props.options" :value="Array.isArray(option) ? option[0] : option.value">
+        <option v-for="(option, idx) of props.options" :key="idx" :value="Array.isArray(option) ? option[0] : option.value">
             {{ Array.isArray(option) ? (option[1] || option[0]) : option.label }}
         </option>
     </select>
@@ -112,6 +112,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, toValue } from 'vue';
+import uuid from '@/utils/uuid';
 
 // Define Component
 const props = defineProps<SelectFieldProps>();
@@ -126,7 +127,7 @@ const value = computed({
         emits('update:modelValue', value);
     }
 });
-const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().replace(/\-/g, '')}`);
+const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
 </script>
 
 <style scoped>

@@ -11,13 +11,13 @@ export type ThrottleCallback = (...args: any) => void | Promise<void>;
 function throttle(callback: ThrottleCallback, ms: number): Function {
     let paused = false;
 
-    return function (this: any) {
+    return function (this: any, ...args: any[]) {
         if (paused) {
             return;
         }
         paused = true;
 
-        let result = callback.apply(this, Array.from(arguments));
+        const result = callback.apply(this, args);
         if (typeof result !== 'undefined' && result instanceof Promise) {
             result.then(() => setTimeout(() => paused = false, ms));
         } else {

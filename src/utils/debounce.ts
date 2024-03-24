@@ -12,9 +12,9 @@
  */
 function debounce(callback: Function, ms: number): Function {
     let timeout: number | undefined = void 0;
-    return function (this: any) {
+    return function (this: any, ...args: any[]) {
         window.clearTimeout(timeout);
-        timeout = window.setTimeout(callback.bind(this, ...arguments), ms);
+        timeout = window.setTimeout(callback.apply(this, args), ms);
     };
 }
 

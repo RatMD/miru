@@ -15,13 +15,13 @@ export function collect(root: string) {
     const entries: { [key: string]: string } = {};
 
     // Fetch Components
-    let componentsPath = path.join(root, 'components');
+    const componentsPath = path.join(root, 'components');
     for (const component of fs.readdirSync(componentsPath)) {
         if (component.startsWith('_')) {
             continue;
         }
 
-        let entryPath = path.join(componentsPath, component);
+        const entryPath = path.join(componentsPath, component);
         for (const entry of fs.readdirSync(entryPath)) {
             if (entry.endsWith('.stories.ts') || entry.endsWith('.story.vue')) {
                 continue;
@@ -33,19 +33,19 @@ export function collect(root: string) {
     }
 
     // Fetch Composables
-    let composablesPath = path.join(root, 'composables');
+    const composablesPath = path.join(root, 'composables');
     for (const composable of fs.readdirSync(composablesPath)) {
         entries[`composables/${composable.slice(0, -3)}`] = `src/composables/${composable}`;
     }
 
     // Fetch Constants
-    let constantsPath = path.join(root, 'constants');
+    const constantsPath = path.join(root, 'constants');
     for (const constant of fs.readdirSync(constantsPath)) {
         entries[`constants/${constant.slice(0, -3)}`] = `src/constants/${constant}`;
     }
 
     // Fetch Utilities
-    let utilsPath = path.join(root, 'utils');
+    const utilsPath = path.join(root, 'utils');
     for (const util of fs.readdirSync(utilsPath)) {
         entries[`utils/${util.slice(0, -3)}`] = `src/utils/${util}`;
     }
@@ -95,7 +95,7 @@ export function sty(): Plugin {
          */
         generateBundle(options: NormalizedOutputOptions, bundle: OutputBundle) {
             for (const [key, chunk] of Object.entries(bundle)) {
-                let moduleId = ((chunk as any).facadeModuleId ?? null);
+                const moduleId = ((chunk as any).facadeModuleId ?? null);
 
                 if (moduleId && moduleId.includes('/components/') && moduleId.endsWith('.vue')) {
                     bundle[`${key.slice(0, -2)}vue`] = {

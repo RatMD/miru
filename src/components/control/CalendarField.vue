@@ -68,7 +68,7 @@ export interface SelectSingleType {
      * A single date value or multiple as array.
      */
     value: DateTimeValues | DateTimeValues[];
-};
+}
 
 export interface SelectHolidayType {
     /**
@@ -85,7 +85,7 @@ export interface SelectHolidayType {
      * Additional label shown for this day(s).
      */
     label?: string;
-};
+}
 
 export interface SelectWeekDayType {
     /**
@@ -98,7 +98,7 @@ export interface SelectWeekDayType {
      * Requires at least one single value, multiple can be added as array.
      */
     value: WeekDay | WeekDay[];
-};
+}
 
 export interface SelectRangeType {
     /**
@@ -110,7 +110,7 @@ export interface SelectRangeType {
      * A range of dates using a start and end date, either passed as array or as start / end object.
      */
     value: [DateTimeValues, DateTimeValues] | { start: DateTimeValues, end: DateTimeValues };
-};
+}
 
 export type SelectDateTypes = SelectSingleType | SelectWeekDayType | SelectHolidayType | SelectRangeType;
 

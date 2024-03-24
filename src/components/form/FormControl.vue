@@ -124,13 +124,14 @@ export default {
 
 <script lang="ts" setup>
 import { computed } from 'vue';
+import uuid from '@/utils/uuid';
 
 // Define Component
 const props = defineProps<FormControlProps>();
 const slots = defineSlots<FormControlSlots>();
 
 // States
-const controlId = computed<string>(() => props.id || `field-${crypto.randomUUID().replace(/\-/g, '')}`);
+const controlId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
 
 // Check if form control validation  is shown or not.
 const validationVisible = computed<boolean>(() => {

@@ -12,7 +12,7 @@ export interface DividerProps {
 
 // Default Export, used for IDE-related auto-import features
 export default {
-    name: 'Divider'
+    name: 'DividerStd'
 }
 </script>
 

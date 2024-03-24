@@ -25,7 +25,7 @@ export interface ButtonGroupProps {
      * The desired gap-size between the single buttons, note that `md` is the default value. Has no 
      * effect on the button size itself.
      */
-    size?: 'left' | 'center' | 'right';
+    size?: 'sm' | 'md' | 'lg';
 
     /**
      * Whether to use manual selection of buttons, to support ungrouped buttons, or not.

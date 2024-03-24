@@ -4,7 +4,7 @@
         props.size ? `popover-${props.size}` : null
     ]">
         <slot name="popover" v-bind="props">
-            <div v-if="props.arrow != false" ref="arrow" 
+            <div v-if="props.arrow != false" ref="arrowElement" 
                 class="popover-arrow" 
                 :class="[typeof props.arrow == 'string' ? `arrow-${props.arrow}` : '']" 
                 :style="arrowStyles" />
@@ -106,12 +106,12 @@ const slots = defineSlots<BasePopoverSlots>();
 
 // States
 const popover = ref<HTMLElement>();
-const arrow = ref<HTMLElement>();
+const arrowElement = ref<HTMLElement>();
 
 // Expose Component
 defineExpose({
     popover,
-    arrow,
+    arrowElement,
 });
 </script>
 

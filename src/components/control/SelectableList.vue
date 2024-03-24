@@ -46,7 +46,7 @@ export interface AdvancedOption {
      * The disabled state for this balloon option.
      */
     disabled?: boolean;
-};
+}
 export type SelectableListOptionTypes = SimpleOption|AdvancedOption;
 
 /**
@@ -129,8 +129,9 @@ export default {
 
 <script lang="ts" setup>
 import { computed, toValue } from 'vue';
-import CheckboxField from './CheckboxField.vue';
-import RadioField from './RadioField.vue';
+import CheckboxField from '@/components/control/CheckboxField.vue';
+import RadioField from '@/components/control/RadioField.vue';
+import uuid from '@/utils/uuid';
 
 // Define Component
 const props = defineProps<SelectableListProps>();
@@ -154,7 +155,7 @@ const value = computed({
         }
     }
 });
-const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().replace(/\-/g, '')}`);
+const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
 const isDisabled = computed<boolean>(() => {
     if (toValue(props.disabled || false) || typeof props.disabled == 'string') {
         return true;

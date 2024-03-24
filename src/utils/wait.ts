@@ -21,7 +21,7 @@ function wait(ms: number): Promise<null> {
 function waitUntil(callback: () => boolean, step: number = 200, limit: number = 100) {
     return new Promise((resolve, reject) => {
         let count = 0;
-        let handler = async () => {
+        const handler = async () => {
             let result: boolean = false;
             try {
                 result = await callback();

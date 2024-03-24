@@ -78,7 +78,7 @@ export interface AdvancedOption {
      * Additional attributes for this balloon option, can be used on the `item` slot.
      */
     [key: string]: any;
-};
+}
 export type BalloonSelectorOptionTypes = SimpleOption|AdvancedOption;
 
 /**
@@ -192,6 +192,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, toValue } from 'vue';
+import uuid from '@/utils/uuid';
 
 // Define Component
 const props = defineProps<BalloonSelectorProps>();
@@ -216,7 +217,7 @@ const value = computed({
         }
     }
 });
-const fieldId = computed<string>(() => props.id || `field-${crypto.randomUUID().replace(/\-/g, '')}`);
+const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
 const isDisabled = computed<boolean>(() => {
     if (toValue(props.disabled || false) || typeof props.disabled == 'string') {
         return true;

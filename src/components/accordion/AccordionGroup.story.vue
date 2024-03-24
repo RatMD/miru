@@ -56,7 +56,7 @@
                 </AccordionTab>
             </AccordionGroup>
         </Variant>
-        <Variant title="PassThough" :init-state="statePass" v-slot="{ state }">
+        <Variant title="PassThrough" :init-state="statePass" v-slot="{ state }">
             <AccordionGroup :pass="state.pass">
                 <AccordionTab label="Accordion Item #1">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
@@ -85,7 +85,7 @@
             </AccordionGroup>
         </Variant>
         <Variant title="Condensed" :init-state="stateCondensed" v-slot="{ state }">
-            <AccordionGroup :condensed="state.condensed">
+            <AccordionGroup v-bind="state">
                 <AccordionTab label="Accordion Item #1">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
                     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
@@ -113,7 +113,7 @@
             </AccordionGroup>
         </Variant>
         <Variant title="Clean" :init-state="stateClean" v-slot="{ state }">
-            <AccordionGroup :clean="state.clean">
+            <AccordionGroup v-bind="state">
                 <AccordionTab label="Accordion Item #1">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
                     incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
@@ -167,17 +167,29 @@ function statePass() {
 
 function stateCondensed() {
     return {
+        condensed: true,
         pass: {
-            condsensed: true
+            condensed: true
         }
     }
 }
 
 function stateClean() {
     return {
+        clean: true,
         pass: {
             clean: true
         }
     }
 }
 </script>
+
+<docs lang="md">
+The **AccordionGroup** component provides the possibility of displaying several **AccordionTab**
+components on one place, providing an improved styling as well as additional behaviors and the 
+possibility to share common options among all tabs passed on one single place. However, the 
+**AccordionTab** component can still be used separately and outside of **AccordionGroup**.
+
+Internally, the **AccordionTab** component relies on **CollapseSupport** to integrate the 
+expanding / collapsing behavior.
+</docs>

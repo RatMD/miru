@@ -10,8 +10,8 @@ function resize(content: string, maxWidth: number, maxHeight: number): Promise<s
     return new Promise ((resolve, reject) => {
         const img = document.createElement('IMG') as HTMLImageElement;
         img.onload = () => {
-            let srcWidth = img.naturalWidth;
-            let srcHeight = img.naturalHeight;
+            const srcWidth = img.naturalWidth;
+            const srcHeight = img.naturalHeight;
             if (srcWidth <= maxWidth && srcHeight <= maxHeight) {
                 resolve(content);
             }
