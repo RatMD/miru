@@ -76,6 +76,9 @@ export function pkg(): Plugin {
             fs.copyFileSync('CHANGELOG.md', 'dist/CHANGELOG.md');
             fs.copyFileSync('LICENSE.md', 'dist/LICENSE.md');
             fs.copyFileSync('README.md', 'dist/README.md');
+
+            // @todo temporary solution to include basic miru.ink stylings.
+            fs.copyFileSync('src/styles/base.css', 'dist/base.css');
         }
     };
 }
