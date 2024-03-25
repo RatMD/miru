@@ -53,7 +53,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useClient } from '@/composables/use-client';
+import { useClient } from '../../composables/use-client';
 import {
     BREAKPOINT_XXS,
     BREAKPOINT_XS,
@@ -62,7 +62,7 @@ import {
     BREAKPOINT_LG,
     BREAKPOINT_XL,
     BREAKPOINT_XXL
-} from '@/constants/breakpoints';
+} from '../../constants/breakpoints';
 
 // Define Component
 const props = defineProps<BreakpointSupportProps>();

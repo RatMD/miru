@@ -5,8 +5,8 @@ import type { ZodTypeAny, SafeParseReturnType } from 'zod';
 
 import { computed, toRaw, reactive, ref, unref } from 'vue';
 import { z } from 'zod';
-import equals from '@/utils/equals';
-import request, { type PayloadObject, type Response } from '@/utils/request';
+import equals from '../utils/equals';
+import request, { type PayloadObject, type Response } from '../utils/request';
 
 export type FormMethods = 'GET' | 'PATCH' | 'POST' | 'PUT';
 

@@ -1,5 +1,5 @@
 import type { Directive, DirectiveBinding } from "vue";
-import filesize from "@/utils/filesize";
+import filesize from "../utils/filesize";
 
 /**
  * Format Filesize Custom Vue Directive

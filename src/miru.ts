@@ -1,6 +1,6 @@
 import type { Plugin } from "vue";
 
-import FilesizeDirective from '@/directives/filesize';
+import FilesizeDirective from './directives/filesize';
 
 /**
  * Miru Vue3 Plugin

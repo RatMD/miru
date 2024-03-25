@@ -52,11 +52,6 @@ export default defineConfig({
             //tsconfigPath: 'tsconfig.types.json'
         })
     ],
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
-    },
     build: {
         outDir: 'dist',
         lib: {

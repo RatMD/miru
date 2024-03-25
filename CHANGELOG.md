@@ -4,6 +4,8 @@ miru.ink / Changelog
 ## Version 0.0.8 - Experimental
 - Add: MiruStorage class and utility composable.
 - Add: ServiceWorker utility composable.
+- Fix: Remaining `@/`-links on source files.
+- Remove: `@/`-aliases in tsconfig / vite-config.
 
 ## Version 0.0.7 - Experimental
 - Fix: Minor histoire issues.
