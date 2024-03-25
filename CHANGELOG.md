@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.9 - Experimental
+- Fix: Include base stylings in dist (temporary solution).
+
 ## Version 0.0.8 - Experimental
 - Add: MiruStorage class and utility composable.
 - Add: ServiceWorker utility composable.
