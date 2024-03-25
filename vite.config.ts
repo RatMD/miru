@@ -48,8 +48,8 @@ export default defineConfig({
                     }                    
                 }
             },
-            cleanVueFileName: true,
-            tsconfigPath: 'tsconfig.types.json'
+            //cleanVueFileName: true,
+            //tsconfigPath: 'tsconfig.types.json'
         })
     ],
     resolve: {
