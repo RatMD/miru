@@ -2,6 +2,13 @@ miru.ink / Changelog
 ====================
 
 ## Version 0.0.9 - Experimental
+- Add: AvatarStd / AvatarGroup components.
+- Add: SimplePagination / AdvancedPagination components.
+- Add: ChevronsLeft / ChevronsRight lucide icon components.
+- Add: New `now` utility helper function to create a database familiar "YYYY-MM-DD HH:ii:ss" stamp.
+- Update: Rename `size` property on ButtonGroup to `gap`.
+- Update: Allow component-type on `label` property on Button component + add `labelProps` property.
+- Update: New `reverse` property and stylings on ButtonGroup component.
 - Fix: Include base stylings in dist (temporary solution).
 
 ## Version 0.0.8 - Experimental
