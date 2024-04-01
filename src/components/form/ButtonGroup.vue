@@ -1,8 +1,9 @@
 <template>
     <div ref="group" class="btn-group" :class="[
         `btn-group-${props.align || 'right'}`,
-        `btn-group-${props.size || 'md'}`,
+        `btn-group-${props.gap || 'md'}`,
         props.manually ? 'is-manually' : '',
+        props.reverse ? 'is-reverse' : '',
         props.vertical ? 'is-vertical': 'is-horizontal',
     ]">
         <slot v-bind="props"></slot>
@@ -22,10 +23,9 @@ export interface ButtonGroupProps {
     align?: 'left' | 'center' | 'right';
 
     /**
-     * The desired gap-size between the single buttons, note that `md` is the default value. Has no 
-     * effect on the button size itself.
+     * The desired gap-size between the single buttons, note that `md` is the default value.
      */
-    size?: 'sm' | 'md' | 'lg';
+    gap?: 'none' | 'sm' | 'md' | 'lg';
 
     /**
      * Whether to use manual selection of buttons, to support ungrouped buttons, or not.
@@ -36,6 +36,11 @@ export interface ButtonGroupProps {
      * Whether to use a vertical-styled group or a horizontal one for the provided buttons.
      */
     vertical?: boolean;
+
+    /**
+     * Whether to reverse the button order or not.
+     */
+    reverse?: boolean;
 }
 
 /**
@@ -94,6 +99,10 @@ watch(() => slots.default, async () => {
 .btn-group {
     @apply w-full flex gap-2;
 
+    &.btn-group-none {
+        @apply gap-0;
+    }
+
     &.btn-group-sm {
         @apply gap-1;
     }
@@ -104,21 +113,46 @@ watch(() => slots.default, async () => {
 
     &.is-horizontal {
         @apply flex-row;
+        
+        &.btn-group-none > :deep(.btn:not(:first-child)) {
+            @apply -ml-px;
+        }
 
-        &.btn-group-left {
-            @apply justify-start;
+        /** Normal Order */
+        &:not(.is-reverse) {
+            &.btn-group-left {
+                @apply justify-start;
+            }
+            &.btn-group-center {
+                @apply justify-center;
+            }
+            &.btn-group-right {
+                @apply justify-end;
+            }
         }
-        &.btn-group-center {
-            @apply justify-center;
-        }
-        &.btn-group-right {
-            @apply justify-end;
+        
+        /** Reversed Order */
+        &.is-reverse {
+            @apply flex-row-reverse;
+
+            &.btn-group-left {
+                @apply justify-end;
+            }
+            &.btn-group-center {
+                @apply justify-center;
+            }
+            &.btn-group-right {
+                @apply justify-start;
+            }
         }
     }
 
     &.is-vertical {
         @apply flex-col;
 
+        &.is-reverse {
+            @apply flex-col-reverse;
+        }
         & > :deep(*) {
             @apply text-center justify-center;
         }
@@ -156,7 +190,8 @@ watch(() => slots.default, async () => {
         @apply rounded-none;
     }
 
-    &.is-horizontal {
+    /** Normal Order */
+    &.is-horizontal:not(.is-reverse) {
         & > :deep(*:first-child:not(:last-child)) {
             @apply rounded-r-none;
         }
@@ -165,14 +200,34 @@ watch(() => slots.default, async () => {
             @apply rounded-l-none;
         }
     }
-
-    &.is-vertical {
+    &.is-vertical:not(.is-reverse) {
         & > :deep(*:first-child:not(:last-child)) {
             @apply rounded-b-none;
         }
 
         & > :deep(*:last-child:not(:first-child)) {
             @apply rounded-t-none;
+        }
+    }
+
+    /** Reversed Order */
+    &.is-horizontal.is-reverse {
+        & > :deep(*:first-child:not(:last-child)) {
+            @apply rounded-l-none;
+        }
+
+        & > :deep(*:last-child:not(:first-child)) {
+            @apply rounded-r-none;
+        }
+    }
+
+    &.is-vertical.is:reverse {
+        & > :deep(*:first-child:not(:last-child)) {
+            @apply rounded-t-none;
+        }
+
+        & > :deep(*:last-child:not(:first-child)) {
+            @apply rounded-b-none;
         }
     }
 }
