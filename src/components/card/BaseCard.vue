@@ -1,14 +1,9 @@
 <template>
-    <div class="card">
-        <header class="card-header" v-if="$slots.header || props.title">
-            <slot name="header" v-bind="props">
-                <div class="card-title">{{ props.title }}</div>
-            </slot>
-        </header>
-
-        <article class="card-content">
-            <slot v-bind="props" />
-        </article>
+    <div class="card" :class="[
+        props.size ? `card-${props.size}` : '',
+        props.shadow ? `card-shadow-${props.shadow}` : ''
+    ]">
+        <slot v-bind="props" />
     </div>
 </template>
 
@@ -18,22 +13,20 @@
  */
 export interface BaseCardProps {
     /**
-     * Card title, used when no header slot is present.
+     * The desired size of the card container.
      */
-    title?: string | null;
+    size?: 'sm' | 'md' | 'lg' | 'full';
 
+    /**
+     * The desired box shadow used for this card container.
+     */
+    shadow?: null | 'none' | 'sm' | 'md' | 'lg';
 }
 
 /**
  * BaseCard Slots
  */
 export interface BaseCardSlots {
-    /**
-     * Header Card slot, rendered instead of title property.
-     * @param props 
-     */
-    header(props: BaseCardProps): any;
-
     /**
      * The default Card content slot.
      * @param props 
@@ -55,18 +48,43 @@ const slots = defineSlots<BaseCardSlots>();
 
 <style scoped>
 .card {
-    @apply flex flex-col;
-}
-
-.card-header {
-    &:slotted(.card-title) {
-        @apply font-semibold;
-    }
-}
-
-.card-content {
-    @apply rounded-lg shadow flex flex-col border border-solid p-4;
-    @apply bg-white border-gray-300 shadow-gray-200;
+    @apply w-full flex flex-col rounded-lg border border-solid overflow-hidden;
+    @apply bg-white border-black/25 shadow-gray-200;
     @apply dark:bg-gray-800 dark:border-gray-600 dark:shadow-none;
+
+    &.card-sm {
+        @apply max-w-xs;
+    }
+
+    &.card-md {
+        @apply max-w-md;
+    }
+
+    &.card-lg {
+        @apply max-w-xl;
+    }
+    
+    &.card-full {
+        @apply max-w-none w-full;
+    }
+
+    &.card-shadow-none {
+        box-shadow: none;
+    }
+
+    &.card-shadow-sm {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08), 
+                    0 1px 2px rgba(0,0,0,0.12);
+    }
+    
+    &.card-shadow-md {
+        box-shadow: 0 3px 6px rgba(0,0,0,0.10), 
+                    0 3px 6px rgba(0,0,0,0.16);
+    }
+    
+    &.card-shadow-lg {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.12), 
+                    0 6px 6px rgba(0,0,0,0.20);
+    }
 }
 </style>

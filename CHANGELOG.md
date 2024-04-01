@@ -2,8 +2,9 @@ miru.ink / Changelog
 ====================
 
 ## Version 0.0.9 - Experimental
-- Add: AvatarStd / AvatarGroup components.
-- Add: SimplePagination / AdvancedPagination components.
+- Add: AvatarStd / AvatarGroup components & basic story demonstration.
+- Add: SimplePagination / AdvancedPagination components & basic story demonstration.
+- Add: BaseCard / CardStd / CardCollapse components & basic story demonstration.
 - Add: ChevronsLeft / ChevronsRight lucide icon components.
 - Add: New `now` utility helper function to create a database familiar "YYYY-MM-DD HH:ii:ss" stamp.
 - Update: Rename `size` property on ButtonGroup to `gap`.
