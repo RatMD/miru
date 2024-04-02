@@ -7,6 +7,8 @@ miru.ink / Changelog
 - Add: BaseCard / CardStd / CardCollapse components & basic story demonstration.
 - Add: ChevronsLeft / ChevronsRight lucide icon components.
 - Add: New `now` utility helper function to create a database familiar "YYYY-MM-DD HH:ii:ss" stamp.
+- Add: New Modal / Dialog and Offcanvas handling using new Backdrop Support component.
+- Add: New `v-click-outside` directive to trigger on click outside of target element.
 - Update: Rename `size` property on ButtonGroup to `gap`.
 - Update: Allow component-type on `label` property on Button component + add `labelProps` property.
 - Update: New `reverse` property and stylings on ButtonGroup component.
