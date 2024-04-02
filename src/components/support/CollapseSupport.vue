@@ -56,6 +56,11 @@ export interface CollapseSupportEmits {
      */
     (ev: 'shown'): void;
 }
+
+// Default Export, used for IDE-related auto-import features
+export default {
+    name: 'CollapseSupport'
+}
 </script>
 
 <script lang="ts" setup>
