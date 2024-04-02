@@ -1,9 +1,10 @@
 <template>
     <teleport :to="props.target ? props.target : '#app'" v-if="visibleBounced">
         <div class="modal" :class="[
-            `modal-${props.size || 'md'}`
-        ]" ref="modal" @click="onClickOutside">
-            <div class="modal-dialog" ref="dialog">
+            `modal-${props.size || 'md'}`,
+            isVisible ? `is-visible` : ''
+        ]" ref="modal">
+            <div class="modal-dialog" ref="dialog" v-click-outside="onClickOutside">
                 <header class="dialog-header" v-if="$slots.header || props.title">
                     <slot name="header" v-if="$slots.header"></slot>
                     <div class="dialog-title" v-else-if="props.title">{{ props.title }}</div>
@@ -22,11 +23,20 @@
                 </footer>
             </div>
         </div>
+        <BackdropSupport :visible="isVisible" v-if="props.backdrop" />
     </teleport>
 </template>
 
 <script lang="ts">
+/**
+ * BaseDialog Props
+ */
 export interface BaseDialogProps {
+    /**
+     * The desired <teleport> target, default value is `#app`.
+     */
+    target?: null | string;
+
     /**
      * The desired dialog title, can be used instead of the header slot.
      */
@@ -38,24 +48,29 @@ export interface BaseDialogProps {
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
     /**
-     * Includes a modal-backdrop element. Using 'static' adds a backdrop modal which does not 
-     * close the modal when clicked.
+     * Whether to use the additional backdrop or not.
      */
-    backdrop?: boolean | 'status';
+    backdrop?: boolean;
+
+    /**
+     * Whether to use a backdrop (don't close on click outside) or not.
+     */
+    static?: boolean;
+
+    /**
+     * Whether to display an x-close button inside the header or not.
+     */
+    closable?: boolean;
 
     /**
      * The dialog visibility state.
      */
     visible?: boolean;
-
-    target?: string;
-
-    /**
-     * Shows an X-button inside the header, which closes the modal.
-     */
-    closable?: boolean;
 }
 
+/**
+ * BaseDialog Slots
+ */
 export interface BaseDialogSlots {
     /**
      * The default dialog content slot.
@@ -73,6 +88,9 @@ export interface BaseDialogSlots {
     footer(): any;
 }
 
+/**
+ * BaseDialog Emits
+ */
 export interface BaseDialogEmits {
     /**
      * Visibility state changed.
@@ -124,18 +142,23 @@ export default {
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
 import LucideXSign from '../lucide/XSign.vue';
+import BackdropSupport from '../support/BackdropSupport.vue';
 import wait from '../../utils/wait';
 
 // Define Component
-const props = defineProps<BaseDialogProps>();
-defineSlots<BaseDialogSlots>();
+const props = withDefaults(defineProps<BaseDialogProps>(), {
+    backdrop: true
+});
+const slots = defineSlots<BaseDialogSlots>();
 const emits = defineEmits<BaseDialogEmits>();
 
 // States
 const modal = ref<HTMLElement|null>(null);
 const dialog = ref<HTMLElement|null>(null);
+
 const visibleState = ref<boolean>(false);
 const visibleBounced = ref<boolean>(false);
+const isVisible = ref<boolean>(false);
 
 /**
  * Component before unmount
@@ -169,17 +192,17 @@ watch(visibleState, async newValue => {
 /**
  * Open Modal
  */
- async function open() {
+async function open() {
     visibleBounced.value = true;
     await wait(10);
-    if (!modal.value || modal.value.classList.contains('visible')) {
+    if (!modal.value || isVisible.value) {
         return;
     }
     
     // Show
     emits('show');
     await wait(10);
-    modal.value.classList.add('visible');
+    isVisible.value = true;
     
     // Opened
     emits('open');
@@ -196,14 +219,14 @@ watch(visibleState, async newValue => {
  * Close Modal
  */
 async function close() {
-    if (!modal.value || !modal.value.classList.contains('visible')) {
+    if (!modal.value || !isVisible.value) {
         return;
     }
     
     // Hide
     emits('hide');
     await wait(10);
-    modal.value.classList.remove('visible');
+    isVisible.value = false;
 
     // Closing
     emits('close');
@@ -222,24 +245,20 @@ async function close() {
  * Event Listener - Click Outside
  * @param event 
  */
-function onClickOutside(event: Event|PointerEvent) {
-    if (!dialog.value || !dialog.value) {
-        return;
-    }
-
-    let target = event.target as HTMLElement;
-    if (dialog.value == target || dialog.value.contains(target)) {
+async function onClickOutside(event: Event|PointerEvent) {
+    if (!modal.value || props.static) {
         return;
     }
 
     emits('clickOutside');
     if ((props.backdrop || true) == true) {
-        close();
+        await close();
     }
 }
 
 // Expose Methods
 defineExpose({
+    visible: isVisible,
     open,
     close,
 });
@@ -249,12 +268,12 @@ defineExpose({
 .modal {
     @apply inset-0 fixed w-full h-full flex justify-center items-center py-10;
     @apply overflow-x-hidden overflow-y-auto outline-none;
-    @apply opacity-0 bg-gray-950/70;
+    @apply opacity-0;
     @apply duration-300 ease-in-out transition-opacity;
     z-index: 100;
     perspective: 100px;
 
-    &.visible {
+    &.is-visible {
         @apply mt-0 opacity-100;
     }
 }
@@ -266,7 +285,7 @@ defineExpose({
     transform: rotateX(20deg) translate(0, -120px) scale(1, 0.2);
     transition-property: transform, opacity;
     
-    .visible & {
+    .is-visible & {
         @apply opacity-100;
         transform: rotateX(0deg) translate(0, 0);
     }

@@ -1,9 +1,27 @@
 <template>
     <Story title="Components/Dialog/BaseDialog">
         <Variant title="Default" :init-state="stateDefault" v-slot="{ state }">
-            <ButtonStd label="Open Dialog" @click="state.visible = !state.visible" />
+            <div class="flex flex-col items-center justify-start w-screen h-screen gap-4 py-16">
+                <ButtonStd label="Open Dialog" @click="state.visible = !state.visible" />
+            </div>
             <BaseDialog target="html" v-bind="state" v-model:visible="state.visible">
-                Default Content
+                <div class="p-4">
+                    Default Content
+                </div>
+            </BaseDialog>
+        </Variant>
+
+        <Variant title="Sizes" :init-state="stateSizes" v-slot="{ state }">
+            <div class="flex flex-col items-center justify-start w-screen h-screen gap-4 py-16">
+                <ButtonStd label="Open Small Dialog" @click="state.size = 'sm'; state.visible = true;" />
+                <ButtonStd label="Open Medium Dialog" @click="state.size = 'md'; state.visible = true;" />
+                <ButtonStd label="Open Large Dialog" @click="state.size = 'lg'; state.visible = true;" />
+            </div>
+
+            <BaseDialog target="html" v-bind="state" v-model:visible="state.visible">
+                <div class="p-4">
+                    Default Content
+                </div>
             </BaseDialog>
         </Variant>
     </Story>
@@ -17,6 +35,13 @@ import BaseDialog from './BaseDialog.vue';
 function stateDefault() {
     return {
         visible: ref<boolean>(false)
+    }
+}
+
+function stateSizes() {
+    return {
+        size: ref<string>('sm'),
+        visible: ref<boolean>(false),
     }
 }
 </script>
