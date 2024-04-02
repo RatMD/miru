@@ -13,6 +13,7 @@ miru.ink / Changelog
 - Update: Allow component-type on `label` property on Button component + add `labelProps` property.
 - Update: New `reverse` property and stylings on ButtonGroup component.
 - Update: New `else` slot on and story content for BreakpointSupport component.
+- Update: Handle `duration` property on and add story content for CollapseSupport component.
 - Fix: Include base stylings in dist (temporary solution).
 
 ## Version 0.0.8 - Experimental

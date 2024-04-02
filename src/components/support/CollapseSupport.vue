@@ -72,67 +72,117 @@ const content = ref<HTMLElement>();
 const visible = ref<boolean>();
 const styles = reactive<{ height: string, transitionDuration: string }>({
     height: '0px',
-    transitionDuration: `${typeof props.duration == 'number' ? props.duration : 300}ms`
+    transitionDuration: '300ms'
 });
 
 /**
  * Watch Property Changes
  */
 watch(props, async newValue => {
-    if (typeof newValue.duration == 'number') {
-        styles.transitionDuration = `${newValue.duration}ms`;
-    }
-
-    if (newValue.collapsed && (visible.value || visible.value === void 0)) {
-        emits('hide');
-        visible.value = false;
-        styles.height = `0px`;
-        await wait(typeof props.duration == 'number' ? props.duration : 300);
-        emits('hidden');
-    } else if (!newValue.collapsed && !visible.value) {
-        emits('show');
-        visible.value = true;
-        styles.height = `${(await calculate())}px`;
-        await wait(typeof props.duration == 'number' ? props.duration : 300);
-        emits('shown');
+    if (newValue.collapsed) {
+        await hide();
+    } else if (!newValue.collapsed) {
+        await show();
     }
 }, { immediate: true });
+
+/**
+ * Show collapsed object
+ */
+async function show() {
+    if (visible.value) {
+        return;
+    }
+
+    // Show start
+    emits('show');
+    visible.value = true;
+    
+    // Show transition
+    const [height, duration] = await calculate();
+    if (height == null || duration == null) {
+        visible.value = false;
+        return;
+    }
+
+    styles.transitionDuration = `${duration}ms`;
+    await wait(10);
+
+    styles.height = `${height}px`;
+    await wait(duration);
+
+    // Show end
+    emits('shown');
+}
+
+/**
+ * Hide collapsed object
+ */
+async function hide() {
+    if (!visible.value) {
+        return;
+    }
+
+    // Hide start
+    emits('hide');
+    visible.value = false;
+
+    // Hide transition
+    styles.height = `0px`;
+    await wait(parseInt(styles.transitionDuration.slice(0, -2)));
+
+    // Hide end
+    emits('hidden');
+}
 
 /**
  * Calculate Content height
  * @param content 
  */
-async function calculate() {
+async function calculate(): Promise<[null|number, null|number]> {
     if (!content.value) {
         await nextTick();
         if (!content.value) {
-            return;
+            return [null, null];
         }
     }
 
     const parent = content.value.parentElement;
     if (!parent) {
-        return;
+        return [null, null];
     }
 
+    // Clone Object
     const clone = content.value.cloneNode(true) as HTMLElement;
     clone.style.height = 'auto';
     clone.style.position = 'absolute';
     clone.style.opacity = '0';
     clone.style.overflow = 'visible';
 
+    // Fetch Height
     parent.appendChild(clone);
     const height = clone.offsetHeight;
 
+    // Calculate Duration
+    let duration = props.duration;
+    if (duration == 'fast') {
+        duration = Math.max(Math.ceil(height / 15), 150);
+    } else if (duration == 'normal' || (!duration && duration !== 0)) {
+        duration = Math.max(Math.ceil(height / 10), 300);
+    } else if (duration == 'slow') {
+        duration = Math.max(Math.ceil(height / 5), 500);
+    }
+
+    // Return
     clone.remove();
-    return height;
+    return [height, duration as number];
 }
 </script>
 
 <style scoped>
 .content {
     @apply h-0 overflow-hidden;
-    @apply duration-300 ease-in-out;
+    @apply ease-in-out;
     transition-property: height;
 }
 </style>
