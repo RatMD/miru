@@ -2,6 +2,7 @@
     <template v-if="visible">
         <slot :width="width" :height="height" :orientation="clientOrientation" />
     </template>
+    <slot name="else" :width="width" :height="height" :orientation="clientOrientation" v-else-if="$slots.else" />
 </template>
 
 <script lang="ts">
@@ -40,9 +41,14 @@ export interface BreakpointSupportProps {
  */
 export interface BreakpointSupportSlots {
     /**
-     * Default Query Slot
+     * The default breakpoint slot.
      */
     default(props: BreakpointSupportSlotProps): any;
+
+    /**
+     * The else breakpoint content slot.
+     */
+    else(props: BreakpointSupportSlotProps): any;
 }
 
 // Default Export, used for IDE-related auto-import features
