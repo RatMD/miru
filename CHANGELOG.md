@@ -6,6 +6,7 @@ miru.ink / Changelog
 - Add: SimplePagination / AdvancedPagination components & basic story demonstration.
 - Add: BaseCard / CardStd / CardCollapse components & basic story demonstration.
 - Add: DeferredSupport support component & basic story demonstration (which does not work due to histoire `<Suspense />` Wrapper).
+- Add: FloatingSupport support component & basic story demonstration.
 - Add: ChevronsLeft / ChevronsRight lucide icon components.
 - Add: New `now` utility helper function to create a database familiar "YYYY-MM-DD HH:ii:ss" stamp.
 - Add: New Modal / Dialog and Offcanvas handling using new Backdrop Support component.
