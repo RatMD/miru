@@ -34,6 +34,7 @@ class MiruStorage {
 
     /**
      * Prepare / Prefix Storage Key
+     * @internal
      * @param key 
      * @returns 
      */
@@ -46,6 +47,7 @@ class MiruStorage {
 
     /**
      * Encode Value to be stored
+     * @internal
      * @param value 
      * @returns 
      */
@@ -64,6 +66,7 @@ class MiruStorage {
 
     /**
      * Decode Value from storage
+     * @internal
      * @param value 
      * @returns 
      */
