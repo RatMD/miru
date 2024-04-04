@@ -3,10 +3,6 @@ title: AccordionGroup
 description: Efficiently organize content with multiple collapsible AccordionTab components, joined together within a simple AccordionGroup.
 editLink: true
 ---
-<script setup>
-import AccordionGroup from '../../../../src/components/accordion/AccordionGroup.vue';
-import AccordionTab from '../../../../src/components/accordion/AccordionTab.vue';
-</script>
 
 # AccordionGroup <Badge text="v0.1.0" />
 
@@ -82,3 +78,9 @@ import AccordionTab from 'miru.ink/accordion/AccordionTab.vue';
 
 </template>
 </MiruSource>
+
+
+<script setup>
+import AccordionGroup from '../../../../src/components/accordion/AccordionGroup.vue';
+import AccordionTab from '../../../../src/components/accordion/AccordionTab.vue';
+</script>

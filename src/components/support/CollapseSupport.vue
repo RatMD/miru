@@ -84,6 +84,10 @@ const styles = reactive<{ height: string, transitionDuration: string }>({
  * Watch Property Changes
  */
 watch(props, async newValue => {
+    if (!(newValue && typeof newValue.collapsed != 'undefined')) {
+        return;
+    }
+    
     if (newValue.collapsed) {
         await hide();
     } else if (!newValue.collapsed) {
