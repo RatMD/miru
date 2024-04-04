@@ -1,10 +1,12 @@
 import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
+
+console.log(process.env.NODE_ENV)
 export default defineConfig({
     title: "miru.ink",
     description: "Vue3 Component Library",
-    head: [
+    head: process.env.NODE_ENV == 'production' ? [
         [
             'script',
             { 
@@ -13,7 +15,7 @@ export default defineConfig({
                 "data-website-id": '3030ad2b-5c81-4216-b6ff-67079b288bfe'
             }
         ]
-    ],
+    ] : [],
 
     // https://vitepress.dev/reference/default-theme-config
     themeConfig: {
