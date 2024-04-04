@@ -1,5 +1,5 @@
 <template>
-    <InputGroup>
+    <FormFieldGroup>
         <InputField v-bind="props" 
             type="time" 
             :step="props.seconds"
@@ -8,7 +8,7 @@
             type="time" 
             :step="props.seconds"
             v-model="valueEnd" />
-    </InputGroup>
+    </FormFieldGroup>
 </template>
 
 <script lang="ts">
@@ -95,7 +95,7 @@ export default {
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue';
 import InputField from '../control/InputField.vue';
-import InputGroup from '../form/InputGroup.vue';
+import FormFieldGroup from '../form/FormFieldGroup.vue';
 
 // Define Component
 const props = withDefaults(defineProps<TimeFrameFieldProps>(), {

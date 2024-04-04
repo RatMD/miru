@@ -1,52 +1,73 @@
-import { onMounted, onUnmounted, ref, shallowRef } from 'vue';
+import { onMounted, onUnmounted, reactive, ref, shallowRef } from 'vue';
+
+export type ScreenOrientation = 'landscape' | 'portrait';
+
+export interface ScreenProperty {
+    width: number;
+    height: number;
+    orientation: ScreenOrientation;
+}
 
 /**
  * Use Client Details
  * @returns 
  */
 export function useClient() {
-    const agent = shallowRef<string>();
-    const browser = shallowRef<string>();
-    const browserVersion = shallowRef<string>();
-    const browserMajorVersion = shallowRef<number>();
-    const cookies = shallowRef<boolean|null>();
-    const os = shallowRef<string|null>();
-    const osVersion = shallowRef<string|null>();
-    const isApple = shallowRef<boolean>();
-    const isLinux = shallowRef<boolean>();
-    const isWindows = shallowRef<boolean>();
-    const isMobile = shallowRef<boolean>();
-
-    const width = ref<number>(0);
-    const height = ref<number>(0);
-    const orientation = ref<'portrait'|'landscape'>();
-    const online = ref<boolean>(window.navigator.onLine);
-
     /**
-     * Track width and height values
+     * Get window / screen orientation
+     * @internal
      */
-    function update() {
-        width.value = document.documentElement.clientWidth || window.outerWidth;
-        height.value = document.documentElement.clientHeight || window.outerHeight;
-        online.value = window.navigator.onLine;
-
+    function getOrientation(): ScreenOrientation {
         let isPortrait = false;
         if (typeof window.screen !== 'undefined' && typeof window.screen.orientation !== 'undefined') {
             isPortrait = window.screen.orientation.type.startsWith('portrait');
         } else {
             isPortrait = window.innerHeight > window.innerWidth;
         }
-        orientation.value = isPortrait ? 'portrait' : 'landscape';
+        return isPortrait ? 'portrait' : 'landscape';
+    }
+
+    // System Properties
+    const browser = shallowRef<string>();
+    const browserVersion = shallowRef<string>();
+    const browserMajorVersion = shallowRef<number>();
+    const os = shallowRef<string|null>();
+    const osVersion = shallowRef<string|null>();
+    const isApple = shallowRef<boolean>();
+    const isLinux = shallowRef<boolean>();
+    const isWindows = shallowRef<boolean>();
+    const isMobile = shallowRef<boolean>();
+    
+    // User Properties
+    const agent = shallowRef<string>();
+    const cookies = shallowRef<boolean|null>();
+    const online = shallowRef<boolean>(window.navigator.onLine);
+
+    // Screen Properties
+    const screen = reactive<ScreenProperty>({
+        width: document.documentElement.clientWidth || window.outerWidth || 0,
+        height: document.documentElement.clientHeight || window.outerHeight || 0,
+        orientation: getOrientation()
+    });
+
+    /**
+     * Track width and height values
+     */
+    function update() {
+        screen.width = document.documentElement.clientWidth || window.outerWidth || 0,
+        screen.height = document.documentElement.clientHeight || window.outerHeight || 0,
+        screen.orientation = getOrientation();
+        online.value = window.navigator.onLine;
     }
 
     // Mounted
     onMounted(() => {
         const details = detectClientDetails();
-        agent.value = details.agent;
+
+        // System Properties
         browser.value = details.browser;
         browserVersion.value = details.browserVersion;
         browserMajorVersion.value = details.browserMajorVersion;
-        cookies.value = details.cookies;
         os.value = details.os;
         osVersion.value = details.osVersion;
         isApple.value = details.isApple;
@@ -54,6 +75,11 @@ export function useClient() {
         isWindows.value = details.isWindows;
         isMobile.value = details.isMobile;
 
+        // User Properties
+        agent.value = details.agent;
+        cookies.value = details.cookies;
+
+        // Set Listeners
         window.addEventListener('resize', update);
         window.addEventListener('online', update);
         window.addEventListener('offline', update);
@@ -62,7 +88,6 @@ export function useClient() {
         } else {
             window.addEventListener('orientationchange', update);
         }
-
         update();
     });
 
@@ -80,21 +105,19 @@ export function useClient() {
 
     // Export
     return { 
-        width,
-        height,
-        orientation,
-        online,
-        agent,
         browser,
         browserVersion,
         browserMajorVersion,
-        cookies,
         os,
         osVersion,
         isApple,
         isLinux,
         isWindows,
-        isMobile
+        isMobile,
+        agent,
+        cookies,
+        online,
+        screen
     };
 }
 
@@ -184,7 +207,8 @@ function detectClientDetails() {
     // Check for cookies
     let cookies: boolean | null = (navigator.cookieEnabled) ? true : false;
     if (typeof navigator.cookieEnabled == 'undefined') {
-        cookies = null;
+        document.cookie = 'miru.ink.test';
+        cookies = (document.cookie.indexOf('miru.ink.test') != -1) ? true : false;
     }
 
     // Detect OS

@@ -107,7 +107,7 @@ function _equals(a: any, b: any, refs: any[]) {
  * @param b 
  * @returns 
  */
-function equals(a: any, b: any) {
+function equals(a: any, b: any): boolean {
     return _equals(a, b, []);
 }
 

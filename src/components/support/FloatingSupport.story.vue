@@ -3,9 +3,9 @@
         <Variant title="Default">
             <FloatingSupport>
                 <template #default="{ show, hide }">
-                    <BaseCard @pointerenter="show" @pointerleave="hide">
+                    <CardStd @pointerenter="show" @pointerleave="hide">
                         <div class="p-4">Target Element</div>
-                    </BaseCard>
+                    </CardStd>
                 </template>
 
                 <template #floating>
@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import FloatingSupport from './FloatingSupport.vue';
-import BaseCard from '../card/BaseCard.vue';
+import CardStd from '../card/CardStd.vue';
 </script>
 
 <docs lang="md">

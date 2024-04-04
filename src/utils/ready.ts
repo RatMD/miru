@@ -1,10 +1,14 @@
 
+type Callback = (this: Document, ev?: Event) => any;
+
 /**
  * Factory Handler on Ready
  * @param {Function} factory 
  * @returns {Promise|void}
  */
-function ready(factory?: (this: Document, ev?: Event) => any): void | Promise<null> {
+function ready(): Promise<null>;
+function ready(factory: Callback): void;
+function ready(factory?: Callback): void | Promise<null> {
     if (typeof factory === 'undefined') {
         return new Promise(resolve => ready(resolve.bind(null, null)));
     } else {

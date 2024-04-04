@@ -6,6 +6,86 @@
             </CardStd>
         </Variant>
 
+        <Variant title="Default">
+            <CardStd>
+                <template #card>
+                    <div class="p-4">
+                        Card Content
+                    </div>
+                </template>
+            </CardStd>
+        </Variant>
+
+        <Variant title="Small Size">
+            <CardStd size="sm">
+                <template #card>
+                    <div class="p-4">
+                        Card Content
+                    </div>
+                </template>
+            </CardStd>
+        </Variant>
+
+        <Variant title="Medium Size">
+            <CardStd size="md">
+                <template #card>
+                    <div class="p-4">
+                        Card Content
+                    </div>
+                </template>
+            </CardStd>
+        </Variant>
+
+        <Variant title="Large Size">
+            <CardStd size="lg">
+                <template #card>
+                    <div class="p-4">
+                        Card Content
+                    </div>
+                </template>
+            </CardStd>
+        </Variant>
+
+        <Variant title="Fullwidth Size">
+            <CardStd size="full">
+                <template #card>
+                    <div class="p-4">
+                        Card Content
+                    </div>
+                </template>
+            </CardStd>
+        </Variant>
+
+        <Variant title="Small Shadow">
+            <div class="flex flex-col items-center p-8">
+                <CardStd size="sm" shadow="sm">
+                    <div class="p-4">
+                        Card Content
+                    </div>
+                </CardStd>
+            </div>
+        </Variant>
+
+        <Variant title="Medium Shadow">
+            <div class="flex flex-col items-center p-8">
+                <CardStd size="sm" shadow="md">
+                    <div class="p-4">
+                        Card Content
+                    </div>
+                </CardStd>
+            </div>
+        </Variant>
+
+        <Variant title="Large Shadow">
+            <div class="flex flex-col items-center p-8">
+                <CardStd size="sm" shadow="lg">
+                    <div class="p-4">
+                        Card Content
+                    </div>
+                </CardStd>
+            </div>
+        </Variant>
+
         <Variant title="Title">
             <CardStd title="Card Title">
                 Card Content

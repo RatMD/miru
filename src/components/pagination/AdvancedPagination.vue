@@ -103,7 +103,7 @@ import ChevronLeft from '../lucide/ChevronLeft.vue';
 import ChevronRight from '../lucide/ChevronRight.vue';
 import ChevronsRight from '../lucide/ChevronsRight.vue';
 import ButtonStd from '../button/ButtonStd.vue';
-import ButtonGroup from '../form/ButtonGroup.vue';
+import ButtonGroup from '../button/ButtonGroup.vue';
 
 // Define Component
 const props = defineProps<AdvancedPaginationProps>();

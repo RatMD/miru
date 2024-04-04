@@ -1,8 +1,8 @@
 <template>
     <template v-if="visible">
-        <slot :width="width" :height="height" :orientation="clientOrientation" />
+        <slot :width="screen.width" :height="screen.height" :orientation="screen.orientation" />
     </template>
-    <slot name="else" :width="width" :height="height" :orientation="clientOrientation" v-else-if="$slots.else" />
+    <slot name="else" :width="screen.width" :height="screen.height" :orientation="screen.orientation" v-else-if="$slots.else" />
 </template>
 
 <script lang="ts">
@@ -75,12 +75,12 @@ const props = defineProps<BreakpointSupportProps>();
 const slots = defineSlots<BreakpointSupportSlots>();
 
 // Stores
-const { width, height, orientation: clientOrientation } = useClient();
+const { screen } = useClient();
 const visible = computed<boolean>(() => {
     let min: number = typeof props.min == 'string' ? (breakpoints(props.min) || 0) : (props.min || 0);
     let max: number = typeof props.max == 'string' ? (breakpoints(props.max) || Infinity) : (props.max || Infinity);
-    let ori: boolean = typeof props.orientation == 'string' ? (props.orientation == clientOrientation.value) : true;
-    return ori && width.value >= min && width.value <= max-1;
+    let ori: boolean = typeof props.orientation == 'string' ? (props.orientation == screen.orientation) : true;
+    return ori && screen.width >= min && screen.width <= max-1;
 });
 
 /**

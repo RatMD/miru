@@ -18,7 +18,7 @@ function wait(ms: number): Promise<null> {
  * @param {number} limit The maximum number of attempts.
  * @returns {Promise}
  */
-function waitUntil(callback: () => boolean, step: number = 200, limit: number = 100) {
+function waitUntil(callback: () => boolean, step: number = 200, limit: number = 100): Promise<null> {
     return new Promise((resolve, reject) => {
         let count = 0;
         const handler = async () => {

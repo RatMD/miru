@@ -1,5 +1,5 @@
 
-type MapFunction = (v: HTMLElement, k: number) => HTMLElement | any;
+type MapFunction<T> = (v: HTMLElement, k: number) => T;
 
 /**
  * Query Handler
@@ -10,8 +10,9 @@ type MapFunction = (v: HTMLElement, k: number) => HTMLElement | any;
  */
 function query(selector: string): HTMLElement[];
 function query(selector: string, context: HTMLElement | Document): HTMLElement[];
-function query(selector: string, callback: MapFunction): HTMLElement[];
-function query(selector: string, context_or_callback?: HTMLElement | Document | MapFunction, callback?: MapFunction): HTMLElement[] {
+function query<T = HTMLElement>(selector: string, callback: MapFunction<T>): HTMLElement[];
+function query<T = HTMLElement>(selector: string, context: HTMLElement | Document, callback: MapFunction<T>): T[];
+function query<T = HTMLElement>(selector: string, context_or_callback?: HTMLElement | Document | MapFunction<T>, callback?: MapFunction<T>): T[] | HTMLElement[] {
     let context: HTMLElement | Document;
     if (typeof context_or_callback === 'function') {
         context = document;

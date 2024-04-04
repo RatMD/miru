@@ -1,19 +1,19 @@
 
 /**
  * Resize Image
- * @param {string} content 
+ * @param {string} original 
  * @param {number} maxWidth 
  * @param {number} maxHeight
  * @returns {Promise<string>}
  */
-function resize(content: string, maxWidth: number, maxHeight: number): Promise<string> {
+function resize(original: string, maxWidth: number, maxHeight: number): Promise<string> {
     return new Promise ((resolve, reject) => {
         const img = document.createElement('IMG') as HTMLImageElement;
         img.onload = () => {
             const srcWidth = img.naturalWidth;
             const srcHeight = img.naturalHeight;
             if (srcWidth <= maxWidth && srcHeight <= maxHeight) {
-                resolve(content);
+                resolve(original);
             }
 
             // Swap Sizes
@@ -31,7 +31,7 @@ function resize(content: string, maxWidth: number, maxHeight: number): Promise<s
             resolve(canvas.toDataURL());
         };
         img.onerror = reject;
-        img.src = content;
+        img.src = original;
     });
 }
 

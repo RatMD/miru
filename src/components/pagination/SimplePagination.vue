@@ -150,7 +150,7 @@ export default {
 <script lang="ts" setup>
 import { computed } from 'vue';
 import ButtonStd from '../button/ButtonStd.vue';
-import ButtonGroup from '../form/ButtonGroup.vue';
+import ButtonGroup from '../button/ButtonGroup.vue';
 
 // Define Component
 const props = defineProps<SimplePaginationProps>();

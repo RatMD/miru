@@ -4,19 +4,29 @@ miru.ink / Changelog
 ## Version 0.0.9 - Experimental
 - Add: AvatarStd / AvatarGroup components & basic story demonstration.
 - Add: SimplePagination / AdvancedPagination components & basic story demonstration.
-- Add: BaseCard / CardStd / CardCollapse components & basic story demonstration.
+- Add: CardStd / CardCollapse components & basic story demonstration.
+- Add: TableStd / TableColumn components & basic story demonstration.
+- Add: ChevronsLeft / ChevronsRight lucide icon components.
+- Add: BackdropSupport support component & basic story demonstration.
+- Add: BreakpointSupport support component & basic story demonstration.
+- Add: CollapseSupport support component & basic story demonstration.
 - Add: DeferredSupport support component & basic story demonstration (which does not work due to histoire `<Suspense />` Wrapper).
 - Add: FloatingSupport support component & basic story demonstration.
-- Add: ChevronsLeft / ChevronsRight lucide icon components.
 - Add: New `now` utility helper function to create a database familiar "YYYY-MM-DD HH:ii:ss" stamp.
-- Add: New Modal / Dialog and Offcanvas handling using new Backdrop Support component.
+- Add: New Modal / Dialog and Offcanvas handling using new BackdropSupport component.
 - Add: New `v-click-outside` directive to trigger on click outside of target element.
+- Add: TypeScript / Typings-Support on `select` utility function.
 - Update: Rename `size` property on ButtonGroup to `gap`.
 - Update: Allow component-type on `label` property on Button component + add `labelProps` property.
 - Update: New `reverse` property and stylings on ButtonGroup component.
 - Update: New `else` slot on and story content for BreakpointSupport component.
 - Update: Handle `duration` property on and add story content for CollapseSupport component.
+- Update: Integrate `Base*` variants in `*Std` components.
+- Update: Refactored `request` utility function, supporting the single HTTP methods.
 - Fix: Include base stylings in dist (temporary solution).
+- Fix: Wrong date/time formatting on `now` utility function.
+- Fix: Wrong typing / return type on `query` utility function.
+- Fix: Wrong typing / return type on `reader` utility function.
 
 ## Version 0.0.8 - Experimental
 - Add: MiruStorage class and utility composable.

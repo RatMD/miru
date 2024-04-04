@@ -1,22 +1,25 @@
 <template>
     <slot name="default" v-bind="props" :show="show" :hide="hide"></slot>
 
-    <BaseTooltip ref="tooltip" 
-        :color="props.color"
-        :label="$slots.label ? void 0 : (props.label || void 0)" 
-        :class="[`tooltip-${placementClass}`, visible ? `is-visible` : '']" 
-        :style="floatingStyles">
-        <template #default v-if="$slots.label">{{ slots.label(props) }}</template>
-    </BaseTooltip>
+    <div ref="tooltip" :class="[
+        'tooltip',
+        `tooltip-${placementClass}`, 
+        visible ? `is-visible` : '',
+        props.color ? `tooltip-${props.color}` : ''
+    ]" :style="floatingStyles">
+        <slot name="tooltip" v-bind="props">
+            <span>{{ props.label }}</span>
+        </slot>
+    </div>
 </template>
 
 <script lang="ts">
 import type { Middleware, Placement, OffsetOptions } from '@floating-ui/vue';
 
 /**
- * Tooltip Properties
+ * TooltipStd Properties
  */
-export interface TooltipProps {
+export interface TooltipStdProps {
     /**
      * The desired color used for this tooltip.
      */
@@ -44,20 +47,20 @@ export interface TooltipProps {
 }
 
 /**
- * Tooltip Slots
+ * TooltipStd Slots
  */
-export interface TooltipSlots {
+export interface TooltipStdSlots {
     /**
      * Default content slot, used instead of the label property.
      * @param props 
      */
-    default(props: TooltipProps & { show: (ev: Event) => void, hide: (ev: Event) => void }): any;
+    default(props: TooltipStdProps & { show: (ev: Event) => void, hide: (ev: Event) => void }): any;
 
     /**
-     * Label content slot, used instead of the label property.
+     * Tooltip content slot, used instead of the label property.
      * @param props 
      */
-    label(props: TooltipProps): any;
+    tooltip(props: TooltipStdProps): any;
 }
 
 // Default Export, used for IDE-related auto-import features
@@ -69,18 +72,17 @@ export default {
 <script lang="ts" setup>
 import { useFloating, offset as offsetPlugin } from '@floating-ui/vue';
 import { nextTick, ref, watch } from 'vue';
-import BaseTooltip from './BaseTooltip.vue';
 
 // Define Component
-const props = withDefaults(defineProps<TooltipProps>(), {
+const props = withDefaults(defineProps<TooltipStdProps>(), {
     placement: 'top',
     offset: 10
 });
-const slots = defineSlots<TooltipSlots>();
+const slots = defineSlots<TooltipStdSlots>();
 
 // States
 const target = ref<HTMLElement>();
-const tooltip = ref<InstanceType<typeof BaseTooltip>>();
+const tooltip = ref<HTMLElement>();
 const tooltipPlacement = ref<Placement>(props.placement);
 const tooltipMiddleware = ref<Middleware[]>([
     offsetPlugin(props.offset || 0)
@@ -147,6 +149,31 @@ defineExpose({
 </script>
 
 <style scoped>
+.tooltip {
+    @apply w-max flex px-3 py-1.5 text-xs font-semibold opacity-100 rounded pointer-events-none;
+    @apply bg-gray-800 text-gray-50 dark:bg-gray-200 dark:text-gray-800;
+}
+
+/** Colors */
+.tooltip.tooltip-primary {
+    @apply bg-primary-600 text-primary-50;
+}
+.tooltip.tooltip-secondary {
+    @apply bg-gray-600 text-gray-50;
+}
+.tooltip.tooltip-success {
+    @apply bg-success-600 text-success-50;
+}
+.tooltip.tooltip-warning {
+    @apply bg-warning-600 text-warning-50;
+}
+.tooltip.tooltip-danger {
+    @apply bg-danger-600 text-danger-50;
+}
+.tooltip.tooltip-info {
+    @apply bg-info-600 text-info-50;
+}
+
 .tooltip {
     @apply absolute opacity-0 duration-300 ease-in-out;
     z-index: 90;

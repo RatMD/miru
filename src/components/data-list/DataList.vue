@@ -112,8 +112,8 @@ const loader = debounce(load, 350);
 /**
  * Watch Client Width
  */
-watch(client.width, () => {
-    mobile.value = client.width.value <= BREAKPOINT_MD;
+watch(client.screen, () => {
+    mobile.value = client.screen.width <= BREAKPOINT_MD;
 }, { immediate: true });
 
 /**

@@ -5,8 +5,8 @@
  * @param {mixed} context The context element.
  * @returns {HTMLElement|null}
  */
-function select(selector: string, context?: HTMLElement | Document): HTMLElement | null {
-    return (context || document).querySelector(selector);
+function select<T = HTMLElement>(selector: string, context?: HTMLElement | Document): T | null {
+    return (context || document).querySelector(selector) as T | null;
 }
 
 // Export Module
