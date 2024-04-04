@@ -4,11 +4,30 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
     title: "miru.ink",
     description: "Vue3 Component Library",
+    head: [
+        [
+            'script',
+            { 
+                defer: '', 
+                src: 'https://umami.rat.md/script.js',
+                "data-website-id": '3030ad2b-5c81-4216-b6ff-67079b288bfe'
+            }
+        ]
+    ],
 
     // https://vitepress.dev/reference/default-theme-config
     themeConfig: {
         search: {
             provider: 'local'
+        },
+
+        lastUpdated: {
+            text: 'Last update at'
+        },
+
+        editLink: {
+            pattern: 'https://github.com/RatMD/miru/edit/master/docs/:path',
+            text: 'Improve this page on GitHub'
         },
 
         nav: [
@@ -42,13 +61,13 @@ export default defineConfig({
                             collapsed: true,
                             items: [
                                 {
+                                    text: 'AccordionTab',
+                                    link: '/references/components/accordion/accordion-tab'
+                                },
+                                {
                                     text: 'AccordionGroup',
                                     link: '/references/components/accordion/accordion-group'
                                 },
-                                {
-                                    text: 'AccordionTab',
-                                    link: '/references/components/accordion/accordion-tab'
-                                }
                             ]
                         },
                         { 
