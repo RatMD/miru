@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.10 - Experimental
+- Update: package.json dependencies.
+
 ## Version 0.0.9 - Experimental
 - Add: AlertMessage / AlertStd components & basic story demonstration.
 - Add: AvatarStd / AvatarGroup components & basic story demonstration.
