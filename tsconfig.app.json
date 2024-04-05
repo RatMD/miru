@@ -26,7 +26,6 @@
     ],
     "compilerOptions": {
         "composite": true,
-        "baseUrl": ".",
-        "moduleResolution": "Bundler"
+        "baseUrl": "."
     }
 }

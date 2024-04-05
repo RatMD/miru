@@ -7,7 +7,7 @@
             <div v-if="props.arrow != false" ref="arrowElement" 
                 class="popover-arrow" 
                 :class="[typeof props.arrow == 'string' ? `arrow-${props.arrow}` : '']" 
-                :style="arrowStyles" />
+                :style="props.arrowStyles ? props.arrowStyles : {}" />
 
             <div class="popover-content">
                 <header v-if="$slots.header || props.title">
