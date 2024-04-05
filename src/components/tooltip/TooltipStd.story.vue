@@ -1,7 +1,33 @@
 <template>
     <Story title="Components/Tooltip/TooltipStd" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default">
-            <TooltipStd label="Tooltip" />
+            <TooltipStd label="Tooltip" v-slot="{ show, hide }">
+                <div class="inline-flex self-start" @pointerenter="show" @pointerleave="hide">
+                    Tooltip
+                </div>
+            </TooltipStd>
+        </Variant>
+
+        <Variant title="Delayed">
+            <TooltipStd label="Tooltip" :delay="500" v-slot="{ show, hide }">
+                <div class="inline-flex self-start" @pointerenter="show" @pointerleave="hide">
+                    Delayed Tooltip by 500ms
+                </div>
+            </TooltipStd>
+        </Variant>
+
+        <Variant title="Slot Content">
+            <TooltipStd label="Tooltip">
+                <template #default="{ show, hide }">
+                    <div class="inline-flex self-start" @pointerenter="show" @pointerleave="hide">
+                        Tooltip with custom slot.
+                    </div>
+                </template>
+                <template #tooltip>
+                    <component :is="icon" :size="16" />
+                    <span>Tooltip Content</span>
+                </template>
+            </TooltipStd>
         </Variant>
 
         <Variant title="Placements">
@@ -9,8 +35,8 @@
                 <div class="flex flex-row gap-4">
                     <template v-for="([key, label], id2) of Object.entries(items)" :key="id2">
                         <TooltipStd :label="label" :placement="(key as any)" v-slot="{ show, hide }">
-                            <div class="flex items-center justify-center w-48 h-16 m-4 border border-gray-300 border-solid rounded-md bg-gray-50" 
-                                @mouseover="show" @mouseout="hide">
+                            <div class="flex items-center justify-center w-48 h-16 m-4 border border-gray-300 border-solid rounded-md bg-gray-50 dark:border-gray-500 dark:bg-gray-800" 
+                                @pointerenter="show" @pointerleave="hide">
                                 {{ key }}
                             </div>
                         </TooltipStd>
@@ -18,11 +44,25 @@
                 </div>
             </template>
         </Variant>
+
+        <Variant title="Colours">
+            <template v-for="(tooltip, idx) of colors" :key="idx">
+                <div class="flex flex-row gap-4">
+                    <TooltipStd :label="tooltip.label" placement="right" :color="tooltip.color" v-slot="{ show, hide }">
+                        <div class="flex items-center justify-center w-48 h-16 m-4 border border-gray-300 border-solid rounded-md bg-gray-50 dark:border-gray-500 dark:bg-gray-800" 
+                            @pointerenter="show" @pointerleave="hide">
+                            {{ tooltip.label }}
+                        </div>
+                    </TooltipStd>
+                </div>
+            </template>
+        </Variant>
     </Story>
 </template>
 
 <script lang="ts" setup>
-import TooltipStd from './TooltipStd.vue';
+import { h } from 'vue';
+import TooltipStd, { type TooltipStdProps } from './TooltipStd.vue';
 
 const placements = [
     {
@@ -46,6 +86,60 @@ const placements = [
         'left-end': 'Left-End Tooltip',
     },
 ];
+
+const colors: { label: string, color: TooltipStdProps['color'] }[] = [
+    {
+        label: 'Primary Tooltip',
+        color: 'primary',
+    },
+    {
+        label: 'Secondary Tooltip',
+        color: 'secondary',
+    },
+    {
+        label: 'Success Tooltip',
+        color: 'success',
+    },
+    {
+        label: 'Warning Tooltip',
+        color: 'warning',
+    },
+    {
+        label: 'Danger Tooltip',
+        color: 'danger',
+    },
+    {
+        label: 'Info Tooltip',
+        color: 'info',
+    },
+];
+
+const icon = {
+    functional: true,
+    props: {
+        size: Number
+    },
+    render(ctx: any) {
+        return h('svg', {
+            xmlns: "http://www.w3.org/2000/svg",
+            width: ctx?.props?.size ?? 16,
+            height: ctx?.props?.size ?? 16,
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: "1.5",
+            strokeLinecap: "round",
+            strokeLinejoin: "round",
+            class: "lucide lucide-rat",
+        }, [
+            h('path', { d: "M17 5c0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .8.3 1.5.8 2H11c-3.9 0-7 3.1-7 7v0c0 2.2 1.8 4 4 4" }),
+            h('path', { d: "M16.8 3.9c.3-.3.6-.5 1-.7 1.5-.6 3.3.1 3.9 1.6.6 1.5-.1 3.3-1.6 3.9l1.6 2.8c.2.3.2.7.2 1-.2.8-.9 1.2-1.7 1.1 0 0-1.6-.3-2.7-.6H17c-1.7 0-3 1.3-3 3" }),
+            h('path', { d: "M13.2 18a3 3 0 0 0-2.2-5" }),
+            h('path', { d: "M13 22H4a2 2 0 0 1 0-4h12" }),
+            h('path', { d: "M16 9h.01" }),
+        ]);
+    }
+};
 </script>
 
 <docs lang="md">

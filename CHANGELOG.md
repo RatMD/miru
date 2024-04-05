@@ -5,6 +5,7 @@ miru.ink / Changelog
 - Add: New `default` slot on the `AvatarStd` component to replace `props.name` when no `props.avatar` is present.
 - Update: Change the `AvtaraGroup` limit class and label when not enough space is available.
 - Update: `package.json` dependencies.
+- Fix: Minor stylings on `TooltipStd` component.
 - Fix: TypeScript type issues on dts plugin / vite build process.
 
 ## Version 0.0.9 - Experimental
