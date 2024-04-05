@@ -350,7 +350,7 @@ export function useForm<T extends object>(
                 if (valid) {
                     valid = false;
                 }
-                errors[key as keyof T] = [...result.error.issues].map(issue => issue.message)
+                errors[key as keyof T] = [...(result as any).error.issues].map(issue => issue.message)
             }
             results[key as keyof T] = result;
         }

@@ -8,7 +8,13 @@
             "path": "./tsconfig.app.json"
         }
     ],
+    "include": [
+        "env.d.ts", 
+        "src/**/*", 
+        "src/**/*.vue",
+        "vite-env.d.ts"
+    ],
     "compilerOptions": {
-        "moduleResolution": "NodeNext"
+        "moduleResolution": "Bundler"
     }
 }

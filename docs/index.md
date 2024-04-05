@@ -21,7 +21,7 @@ features:
     details: miru.ink is currently in an experimental state, and should not be used in production.
   - title: Work in Progress
     details: This library, the demonstration and documentation pages are under development.
-  - title: Third Section
-    details: Another Section with none important information. Hi o/!
+  - title: Temporary Homepage
+    details: You're currently looking at the documentation page, which is used as temporary homepage.
 ---
 

@@ -49,7 +49,7 @@ export default defineConfig({
                 }
             },
             //cleanVueFileName: true,
-            //tsconfigPath: 'tsconfig.types.json'
+            tsconfigPath: 'tsconfig.types.json'
         })
     ],
     build: {

@@ -3,6 +3,7 @@ miru.ink / Changelog
 
 ## Version 0.0.10 - Experimental
 - Update: package.json dependencies.
+- Fix: TypeScript type issues on dts plugin / vite build process.
 
 ## Version 0.0.9 - Experimental
 - Add: AlertMessage / AlertStd components & basic story demonstration.
