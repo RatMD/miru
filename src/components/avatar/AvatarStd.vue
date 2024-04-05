@@ -90,7 +90,7 @@ const url = computed<string|null>(() => {
 
 // Applied Stylings
 const styles = computed<{ [key: string]: string }>(() => {
-    const temp = {};
+    const temp: { [key: string]: string } = {};
     if (typeof props.size == 'number') {
         temp['width'] = `${props.size}px`;
         temp['height'] = `${props.size}px`;

@@ -1,12 +1,22 @@
 {
     "extends": "@vue/tsconfig/tsconfig.dom.json",
     "lib": [
+        "DOM", 
+        "DOM.Iterable", 
+        "ES5", 
+        "ES6", 
+        "ES7", 
+        "ES2015", 
+        "ES2016", 
+        "ES2017", 
+        "ES2018", 
+        "ES2019",
+        "ES2020",
         "WebWorker"
     ],
     "include": [
         "env.d.ts", 
         "src/**/*", 
-        "src/**/*.ts", 
         "src/**/*.vue",
         "vite-env.d.ts"
     ],
@@ -16,6 +26,7 @@
     ],
     "compilerOptions": {
         "composite": true,
-        "baseUrl": "."
+        "baseUrl": ".",
+        "moduleResolution": "Bundler"
     }
 }

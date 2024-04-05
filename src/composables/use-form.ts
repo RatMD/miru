@@ -6,7 +6,7 @@ import type { ZodTypeAny, SafeParseReturnType } from 'zod';
 import { computed, toRaw, reactive, ref, unref } from 'vue';
 import { z } from 'zod';
 import equals from '../utils/equals';
-import request, { type PayloadObject, type Response } from '../utils/request';
+import request, { type Payload, type Response } from '../utils/request';
 
 export type FormMethods = 'GET' | 'PATCH' | 'POST' | 'PUT';
 
@@ -146,7 +146,7 @@ export interface FormHandler<T> {
      * @param newValues 
      * @returns 
      */
-    submit(): Promise<Response|false>;
+    submit(): Promise<Response<any, any>|false>;
 
     /**
      * Update many form values at once.
@@ -368,7 +368,7 @@ export function useForm<T extends object>(
      * @param newValues 
      * @returns 
      */
-    async function submit(): Promise<Response|false> {
+    async function submit(): Promise<Response<any, any>|false> {
         if (!action.value || !method.value) {
             return false;
         }
@@ -390,7 +390,7 @@ export function useForm<T extends object>(
 
         // Submit Data
         try {
-            const response = await request(action.value, payload.value as PayloadObject);
+            const response = await request(action.value, payload.value as Payload);
             return response;
         } catch (err) {
             return {

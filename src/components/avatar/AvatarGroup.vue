@@ -51,7 +51,7 @@ const slots = defineSlots<AvatarGroupSlots>();
 
 // Applied Stylings
 const styles = computed<{ [key: string]: string }>(() => {
-    const temp = {};
+    const temp: { [key: string]: string } = {};
     temp['--avatar-size'] = `${props.size || 48}px`;
     return temp;
 });
