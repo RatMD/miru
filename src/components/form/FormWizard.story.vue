@@ -1,5 +1,5 @@
 <template>
-    <Story title="Form/Wizard/FormWizard">
+    <Story title="Form/FormWizard">
         Work in Progress
     </Story>
 </template>

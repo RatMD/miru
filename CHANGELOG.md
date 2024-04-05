@@ -2,11 +2,12 @@ miru.ink / Changelog
 ====================
 
 ## Version 0.0.9 - Experimental
+- Add: AlertMessage / AlertStd components & basic story demonstration.
 - Add: AvatarStd / AvatarGroup components & basic story demonstration.
 - Add: SimplePagination / AdvancedPagination components & basic story demonstration.
 - Add: CardStd / CardCollapse components & basic story demonstration.
 - Add: TableStd / TableColumn components & basic story demonstration.
-- Add: ChevronsLeft / ChevronsRight lucide icon components.
+- Add: CheckSign / ChevronsLeft / ChevronsRight / DotCircle / InfoCircle / TriangleAlert lucide icon components.
 - Add: BackdropSupport support component & basic story demonstration.
 - Add: BreakpointSupport support component & basic story demonstration.
 - Add: CollapseSupport support component & basic story demonstration.
