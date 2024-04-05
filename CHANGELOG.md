@@ -5,12 +5,18 @@ miru.ink / Changelog
 - Add: New `default` slot on the `AvatarStd` component to replace `props.name` when no `props.avatar` is present.
 - Add: New `arrow` and `center` options on the `TooltipStd` component.
 - Add: New `v-tooltip` directive to access directives without using `TooltipStd`.
+- Add: New `content` slot on `CardStd` component to replace `<article>` structure.
+- Add: New `format` property to `TableColumn` component + 3 new formats + basic story demonstration.
 - Add: Support `metric` and `digits` modifiers on `v-filesize` directive.
 - Add: Support `once` modifier on `v-click-outside` directive.
-- Update: Change the `AvtaraGroup` limit class and label when not enough space is available.
+- Update: Change the `AvatarGroup` limit class and label when not enough space is available.
 - Update: `package.json` dependencies.
-- Fix: Minor stylings on `TooltipStd` component.
+- Update: Decrease height (by lower the padding) on `BadgeStd` component.
+- Update: Minor styling changes on `TableStd` to support usage inside `CardStd` (using new content slot).
+- Fix: Demo-Icons on histoire stories.
+- Fix: Minor styling changes on `TooltipStd` component.
 - Fix: TypeScript type issues on dts plugin / vite build process.
+- Fix: Re-Using same tooltip instance resulted in broken animation on `v-tooltip` directive.
 
 ## Version 0.0.9 - Experimental
 - Add: AlertMessage / AlertStd components & basic story demonstration.

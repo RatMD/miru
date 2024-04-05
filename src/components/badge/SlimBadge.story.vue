@@ -35,13 +35,13 @@
         <Variant title="Icon Variants">
             <div class="flex flex-col gap-2">
                 <div class="flex gap-2">
-                    <SlimBadge :icon="icon" size="sm" pill />
-                    <SlimBadge :icon="icon" size="sm" color="primary" pill />
-                    <SlimBadge :icon="icon" size="sm" color="secondary" pill />
-                    <SlimBadge :icon="icon" size="sm" color="success" pill />
-                    <SlimBadge :icon="icon" size="sm" color="warning" pill />
-                    <SlimBadge :icon="icon" size="sm" color="danger" pill />
-                    <SlimBadge :icon="icon" size="sm" color="info" pill />
+                    <SlimBadge :icon="icon" :iconProps="{ size: 12 }" size="sm" pill />
+                    <SlimBadge :icon="icon" :iconProps="{ size: 12 }" size="sm" color="primary" pill />
+                    <SlimBadge :icon="icon" :iconProps="{ size: 12 }" size="sm" color="secondary" pill />
+                    <SlimBadge :icon="icon" :iconProps="{ size: 12 }" size="sm" color="success" pill />
+                    <SlimBadge :icon="icon" :iconProps="{ size: 12 }" size="sm" color="warning" pill />
+                    <SlimBadge :icon="icon" :iconProps="{ size: 12 }" size="sm" color="danger" pill />
+                    <SlimBadge :icon="icon" :iconProps="{ size: 12 }" size="sm" color="info" pill />
                 </div>
                 <div class="flex gap-2">
                     <SlimBadge :icon="icon" pill />
@@ -99,13 +99,13 @@
         <Variant title="Filled Variants">
             <div class="flex flex-col gap-2">
                 <div class="flex gap-2">
-                    <SlimBadge label="42" size="sm" fill />
-                    <SlimBadge label="42" size="sm" color="primary" fill />
-                    <SlimBadge label="42" size="sm" color="secondary" fill />
-                    <SlimBadge label="42" size="sm" color="success" fill />
-                    <SlimBadge label="42" size="sm" color="warning" fill />
-                    <SlimBadge label="42" size="sm" color="danger" fill />
-                    <SlimBadge label="42" size="sm" color="info" fill />
+                    <SlimBadge label="8" size="sm" fill />
+                    <SlimBadge label="8" size="sm" color="primary" fill />
+                    <SlimBadge label="8" size="sm" color="secondary" fill />
+                    <SlimBadge label="8" size="sm" color="success" fill />
+                    <SlimBadge label="8" size="sm" color="warning" fill />
+                    <SlimBadge label="8" size="sm" color="danger" fill />
+                    <SlimBadge label="8" size="sm" color="info" fill />
                 </div>
                 <div class="flex gap-2">
                     <SlimBadge label="42" fill />
@@ -139,11 +139,11 @@ const icon = {
     props: {
         size: Number
     },
-    render(ctx: any) {
+    render(props: any) {
         return h('svg', {
             xmlns: "http://www.w3.org/2000/svg",
-            width: ctx?.props?.size ?? 16,
-            height: ctx?.props?.size ?? 16,
+            width: props?.size ?? 16,
+            height: props?.size ?? 16,
             viewBox: "0 0 24 24",
             fill: "none",
             stroke: "currentColor",

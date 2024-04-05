@@ -109,7 +109,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 
 <style scoped>
 .badge {
-    @apply inline-flex flex-row gap-2 items-center px-4 py-1.5 rounded-lg;
+    @apply inline-flex flex-row gap-2 items-center px-3 py-1 rounded-lg;
     @apply text-gray-900 bg-gray-200 dark:text-gray-300 dark:bg-gray-700;
 
     &.badge-icon-only {
@@ -127,7 +127,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 
 /** Sizes */
 .badge.badge-sm {
-    @apply px-2 py-1 rounded-md;
+    @apply px-2 py-0.5 rounded-md;
 
     &.badge-icon-only {
         @apply px-1.5;
@@ -143,7 +143,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 }
 
 .badge.badge-lg {
-    @apply px-5 py-2;
+    @apply px-4 py-1.5;
 
     &.badge-icon-only {
         @apply px-2.5;

@@ -1,5 +1,5 @@
 <template>
-    <Story title="Components/Table/Table">
+    <Story title="Components/Table/TableStd">
         <Variant title="Default">
             <TableStd :items="list">
                 <TableColumn column="title" label="Book" v-slot="{ item } : { item: DemoItem }" />
@@ -56,10 +56,44 @@
                 <TableColumn column="title" label="Book" v-slot="{ item } : { item: DemoItem }" />
             </TableStd>
         </Variant>
+        
+        <Variant title="Card Table">
+            <div class="p-4">
+                <CardStd>
+                    <template #content>
+                        <TableStd :items="list" min-width="700px">
+                            <TableColumn column="title" valign="middle" width="200px" label="Book" v-slot="{ item } : { item: DemoItem }" />
+                            <TableColumn column="author" width="160px" label="Author">
+                                <template #default="{ item } : { item: DemoItem }">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs text-gray-600 dark:text-gray-500">
+                                            Written by
+                                        </span>
+                                        <span class="font-semibold text-gray-900 dark:text-gray-300">
+                                            {{ item.author }}
+                                        </span>
+                                    </div>
+                                </template>
+            
+                                <template #header>
+                                    <div class="cell-label">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil-line"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/><path d="m15 5 3 3"/></svg>
+                                        <span>Author</span>
+                                    </div>
+                                </template>
+                            </TableColumn>
+                            <TableColumn column="release" align="right" width="180px" label="Release Date" v-slot="{ item } : { item: DemoItem }" />
+                            <TableColumn column="isbn" align="right" width="160px" label="ISBN-13" v-slot="{ item } : { item: DemoItem }" />
+                        </TableStd>
+                    </template>
+                </CardStd>
+            </div>
+        </Variant>
     </Story>
 </template>
 
 <script lang="ts" setup>
+import CardStd from '../card/CardStd.vue';
 import TableStd from './TableStd.vue';
 import TableColumn from './TableColumn.vue';
 
@@ -126,7 +160,7 @@ const list: DemoItem[] = [
         "author": "Richarg K. Morgan",
         "release": "26. February, 2002",
         "isbn": "978-0345457684",
-        "group": "Altered Carbon",
+        "group": "Takeshi Kovacs Trilogy",
         "groupOrder": 1
     },
     {
@@ -134,7 +168,7 @@ const list: DemoItem[] = [
         "author": "Richarg K. Morgan",
         "release": "20. March, 2003",
         "isbn": "978-0575081253",
-        "group": "Altered Carbon",
+        "group": "Takeshi Kovacs Trilogy",
         "groupOrder": 2
     },
     {
@@ -142,7 +176,7 @@ const list: DemoItem[] = [
         "author": "Richarg K. Morgan",
         "release": "17. March, 2005",
         "isbn": "978-0575081277",
-        "group": "Altered Carbon",
+        "group": "Takeshi Kovacs Trilogy",
         "groupOrder": 3
     },
     {

@@ -10,9 +10,11 @@
                 </slot>
             </header>
 
-            <article class="card-content">
-                <slot name="default" v-bind="props" />
-            </article>
+            <slot name="content" v-bind="props">
+                <article class="card-content">
+                    <slot name="default" v-bind="props" />
+                </article>
+            </slot>
 
             <footer class="card-footer" v-if="$slots.footer">
                 <slot name="footer" v-bind="props" />
@@ -69,6 +71,12 @@ export interface CardStdSlots {
      * @param props 
      */
     card(props: CardStdProps): any;
+
+    /**
+     * Replace the article content structure with a custom one.
+     * @param props 
+     */
+    content(props: CardStdProps): any;
 }
 
 // Default Export, used for IDE-related auto-import features

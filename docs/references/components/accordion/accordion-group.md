@@ -1,5 +1,6 @@
 ---
 title: AccordionGroup
+titleTemplate: Components | miru.ink
 description: Efficiently organize content with multiple collapsible AccordionTab components, joined together within a simple AccordionGroup.
 editLink: true
 ---
@@ -8,6 +9,10 @@ editLink: true
 
 Efficiently organize content with multiple collapsible [`AccordionTab`](/references/components/accordion/accordion-tab) 
 components, joined together in a group, for seamless navigation.
+
+> [!INFO]
+> In the background `AccordionGroup` uses and works with the [`CollapseSupport`](../support/collapse-support) 
+> component to realise the animation and height-calculation.
 
 <MiruSource component="AccordionGroup" histoire="/story/src-components-accordion-accordiongroup-story-vue">
 <AccordionGroup>

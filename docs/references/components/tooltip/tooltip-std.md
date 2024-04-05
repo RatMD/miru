@@ -1,5 +1,6 @@
 ---
 title: TooltipStd
+titleTemplate: Components | miru.ink
 description: Provide helpful hints and additional information with Tooltip component, enhancing user guidance in a neat way.
 editLink: true
 ---

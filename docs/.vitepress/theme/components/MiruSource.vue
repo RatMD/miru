@@ -100,13 +100,13 @@ const view = ref<'preview'|'code'>('preview');
         @apply flex flex-row gap-2 items-center justify-center px-3 ml-auto border rounded-lg no-underline;
         @apply -order-1 basis-full mb-4 py-2 md:order-3 md:basis-auto md:mb-1 md:py-0;
         @apply duration-300 ease-in-out transition-colors;
-        color: #34D399;
-        border-color: #2C7C5F;
-        background-color: rgb(44 124 95 / 0.25);
+        color: #2C7C5F;
+        border-color: #34D399;
+        background-color: rgb(52 211 153 / 0.25);
 
         &:hover {
-            border-color: #34D399;
-            background-color: rgb(44 124 95 / 0.5);
+            border-color: #2C7C5F;
+            background-color: rgb(52 211 153 / 0.3725);
         }
 
         & svg {
@@ -116,6 +116,16 @@ const view = ref<'preview'|'code'>('preview');
         & span {
             @apply no-underline font-normal text-xs;
         }
+    }
+}
+.dark .source-tabs a {
+    color: #34D399;
+    border-color: #2C7C5F;
+    background-color: rgb(44 124 95 / 0.25);
+
+    &:hover {
+        border-color: #34D399;
+        background-color: rgb(44 124 95 / 0.5);
     }
 }
 

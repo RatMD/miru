@@ -48,7 +48,7 @@ import type { Component } from 'vue';
  */
 export interface AccordionTabProps {
     /**
-     * Custom accordion tab id, used for a11y purposes only.
+     * A custom accordion tab id, used for a11y purposes only. Default value is an auto-generated UUID.
      */
     id?: string;
 
@@ -95,16 +95,16 @@ export interface AccordionTabProps {
  */
 export interface AccordionTabSlots {
     /**
-     * Accordion tab header, used instead of the label property.
-     * @param props 
-     */
-    header(props: AccordionTabProps): any;
-
-    /**
-     * Accordion pane content.
+     * The primary accordion tab content slot.
      * @param props 
      */
     default(props: AccordionTabProps): any;
+
+    /**
+     * Additional content slot, used as accordion header instead of the label property.
+     * @param props 
+     */
+    header(props: AccordionTabProps): any;
 }
 
 /**

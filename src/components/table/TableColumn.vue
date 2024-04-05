@@ -8,9 +8,29 @@
 
     <template v-else-if="props.type == 'content' && props.item && props.index">
         <slot name="default" :item="props.item" :index="props.index">
-            <span v-if="props.column">
-                {{ (props.item as any)[props.column] ?? '' }}
-            </span>
+            <template v-if="props.column">
+                <template v-if="(props.format || 'text') == 'datetime' && isValidDateValue">
+                    <div class="cell-datetime">
+                        <LucideCalendarDays :size="16" />
+                        <div class="datetime-value">
+                            <span class="value-date">{{ formatDate }}</span>
+                            <span class="value-time">{{ formatTime }}</span>
+                        </div>
+                    </div>
+                </template>
+
+                <template v-else-if="(props.format || 'text') == 'label'">
+                    <span class="cell-label">
+                        {{ (props.item as any)[props.column] ?? '' }}
+                    </span>
+                </template>
+    
+                <template v-else>
+                    <span class="cell-text">
+                        {{ (props.item as any)[props.column] ?? '' }}
+                    </span>
+                </template>
+            </template>
         </slot>
     </template>
 </template>
@@ -49,6 +69,11 @@ export interface TableColumnProps<T> {
      * An additional vertical alignment value for the individual column.
      */
     valign?: 'top' | 'middle' | 'bottom';
+
+    /**
+     * Additional column formatting, used when no default content slot is passed.
+     */
+    format?: 'text' | 'label' | 'actions' | 'datetime';
 
     /**
      * Whether the sort function should be available or not for this column.
@@ -90,22 +115,59 @@ export default {
 </script>
 
 <script lang="ts" generic="T" setup>
-import { onMounted } from 'vue';
+import { computed, ref } from 'vue';
+import LucideCalendarDays from '../lucide/CalendarDays.vue';
 
 // Define Component
 const props = withDefaults(defineProps<TableColumnProps<T>>(), {
     align: 'left'
 });
 const slots = defineSlots<TableColumnSlots<T>>();
+
+// States
+const isValidDateValue = computed<boolean>(() => {
+    if (typeof props.item != 'object' || !props.item || !props.column) {
+        return false;
+    }
+
+    let temp = (props.item as any)[props.column] || null;
+    if (!temp) {
+        return false;
+    }
+
+    if (temp instanceof Date) {
+        return true;
+    } else {
+        return !isNaN(Date.parse(temp));
+    }
+});
+
+const formatDate = computed<string|null>(() => {
+    if (isValidDateValue.value) {
+        let temp = (props.item as any)[props.column as any];
+        return (new Intl.DateTimeFormat('en-GB')).format(temp);
+    } else {
+        return null;
+    }
+});
+
+const formatTime = computed<string|null>(() => {
+    if (isValidDateValue.value) {
+        let temp = (props.item as any)[props.column as any];
+        return (new Intl.DateTimeFormat('en-GB', { timeStyle: 'short' })).format(temp);
+    } else {
+        return null;
+    }
+});
 </script>
 
 <style scoped>
 :slotted(.cell-label) {
-    @apply flex flex-row items-center gap-2;
+    @apply flex flex-row items-center gap-2 font-semibold;
 }
 
-:slotted(.datetime) {
-    @apply flex flex-row items-center gap-4;
+:slotted(.cell-datetime) {
+    @apply flex flex-row items-center gap-3;
 
     & .datetime-value {
         @apply flex flex-col text-xs font-semibold;

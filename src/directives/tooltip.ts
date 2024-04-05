@@ -4,6 +4,8 @@ import type { TooltipStdProps } from '../components/tooltip/TooltipStd.vue';
 import { h, render } from "vue";
 import TooltipStd from '../components/tooltip/TooltipStd.vue';
 
+let tooltipKey = 0;
+
 /**
  * Tooltip Directive
  * @usage v-tooltip=""
@@ -58,9 +60,9 @@ const TooltipDirective: Directive = {
         
         // Attach Tooltip
         const tooltip: { value: VNode|null } = { value: null };
-        function onAttach(this: HTMLElement, props: TooltipStdProps, event: PointerEvent) {
+        async function onAttach(this: HTMLElement, props: TooltipStdProps, event: PointerEvent) {
             if (!tooltip.value) {
-                tooltip.value = h(TooltipStd, props);
+                tooltip.value = h(TooltipStd, { key: tooltipKey++, ...props });
             }
             render(tooltip.value, this.parentElement ? this.parentElement : this);
             tooltip.value.component?.exposed?.show(event);

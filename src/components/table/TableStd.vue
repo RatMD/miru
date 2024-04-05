@@ -73,6 +73,7 @@
                             'data-cell body-cell',
                             `cell-${(idx+1) % 2 == 0 ? 'even' : 'odd'}`,
                             `cell-idx-${(idx+1)}`,
+                            `cell-format-${(column.props as any).format || 'text'}`,
                             `cell-align-${(column.props as any).align || 'left'}`,
                             `cell-valign-${(column.props as any).valign || 'auto'}`,
                             (column.props as any)?.column ? `cell-${(column.props as any).column}` : ``,
@@ -341,5 +342,20 @@ function onToggleAll() {
     & .body-cell {
         @apply px-2 py-1.5;
     }
+
+    & .body-cell.cell-format-actions {
+        @apply flex flex-row gap-2;
+    }
+}
+
+/** Usage inside card */
+.card > .data-table-container .data-table-section.section-head .head-cell {
+    @apply px-5;
+}
+.card > .data-table-container .data-table-section.section-body .body-row:last-child {
+    @apply border-b-0;
+}
+.card > .data-table-container .data-table-section.section-body .body-cell {
+    @apply px-5;
 }
 </style>
