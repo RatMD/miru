@@ -7,7 +7,21 @@ import filesize from "../utils/filesize";
  */
 const FilesizeDirective: Directive = {
     mounted(el: HTMLElement, bindings: DirectiveBinding) {
-        const size = filesize(bindings.value);
+        const modifiers = Object.keys(bindings.modifiers);
+
+        // Parse Modifiers
+        let metric = false;
+        let digits = 1;
+        for (const mod of modifiers) {
+            if (!isNaN(parseInt(mod))) {
+                digits = parseInt(mod);
+            } else if (mod === 'metric') {
+                metric = true;
+            }
+        }
+
+        // Write
+        const size = filesize(bindings.value, metric, digits);
         el.innerText = size;
     }
 };

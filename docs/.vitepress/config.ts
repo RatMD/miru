@@ -2,7 +2,6 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 
-console.log(process.env.NODE_ENV)
 export default defineConfig({
     title: "miru.ink",
     description: "Vue3 Component Library",
@@ -24,7 +23,7 @@ export default defineConfig({
         },
 
         lastUpdated: {
-            text: 'Last update at'
+            text: 'Last updated at'
         },
 
         editLink: {
@@ -421,6 +420,25 @@ export default defineConfig({
                             text: 'Worker',
                             link: '/references/composables/worker'
                         },
+                    ]
+                },
+                {
+                    text: 'Directives',
+                    link: '/references/directives/',
+                    collapsed: true,
+                    items: [
+                        {
+                            text: 'v-click-outside',
+                            link: '/references/directives/v-click-outside'
+                        },
+                        {
+                            text: 'v-filesize',
+                            link: '/references/directives/v-filesize'
+                        },
+                        {
+                            text: 'v-tooltip',
+                            link: '/references/directives/v-tooltip'
+                        }
                     ]
                 },
                 {

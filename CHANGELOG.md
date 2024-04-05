@@ -3,6 +3,10 @@ miru.ink / Changelog
 
 ## Version 0.0.10 - Experimental
 - Add: New `default` slot on the `AvatarStd` component to replace `props.name` when no `props.avatar` is present.
+- Add: New `arrow` and `center` options on the `TooltipStd` component.
+- Add: New `v-tooltip` directive to access directives without using `TooltipStd`.
+- Add: Support `metric` and `digits` modifiers on `v-filesize` directive.
+- Add: Support `once` modifier on `v-click-outside` directive.
 - Update: Change the `AvtaraGroup` limit class and label when not enough space is available.
 - Update: `package.json` dependencies.
 - Fix: Minor stylings on `TooltipStd` component.

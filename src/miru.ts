@@ -2,6 +2,7 @@ import type { Plugin } from "vue";
 
 import FilesizeDirective from './directives/filesize';
 import OutsideDirective from "./directives/outside";
+import TooltipDirective from './directives/tooltip';
 
 /**
  * Miru Vue3 Plugin
@@ -13,8 +14,9 @@ const MiruPlugin = {
      * @param options 
      */
     install(app, ...options) {
-        app.directive('filesize', FilesizeDirective);
         app.directive('click-outside', OutsideDirective);
+        app.directive('filesize', FilesizeDirective);
+        app.directive('tooltip', TooltipDirective);
     },
 } as Plugin;
 

@@ -1,53 +1,31 @@
 <template>
-    <Story title="Components/Tooltip/TooltipStd" :layout="{ type: 'grid', width: '800px' }">
+    <Story title="Components/Tooltip/TooltipDirective" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default">
-            <TooltipStd label="Tooltip" v-slot="{ show, hide }">
-                <div class="inline-flex self-start underline decoration-dashed" @pointerenter="show" @pointerleave="hide">
-                    Tooltip
-                </div>
-            </TooltipStd>
+            <div class="inline-flex self-start underline decoration-dashed" v-tooltip.modifier="'Tooltip by Directive'">
+                Tooltip
+            </div>
         </Variant>
 
         <Variant title="Delayed">
-            <TooltipStd label="Tooltip" :delay="500" v-slot="{ show, hide }">
-                <div class="inline-flex self-start underline decoration-dashed" @pointerenter="show" @pointerleave="hide">
-                    Delayed Tooltip by 500ms
-                </div>
-            </TooltipStd>
+            <div class="inline-flex self-start underline decoration-dashed" v-tooltip.500ms="'Delayed Tooltip by Directive'">
+                Delayed Tooltip by 500ms
+            </div>
         </Variant>
 
         <Variant title="Center Content">
-            <TooltipStd label="Lorem ipsum dolor sit amet, consectetur adipiscing elit" center v-slot="{ show, hide }">
-                <div class="inline-flex self-start underline decoration-dashed" @pointerenter="show" @pointerleave="hide">
-                    Tooltip
-                </div>
-            </TooltipStd>
-        </Variant>
-
-        <Variant title="Slot Content">
-            <TooltipStd label="Tooltip">
-                <template #default="{ show, hide }">
-                    <div class="inline-flex self-start underline decoration-dashed" @pointerenter="show" @pointerleave="hide">
-                        Tooltip with custom slot.
-                    </div>
-                </template>
-                <template #tooltip>
-                    <component :is="icon" :size="16" />
-                    <span>Tooltip Content</span>
-                </template>
-            </TooltipStd>
+            <div class="inline-flex self-start underline decoration-dashed" v-tooltip.center="'Lorem ipsum dolor sit amet, consectetur adipiscing elit'">
+                Tooltip
+            </div>
         </Variant>
 
         <Variant title="Placements">
             <template v-for="(items, idx) of placements" :key="idx">
                 <div class="flex flex-row gap-4">
                     <template v-for="([key, label], id2) of Object.entries(items)" :key="id2">
-                        <TooltipStd :label="label" :placement="(key as any)" v-slot="{ show, hide }" arrow>
-                            <div class="flex items-center justify-center w-48 h-16 m-4 border border-gray-300 border-solid rounded-md bg-gray-50 dark:border-gray-500 dark:bg-gray-800" 
-                                @pointerenter="show" @pointerleave="hide">
-                                {{ key }}
-                            </div>
-                        </TooltipStd>
+                        <div class="flex items-center justify-center w-48 h-16 m-4 border border-gray-300 border-solid rounded-md bg-gray-50 dark:border-gray-500 dark:bg-gray-800" 
+                            v-tooltip.arrow="{ placement: key, label }">
+                            {{ key }}
+                        </div>
                     </template>
                 </div>
             </template>
@@ -56,12 +34,10 @@
         <Variant title="Colours">
             <template v-for="(tooltip, idx) of colors" :key="idx">
                 <div class="flex flex-row gap-4">
-                    <TooltipStd :label="tooltip.label" placement="right" :color="tooltip.color" v-slot="{ show, hide }" arrow>
-                        <div class="flex items-center justify-center w-48 h-16 m-4 border border-gray-300 border-solid rounded-md bg-gray-50 dark:border-gray-500 dark:bg-gray-800" 
-                            @pointerenter="show" @pointerleave="hide">
-                            {{ tooltip.label }}
-                        </div>
-                    </TooltipStd>
+                    <div class="flex items-center justify-center w-48 h-16 m-4 border border-gray-300 border-solid rounded-md bg-gray-50 dark:border-gray-500 dark:bg-gray-800" 
+                        v-tooltip.right.arrow="{ color: tooltip.color, label: tooltip.label }">
+                        {{ tooltip.label }}
+                    </div>
                 </div>
             </template>
         </Variant>

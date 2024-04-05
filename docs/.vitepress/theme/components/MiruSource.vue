@@ -29,44 +29,9 @@
             </div>
         </div>
     </div>
-
-    <div class="attr-tables">
-        <div class="attr-table table-properties">
-            <div class="table-label">
-                <slot name="properties" />
-            </div>
-            <div class="table-list">
-                <div class="list-row" v-for="([name, prop], idx) of Object.entries(props.props)" :key="idx">
-                    <div class="row-cell cell-code"><code>{{ name }}</code></div>
-                    <div class="row-cell cell-text">{{ prop.description }}</div>
-                    <div class="row-cell cell-type">{{ prop.type }}</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="attr-table table-slots" v-if="props.slots">
-            <div class="table-label">
-                <slot name="slots" />
-            </div>
-            <div class="table-list">
-                <div class="list-row" v-for="([name, prop], idx) of Object.entries(props.slots)" :key="idx">
-                    <div class="row-cell cell-name"><code>{{ name }}</code></div>
-                    <div class="row-cell cell-text">{{ prop.description }}</div>
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <script lang="ts">
-export interface SourceProps {
-    type: string;
-    description: string;
-}
-export interface SourceSlots {
-    description: string;
-}
-
 /**
  * Miru Source Properties
  */
@@ -75,16 +40,6 @@ export interface MiruSourceProps {
      * The name of the component.
      */
     component: string;
-
-    /**
-     * The available properties for this component.
-     */
-    props: { [name: string]: SourceProps };
-
-    /**
-     * The available slots for this component.
-     */
-    slots?: { [name: string]: SourceSlots };
 
     /**
      * Histoire URL path.
@@ -102,19 +57,13 @@ export interface MiruSourceSlots {
     default(): any;
 
     /**
-     * Properties title, to inject table-of-contents-valid markdown headers from inside the md file.
+     * The source-code content slot.
      */
-    properties(): any;
-
-    /**
-     * Slots title, to inject table-of-contents-valid markdown headers from inside the md file.
-     */
-    slots(): any;
+    source(): any;
 }
 </script>
 
 <script lang="ts" setup>
-import { codeToHtml } from 'shiki';
 import { ref, useAttrs } from 'vue';
 
 // Define Component
@@ -123,8 +72,6 @@ const slots = defineSlots<MiruSourceSlots>();
 
 // States
 const view = ref<'preview'|'code'>('preview');
-
-console.log(useAttrs())
 </script>
 
 <style scoped>
@@ -202,57 +149,6 @@ console.log(useAttrs())
         & > :deep(div) {
             @apply h-full m-0;
             flex: 0 0 100%;
-        }
-    }
-}
-
-/** Attribute Tables */
-.attr-tables {
-    @apply w-full flex flex-col;
-}
-
-.attr-table {
-    @apply w-full flex flex-col;
-
-    & .table-label {
-        @apply font-semibold px-2 py-4;
-    }
-
-    & .table-list {
-        @apply flex flex-col border border-solid rounded-lg;
-        border-color: var(--vp-c-border);
-    }
-
-    & .list-row {
-        @apply flex flex-col lg:flex-row;
-
-        &:not(:last-child) {
-            @apply border-b border-solid;
-            border-color: var(--vp-c-border);
-        }
-        
-        & .row-cell {
-            @apply flex-1 text-sm px-4 py-2;
-        }
-    }
-    
-    @screen lg {
-        & .list-row {
-            @apply flex-row;
-        }
-        
-        & .row-cell {
-            @apply flex-1 text-sm px-4 py-2;
-    
-            &.cell-code,
-            &.cell-name {
-                flex: 0 0 180px;
-            }
-    
-            &.cell-type {
-                @apply text-end;
-                flex: 0 0 150px;
-            }
         }
     }
 }

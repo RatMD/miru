@@ -5,8 +5,10 @@
         'tooltip',
         `tooltip-${placementClass}`, 
         visible ? `is-visible` : '',
-        props.color ? `tooltip-${props.color}` : ''
+        props.color ? `tooltip-${props.color}` : '',
+        props.center ? `text-center` : ''
     ]" :style="floatingStyles">
+        <div ref="tooltipArrow" class="tooltip-arrow" :style="arrowStyles" v-if="props.arrow"></div>
         <slot name="tooltip" v-bind="props">
             <span>{{ props.label }}</span>
         </slot>
@@ -44,6 +46,16 @@ export interface TooltipStdProps {
      * The floating-ui offset option for this tooltip.
      */
     offset?: OffsetOptions;
+
+    /**
+     * Whether to show an arrow or not.
+     */
+    arrow?: boolean;
+
+    /**
+     * Whether to center the tooltip text or not.
+     */
+    center?: boolean;
 }
 
 /**
@@ -70,8 +82,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useFloating, offset as offsetPlugin } from '@floating-ui/vue';
-import { nextTick, ref, watch } from 'vue';
+import { useFloating, offset as offsetPlugin, arrow as arrowPlugin } from '@floating-ui/vue';
+import { computed, nextTick, ref, watch } from 'vue';
 
 // Define Component
 const props = withDefaults(defineProps<TooltipStdProps>(), {
@@ -83,18 +95,27 @@ const slots = defineSlots<TooltipStdSlots>();
 // States
 const target = ref<HTMLElement>();
 const tooltip = ref<HTMLElement>();
+const tooltipArrow = ref<HTMLElement>();
 const tooltipPlacement = ref<Placement>(props.placement);
 const tooltipMiddleware = ref<Middleware[]>([
-    offsetPlugin(props.offset || 0)
+    offsetPlugin(props.offset || 0),
+    arrowPlugin({ element: tooltipArrow })
 ]);
 const timeout = ref<number>();
 const visible = ref<boolean>(false);
 
 // Calculate Tooltip Position
-const { floatingStyles, placement: placementClass } = useFloating(target, tooltip, {
+const { floatingStyles, placement: placementClass, middlewareData } = useFloating(target, tooltip, {
     placement: tooltipPlacement,
     middleware: tooltipMiddleware
 });
+const arrowStyles = computed(() => {
+    const { x, y } = middlewareData.value.arrow || { x: null, y: null };
+    return {
+        top: y != null ? `${y}px`: '',
+        left: x != null ? `${x}px`: '',
+    }
+})
 
 /**
  * Watch Property Changes
@@ -102,7 +123,8 @@ const { floatingStyles, placement: placementClass } = useFloating(target, toolti
 watch(props, () => {
     tooltipPlacement.value = props.placement || tooltipPlacement.value;
     tooltipMiddleware.value = [
-        offsetPlugin(props.offset || 0)
+        offsetPlugin(props.offset || 0),
+        arrowPlugin({ element: tooltipArrow })
     ];
 });
 
@@ -152,28 +174,41 @@ defineExpose({
 .tooltip {
     @apply w-max flex px-3 py-1.5 text-xs font-semibold opacity-100 rounded pointer-events-none;
     @apply bg-gray-800 text-gray-50 dark:bg-gray-200 dark:text-gray-800;
+    max-width: 300px;
+    --tooltip-background: theme(colors.gray.800);
+    
+    .dark & {
+        --tooltip-background: theme(colors.gray.200);
+    }
 }
 
 /** Colors */
 .tooltip.tooltip-primary {
     @apply bg-primary-600 text-primary-50;
+    --tooltip-background: theme(colors.primary.600);
 }
 .tooltip.tooltip-secondary {
     @apply bg-gray-600 text-gray-50;
+    --tooltip-background: theme(colors.gray.600);
 }
 .tooltip.tooltip-success {
     @apply bg-success-600 text-success-50;
+    --tooltip-background: theme(colors.success.600);
 }
 .tooltip.tooltip-warning {
     @apply bg-warning-600 text-warning-50;
+    --tooltip-background: theme(colors.warning.600);
 }
 .tooltip.tooltip-danger {
     @apply bg-danger-600 text-danger-50;
+    --tooltip-background: theme(colors.danger.600);
 }
 .tooltip.tooltip-info {
     @apply bg-info-600 text-info-50;
+    --tooltip-background: theme(colors.info.600);
 }
 
+/** Placement */
 .tooltip {
     @apply absolute flex gap-2 opacity-0 duration-300 ease-in-out;
     z-index: 90;
@@ -221,6 +256,57 @@ defineExpose({
         &.is-visible {
             @apply ml-0;
         }
+    }
+}
+
+/** Arrow */
+.tooltip {
+    & .tooltip-arrow {
+        @apply absolute w-0 h-0 border-solid;
+    }
+    
+    &.tooltip-top .tooltip-arrow,
+    &.tooltip-top-start .tooltip-arrow,
+    &.tooltip-top-end .tooltip-arrow {
+        @apply top-full;
+        border-width: 8px 8px 0 8px;
+        border-color: var(--tooltip-background) transparent transparent transparent;
+    }
+
+    &.tooltip-right .tooltip-arrow,
+    &.tooltip-right-start .tooltip-arrow,
+    &.tooltip-right-end .tooltip-arrow {
+        @apply right-full;
+        border-width: 8px 8px 8px 0;
+        border-color: transparent var(--tooltip-background) transparent transparent;
+    }
+    &.tooltip-right-start .tooltip-arrow {
+        @apply -mt-1;
+    }
+    &.tooltip-right-end .tooltip-arrow {
+        @apply mt-1;
+    }
+
+    &.tooltip-bottom .tooltip-arrow,
+    &.tooltip-bottom-start .tooltip-arrow,
+    &.tooltip-bottom-end .tooltip-arrow {
+        @apply bottom-full;
+        border-width: 0 8px 8px 8px;
+        border-color: transparent transparent var(--tooltip-background) transparent;
+    }
+    
+    &.tooltip-left .tooltip-arrow,
+    &.tooltip-left-start .tooltip-arrow,
+    &.tooltip-left-end .tooltip-arrow {
+        @apply left-full;
+        border-width: 8px 0 8px 8px;
+        border-color: transparent transparent transparent var(--tooltip-background);
+    }
+    &.tooltip-left-start .tooltip-arrow {
+        @apply -mt-1;
+    }
+    &.tooltip-left-end .tooltip-arrow {
+        @apply mt-1;
     }
 }
 </style>
