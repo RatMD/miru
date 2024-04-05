@@ -1,8 +1,15 @@
+---
+title: reader
+titleTemplate: Utilities | miru.ink
+description: Basic interface around the browser-native FileReader, to read files without reading the linked MDN article.
+editLink: true
+---
+
 # reader <Badge text="v0.1.0" />
 
 A simple interface around the browser native [WebAPI FileReader](https://developer.mozilla.org/en-US/docs/Web/API/FileReader), 
 which reads the whole content of a passed `File` object. The function returns a Promise, which is
- either resolve'd with the read content or reject'ed.
+either resolve'd with the read content or reject'ed.
 
 ## Declaration
 

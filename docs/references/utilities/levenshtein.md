@@ -1,3 +1,10 @@
+---
+title: levenshtein
+titleTemplate: Utilities | miru.ink
+description: Calculate the levenshtein distance between 2 strings.
+editLink: true
+---
+
 # levenshtein <Badge text="v0.1.0" />
 
 > Source: [tutorialspoint.com/levenshtein-distance-in-javascript](https://www.tutorialspoint.com/levenshtein-distance-in-javascript), slightly modified by rat.md.

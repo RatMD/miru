@@ -1,3 +1,10 @@
+---
+title: MiruStorage
+titleTemplate: Utilities | miru.ink
+description: A basic class construct to interact with the Storage Engine in a more common and usable way.
+editLink: true
+---
+
 # MiruStorage Utility Class
 
 A small utility class providing a more common and safe access to a specific Storage engine and its 

@@ -1,3 +1,10 @@
+---
+title: request
+titleTemplate: Utilities | miru.ink
+description: Basic interface around the browser-native Fetch API, using a common and familiar response format.
+editLink: true
+---
+
 # request <Badge text="v0.1.0" />
 
 A simple interface around the browser-native [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) 

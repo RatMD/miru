@@ -1,3 +1,10 @@
+---
+title: equals
+titleTemplate: Utilities | miru.ink
+description: Easily compare two objects and simple check if they are identical or not.
+editLink: true
+---
+
 # equals <Badge text="v0.1.0" />
 
 > Source: [github.com/NickGard/tiny-isequal](https://github.com/NickGard/tiny-isequal/blob/master/src/index.js), slightly modified by rat.md.

@@ -1,3 +1,10 @@
+---
+title: boolean
+titleTemplate: Utilities | miru.ink
+description: Simple validate if the passed variable is truly, false or neither of them.
+editLink: true
+---
+
 # boolean Utilities
 
 Three utility functions to validate if an passed variable is truly, falsy or neither of them. The 

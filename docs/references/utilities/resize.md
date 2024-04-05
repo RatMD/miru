@@ -1,3 +1,10 @@
+---
+title: resize
+titleTemplate: Utilities | miru.ink
+description: Simple interface around the browser-native CANVAS API, that allows you to resize your images in no time.
+editLink: true
+---
+
 # resize <Badge text="v0.1.0" />
 
 Crops an image via the browser-native CANVAS API, maintaining the original aspect ratio. Returns 

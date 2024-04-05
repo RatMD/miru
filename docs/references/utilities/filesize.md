@@ -1,3 +1,10 @@
+---
+title: filesize
+titleTemplate: Utilities | miru.ink
+description: Simple convert seemingly endless number of bytes into human-readable formats. 
+editLink: true
+---
+
 # filesize <Badge text="v0.1.0" />
 
 > Source: [stackoverflow.com/a/14919494](https://stackoverflow.com/a/14919494), slightly modified by rat.md.

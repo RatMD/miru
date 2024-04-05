@@ -1,3 +1,10 @@
+---
+title: uuid
+titleTemplate: Utilities | miru.ink
+description: A simple interface around the browser-native Crypto API, with polyfill, to simple create UUIDs without headache.
+editLink: true
+---
+
 # uuid <Badge text="v0.1.0" />
 
 Creates a randomly generated UUID ([Universal unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier)) 

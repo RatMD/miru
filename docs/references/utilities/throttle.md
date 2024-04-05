@@ -1,3 +1,10 @@
+---
+title: throttle
+titleTemplate: Utilities | miru.ink
+description: Create a throttle callback function to make sure that your function is not spammed continuously.
+editLink: true
+---
+
 # throttle <Badge text="v0.1.0" />
 
 Wraps a custom function into a throttle handler. The throttle handler limits the rate at which the 

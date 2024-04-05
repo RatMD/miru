@@ -1,3 +1,10 @@
+---
+title: query
+titleTemplate: Utilities | miru.ink
+description: Simple query DOM Elements in a context-based manner using an additional custom mapping function.
+editLink: true
+---
+
 # query <Badge text="v0.1.0" />
 
 A context-based wrapper around the `querySelectorAll` function, which provides an additional mapping 

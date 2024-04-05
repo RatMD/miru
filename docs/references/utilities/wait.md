@@ -1,3 +1,10 @@
+---
+title: wait
+titleTemplate: Utilities | miru.ink
+description: Simple wait for a specific amount of time, or wait until something specific happens.
+editLink: true
+---
+
 # wait Utilities
 
 Two utility functions to wait for a specific time or until something specific happened.

@@ -1,3 +1,10 @@
+---
+title: debounce
+titleTemplate: Utilities | miru.ink
+description: Create a debounce callback function to make sure that your function is not spammed.
+editLink: true
+---
+
 # debounce <Badge text="v0.1.0" />
 
 Wraps a custom function into a debounce handler. The debounce handler ensures that the passed 

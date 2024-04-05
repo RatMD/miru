@@ -1,3 +1,10 @@
+---
+title: select
+titleTemplate: Utilities | miru.ink
+description: Simple select a single DOM Element in a context-based manner with TypeScript support.
+editLink: true
+---
+
 # select <Badge text="v0.1.0" />
 
 A context-based wrapper around the `querySelector` function, which supports using a custom context 

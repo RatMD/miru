@@ -1,3 +1,10 @@
+---
+title: ready
+titleTemplate: Utilities | miru.ink
+description: Simple event listener to check if the document has been fullfy loaded or not.
+editLink: true
+---
+
 # ready <Badge text="v0.1.0" />
 
 A simple event listener that calls a callback function or resolves a promise after the document has 

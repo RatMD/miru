@@ -1,3 +1,10 @@
+---
+title: now
+titleTemplate: Utilities | miru.ink
+description: Simple create the current date/time stamp in a database familiar manner.
+editLink: true
+---
+
 # now <Badge text="v0.1.0" />
 
 Returns the current date/time stamp in a database-familiar format.
