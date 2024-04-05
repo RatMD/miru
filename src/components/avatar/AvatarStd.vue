@@ -8,7 +8,9 @@
         ]"
         :style="styles">
         <div class="avatar-label" v-if="!props.avatar">
-            <span>{{ props.name }}</span>
+            <slot name="default" v-bind="props">
+                <span>{{ props.name }}</span>
+            </slot>
         </div>
         
         <template v-else>
@@ -22,9 +24,9 @@
 import type { Component } from 'vue';
 
 /**
- * Avatar Properties
+ * AvatarStd Properties
  */
-export interface AvatarProps {
+export interface AvatarStdProps {
     /**
      * The main avatar, either a URL-like string or a component.
      */
@@ -67,6 +69,16 @@ export interface AvatarProps {
     mask?: null | 'squircle';
 }
 
+/**
+ * AvatarStd Slots
+ */
+export interface AvatarStdSlots {
+    /**
+     * The default content slot, used when no avatar is passed, replaces props.name.
+     */
+    default(props: AvatarStdProps): any;
+}
+
 // Default Export, used for IDE-related auto-import features
 export default {
     name: 'AvatarStd'
@@ -77,7 +89,8 @@ export default {
 import { computed } from 'vue';
 
 // Define Component
-const props = defineProps<AvatarProps>();
+const props = defineProps<AvatarStdProps>();
+const slots = defineSlots<AvatarStdSlots>();
 
 // Receive Avatar URL, if available.
 const url = computed<string|null>(() => {

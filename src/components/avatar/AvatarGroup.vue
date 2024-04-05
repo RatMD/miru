@@ -4,7 +4,12 @@
             <component :is="avatar" :size="props.size || 48" rounded="full" />
         </template>
         <template v-if="count > (props.limit || Infinity)">
-            <AvatarStd :name="'+' + (count - (props.limit || 0))" :size="props.size || 48" rounded="full" class="avatar-counter" />
+            <AvatarStd :name="label" :size="props.size || 48" rounded="full" class="avatar-limit">
+                <span class="text-sm font-normal">+</span>
+                <span class="tabular-nums" :class="[
+                    (props.size || 48) > 48 ? 'text-base font-semibold' : 'text-xs font-normal'
+                ]">{{ label.slice(1) }}</span>
+            </AvatarStd>
         </template>
     </div>
 </template>
@@ -66,6 +71,15 @@ const avatars = computed(() => {
 const count = computed<number>(() => {
     return slots.default(props).length;
 });
+
+// Return avatar count label.
+const label = computed<string>(() => {
+    if ((props.size || 48) < 36) {
+        return '+';
+    } else {
+        return '+' + (count.value - (props.limit || 0));
+    }
+});
 </script>
 
 <style scoped>
@@ -85,9 +99,5 @@ const count = computed<number>(() => {
             margin-left: calc(var(--avatar-size) / -4);
         }
     }
-}
-
-.avatar-counter > :deep(.avatar-label span) {
-    @apply text-sm font-normal tabular-nums;
 }
 </style>
