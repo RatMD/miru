@@ -9,6 +9,7 @@ miru.ink / Changelog
 - Add: New `format` property to `TableColumn` component + 3 new formats + basic story demonstration.
 - Add: Support `metric` and `digits` modifiers on `v-filesize` directive.
 - Add: Support `once` modifier on `v-click-outside` directive.
+- Add: TabGroup / TabPane components & basic story demonstration.
 - Update: Change the `AvatarGroup` limit class and label when not enough space is available.
 - Update: `package.json` dependencies.
 - Update: Decrease height (by lower the padding) on `BadgeStd` component.
