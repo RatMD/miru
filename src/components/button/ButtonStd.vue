@@ -33,9 +33,9 @@
 import type { Component, MaybeRef } from 'vue';
 
 /**
- * Button Properties
+ * ButtonStd Properties
  */
-export interface ButtonProps {
+export interface ButtonStdProps {
     /**
      * The desired color used for this button.
      */
@@ -113,7 +113,7 @@ import { computed, toValue } from 'vue';
 import LucideLoaderCircle from '../lucide/LoaderCircle.vue';
 
 // Define Component
-const props = withDefaults(defineProps<ButtonProps>(), {
+const props = withDefaults(defineProps<ButtonStdProps>(), {
     type: 'button'
 });
 

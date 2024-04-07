@@ -5,9 +5,9 @@
     ]">
         <component :is="props.icon" v-bind="props.iconProps || {}" v-if="props.icon" />
         <LucideInfoCircle :size="16" v-else-if="(props.type) == 'info'" />
-        <LucideCheckSign :size="16" v-else-if="(props.type) == 'success'" />
+        <LucideCheckCircle :size="16" v-else-if="(props.type) == 'success'" />
         <LucideTriangleAlert :size="16" v-else-if="(props.type) == 'warning'" />
-        <LucideXSign :size="16" v-else-if="(props.type) == 'danger'" />
+        <LucideXCircle :size="16" v-else-if="(props.type) == 'danger'" />
         <LucideDotCircle :size="16" v-else="(props.type) == 'note'" />
         <div class="message-text"><slot name="default" v-bind="props" /></div>
     </div>
@@ -56,11 +56,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import LucideCheckSign from '../lucide/CheckSign.vue';
+import LucideCheckCircle from '../lucide/CheckCircle.vue';
 import LucideDotCircle from '../lucide/DotCircle.vue';
 import LucideInfoCircle from '../lucide/InfoCircle.vue';
 import LucideTriangleAlert from '../lucide/TriangleAlert.vue';
-import LucideXSign from '../lucide/XSign.vue';
+import LucideXCircle from '../lucide/XCircle.vue';
 
 // Define Component
 const props = defineProps<AlertMessageProps>();
@@ -69,7 +69,7 @@ const slots = defineSlots<AlertMessageSlots>();
 
 <style scoped>
 .alert-message {
-    @apply my-2 flex flex-row gap-3 items-center text-base;
+    @apply my-2 flex flex-row gap-2 items-center font-semibold text-sm;
     
     &.alert-note {
         @apply text-gray-600 dark:text-gray-500;

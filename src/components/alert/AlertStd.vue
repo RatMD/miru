@@ -1,13 +1,14 @@
 
 <template>
     <div ref="alert" class="alert" :class="[
-        `alert-${props.type || 'note'}`
+        `alert-${props.type || 'note'}`,
+        props.bordered ? `alert-bordered` : '',
     ]">
         <component :is="props.icon" v-bind="props.iconProps || {}" v-if="props.icon" />
         <LucideInfoCircle :size="16" v-else-if="(props.type) == 'info'" />
-        <LucideCheckSign :size="16" v-else-if="(props.type) == 'success'" />
+        <LucideCheckCircle :size="16" v-else-if="(props.type) == 'success'" />
         <LucideTriangleAlert :size="16" v-else-if="(props.type) == 'warning'" />
-        <LucideXSign :size="16" v-else-if="(props.type) == 'danger'" />
+        <LucideXCircle :size="16" v-else-if="(props.type) == 'danger'" />
         <LucideDotCircle :size="16" v-else="(props.type) == 'note'" />
         
         <div class="alert-text">
@@ -53,6 +54,11 @@ export interface AlertStdProps {
     iconProps?: { [key: string]: any };
 
     /**
+     * Whether to use the bordered style or not.
+     */
+    bordered?: boolean;
+
+    /**
      * Whether to allow closing / removing the alert message or not.
      */
     closable?: boolean;
@@ -77,10 +83,11 @@ export default {
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import LucideCheckSign from '../lucide/CheckSign.vue';
+import LucideCheckCircle from '../lucide/CheckCircle.vue';
 import LucideDotCircle from '../lucide/DotCircle.vue';
 import LucideInfoCircle from '../lucide/InfoCircle.vue';
 import LucideTriangleAlert from '../lucide/TriangleAlert.vue';
+import LucideXCircle from '../lucide/XCircle.vue';
 import LucideXSign from '../lucide/XSign.vue';
 
 // Define Component
@@ -119,48 +126,75 @@ function onRemove() {
 }
 
 /** Alert Colors */
-.alert.alert-note {
-    @apply text-gray-600 bg-gray-100;
-    @apply dark:text-gray-50 dark:bg-gray-900/50;
-    
-    & .alert-close:hover {
-        @apply text-gray-50 bg-gray-600;
+.alert {
+    &.alert-note {
+        @apply text-gray-600 bg-gray-100;
+        @apply dark:text-gray-50 dark:bg-gray-900/50;
+        
+        & .alert-close:hover {
+            @apply text-gray-50 bg-gray-600;
+        }
+    }
+
+    &.alert-info {
+        @apply text-primary-600 bg-primary-50;
+        @apply dark:text-primary-50 dark:bg-primary-900/50;
+        
+        & .alert-close:hover {
+            @apply text-primary-50 bg-primary-600;
+        }
+    }
+
+    &.alert-success {
+        @apply text-success-600 bg-success-50;
+        @apply dark:text-success-50 dark:bg-success-900/50;
+        
+        & .alert-close:hover {
+            @apply text-success-50 bg-success-600;
+        }
+    }
+
+    &.alert-warning {
+        @apply text-warning-600 bg-warning-50;
+        @apply dark:text-warning-50 dark:bg-warning-900/50;
+        
+        & .alert-close:hover {
+            @apply text-warning-50 bg-warning-600;
+        }
+    }
+
+    &.alert-danger {
+        @apply text-danger-600 bg-danger-50;
+        @apply dark:text-danger-50 dark:bg-danger-900/50;
+        
+        & .alert-close:hover {
+            @apply text-danger-50 bg-danger-600;
+        }
     }
 }
 
-.alert.alert-info {
-    @apply text-primary-600 bg-primary-50;
-    @apply dark:text-primary-50 dark:bg-primary-900/50;
-    
-    & .alert-close:hover {
-        @apply text-primary-50 bg-primary-600;
-    }
-}
+/** Alert Outline Colors */
+.alert.alert-bordered {
+    @apply border border-solid;
 
-.alert.alert-success {
-    @apply text-success-600 bg-success-50;
-    @apply dark:text-success-50 dark:bg-success-900/50;
-    
-    & .alert-close:hover {
-        @apply text-success-50 bg-success-600;
+    &.alert-note {
+        @apply border-gray-600;
     }
-}
-
-.alert.alert-warning {
-    @apply text-warning-600 bg-warning-50;
-    @apply dark:text-warning-50 dark:bg-warning-900/50;
     
-    & .alert-close:hover {
-        @apply text-warning-50 bg-warning-600;
+    &.alert-info {
+        @apply border-primary-600;
     }
-}
-
-.alert.alert-danger {
-    @apply text-danger-600 bg-danger-50;
-    @apply dark:text-danger-50 dark:bg-danger-900/50;
     
-    & .alert-close:hover {
-        @apply text-danger-50 bg-danger-600;
+    &.alert-success {
+        @apply border-success-600;
+    }
+    
+    &.alert-warning {
+        @apply border-warning-600;
+    }
+    
+    &.alert-danger {
+        @apply border-danger-600;
     }
 }
 </style>

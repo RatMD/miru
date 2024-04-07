@@ -27,6 +27,24 @@
             <AlertStd type="warning" closable>Warning Message</AlertStd>
             <AlertStd type="danger" closable>Danger Message</AlertStd>
         </Variant>
+
+        <Variant title="Bordered">
+            <AlertStd type="note" title="Note Title" bordered>
+                A Note message with an <a href="#">additional link</a>.
+            </AlertStd>
+            <AlertStd type="info" title="Info Title" bordered>
+                A Info message with an <a href="#">additional link</a>.
+            </AlertStd>
+            <AlertStd type="success" title="Success Title" bordered>
+                A Success message with an <a href="#">additional link</a>.
+            </AlertStd>
+            <AlertStd type="warning" title="Warning Title" bordered>
+                A Warning message with an <a href="#">additional link</a>.
+            </AlertStd>
+            <AlertStd type="danger" title="Danger Title" bordered>
+                A Danger message with an <a href="#">additional link</a>.
+            </AlertStd>
+        </Variant>
     </Story>
 </template>
 

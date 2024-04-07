@@ -10,36 +10,43 @@ miru.ink / Changelog
 - Add: Support `metric` and `digits` modifiers on `v-filesize` directive.
 - Add: Support `once` modifier on `v-click-outside` directive.
 - Add: TabGroup / TabPane components & basic story demonstration.
+- Add: New `bordered` property on `AlertStd` component.
+- Add: New `body` slot on `DialogStd` component to replace inner `<article>` structure.
+- Add: New `escape` property on `DialogStd` component to allow closing the modal using the ESC key.
+- Add: New wobble animation when trying to close a static modal by an click outside.
 - Update: Change the `AvatarGroup` limit class and label when not enough space is available.
 - Update: `package.json` dependencies.
 - Update: Decrease height (by lower the padding) on `BadgeStd` component.
 - Update: Minor styling changes on `TableStd` to support usage inside `CardStd` (using new content slot).
+- Update: Change font-size and icons on `AlertMessage` component.
+- Update: Change font-size on `AlertStd` component.
+- Fix: Add media-query based `max-width` stylings on `DialogStd` to support some space to screen-borders.
 - Fix: Demo-Icons on histoire stories.
 - Fix: Minor styling changes on `TooltipStd` component.
 - Fix: TypeScript type issues on dts plugin / vite build process.
 - Fix: Re-Using same tooltip instance resulted in broken animation on `v-tooltip` directive.
 
 ## Version 0.0.9 - Experimental
-- Add: AlertMessage / AlertStd components & basic story demonstration.
-- Add: AvatarStd / AvatarGroup components & basic story demonstration.
-- Add: SimplePagination / AdvancedPagination components & basic story demonstration.
-- Add: CardStd / CardCollapse components & basic story demonstration.
-- Add: TableStd / TableColumn components & basic story demonstration.
-- Add: CheckSign / ChevronsLeft / ChevronsRight / DotCircle / InfoCircle / TriangleAlert lucide icon components.
-- Add: BackdropSupport support component & basic story demonstration.
-- Add: BreakpointSupport support component & basic story demonstration.
-- Add: CollapseSupport support component & basic story demonstration.
-- Add: DeferredSupport support component & basic story demonstration (which does not work due to histoire `<Suspense />` Wrapper).
-- Add: FloatingSupport support component & basic story demonstration.
+- Add: `AlertMessage` / `AlertStd` components & basic story demonstration.
+- Add: `AvatarStd` / `AvatarGroup` components & basic story demonstration.
+- Add: `SimplePagination` / `AdvancedPagination` components & basic story demonstration.
+- Add: `CardStd` / `CardCollapse` components & basic story demonstration.
+- Add: `TableStd` / `TableColumn` components & basic story demonstration.
+- Add: `CheckSign` / `ChevronsLeft` / `ChevronsRight` / `DotCircle` / `InfoCircle` / `TriangleAlert` lucide icon components.
+- Add: `BackdropSupport` support component & basic story demonstration.
+- Add: `BreakpointSupport` support component & basic story demonstration.
+- Add: `CollapseSupport` support component & basic story demonstration.
+- Add: `DeferredSupport` support component & basic story demonstration (which does not work due to histoire `<Suspense />` Wrapper).
+- Add: `FloatingSupport` support component & basic story demonstration.
 - Add: New `now` utility helper function to create a database familiar "YYYY-MM-DD HH:ii:ss" stamp.
-- Add: New Modal / Dialog and Offcanvas handling using new BackdropSupport component.
+- Add: New Modal / Dialog and Offcanvas handling using new `BackdropSupport` component.
 - Add: New `v-click-outside` directive to trigger on click outside of target element.
 - Add: TypeScript / Typings-Support on `select` utility function.
-- Update: Rename `size` property on ButtonGroup to `gap`.
-- Update: Allow component-type on `label` property on Button component + add `labelProps` property.
-- Update: New `reverse` property and stylings on ButtonGroup component.
-- Update: New `else` slot on and story content for BreakpointSupport component.
-- Update: Handle `duration` property on and add story content for CollapseSupport component.
+- Update: Rename `size` property on `ButtonGroup` to `gap`.
+- Update: Allow component-type on `label` property on `ButtonStd` component + add `labelProps` property.
+- Update: New `reverse` property and stylings on `ButtonGroup` component.
+- Update: New `else` slot on and story content for `BreakpointSupport` component.
+- Update: Handle `duration` property on and add story content for `CollapseSupport` component.
 - Update: Integrate `Base*` variants in `*Std` components.
 - Update: Refactored `request` utility function, supporting the single HTTP methods.
 - Fix: Include base stylings in dist (temporary solution).
