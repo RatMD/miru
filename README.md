@@ -13,9 +13,12 @@ applications (especially PWAs), but also support tablet and desktop websites and
 - [docs.miru.ink](https://docs.miru.ink) (Under Construction)
 - [miru.ink](https://miru.ink) (Under Construction)
 
-**miru.ink** is inspired by [Bootstrap](https://getbootstrap.com/), [Geist](https://vercel.com/geist/introduction), 
-[shadcn/ui](https://ui.shadcn.com/), [daisyUI](https://daisyui.com/) and many different 
-[dribbble](https://dribbble.com) shots.
+\n
+\n
+
+**miru.ink** is inspired by [OctoberCMS](https://octobercms.com/), [Bootstrap](https://getbootstrap.com/), 
+[Geist](https://vercel.com/geist/introduction), [shadcn/ui](https://ui.shadcn.com/), [daisyUI](https://daisyui.com/) 
+and many different [dribbble](https://dribbble.com) shots.
 
 Requirements
 ------------
