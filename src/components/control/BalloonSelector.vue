@@ -282,7 +282,7 @@ function onSelect(option: BalloonSelectorOptionTypes) {
 
 <style scoped>
 .field-balloon-selector {
-    @apply flex flex-col gap-2;
+    @apply h-10 flex flex-col gap-2;
 
     @screen lg {
         @apply flex-row;
@@ -290,29 +290,24 @@ function onSelect(option: BalloonSelectorOptionTypes) {
 }
 
 .balloon-item {
-    @apply w-full relative cursor-pointer border border-solid;
+    @apply w-full relative cursor-pointer border border-solid first:rounded-t-md last:rounded-b-md;
     @apply transition-colors duration-300 ease-in-out;
 
-    &:first-child {
-        @apply rounded-t-md;
-    }
-
-    &:last-child {
-        @apply rounded-b-md;
-    }
-
     @screen md {
-        @apply w-auto;
-
-        &:first-child {
-            @apply rounded-l-md rounded-r-none;
-        }
-
-        &:last-child {
-            @apply rounded-r-md rounded-l-none;
-        }
+        @apply w-auto first:rounded-l-md first:rounded-r-none last:rounded-r-md last:rounded-l-none;
     }
 
+    & input {
+        @apply invisible absolute right-0 w-0 h-0;
+    }
+
+    & :slotted(.item-label) {
+        @apply h-full inline-flex flex-row gap-2 text-sm font-semibold px-5 py-2 items-center whitespace-nowrap;
+    }
+}
+
+/** States */
+.balloon-item {
     &.item-disabled {
         @apply cursor-not-allowed;
         @apply bg-gray-100 border-gray-300 text-gray-400;
@@ -358,31 +353,22 @@ function onSelect(option: BalloonSelectorOptionTypes) {
             @apply dark:bg-success-900 dark:text-success-300;
         }
     }
-
-    & input {
-        @apply invisible absolute right-0 w-0 h-0;
-    }
-
-    & :slotted(.item-label) {
-        @apply h-full inline-flex flex-row gap-2 text-sm font-semibold px-5 items-center;
-        padding-top: calc(0.875rem - 1px);
-        padding-bottom: calc(0.875rem - 1px);
-    }
 }
 
 /** Sizes */
 .field-balloon-selector.field-sm {
+    @apply h-8;
+
     & .balloon-item :slotted(.item-label) {
-        @apply text-xs px-3.5;
-        padding-top: calc(0.75rem - 1px);
-        padding-bottom: calc(0.75rem - 1px);
+        @apply px-3.5 py-1.5 text-xs;
     }
 }
+
 .field-balloon-selector.field-lg {
+    @apply h-14;
+    
     & .balloon-item :slotted(.item-label) {
-        @apply text-base px-7;
-        padding-top: calc(1.0rem - 1px);
-        padding-bottom: calc(1.0rem - 1px);
+        @apply px-7 py-3.5 text-base;
     }
 }
 

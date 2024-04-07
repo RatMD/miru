@@ -1,31 +1,45 @@
 <template>
-    <Story title="Form/Control/CalendarField" :layout="{ type: 'grid', width: '400px' }">
+    <Story title="Form/Control/CalendarField" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default" :init-state="stateDefault" v-slot="{ state }">
-            <CalendarField v-bind="state" v-model="state.value" />
+            <div class="p-2 max-w-[360px] mx-auto">
+                <CalendarField v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Monday" :init-state="stateMonday" v-slot="{ state }">
-            <CalendarField v-bind="state" v-model="state.value" />
+            <div class="p-2 max-w-[360px] mx-auto">
+                <CalendarField v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Week Numbers" :init-state="stateNumbers" v-slot="{ state }">
-            <CalendarField v-bind="state" v-model="state.value" />
+            <div class="p-2 max-w-[360px] mx-auto">
+                <CalendarField v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Austrian" :init-state="stateAustrian" v-slot="{ state }">
-            <CalendarField v-bind="state" v-model="state.value" />
+            <div class="p-2 max-w-[360px] mx-auto">
+                <CalendarField v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Min/Max Range" :init-state="stateRange" v-slot="{ state }">
-            <CalendarField v-bind="state" v-model="state.value" />
+            <div class="p-2 max-w-[360px] mx-auto">
+                <CalendarField v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Date Ranges" :init-state="stateRanges" v-slot="{ state }">
-            <CalendarField v-bind="state" v-model="state.value" />
+            <div class="p-2 max-w-[360px] mx-auto">
+                <CalendarField v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Time" :init-state="stateTime" v-slot="{ state }">
-            <CalendarField v-bind="state" v-model="state.value" />
+            <div class="p-2 max-w-[360px] mx-auto">
+                <CalendarField v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
     </Story>
 </template>

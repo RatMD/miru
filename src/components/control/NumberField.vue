@@ -1,8 +1,23 @@
 <template>
-    <div class="field-group">
-        <ActionButton :icon="LucideMinusSign" :size="props.size || 'md'" @click="onDecrease" :disabled="reachedMin" />
-        <InputField v-bind="props" type="text" @keydown="onKeyDown" @input.prevent="onInput" inputmode="numeric" v-model="value" />
-        <ActionButton :icon="LucidePlusSign" :size="props.size || 'md'" @click="onIncrease" :disabled="reachedMax" />
+    <div class="field-group" :class="[`field-group-${props.size || 'md'}`]">
+        <ActionButton 
+            :icon="LucideMinusSign" 
+            :iconProps="{ size: 16 }" 
+            :size="(props.size || 'md') == 'sm' ? 'sm' : 'md'" 
+            :disabled="reachedMin"
+            @click="onDecrease" />
+        <InputField v-bind="props" 
+            type="text" 
+            @keydown="onKeyDown" 
+            @input.prevent="onInput" 
+            inputmode="numeric" 
+            v-model="value" />
+        <ActionButton 
+            :icon="LucidePlusSign" 
+            :iconProps="{ size: 16 }" 
+            :size="(props.size || 'md') == 'sm' ? 'sm' : 'md'" 
+            :disabled="reachedMax"
+            @click="onIncrease" />
     </div>
 </template>
 
@@ -13,12 +28,11 @@ import type { MaybeRef } from 'vue';
  * NumberField Properties
  */
 export interface NumberFieldProps {
-
     /**
      * A custom number field id, usually passed by the FormControl component. The default value is an 
      * auto-generated UUID.
      */
-     id?: null | string;
+    id?: null | string;
 
     /**
      * The name attribute for this number field.
@@ -205,10 +219,20 @@ function onIncrease() {
 }
 
 :deep(.btn-action:first-child) {
-    @apply top-2 left-2 absolute;
+    @apply top-1 left-1 absolute;
 }
 
 :deep(.btn-action:last-child) {
-    @apply top-2 right-2 absolute;
+    @apply top-1 right-1 absolute;
+}
+
+.field-group-lg {
+    & :deep(.btn-action:first-child) {
+        @apply top-3 left-2;
+    }
+
+    & :deep(.btn-action:last-child) {
+        @apply top-3 right-2;
+    }
 }
 </style>

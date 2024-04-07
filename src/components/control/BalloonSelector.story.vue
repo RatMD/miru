@@ -1,72 +1,79 @@
 <template>
     <Story title="Form/Control/BalloonSelector" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default" :init-state="stateDefault" v-slot="{ state }">
-            <BalloonSelector v-bind="state" v-model="state.value" />
+            <div class="p-2">
+                <BalloonSelector v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Unselectable" :init-state="stateUnselectable" v-slot="{ state }">
-            <BalloonSelector v-bind="state" v-model="state.value" />
+            <div class="p-2">
+                <BalloonSelector v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Multiple" :init-state="stateMultiple" v-slot="{ state }">
-            <BalloonSelector v-bind="state" v-model="state.value" />
+            <div class="p-2">
+                <BalloonSelector v-bind="state" v-model="state.value" />
+            </div>
         </Variant>
 
         <Variant title="Sizes" :init-state="stateSizes" v-slot="{ state }">
-            <div class="flex flex-col gap-4">
-                <BalloonSelector v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
-                <BalloonSelector v-bind="state" placeholder="48px height" v-model="state.valueMD" />
-                <BalloonSelector v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
+            <div class="flex flex-col gap-4 p-2">
+                <div class="flex flex-row items-center gap-2">
+                    <BalloonSelector v-bind="state" size="sm" v-model="state.valueSM" />
+                    <BadgeStd label="32px" size="sm" class="ml-auto" />
+                </div>
+                <div class="flex flex-row items-center gap-2">
+                    <BalloonSelector v-bind="state" v-model="state.valueMD" />
+                    <BadgeStd label="default" size="sm" color="primary" class="ml-auto" />
+                    <BadgeStd label="40px" size="sm" />
+                </div>
+                <div class="flex flex-row items-center gap-2">
+                    <BalloonSelector v-bind="state" size="lg" v-model="state.valueLG" />
+                    <BadgeStd label="56px" size="sm" class="ml-auto" />
+                </div>
             </div>
         </Variant>
 
         <Variant title="Icons" :init-state="stateIcons" v-slot="{ state }">
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4 p-2">
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
-                    <BalloonSelector v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
+                    <BalloonSelector v-bind="state" size="sm" v-model="state.valueSM" />
                 </div>
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" placeholder="48px height" v-model="state.valueMD" />
-                    <BalloonSelector v-bind="state" placeholder="48px height" v-model="state.valueMD" />
+                    <BalloonSelector v-bind="state" v-model="state.valueMD" />
                 </div>
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
-                    <BalloonSelector v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
+                    <BalloonSelector v-bind="state" size="lg" v-model="state.valueLG" />
                 </div>
             </div>
         </Variant>
 
         <Variant title="Connected" :init-state="stateConnected" v-slot="{ state }">
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4 p-2">
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
-                    <BalloonSelector v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
+                    <BalloonSelector v-bind="state" size="sm" v-model="state.valueSM" />
                 </div>
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" placeholder="48px height" v-model="state.valueMD" />
-                    <BalloonSelector v-bind="state" placeholder="48px height" v-model="state.valueMD" />
+                    <BalloonSelector v-bind="state" v-model="state.valueMD" />
                 </div>
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
-                    <BalloonSelector v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
+                    <BalloonSelector v-bind="state" size="lg" v-model="state.valueLG" />
                 </div>
             </div>
         </Variant>
 
         <Variant title="Condensed" :init-state="stateCondensed" v-slot="{ state }">
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4 p-2">
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
-                    <BalloonSelector v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
+                    <BalloonSelector v-bind="state" size="sm" v-model="state.valueSM" />
                 </div>
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" placeholder="48px height" v-model="state.valueMD" />
-                    <BalloonSelector v-bind="state" placeholder="48px height" v-model="state.valueMD" />
+                    <BalloonSelector v-bind="state" v-model="state.valueMD" />
                 </div>
                 <div class="flex flex-row gap-4">
-                    <BalloonSelector v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
-                    <BalloonSelector v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
+                    <BalloonSelector v-bind="state" size="lg" v-model="state.valueLG" />
                 </div>
             </div>
         </Variant>
@@ -74,36 +81,36 @@
         <Variant title="States" :init-state="stateStates" v-slot="{ state }">
             <div class="flex flex-col flex-1 gap-4">
                 <div class="flex flex-row items-center flex-1 gap-4">
-                    <div class="basis-36">Default</div>
                     <BalloonSelector v-bind="state" v-model="state.valueNormal" />
+                    <BadgeStd label="Default" color="primary" size="sm" class="ml-auto" />
                 </div>
                 <div class="flex flex-row items-center flex-1 gap-4">
-                    <div class="basis-36">Selected</div>
                     <BalloonSelector v-bind="state" v-model="state.valueSelected" />
+                    <BadgeStd label="Selected" size="sm" class="ml-auto" />
                 </div>
                 <div class="flex flex-row items-center flex-1 gap-4">
-                    <div class="basis-36">Disabled</div>
                     <BalloonSelector v-bind="state" disabled v-model="state.valueDisabled" />
+                    <BadgeStd label="Disabled" size="sm" class="ml-auto" />
                 </div>
                 <div class="flex flex-row items-center flex-1 gap-4">
-                    <div class="basis-36">Disabled Selected</div>
                     <BalloonSelector v-bind="state" disabled v-model="state.valueDisabledSelected" />
+                    <BadgeStd label="Disabled Selected" size="sm" class="ml-auto" />
                 </div>
                 <div class="flex flex-row items-center flex-1 gap-4">
-                    <div class="basis-36">Valid</div>
                     <BalloonSelector v-bind="state" validation="valid" v-model="state.valueValid" />
+                    <BadgeStd label="Valid" size="sm" class="ml-auto" />
                 </div>
                 <div class="flex flex-row items-center flex-1 gap-4">
-                    <div class="basis-36">Valid Selected</div>
                     <BalloonSelector v-bind="state" validation="valid" v-model="state.valueValidSelected" />
+                    <BadgeStd label="Valid Selected" size="sm" class="ml-auto" />
                 </div>
                 <div class="flex flex-row items-center flex-1 gap-4">
-                    <div class="basis-36">Invalid</div>
                     <BalloonSelector v-bind="state" validation="invalid" v-model="state.valueInvalid" />
+                    <BadgeStd label="Invalid" size="sm" class="ml-auto" />
                 </div>
                 <div class="flex flex-row items-center flex-1 gap-4">
-                    <div class="basis-36">Invalid Selected</div>
                     <BalloonSelector v-bind="state" validation="invalid" v-model="state.valueInvalidSelected" />
+                    <BadgeStd label="Invalid Selected" size="sm" class="ml-auto" />
                 </div>
             </div>
         </Variant>
@@ -112,6 +119,7 @@
 
 <script lang="ts" setup>
 import { h, ref } from 'vue';
+import BadgeStd from '../badge/BadgeStd.vue';
 import BalloonSelector from './BalloonSelector.vue';
 
 
@@ -120,11 +128,11 @@ const AlignLeft = {
     props: {
         size: Number
     },
-    render(ctx: any) {
+    render(props: any) {
         return h('svg', {
             xmlns: "http://www.w3.org/2000/svg",
-            width: ctx?.props?.size ?? 16,
-            height: ctx?.props?.size ?? 16,
+            width: props?.size ?? 16,
+            height: props?.size ?? 16,
             viewBox: "0 0 24 24",
             fill: "none",
             stroke: "currentColor",
@@ -145,11 +153,11 @@ const AlignCenter = {
     props: {
         size: Number
     },
-    render(ctx: any) {
+    render(props: any) {
         return h('svg', {
             xmlns: "http://www.w3.org/2000/svg",
-            width: ctx?.props?.size ?? 16,
-            height: ctx?.props?.size ?? 16,
+            width: props?.size ?? 16,
+            height: props?.size ?? 16,
             viewBox: "0 0 24 24",
             fill: "none",
             stroke: "currentColor",
@@ -170,11 +178,11 @@ const AlignRight = {
     props: {
         size: Number
     },
-    render(ctx: any) {
+    render(props: any) {
         return h('svg', {
             xmlns: "http://www.w3.org/2000/svg",
-            width: ctx?.props?.size ?? 16,
-            height: ctx?.props?.size ?? 16,
+            width: props?.size ?? 16,
+            height: props?.size ?? 16,
             viewBox: "0 0 24 24",
             fill: "none",
             stroke: "currentColor",

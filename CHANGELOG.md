@@ -14,17 +14,24 @@ miru.ink / Changelog
 - Add: New `body` slot on `DialogStd` component to replace inner `<article>` structure.
 - Add: New `escape` property on `DialogStd` component to allow closing the modal using the ESC key.
 - Add: New wobble animation when trying to close a static modal by an click outside.
+- Add: `CheckCircle` / `XCircle` lucide icon components.
 - Update: Change the `AvatarGroup` limit class and label when not enough space is available.
 - Update: `package.json` dependencies.
 - Update: Decrease height (by lower the padding) on `BadgeStd` component.
 - Update: Minor styling changes on `TableStd` to support usage inside `CardStd` (using new content slot).
 - Update: Change font-size and icons on `AlertMessage` component.
 - Update: Change font-size on `AlertStd` component.
+- Update: Apply new 32 / 40 / 56 px height system on `BallonSelector` control field.
+- Update: Apply new 32 / 40 / 56 px height system on `InputField` control field.
+- Update: Apply new 32 / 40 / 56 px height system on `NumberField` control field.
+- Update: Apply new 32 / 40 / 56 px height system on `PasswordField` control field.
+- Update: Apply new 32 / 40 / 56 px height system on `SelectField` control field.
 - Fix: Add media-query based `max-width` stylings on `DialogStd` to support some space to screen-borders.
 - Fix: Demo-Icons on histoire stories.
 - Fix: Minor styling changes on `TooltipStd` component.
 - Fix: TypeScript type issues on dts plugin / vite build process.
 - Fix: Re-Using same tooltip instance resulted in broken animation on `v-tooltip` directive.
+- Fix: Styling issues on lg-sized `NumberField` and `PasswordField` component.
 
 ## Version 0.0.9 - Experimental
 - Add: `AlertMessage` / `AlertStd` components & basic story demonstration.

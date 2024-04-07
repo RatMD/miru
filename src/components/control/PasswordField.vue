@@ -1,7 +1,12 @@
 <template>
-    <div class="field-group">
-        <InputField v-bind="props" :type="visible ? 'text' : 'password'" v-model="value" />
-        <ActionButton :icon="visible ? LucideEyeOn : LucideEyeOff" :size="props.size || 'md'" @click="visible = !visible" />
+    <div class="field-group" :class="[`field-group-${props.size || 'md'}`]">
+        <InputField v-bind="props" 
+            :type="visible ? 'text' : 'password'" 
+            v-model="value" />
+        <ActionButton 
+            :icon="visible ? LucideEyeOn : LucideEyeOff" 
+            :size="(props.size || 'md') == 'sm' ? 'sm' : 'md'" 
+             @click="visible = !visible" />
     </div>
 </template>
 
@@ -121,6 +126,12 @@ const value = computed({
 }
 
 :deep(.btn-action) {
-    @apply top-2 right-2 absolute;
+    @apply top-1 right-1 absolute;
+}
+
+.field-group-lg {
+    & :deep(.btn-action) {
+        @apply top-3 right-2;
+    }
 }
 </style>

@@ -227,7 +227,7 @@ const isDateTime = computed<boolean>(() => {
 
 <style scoped>
 .field-input {
-    @apply w-full h-12 px-4 py-2.5 border border-solid rounded-md outline-none shadow-none;
+    @apply w-full h-10 px-4 py-2.5 border border-solid rounded-md outline-none shadow-none;
     @apply duration-300 ease-in-out;
     @apply bg-transparent border-gray-400;
     @apply dark:bg-gray-900 dark:border-gray-700;
@@ -266,7 +266,7 @@ const isDateTime = computed<boolean>(() => {
 
 /** Sizes */
 .field-input.field-sm {
-    @apply h-10 py-1.5;
+    @apply h-8 py-1.5;
     /* required to prevent zoom-behaviour on apple devices */
     /* @see https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/ */
     font-size: 16px;

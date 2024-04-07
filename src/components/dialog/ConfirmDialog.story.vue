@@ -22,7 +22,6 @@ import { ref } from 'vue';
 import ButtonStd from '../button/ButtonStd.vue';
 import ConfirmDialog from './ConfirmDialog.vue';
 
-
 function stateDefault() {
     const visible = ref<boolean>(false);
     const loading = ref<boolean>(false);

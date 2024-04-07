@@ -1,13 +1,13 @@
 <template>
     <Story title="Form/Control/PriceField" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default" :init-state="stateDefault" v-slot="{ state }">
-            <div class="p-2">
+            <div class="max-w-[400px] mx-auto p-2">
                 <PriceField v-bind="state" v-model="state.value" />
             </div>
         </Variant>
         
         <Variant title="Currencies" :init-state="stateCurrencies" v-slot="{ state }">
-            <div class="flex flex-col gap-4 p-2">
+            <div class="max-w-[400px] mx-auto flex flex-col gap-4 p-2">
                 <PriceField v-bind="state" v-model="state.value" placeholder="currency" icon="currency" />
                 <PriceField v-bind="state" v-model="state.value" placeholder="bitcoin" icon="bitcoin" />
                 <PriceField v-bind="state" v-model="state.value" placeholder="dollar" icon="dollar" />
@@ -19,6 +19,33 @@
                 <PriceField v-bind="state" v-model="state.value" placeholder="ruble" icon="ruble" />
                 <PriceField v-bind="state" v-model="state.value" placeholder="franc" icon="franc" />
                 <PriceField v-bind="state" v-model="state.value" placeholder="Custom Icon" :icon="icon" />
+            </div>
+        </Variant>
+        
+        <Variant title="Sizes" :init-state="stateSizes" v-slot="{ state }">
+            <div class="max-w-[400px] mx-auto flex flex-col gap-4 p-2">
+                <PriceField v-bind="state" size="sm" placeholder="32px height" v-model="state.valueSM" />
+                <PriceField v-bind="state" placeholder="40px height" v-model="state.valueMD" />
+                <PriceField v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
+            </div>
+        </Variant>
+        
+        <Variant title="States" :init-state="stateStates" v-slot="{ state }">
+            <div class="max-w-[600px] mx-auto flex flex-row gap-4 p-2">
+                <div class="flex flex-col flex-1 gap-4">
+                    <PriceField v-bind="state" placeholder="Default State" v-model="state.placeholderValueNormal" />
+                    <PriceField v-bind="state" placeholder="Disabled State" disabled v-model="state.placeholderValueDisabled" />
+                    <PriceField v-bind="state" placeholder="Readonly State" readonly v-model="state.placeholderValueReadonly" />
+                    <PriceField v-bind="state" placeholder="Valid State" validation="valid" v-model="state.placeholderValueValid" />
+                    <PriceField v-bind="state" placeholder="Invalid State" validation="invalid" v-model="state.placeholderValueInvalid" />
+                </div>
+                <div class="flex flex-col flex-1 gap-4">
+                    <PriceField v-bind="state" v-model="state.valueNormal" />
+                    <PriceField v-bind="state" v-model="state.valueDisabled" disabled />
+                    <PriceField v-bind="state" v-model="state.valueReadonly" readonly />
+                    <PriceField v-bind="state" v-model="state.valueValid" validation="valid" />
+                    <PriceField v-bind="state" v-model="state.valueInvalid" validation="invalid" />
+                </div>
             </div>
         </Variant>
     </Story>
@@ -66,6 +93,30 @@ function stateDefault() {
 function stateCurrencies() {
     return {
 
+    }
+}
+
+function stateSizes() {
+    return {
+        placeholder: 'Placeholder',
+        valueSM: ref(),
+        valueMD: ref(),
+        valueLG: ref(),
+    }
+}
+
+function stateStates() {
+    return {
+        placeholderValueNormal: ref<string>(''),
+        placeholderValueDisabled: ref<string>(''),
+        placeholderValueReadonly: ref<string>(''),
+        placeholderValueValid: ref<string>(''),
+        placeholderValueInvalid: ref<string>(''),
+        valueNormal: ref<string>('Default State'),
+        valueDisabled: ref<string>('Disabled State'),
+        valueReadonly: ref<string>('Readonly State'),
+        valueValid: ref<string>('Valid State'),
+        valueInvalid: ref<string>('Invalid State'),
     }
 }
 </script>

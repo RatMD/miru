@@ -132,7 +132,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 
 <style scoped>
 .field-select {
-    @apply w-full h-12 px-4 py-2.5 border border-solid rounded-md outline-none shadow-none appearance-none;
+    @apply w-full h-10 px-4 py-2 border border-solid rounded-md outline-none shadow-none appearance-none;
     @apply duration-300 ease-in-out;
     @apply bg-transparent border-gray-400;
     @apply dark:bg-gray-900 dark:border-gray-700;
@@ -174,7 +174,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 
 /** Sizes */
 .field-select.field-sm {
-    @apply h-10 py-1.5;
+    @apply h-8 py-1;
     /* required to prevent zoom-behaviour on apple devices, added here too for consistency */
     /* @see https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/ */
     font-size: 16px;
@@ -184,6 +184,6 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
     }
 }
 .field-select.field-lg {
-    @apply h-14 py-4 text-lg;
+    @apply h-14 py-3 text-lg;
 }
 </style>

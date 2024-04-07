@@ -1,21 +1,21 @@
 <template>
     <Story title="Form/Control/TextareaField" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default" :init-state="stateDefault" v-slot="{ state }">
-            <div class="p-2">
+            <div class="max-w-[400px] mx-auto p-2">
                 <TextareaField v-bind="state" v-model="state.value" />
             </div>
         </Variant>
         
         <Variant title="Sizes" :init-state="stateSizes" v-slot="{ state }">
-            <div class="flex flex-col gap-4 p-2">
-                <TextareaField v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
-                <TextareaField v-bind="state" placeholder="48px height" v-model="state.valueMD" />
-                <TextareaField v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
+            <div class="max-w-[400px] mx-auto flex flex-col gap-4 p-2">
+                <TextareaField v-bind="state" size="sm" placeholder="Placeholder" v-model="state.valueSM" />
+                <TextareaField v-bind="state" placeholder="Placeholder" v-model="state.valueMD" />
+                <TextareaField v-bind="state" size="lg" placeholder="Placeholder" v-model="state.valueLG" />
             </div>
         </Variant>
         
         <Variant title="States" :init-state="stateStates" v-slot="{ state }">
-            <div class="flex flex-row gap-4 p-2">
+            <div class="max-w-[600px] mx-auto flex flex-row gap-4 p-2">
                 <div class="flex flex-col flex-1 gap-4">
                     <TextareaField v-bind="state" placeholder="Default State" v-model="state.placeholderValueNormal" />
                     <TextareaField v-bind="state" placeholder="Disabled State" disabled v-model="state.placeholderValueDisabled" />
