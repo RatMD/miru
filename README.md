@@ -10,8 +10,8 @@ miru.ink
 development of mobile apps (especially PWAs), but also with support for tablet and desktop 
 websites and applications.
 
-- [histoire.miru.ink](https://histoire.miru.ink) (Frequently Updated)
-- [docs.miru.ink](https://docs.miru.ink) (Under Construction)
+- [histoire.miru.ink](https://histoire.miru.ink)
+- [docs.miru.ink](https://docs.miru.ink) (Temporary available under miru.ink)
 - [miru.ink](https://miru.ink) (Under Construction)
 
 Requirements
@@ -31,7 +31,6 @@ License
 Published under the MIT License\
 Copyright © 2023 - 2024 rat.md <sam@rat.md>
 
-\
 \
 
 **miru.ink** is inspired by [OctoberCMS](https://octobercms.com/), [Bootstrap](https://getbootstrap.com/), 
