@@ -8,8 +8,8 @@
         
         <Variant title="Sizes" :init-state="stateSizes" v-slot="{ state }">
             <div class="max-w-[400px] mx-auto flex flex-col gap-4 p-2">
-                <SelectField v-bind="state" size="sm" placeholder="40px height" v-model="state.valueSM" />
-                <SelectField v-bind="state" placeholder="48px height" v-model="state.valueMD" />
+                <SelectField v-bind="state" size="sm" placeholder="32px height" v-model="state.valueSM" />
+                <SelectField v-bind="state" placeholder="40px height" v-model="state.valueMD" />
                 <SelectField v-bind="state" size="lg" placeholder="56px height" v-model="state.valueLG" />
             </div>
         </Variant>

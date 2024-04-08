@@ -15,9 +15,9 @@
 import type { MaybeRef } from 'vue';
 
 /**
- * TimeFrameField Properties
+ * TimeFrame Properties
  */
-export interface TimeFrameFieldProps {
+export interface TimeFrameProps {
     /**
      * A custom time-frame field id, usually passed by the FormControl component. The default value is an 
      * auto-generated UUID.
@@ -77,9 +77,9 @@ export interface TimeFrameFieldProps {
 }
 
 /**
- * TimeFrameField Emits
+ * TimeFrame Emits
  */
-export interface TimeFrameFieldEmits {
+export interface TimeFrameEmits {
     /**
      * Update model value handler.
      */
@@ -88,7 +88,7 @@ export interface TimeFrameFieldEmits {
 
 // Default Export, used for IDE-related auto-import features
 export default {
-    name: 'TimeFrameField'
+    name: 'TimeFrame'
 }
 </script>
 
@@ -98,10 +98,10 @@ import InputField from '../control/InputField.vue';
 import FormFieldGroup from '../form/FormFieldGroup.vue';
 
 // Define Component
-const props = withDefaults(defineProps<TimeFrameFieldProps>(), {
+const props = withDefaults(defineProps<TimeFrameProps>(), {
     seconds: 60
 });
-const emits = defineEmits<TimeFrameFieldEmits>();
+const emits = defineEmits<TimeFrameEmits>();
 
 // States
 const valueStart = ref<null | string>(null);

@@ -32,7 +32,7 @@ export interface BadgeProps {
     /**
      * The desired color used for this badge.
      */
-    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+    color?: null | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
 
     /**
      * The desired label text for this badge.
