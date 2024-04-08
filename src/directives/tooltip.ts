@@ -62,7 +62,7 @@ const TooltipDirective: Directive = {
         const tooltip: { value: VNode|null } = { value: null };
         async function onAttach(this: HTMLElement, props: TooltipStdProps, event: PointerEvent) {
             if (!tooltip.value) {
-                tooltip.value = h(TooltipStd, { key: tooltipKey++, ...props });
+                tooltip.value = h(TooltipStd, { key: tooltipKey++, ...props } as any);
             }
             render(tooltip.value, this.parentElement ? this.parentElement : this);
             tooltip.value.component?.exposed?.show(event);

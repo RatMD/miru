@@ -2,6 +2,7 @@
 import type { ComputedRef, MaybeRef, Ref, UnwrapNestedRefs } from 'vue';
 import type * as zod from 'zod';
 import type { ZodTypeAny, SafeParseReturnType } from 'zod';
+import type { Nullable } from '../types';
 
 import { computed, toRaw, reactive, ref, unref } from 'vue';
 import { z } from 'zod';
@@ -55,7 +56,7 @@ export interface FormHandler<T> {
     /**
      * The current form values.
      */
-    values: UnwrapNestedRefs<T>;
+    values: UnwrapNestedRefs<Nullable<T>>;
     
     /**
      * The passed form keys.
@@ -169,8 +170,8 @@ export interface FormHandler<T> {
  */
 export function useForm<T extends object>(
     element: MaybeRef<HTMLFormElement|undefined>, 
-    initial: T,
-    rules?: Validator<T>
+    initial: Nullable<T>,
+    rules?: Validator<T>,
 ): FormHandler<T> {
     const validator = ref<Validator<T>|undefined>(rules ?? void 0);
 
@@ -193,7 +194,7 @@ export function useForm<T extends object>(
      */
     const originals = Object.freeze(JSON.parse(JSON.stringify(initial)));
     const keys = Object.freeze(Object.keys(initial)) as Array<keyof T>;
-    const values = reactive<T>(initial);
+    const values = reactive<Nullable<T>>(initial);
     
     const dirtyKeys = computed<(keyof T)[]>(() => {
         const dirty: Array<keyof T> = [];

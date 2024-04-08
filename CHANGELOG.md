@@ -1,6 +1,10 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.11 - Experimental
+- Update: Support nullable values on `useForm` composable.
+- Fix: Typing issues on `tooltip` directive.
+
 ## Version 0.0.10 - Experimental
 - Add: New `default` slot on the `AvatarStd` component to replace `props.name` when no `props.avatar` is present.
 - Add: New `arrow` and `center` options on the `TooltipStd` component.
