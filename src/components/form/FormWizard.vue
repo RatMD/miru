@@ -1,5 +1,5 @@
 <template>
-    <slot name="before" v-bind="props" :prev="onPrev" :next="onNext" :cancel="onCancel" :submit="onSubmit" />
+    <slot name="before" v-bind="pass" />
 
     <div class="form-wizard">
         <div class="form-wizard-pages" :style="styles">
@@ -7,7 +7,7 @@
         </div>
 
         <template v-if="$slots.controls || props.controls">
-            <slot name="controls" v-bind="props" :prev="onPrev" :next="onNext" :cancel="onCancel" :submit="onSubmit">
+            <slot name="controls" v-bind="pass">
                 <div class="form-wizard-controls">
                     <div class="control-prev">
                         <button type="button" class="button-primary" @click="onPrev" :disabled="current <= 0">
@@ -31,7 +31,7 @@
         </template>
     </div>
 
-    <slot name="after" v-bind="props" :prev="onPrev" :next="onNext" :cancel="onCancel" :submit="onSubmit" />
+    <slot name="after" v-bind="pass" />
 </template>
 
 <script lang="ts">
@@ -43,7 +43,7 @@ import type { FormHandler } from '../../composables/use-form';
  */
 export interface FormWizardProps {
     /**
-     * Current Form Wizard Page.
+     * FormWizard Form Handler.
      */
     form: FormHandler<any>;
 
@@ -57,6 +57,21 @@ export interface FormWizardProps {
  * FormWizard Slots
  */
 export interface FormWizardSlotProps extends FormWizardProps {
+    /**
+     * Total number of available and valid FormWizardPage components.
+     */
+    total: number;
+
+    /**
+     * The current FormWizardPage (starting with 0).
+     */
+    current: number;
+
+    /**
+     * Current FormWizard Form Handler.
+     */
+    form: FormHandler<any>;
+    
     /**
      * Previous Page Handler
      */
@@ -82,7 +97,7 @@ export interface FormWizardSlots {
     /**
      * The collection of available form wizard pages.
      */
-    default(props: FormWizardSlotProps): InstanceType<typeof FormWizardPage>[];
+    default(props: Omit<FormWizardSlotProps, 'total' | 'current'>): InstanceType<typeof FormWizardPage>[];
 
     /**
      * Custom FormWizard control components.
@@ -158,6 +173,16 @@ const pages = computed<InstanceType<typeof FormWizardPage>[]>(
 const page = computed<InstanceType<typeof FormWizardPage>>(() => pages.value[current.value]);
 const total = computed<number>(() => pages.value.length);
 const styles = computed(() => ({ transform: `translateX(-${100 * (current.value)}%)` }));
+
+const pass = computed<FormWizardSlotProps>(() => ({
+    total: total.value,
+    current: current.value,
+    prev: onPrev,
+    next: onNext,
+    cancel: onCancel,
+    submit: onSubmit,
+    ...props
+}));
 
 /**
  * Go to previous page

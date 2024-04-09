@@ -14,7 +14,7 @@ export interface FormWizardPageProps {
     /**
      * Current Form Wizard Page.
      */
-    form: FormHandler<any>;
+    form?: FormHandler<any>;
 
     /**
      * The desired form keys to validate.
@@ -64,7 +64,7 @@ const emits = defineEmits<FormWizardPageEmits>();
  * @returns
  */
 function validate() {
-    if (typeof props.validation == 'undefined' || props.validation.length == 0) {
+    if (!props.form || typeof props.validation == 'undefined' || props.validation.length == 0) {
         return true;
     } else {
         const result = props.form.validate(props.validation);
