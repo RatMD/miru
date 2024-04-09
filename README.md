@@ -3,8 +3,8 @@ miru.ink
 [![NPM Version](https://img.shields.io/npm/v/miru.ink?style=flat-square&label=Version)](https://www.npmjs.com/package/miru.ink)
 [![GitHub License](https://img.shields.io/github/license/RatMD/miru?style=flat-square&label=License)](https://github.com/RatMD/miru/blob/master/LICENSE.md)
 
-> 🚧 ATTENTION - EXPERIMENTAL STATE\
-> 🚧 Don't use this package in production
+> [!CAUTION]
+> __EXPERIMENTAL STATE__ - Don't use this package in production 🚧 
 
 **miru.ink** is a Vue3-written, tailwind-styled component and function library. With focus on the 
 development of mobile apps (especially PWAs), but also with support for tablet and desktop 
