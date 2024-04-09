@@ -175,6 +175,7 @@ const total = computed<number>(() => pages.value.length);
 const styles = computed(() => ({ transform: `translateX(-${100 * (current.value)}%)` }));
 
 const pass = computed<FormWizardSlotProps>(() => ({
+    //@todo Why is total and current null on #controls slot
     total: total.value,
     current: current.value,
     prev: onPrev,
@@ -204,7 +205,16 @@ function onNext() {
         return false;
     }
 
-    if (!page.value.validate()) {
+    //@todo Why is page.value.validate not available, when triggered by a next() call inside a FormPageWizard?
+    let result = true;
+    if (typeof page.value.validate == 'function') {
+        result = page.value.validate();
+    } else if (typeof (page.value as any).props != 'undefined' && Array.isArray((page.value as any).props.validation)) {
+        let temp = props.form.validate((page.value as any).props.validation);
+        result = temp.valid;
+    }
+
+    if (!result) {
         props.form.touch();
         return false;
     } else {

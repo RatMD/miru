@@ -27,6 +27,9 @@ export type ValidationRules<T> = {
     [Property in keyof T]: BaseSchema<any, any>;
 }
 
+export type ValidationCallback<T> = (rules: ValidationRules<T>, values: Nullable<T>) => boolean | SafeParseResult<any>;
+
+
 export interface FormHandler<T> {
     /**
      * The form element, when useForm is called with an form element, null otherwise.
@@ -118,6 +121,14 @@ export interface FormHandler<T> {
      * @param key 
      */
     isDirty(key: keyof T): boolean;
+    
+    /**
+     * Custom validation handler.
+     * @param cb 
+     * @param force 
+     * @returns 
+     */
+    isCustomValid(cb: ValidationCallback<T>, force?: boolean): boolean;
 
     /**
      * Validate a specific field.
@@ -287,6 +298,23 @@ export function useForm<T extends object>(
     }
 
     /**
+     * Custom validation handler.
+     * @param cb 
+     * @param force 
+     * @returns 
+     */
+    function isCustomValid(cb: ValidationCallback<T>, force?: boolean): boolean {
+        if (!validator.value) {
+            return true;
+        }
+
+        // Receive validation rules
+        const ruleSet = validator.value(v as typeof valibot, payload.value);
+        const result = cb(ruleSet, toRaw(values as Nullable<T>));
+        return typeof result == 'boolean' ? result : (result?.success || false);
+    }
+
+    /**
      * Validate a specific field.
      * @param key
      * @param force
@@ -306,7 +334,11 @@ export function useForm<T extends object>(
 
         // Receive validation rules
         const ruleSet = validator.value(v as typeof valibot, payload.value);
-        return v.safeParse(ruleSet[key], (values as Nullable<T>)[key]).success;
+        if (key in ruleSet) {
+            return v.safeParse(ruleSet[key], toRaw(values as T)[key]).success;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -346,8 +378,7 @@ export function useForm<T extends object>(
                 }
             }
 
-            const result = v.safeParse(rule, (values as T)[key]);
-            
+            const result = v.safeParse(rule, toRaw(values as T)[key]);
             if (!result.success) {
                 if (valid) {
                     valid = false;
@@ -457,6 +488,7 @@ export function useForm<T extends object>(
 
         // Actions
         isDirty,
+        isCustomValid,
         isValid,
         isInvalid,
         validate,
