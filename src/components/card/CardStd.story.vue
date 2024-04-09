@@ -139,7 +139,6 @@
 <script lang="ts" setup>
 import ChevronRight from '../lucide/ChevronRight.vue';
 import CardStd from './CardStd.vue';
-
 </script>
 
 <docs lang="md">

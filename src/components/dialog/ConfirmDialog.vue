@@ -1,5 +1,5 @@
 <template>
-    <DialogStd v-bind="props" v-model:visible="isVisible">
+    <DialogStd ref="dialog" v-bind="props" v-model:visible="isVisible">
         <template #default>
             <slot name="default" v-bind="props" />
         </template>
@@ -70,7 +70,7 @@ export interface ConfirmDialogProps extends DialogStdProps {
 }
 
 /**
- * ConfirmDialog Emits
+ * ConfirmDialog Events
  */
 export interface ConfirmDialogEmits extends DialogStdEmits {
     /**
@@ -91,7 +91,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import DialogStd from './DialogStd.vue';
 import ButtonGroup from '../button/ButtonGroup.vue';
 import ButtonStd from '../button/ButtonStd.vue';
@@ -111,6 +111,7 @@ const emits = defineEmits<ConfirmDialogEmits>();
 const client = useClient();
 
 // States
+const dialog = ref<InstanceType<typeof DialogStd>>();
 const isVisible = computed<boolean>({
     get() {
         return props.visible || false;
@@ -135,6 +136,13 @@ function onCancel(event: Event) {
 function onSubmit(event: Event) {
     emits('submit');
 }
+
+// Expose Component
+defineExpose({
+    visible: isVisible,
+    open: dialog.value?.open,
+    close: dialog.value?.close,
+});
 </script>
 
 <style scoped>

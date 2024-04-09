@@ -26,24 +26,15 @@
 </template>
 
 <script lang="ts">
+import type { CardStdProps } from './CardStd.vue';
+
 /**
  * CardCollapse Properties
  */
-export interface CardCollapseProps {
+export interface CardCollapseProps extends CardStdProps {
     /**
-     * The title of this card element.
-     */
-    title?: string | null;
-
-    /**
-     * The desired size of the card container.
-     */
-    size?: 'sm' | 'md' | 'lg' | 'full';
-
-    /**
-     * The duration until the accordion pane content is fully toggled, you can either pass the time 
-     * in milliseconds or a control-value to calculate the duration dynamically based on the amount 
-     * of content.
+     * The duration until the content is fully toggled, you can either pass the time in milliseconds 
+     * or a control-value to calculate the duration dynamically based on the amount of content.
      */
     duration?: number | 'slow' | 'normal' | 'fast';
     
@@ -71,7 +62,7 @@ export interface CardCollapseSlots {
 }
 
 /**
- * CardCollapse Emits
+ * CardCollapse Events
  */
 export interface CardCollapseEmits {
     /**

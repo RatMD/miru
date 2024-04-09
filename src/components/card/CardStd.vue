@@ -25,7 +25,7 @@
 
 <script lang="ts">
 /**
- * Card Properties
+ * CardStd Properties
  */
 export interface CardStdProps {
     /**
@@ -45,7 +45,7 @@ export interface CardStdProps {
 }
 
 /**
- * Card Slots
+ * CardStd Slots
  */
 export interface CardStdSlots {
     /**

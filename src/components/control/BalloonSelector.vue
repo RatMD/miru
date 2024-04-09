@@ -52,7 +52,7 @@ export interface AdvancedOption {
     /**
      * The option value, written to the modelValue.
      */
-    value: string;
+    value: number | string;
 
     /**
      * The option label, shown to the user.
@@ -99,7 +99,7 @@ export interface BalloonSelectorProps {
     /**
      * The value for this balloon selector, must be passed as v-model value.
      */
-    modelValue?: null | string | number | (string|number)[];
+    modelValue?: null | number | string | (number|string)[];
 
     /**
      * The available options to be available on this balloon selector field.
@@ -171,7 +171,7 @@ export interface BalloonSelectorSlots {
      * Custom balloon item content slot, used instead of the default option icon / label.
      * @param props 
      */
-    default(props: BalloonSelectorProps & { option: BalloonSelectorOptionTypes, idx: number }): any;
+    default(props: BalloonSelectorProps & { option: BalloonSelectorProps['options'][number], idx: number }): any;
 }
 
 /**
