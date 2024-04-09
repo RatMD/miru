@@ -1,17 +1,17 @@
 
 import type { ComputedRef, MaybeRef, Ref, UnwrapNestedRefs } from 'vue';
-import type * as zod from 'zod';
-import type { ZodTypeAny, SafeParseReturnType } from 'zod';
 import type { Nullable } from '../types';
+import * as valibot from 'valibot';
+import type { BaseSchema, SafeParseResult } from 'valibot';
 
 import { computed, toRaw, reactive, ref, unref } from 'vue';
-import { z } from 'zod';
+import * as v from 'valibot';
 import equals from '../utils/equals';
 import request, { type Payload, type Response } from '../utils/request';
 
 export type FormMethods = 'GET' | 'PATCH' | 'POST' | 'PUT';
 
-export type Validator<T> = (z: typeof zod, values: T) => ValidationRules<T>;
+export type Validator<T> = (v: typeof valibot, values: T) => ValidationRules<T>;
 
 export type ValidationResult<T> = { 
     valid: boolean,
@@ -19,12 +19,12 @@ export type ValidationResult<T> = {
         [Property in keyof T]: string[]
     },
     results: {
-        [Property in keyof T]: SafeParseReturnType<any, any>;
+        [Property in keyof T]: SafeParseResult<any>;
     }
 };
 
 export type ValidationRules<T> = {
-    [Property in keyof T]: ZodTypeAny;
+    [Property in keyof T]: BaseSchema<any, any>;
 }
 
 export interface FormHandler<T> {
@@ -305,8 +305,8 @@ export function useForm<T extends object>(
         }
 
         // Receive validation rules
-        const ruleSet = validator.value(z as typeof zod, payload.value);
-        return ruleSet[key].safeParse((values as any)[key]).success;
+        const ruleSet = validator.value(v as typeof valibot, payload.value);
+        return v.safeParse(ruleSet[key], (values as Nullable<T>)[key]).success;
     }
 
     /**
@@ -332,28 +332,29 @@ export function useForm<T extends object>(
                 results: {} as any
             };
         }
-        const ruleSet = validator.value(z as typeof zod, payload.value);
+        const ruleSet = validator.value(v as typeof valibot, payload.value);
 
         let valid = true;
-        const results: { [Property in keyof T]: SafeParseReturnType<any, any> } = {} as any;
+        const results: { [Property in keyof T]: SafeParseResult<ValidationRules<T>[keyof T]> } = {} as any;
         const errors: { [Property in keyof T]: string[] } = {} as any;
 
-        for (const [key, rule] of Object.entries(ruleSet)) {
+        const rulable = Object.entries(ruleSet) as [keyof T, ValidationRules<T>[keyof T]][];
+        for (const [key, rule] of rulable) {
             if (typeof keys != 'undefined') {
                 if (keys.indexOf(key as any) < 0) {
                     continue;
                 }
             }
 
-            const result = (rule as ZodTypeAny).safeParse((values as any)[key]);
+            const result = v.safeParse(rule, (values as T)[key]);
             
             if (!result.success) {
                 if (valid) {
                     valid = false;
                 }
-                errors[key as keyof T] = [...(result as any).error.issues].map(issue => issue.message)
+                errors[key as keyof T] = [...result.issues].map(issue => issue.message)
             }
-            results[key as keyof T] = result;
+            results[key] = result;
         }
 
         return {

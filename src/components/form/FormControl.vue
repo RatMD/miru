@@ -116,6 +116,7 @@ export interface FormControlSlots {
      */
     description(props: Omit<FormControlProps, 'id'> & { id: string }): any;
 }
+
 // Default Export, used for IDE-related auto-import features
 export default {
     name: 'FormControl'

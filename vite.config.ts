@@ -48,6 +48,7 @@ export default defineConfig({
                     }                    
                 }
             },
+            copyDtsFiles: true,
             //cleanVueFileName: true,
             tsconfigPath: 'tsconfig.types.json'
         })

@@ -45,7 +45,7 @@
     "dependencies": {
         "@floating-ui/vue": "^1.0.6",
         "polyfill-crypto-methods": "^0.2.0",
-        "zod": "^3.22.4"
+        "valibot": "^0.30.0"
     },
     "devDependencies": {
         "@histoire/plugin-vue": "^0.17.15",

@@ -2,7 +2,11 @@ miru.ink / Changelog
 ====================
 
 ## Version 0.0.11 - Experimental
+- Add: New `valibot` validation library to replace `zod`.
+- Add: `ArrowLeft` / `ArrowRight` lucide icon components.
+- Add: `FormWizard` / `FormWizardPage` components.
 - Update: Support nullable values on `useForm` composable.
+- Update: Include types in dist bundle.
 - Fix: Typing issues on `tooltip` directive.
 
 ## Version 0.0.10 - Experimental
