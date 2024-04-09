@@ -29,6 +29,7 @@ export type ValidationRules<T> = {
 
 export type ValidationCallback<T> = (rules: ValidationRules<T>, values: Nullable<T>) => boolean | SafeParseResult<any>;
 
+export type SubmitRequestHandler<T> = (action: string, values: Payload) => Promise<Response<any, any>>;
 
 export interface FormHandler<T> {
     /**
@@ -155,10 +156,10 @@ export interface FormHandler<T> {
 
     /**
      * Submit Form handler.
-     * @param newValues 
+     * @param requestHander 
      * @returns 
      */
-    submit(): Promise<Response<any, any>|false>;
+    submit(requestHander?: SubmitRequestHandler<T>): Promise<Response<any, any>|false>;
 
     /**
      * Update many form values at once.
@@ -401,7 +402,7 @@ export function useForm<T extends object>(
      * @param newValues 
      * @returns 
      */
-    async function submit(): Promise<Response<any, any>|false> {
+    async function submit(requestHandler?: SubmitRequestHandler<T>): Promise<Response<any, any>|false> {
         if (!action.value || !method.value) {
             return false;
         }
@@ -423,7 +424,9 @@ export function useForm<T extends object>(
 
         // Submit Data
         try {
-            const response = await request(action.value, payload.value as Payload);
+            const response = typeof requestHandler == 'function' ?
+                await requestHandler(action.value, payload.value as Payload) :
+                await request(action.value, payload.value as Payload);
             return response;
         } catch (err) {
             return {

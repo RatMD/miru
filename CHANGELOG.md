@@ -5,7 +5,8 @@ miru.ink / Changelog
 - Add: New `valibot` validation library to replace `zod`.
 - Add: New `ArrowLeft` / `ArrowRight` lucide icon components.
 - Add: New `FormWizard` / `FormWizardPage` components.
-- Add: New `isCustomValid` callback helper un `useForm` composable.
+- Add: New `isCustomValid` callback helper on `useForm` composable.
+- Add: Support custom `requestHandler` callback parameter on `useForm` composable.
 - Update: Support nullable values on `useForm` composable.
 - Update: Include types in dist bundle.
 - Fix: Typing issues on `tooltip` directive.

@@ -16,7 +16,13 @@ websites and applications.
 
 Requirements
 ------------
-_Work in Progress_
+- _Peer_: Vue 3.4 (may works with lower versions as well, but untested)
+- _Peer_: postcss 8.3.0 (may works with lower versions as well, but untested)
+- _Peer_: postcss-import 16.0.0 (may works with lower versions as well, but untested)
+- _Peer_: tailwindcss 3.3.0 (may works with lower versions as well, but untested)
+- _Bundled_: [@floating-ui/vue](https://www.npmjs.com/package/@floating-ui/vue)
+- _Bundled_: [polyfill-crypto-methods](https://www.npmjs.com/package/polyfill-crypto-methods)
+- _Bundled_: [valibot](https://www.npmjs.com/package/valibot)
 
 Installation
 ------------
