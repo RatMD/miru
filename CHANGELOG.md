@@ -3,8 +3,8 @@ miru.ink / Changelog
 
 ## Version 0.0.11 - Experimental
 - Add: New `valibot` validation library to replace `zod`.
-- Add: `ArrowLeft` / `ArrowRight` lucide icon components.
-- Add: `FormWizard` / `FormWizardPage` components.
+- Add: New `ArrowLeft` / `ArrowRight` lucide icon components.
+- Add: New `FormWizard` / `FormWizardPage` components.
 - Update: Support nullable values on `useForm` composable.
 - Update: Include types in dist bundle.
 - Fix: Typing issues on `tooltip` directive.
@@ -45,17 +45,17 @@ miru.ink / Changelog
 - Fix: Styling issues on lg-sized `NumberField` and `PasswordField` component.
 
 ## Version 0.0.9 - Experimental
-- Add: `AlertMessage` / `AlertStd` components & basic story demonstration.
-- Add: `AvatarStd` / `AvatarGroup` components & basic story demonstration.
-- Add: `SimplePagination` / `AdvancedPagination` components & basic story demonstration.
-- Add: `CardStd` / `CardCollapse` components & basic story demonstration.
-- Add: `TableStd` / `TableColumn` components & basic story demonstration.
-- Add: `CheckSign` / `ChevronsLeft` / `ChevronsRight` / `DotCircle` / `InfoCircle` / `TriangleAlert` lucide icon components.
-- Add: `BackdropSupport` support component & basic story demonstration.
-- Add: `BreakpointSupport` support component & basic story demonstration.
-- Add: `CollapseSupport` support component & basic story demonstration.
-- Add: `DeferredSupport` support component & basic story demonstration (which does not work due to histoire `<Suspense />` Wrapper).
-- Add: `FloatingSupport` support component & basic story demonstration.
+- Add: New `AlertMessage` / `AlertStd` components & basic story demonstration.
+- Add: New `AvatarStd` / `AvatarGroup` components & basic story demonstration.
+- Add: New `SimplePagination` / `AdvancedPagination` components & basic story demonstration.
+- Add: New `CardStd` / `CardCollapse` components & basic story demonstration.
+- Add: New `TableStd` / `TableColumn` components & basic story demonstration.
+- Add: New `CheckSign` / `ChevronsLeft` / `ChevronsRight` / `DotCircle` / `InfoCircle` / `TriangleAlert` lucide icon components.
+- Add: New `BackdropSupport` support component & basic story demonstration.
+- Add: New `BreakpointSupport` support component & basic story demonstration.
+- Add: New `CollapseSupport` support component & basic story demonstration.
+- Add: New `DeferredSupport` support component & basic story demonstration (which does not work due to histoire `<Suspense />` Wrapper).
+- Add: New `FloatingSupport` support component & basic story demonstration.
 - Add: New `now` utility helper function to create a database familiar "YYYY-MM-DD HH:ii:ss" stamp.
 - Add: New Modal / Dialog and Offcanvas handling using new `BackdropSupport` component.
 - Add: New `v-click-outside` directive to trigger on click outside of target element.
