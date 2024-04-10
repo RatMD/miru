@@ -1,5 +1,14 @@
 <template>
-    <DialogStd ref="dialog" v-bind="dialogProps" v-model:visible="isVisible">
+    <DialogStd ref="dialog" 
+        v-bind="dialogProps" 
+        v-model:visible="isVisible"
+        @show="() => emits('show')"
+        @open="() => emits('open')"
+        @shown="() => emits('shown')"
+        @hide="() => emits('hide')"
+        @close="() => emits('close')"
+        @hidden="() => emits('hidden')"
+        @clickOutside="() => emits('clickOutside')">
         <template #default>
             <slot name="default" v-bind="props" />
         </template>

@@ -363,7 +363,7 @@ defineExpose({
     @apply overflow-x-hidden overflow-y-auto outline-none;
     @apply opacity-0;
     @apply duration-300 ease-in-out transition-opacity;
-    z-index: 100;
+    z-index: 1000;
     perspective: 100px;
 
     &.is-visible {

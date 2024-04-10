@@ -4,10 +4,12 @@ miru.ink / Changelog
 ## Version 0.0.12 - Experimental
 - Add: New `CardXen` component & basic story demonstration.
 - Update: Expose visibility state and `open` / `close` functions on `ConfirmDialog` component.
+- Update: Increase `z-index` value on `BackdropSupport` and related components.
 - Fix: Allow numeric values on `AdvancedOption` / `BalloonSelector` component.
 - Fix: Inheritance CardStd Props on `CardCollapse` component.
 - Fix: Wrong import paths on bundled `.vue` files.
 - Fix: Omit `ConfirmDialog` properties passed to `DialogStd` component.
+- Fix: Missing event triggers on `ConfirmDialog` passed to `DialogStd` component.
 
 ## Version 0.0.11 - Experimental
 - Add: New `valibot` validation library to replace `zod`.

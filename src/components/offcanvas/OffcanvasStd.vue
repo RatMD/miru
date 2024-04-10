@@ -315,7 +315,7 @@ defineExpose({
     @apply duration-300 ease-in-out transition-transform;
     @apply bg-white dark:bg-gray-800;
     width: 250px;
-    z-index: 100;
+    z-index: 1000;
 
     /* Position */
     &.offcanvas-top {

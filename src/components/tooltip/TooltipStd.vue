@@ -211,7 +211,7 @@ defineExpose({
 /** Placement */
 .tooltip {
     @apply absolute flex gap-2 opacity-0 duration-300 ease-in-out;
-    z-index: 90;
+    z-index: 99;
     transition-property: opacity, margin;
 
     &.is-visible {
