@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.13 - Experimental
+- Fix: `debounce` utility called callback function immediately.
+
 ## Version 0.0.12 - Experimental
 - Add: New `CardXen` component & basic story demonstration.
 - Update: Expose visibility state and `open` / `close` functions on `ConfirmDialog` component.
