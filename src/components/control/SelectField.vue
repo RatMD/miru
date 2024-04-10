@@ -14,7 +14,9 @@
         :invalid="props.validation == 'invalid' ? true : void 0"
         v-model="value">
         <option v-if="props.placeholder" :value="null" disabled>{{ props.placeholder }}</option>
-        <option v-for="(option, idx) of props.options" :key="idx" :value="Array.isArray(option) ? option[0] : option.value">
+        <option v-for="(option, idx) of props.options" :key="idx" 
+            :value="Array.isArray(option) ? option[0] : option.value"
+            :disabled="Array.isArray(option) ? void 0 : (option.disabled || void 0)">
             {{ Array.isArray(option) ? (option[1] || option[0]) : option.label }}
         </option>
     </select>
@@ -28,6 +30,7 @@ export type SimpleSelectFieldOption = (string|number)[];
 export interface AdvancedFieldOption {
     value: string;
     label: string;
+    disabled?: boolean;
 }
 
 export type SelectOptions = (SimpleSelectFieldOption|AdvancedFieldOption)[];

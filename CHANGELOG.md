@@ -5,6 +5,7 @@ miru.ink / Changelog
 - Add: New `CardXen` component & basic story demonstration.
 - Update: Expose visibility state and `open` / `close` functions on `ConfirmDialog` component.
 - Update: Increase `z-index` value on `BackdropSupport` and related components.
+- Update: Support disabled select options on `SelectField` component.
 - Fix: Allow numeric values on `AdvancedOption` / `BalloonSelector` component.
 - Fix: Inheritance CardStd Props on `CardCollapse` component.
 - Fix: Wrong import paths on bundled `.vue` files.
