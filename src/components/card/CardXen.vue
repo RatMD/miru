@@ -15,7 +15,7 @@
                                 type="button" 
                                 :title="action.label || void 0"
                                 :disabled="action.disabled || false"
-                                @click="action.onClick || void 0">
+                                @click="(ev) => typeof action.onClick == 'function' ? action.onClick(ev) : void 0">
                                 <component :is="action.icon" v-bind="action.iconProps" />
                             </button>
                         </template>
@@ -54,7 +54,7 @@ export interface ActionItem {
     /**
      * Click handler, used for this action.
      */
-    onClick?: () => void;
+    onClick?: (event: Event) => void;
 }
 
 /**
