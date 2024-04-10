@@ -416,7 +416,7 @@ export function useForm<T extends object>(
         if (!result.valid) {
             return {
                 status: 'error',
-                message: 'invalid',
+                message: Object.values(result.errors).join('\n'),
                 details: result.results
             };
         }

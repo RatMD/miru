@@ -10,6 +10,7 @@ miru.ink / Changelog
 - Fix: Wrong import paths on bundled `.vue` files.
 - Fix: Omit `ConfirmDialog` properties passed to `DialogStd` component.
 - Fix: Missing event triggers on `ConfirmDialog` passed to `DialogStd` component.
+- Fix: Return joined error messages instead of static `'invalid'` string on `useForm` composable.
 
 ## Version 0.0.11 - Experimental
 - Add: New `valibot` validation library to replace `zod`.

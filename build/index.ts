@@ -105,7 +105,7 @@ export function sty(): Plugin {
                         fileName: `${key.slice(0, -2)}vue`,
                         name: undefined,
                         needsCodeReference: false,
-                        source: fs.readFileSync(moduleId, 'utf-8').replace(/..\/..\//g, '../'),
+                        source: fs.readFileSync(moduleId, 'utf-8').replace(/\.\.\/\.\.\//g, '../'),
                         type: 'asset'
                     };
                 }
