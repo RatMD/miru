@@ -1,8 +1,9 @@
 <template>
-    <DialogStd ref="dialog" v-bind="props" v-model:visible="isVisible">
+    <DialogStd ref="dialog" v-bind="dialogProps" v-model:visible="isVisible">
         <template #default>
             <slot name="default" v-bind="props" />
         </template>
+        
         <template #footer>
             <div class="dialog-actions">
                 <ButtonGroup>
@@ -120,6 +121,11 @@ const isVisible = computed<boolean>({
         emits('update:visible', value);
     }
 });
+const dialogProps = computed<DialogStdProps>(() => Object.fromEntries(
+    Object.entries({ ...props }).filter(
+        ([key, val]) => !['cancelLabel', 'cancelColor', 'submitLabel', 'submitColor', 'loading'].includes(key)
+    )
+));
 
 /**
  * Handle Cancel Action
@@ -140,6 +146,7 @@ function onSubmit(event: Event) {
 // Expose Component
 defineExpose({
     visible: isVisible,
+    dialog: dialog,
     open: dialog.value?.open,
     close: dialog.value?.close,
 });

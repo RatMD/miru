@@ -7,6 +7,7 @@ miru.ink / Changelog
 - Fix: Allow numeric values on `AdvancedOption` / `BalloonSelector` component.
 - Fix: Inheritance CardStd Props on `CardCollapse` component.
 - Fix: Wrong import paths on bundled `.vue` files.
+- Fix: Omit `ConfirmDialog` properties passed to `DialogStd` component.
 
 ## Version 0.0.11 - Experimental
 - Add: New `valibot` validation library to replace `zod`.
