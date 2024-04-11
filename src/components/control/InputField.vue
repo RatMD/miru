@@ -14,14 +14,13 @@
             props.validation ? `field-${props.validation}` : ''
         ]" 
         :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
-        :readonly="toValue(props.readonly || false) || typeof readonly == 'string'"
         :required="toValue(props.required || false) || typeof required == 'string'"
         :invalid="props.validation == 'invalid' ? true : void 0"
         v-model="value" />
 </template>
 
 <script lang="ts">
-import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 export type InputTypes = 'date'
                        | 'datetime-local'
@@ -111,27 +110,11 @@ export type InputAutoCompleteValues = 'off'
 /**
  * InputField Properties
  */
-export interface InputFieldProps {
-    /**
-     * A custom input field id, usually passed by the FormControl component. The default value is an 
-     * auto-generated UUID.
-     */
-    id?: null | string;
-
+export interface InputFieldProps extends SharedControlProps<null | number | string> {
     /**
      * The type attribute for this input field.
      */
     type?: InputTypes;
-
-    /**
-     * The name attribute for this input field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this input field, must be passed as v-model value.
-     */
-    modelValue?: null | number | string;
 
     /**
      * The placeholder attribute for this input field.
@@ -153,31 +136,6 @@ export interface InputFieldProps {
      */
     size?: 'sm' | 'md' | 'lg';
 
-    /**
-     * The validation state for this input field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional input field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state for this input field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this input field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this input field.
-     */
-    required?: MaybeRef<boolean>;
 }
 
 /**

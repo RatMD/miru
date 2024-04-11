@@ -137,7 +137,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
     transition-property: background-color, border-color, color;
     
     &::before {
-        @apply w-6 h-6 border rounded shadow-none bg-no-repeat bg-center;
+        @apply w-5 h-5 border rounded shadow-none bg-no-repeat bg-center;
         @apply duration-200 ease-in-out;
         content: "";
         background-size: 0px 0px;
@@ -227,11 +227,15 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
     
     &::before {
         @apply w-4 h-4;
-        background-size: 12px 12px;
     }
 
     & span {
         @apply text-xs;
+    }
+}
+.field-checkbox.field-sm .checkbox-input:checked ~ .checkbox-label {
+    &::before {
+        background-size: 12px 12px;
     }
 }
 
@@ -240,11 +244,15 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 
     &::before {
         @apply w-8 h-8;
-        background-size: 24px 24px;
     }
 
     & span {
         @apply text-base;
+    }
+}
+.field-checkbox.field-lg .checkbox-input:checked ~ .checkbox-label {
+    &::before {
+        background-size: 24px 24px;
     }
 }
 </style>

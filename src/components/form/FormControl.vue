@@ -4,30 +4,32 @@
         'is-invalid': props.validation == 'invalid',
         'is-disabled': props.disabled,
         'is-required': props.required,
+        'is-vad': validationVisible && descriptionVisible && props.vad,
     }" :data-input="props.name ? props.name : void 0">
-        <slot name="label" v-bind="props" :id="controlId">
+        <slot name="label" v-bind="passed">
             <label :for="controlId" class="control-label" v-if="(typeof props.label =='string' && props.label.length > 0)">
                 {{ props.label }}
+                <span v-if="props.required">*</span>
             </label>
         </slot>
 
         <div class="control-field">
-            <slot name="default" v-bind="props" :id="controlId" />
-        </div>
-        
-        <div class="control-footer control-validation" v-if="validationVisible">
-            <slot name="validation" v-bind="props" :id="controlId">
-                <p class="footer-text" :class="`${props.validation}-text`">
-                    {{ props.validationMessage }}
-                </p>
-            </slot>
+            <slot name="default" v-bind="passed" />
         </div>
 
-        <div class="control-footer control-description" v-if="descriptionVisible">
-            <slot name="description" v-bind="props" :id="controlId">
-                <p class="footer-text">
-                    {{ props.description }}
-                </p>
+        <div class="control-footer">
+            <slot name="footer" v-bind="passed">
+                <slot name="validation" v-bind="passed" v-if="validationVisible">
+                    <p class="footer-validation footer-text" :class="`${props.validation}-text`">
+                        {{ props.validationMessage }}
+                    </p>
+                </slot>
+
+                <slot name="description" v-bind="passed" v-if="descriptionVisible">
+                    <p class="footer-description footer-text">
+                        {{ props.description }}
+                    </p>
+                </slot>
             </slot>
         </div>
     </div>
@@ -35,22 +37,60 @@
 
 <script lang="ts">
 import type { MaybeRef } from 'vue';
+import type { Nullable } from '../../types';
 
 /**
- * FormControl Properties
+ * Shared Control Properties, available as `control` parameter on the `default` slot, to simple 
+ * pass the desired values using `v-bind`. Example:
+ * 
+ * ```
+ *      <FormControl v-slot="{ control }">
+ *          <InputField v-bind="control" />
+ *      </FormControl>
+ * ```
  */
-export interface FormControlProps {
+export interface SharedControlProps<T = any> {
     /**
-     * A custom form control id, used to assign the labels to the respective field, is passed to 
-     * the field itself as well. Default value is an auto-generated UUID.
+     * A unique form control field id, using an auto-generated UUID by default.
      */
     id?: null | string;
 
     /**
-     * The input name of this form control, is also passed to the control field itself as well.
+     * The name attribute for this form control field.
      */
     name?: null | string;
 
+    /**
+     * The v-model value attribute for this form control field.
+     */
+    modelValue?: T;
+
+    /**
+     * The disabled state for this form control field.
+     */
+    disabled?: MaybeRef<boolean>;
+
+    /**
+     * The required state for this form control field.
+     */
+    required?: MaybeRef<boolean>;
+
+    /**
+     * The validation state for this form control field.
+     */
+    validation?: null | 'invalid' | 'valid';
+
+    /**
+     * The validation message for this form control field, required the validation property to be 
+     * set either to valid or invalid as well.
+     */
+    validationMessage?: null | string;
+}
+
+/**
+ * FormControl Properties
+ */
+export interface FormControlProps<T = any> extends SharedControlProps<T> {
     /**
      * Primary form control label, shown above the control field itself in most cases.
      */
@@ -62,59 +102,59 @@ export interface FormControlProps {
     description?: null | string;
 
     /**
-     * The validation state for this form control.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional form control validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state of this form control, is also passed to the control field itself as well.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The required state of this form control, is also passed to the control field itself as well.
-     */
-    required?: MaybeRef<boolean>;
-
-    /**
      * Whether to display the validation message above the description (when both are available) or 
      * to toggle between them depending if the validation message is set or not (default).
      */
     vad?: boolean;
 }
+
 /**
  * FormControl Slots
  */
-export interface FormControlSlots {
+export interface FormControlSlotProps<T = any> extends FormControlProps<T> {
+    control: SharedControlProps<T>;
+}
+
+export interface FormControlSlots<T = any> {
     /**
      * The default form control field.
      * @param props 
      */
-    default(props: Omit<FormControlProps, 'id'> & { id: string }): any;
+    default(props: FormControlSlotProps<T>): any;
 
     /**
      * Custom form control label slot.
      * @param props 
      */
-    label(props: Omit<FormControlProps, 'id'> & { id: string }): any;
+    label(props: FormControlSlotProps<T>): any;
 
+    /**
+     * Custom form control footer message slot.
+     * @param props 
+     */
+    footer(props: FormControlSlotProps<T>): any;
+        
     /**
      * Custom form control validation message slot.
      * @param props 
      */
-    validation(props: Omit<FormControlProps, 'id'> & { id: string }): any;
+    validation(props: FormControlSlotProps<T>): any;
 
     /**
      * Custom form control description slot.
      * @param props 
      */
-    description(props: Omit<FormControlProps, 'id'> & { id: string }): any;
+    description(props: FormControlSlotProps<T>): any;
+}
+
+/**
+ * FormControl Events
+ */
+export interface FormControlEmits<T = any> {
+    /**
+     * Update model value handler.
+     */
+    (event: 'update:modelValue', value: T): void;
 }
 
 // Default Export, used for IDE-related auto-import features
@@ -130,9 +170,25 @@ import uuid from '../../utils/uuid';
 // Define Component
 const props = defineProps<FormControlProps>();
 const slots = defineSlots<FormControlSlots>();
+const emits = defineEmits<FormControlEmits>();
 
 // States
 const controlId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
+const passed = computed<FormControlSlotProps>(() => ({
+    ...props,
+    control: {
+        id: controlId.value,
+        name: props.name,
+        modelValue: props.modelValue,
+        disabled: props.disabled,
+        required: props.required,
+        validation: props.validation,
+        validationMessage: props.validationMessage,
+        'onUpdate:modelValue': (val: any) => {
+            emits('update:modelValue', val)
+        }
+    }
+}))
 
 // Check if form control validation  is shown or not.
 const validationVisible = computed<boolean>(() => {
@@ -151,18 +207,22 @@ const descriptionVisible = computed<boolean>(() => {
     if (!desc || desc.length == 0) {
         return false;
     } else {
-        return validationVisible.value == false || (validationVisible.value && props.vad);
+        return !validationVisible.value || props.vad;
     }
 })
 </script>
 
 <style scoped>
 .form-control {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col gap-1;
 }
 
 :slotted(.control-label) {
-    @apply px-1 font-semibold text-sm;    
+    @apply px-1 mb-1 font-semibold text-sm;
+
+    & span {
+        @apply text-danger-600
+    }
 }
 
 .control-field {
@@ -171,13 +231,23 @@ const descriptionVisible = computed<boolean>(() => {
 
 .control-footer {
     @apply px-1;
+
+    .is-vad & {
+        @apply flex flex-row-reverse justify-between;
+    }
     
     & :slotted(.footer-text) {
-        @apply text-sm;
+        @apply text-xs;
     }
+
+    & :slotted(.footer-validation) {
+        @apply font-semibold;
+    }
+
     & :slotted(.invalid-text) {
         @apply text-danger-600;
     }
+
     & :slotted(.valid-text) {
         @apply text-success-600;
     }

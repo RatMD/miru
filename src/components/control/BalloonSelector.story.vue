@@ -78,40 +78,32 @@
             </div>
         </Variant>
 
-        <Variant title="States" :init-state="stateStates" v-slot="{ state }">
-            <div class="flex flex-col flex-1 gap-4">
-                <div class="flex flex-row items-center flex-1 gap-4">
-                    <BalloonSelector v-bind="state" v-model="state.valueNormal" />
-                    <BadgeStd label="Default" color="primary" size="sm" class="ml-auto" />
-                </div>
-                <div class="flex flex-row items-center flex-1 gap-4">
-                    <BalloonSelector v-bind="state" v-model="state.valueSelected" />
-                    <BadgeStd label="Selected" size="sm" class="ml-auto" />
-                </div>
-                <div class="flex flex-row items-center flex-1 gap-4">
-                    <BalloonSelector v-bind="state" disabled v-model="state.valueDisabled" />
-                    <BadgeStd label="Disabled" size="sm" class="ml-auto" />
-                </div>
-                <div class="flex flex-row items-center flex-1 gap-4">
-                    <BalloonSelector v-bind="state" disabled v-model="state.valueDisabledSelected" />
-                    <BadgeStd label="Disabled Selected" size="sm" class="ml-auto" />
-                </div>
-                <div class="flex flex-row items-center flex-1 gap-4">
-                    <BalloonSelector v-bind="state" validation="valid" v-model="state.valueValid" />
-                    <BadgeStd label="Valid" size="sm" class="ml-auto" />
-                </div>
-                <div class="flex flex-row items-center flex-1 gap-4">
-                    <BalloonSelector v-bind="state" validation="valid" v-model="state.valueValidSelected" />
-                    <BadgeStd label="Valid Selected" size="sm" class="ml-auto" />
-                </div>
-                <div class="flex flex-row items-center flex-1 gap-4">
-                    <BalloonSelector v-bind="state" validation="invalid" v-model="state.valueInvalid" />
-                    <BadgeStd label="Invalid" size="sm" class="ml-auto" />
-                </div>
-                <div class="flex flex-row items-center flex-1 gap-4">
-                    <BalloonSelector v-bind="state" validation="invalid" v-model="state.valueInvalidSelected" />
-                    <BadgeStd label="Invalid Selected" size="sm" class="ml-auto" />
-                </div>
+        <Variant title="Control States" :init-state="stateStates" v-slot="{ state }">
+            <div class="flex flex-col items-center flex-1 gap-6">
+                <FormControl label="Default" v-bind="state" v-model="state.value" v-slot="{ control }">
+                    <BalloonSelector :options="state.options" v-bind="control" />
+                </FormControl>
+                <FormControl label="Selected" v-bind="state" v-model="state.valueSelected" v-slot="{ control }">
+                    <BalloonSelector :options="state.options" v-bind="control" />
+                </FormControl>
+                <FormControl label="Disabled" v-bind="state" v-model="state.valueDisabled" v-slot="{ control }" disabled>
+                    <BalloonSelector :options="state.options" v-bind="control" />
+                </FormControl>
+                <FormControl label="Disabled Selected" v-bind="state" v-model="state.valueDisabledSelected" v-slot="{ control }" disabled>
+                    <BalloonSelector :options="state.options" v-bind="control" />
+                </FormControl>
+                <FormControl label="Valid" v-bind="state" v-model="state.valueValid" v-slot="{ control }" validation="valid" validation-message="This field is valid.">
+                    <BalloonSelector :options="state.options" v-bind="control" />
+                </FormControl>
+                <FormControl label="Valid Selected" v-bind="state" v-model="state.valueValidSelected" v-slot="{ control }" validation="valid" validation-message="This field is valid.">
+                    <BalloonSelector :options="state.options" v-bind="control" />
+                </FormControl>
+                <FormControl label="Invalid" v-bind="state" v-model="state.valueInvalid" v-slot="{ control }" validation="invalid" validation-message="This field is invalid.">
+                    <BalloonSelector :options="state.options" v-bind="control" />
+                </FormControl>
+                <FormControl label="Invalid Selected" v-bind="state" v-model="state.valueInvalidSelected" v-slot="{ control }" validation="invalid" validation-message="This field is invalid.">
+                    <BalloonSelector :options="state.options" v-bind="control" />
+                </FormControl>
             </div>
         </Variant>
     </Story>
@@ -119,8 +111,9 @@
 
 <script lang="ts" setup>
 import { h, ref } from 'vue';
-import BadgeStd from '../badge/BadgeStd.vue';
 import BalloonSelector from './BalloonSelector.vue';
+import BadgeStd from '../badge/BadgeStd.vue';
+import FormControl from '../form/FormControl.vue';
 
 
 const AlignLeft = {
@@ -328,6 +321,7 @@ function stateCondensed() {
 function stateStates() {
     return {
         options,
+        description: 'FormControl description',
         valueNormal: ref<string>(),
         valueSelected: ref<string>('a'),
         valueDisabled: ref<string>(),

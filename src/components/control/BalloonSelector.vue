@@ -5,37 +5,38 @@
         props.size ? `field-${props.size}` : '',
         props.validation ? `field-${props.validation}` : '',
         props.condensed ? `field-condensed`: '',
-        props.connected ? `field-connected`: ''
+        props.connected ? `field-connected`: '',
+        $slots.default ? 'field-custom' : ''
     ]">
-        <label v-for="(option, idx) of props.options" :key="idx" 
+        <label v-for="(option, idx) of generate()" :key="idx" 
             :id="`${fieldId}-${idx}`"
             :class="{
                 'balloon-item': true,
-                'item-disabled': isDisabled || (!Array.isArray(option) ? option.disabled : false),
+                'item-disabled': isDisabled || option.disabled || false,
                 'item-required': isRequired,
-                'item-checked': isChecked(option)
+                'item-checked': isChecked(option.value)
             }"
-            :aria-label="Array.isArray(option) ? option[1] || option[0].toString() : option.label"
-            :title="Array.isArray(option) ? option[1] || option[0].toString() : option.label"
+            :aria-label="option.label"
+            :title="option.label"
             @click.prevent="() => onSelect(option)">
             <input :id="`${fieldId}-${idx}`"
                 :type="props.multiple ? 'checkbox' : 'radio'" 
                 :name="`${props.name || props.id}${(props.multiple ? '[]' : '')}`"
-                :value="Array.isArray(option) ? option[0] : option.value"
-                :disabled="isDisabled || (!Array.isArray(option) ? option.disabled : false)"
+                :value="option.value"
+                :disabled="isDisabled || option.disabled || false"
                 :required="isRequired"
-                :checked="isChecked(option)" />
+                :checked="isChecked(option.value)" />
             <slot name="default" v-bind="props" :option="option" :idx="idx">
                 <div class="item-label">
-                    <template v-if="!Array.isArray(option) && option.icon && (option.placement || 'left') != 'right'">
+                    <template v-if="option.icon && (option.placement || 'left') != 'right'">
                         <component :is="option.icon" v-bind="iconBinding" class="label-icon" />
                     </template>
                     
-                    <template v-if="!(!Array.isArray(option) && option.icon && (option.placement || 'left') == 'icon')">
-                        <span class="label-text">{{ Array.isArray(option) ? option[1] || option[0] : option.label }}</span>
+                    <template v-if="!(option.icon && (option.placement || 'left') == 'icon')">
+                        <span class="label-text">{{ option.label }}</span>
                     </template>
 
-                    <template v-if="!Array.isArray(option) && option.icon && (option.placement || 'left') == 'right'">
+                    <template v-if="option.icon && (option.placement || 'left') == 'right'">
                         <component :is="option.icon" v-bind="iconBinding" class="label-icon" />
                     </template>
                 </div>
@@ -45,9 +46,10 @@
 </template>
 
 <script lang="ts">
-import type { Component, MaybeRef } from 'vue';
+import type { Component } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
-export type SimpleOption = [string|number] | [string|number, string];
+export type SimpleOption = string | [string|number, string];
 export interface AdvancedOption {
     /**
      * The option value, written to the modelValue.
@@ -81,26 +83,12 @@ export interface AdvancedOption {
 }
 export type BalloonSelectorOptionTypes = SimpleOption|AdvancedOption;
 
+export type BalloonSelectorValue = null | number | string | (number|string)[];
+
 /**
  * BalloonSelector Properties
  */
-export interface BalloonSelectorProps {
-    /**
-     * A custom balloon selector id, usually passed by the FormControl component. The default value 
-     * is an auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this balloon selector.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this balloon selector, must be passed as v-model value.
-     */
-    modelValue?: null | number | string | (number|string)[];
-
+export interface BalloonSelectorProps extends SharedControlProps<BalloonSelectorValue> {
     /**
      * The available options to be available on this balloon selector field.
      */
@@ -135,53 +123,39 @@ export interface BalloonSelectorProps {
      * Whether to support deselecting a selected option, on non-multiple fields, or not.
      */
     unselect?: boolean;
-
-    /**
-     * The disabled state for this balloon selector.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this balloon selector.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this balloon selector.
-     */
-    required?: MaybeRef<boolean>;
-
-    /**
-     * The validation state for this balloon selector.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional balloon selector validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
 }
 
 /**
  * BalloonSelector Slot
  */
+export interface BalloonSelectorSlotProps extends BalloonSelectorProps {
+    /**
+     * Current Option IDX
+     */
+    idx: number;
+
+    /**
+     * Current Option item
+     */
+    option: AdvancedOption;
+}
+
 export interface BalloonSelectorSlots {
     /**
      * Custom balloon item content slot, used instead of the default option icon / label.
      * @param props 
      */
-    default(props: BalloonSelectorProps & { option: BalloonSelectorProps['options'][number], idx: number }): any;
+    default(props: BalloonSelectorSlotProps): any;
 }
 
 /**
- * BalloonSelector Emits
+ * BalloonSelector Events
  */
 export interface BalloonSelectorEmits {
     /**
      * Update model value handler.
      */
-    (event: 'update:modelValue', value: null | string | number | (string|number)[]): void;
+    (event: 'update:modelValue', value: BalloonSelectorValue): void;
 }
 
 // Default Export, used for IDE-related auto-import features
@@ -209,19 +183,19 @@ const value = computed({
             return val;
         }
     },
-    set(value: null | string | number | (string|number)[]) {
+    set(value) {
         if (props.multiple) {
-            emits('update:modelValue', value === null ? [] : Array.isArray(value) ? value : [value]);
+            value = value == null ? [] : (Array.isArray(value) ? value : [value]);
+            value = value.filter(el => el != null);
         } else {
-            emits('update:modelValue', Array.isArray(value) ? value[0] || null : value);
+            value = Array.isArray(value) ? value[0] || null : value;
         }
+        emits('update:modelValue', value as BalloonSelectorValue);
     }
 });
 const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
 const isDisabled = computed<boolean>(() => {
     if (toValue(props.disabled || false) || typeof props.disabled == 'string') {
-        return true;
-    } else if (toValue(props.readonly || false) || typeof props.readonly == 'string') {
         return true;
     } else {
         return false;
@@ -237,12 +211,29 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 });
 
 /**
- * Check if option is selected or nor
- * @param option
+ * Options Generator
  * @returns
  */
-function isChecked(option: BalloonSelectorOptionTypes): boolean {
-    let val = Array.isArray(option) ? option[0] : option.value;
+function* generate(): Generator<AdvancedOption> {
+    for (const option of props.options) {
+        if (typeof option == 'object' && !Array.isArray(option)) {
+            yield option;
+        } else {
+            yield {
+                value: typeof option == 'string' ? option : option[0],
+                label: typeof option == 'string' ? option : (option[1] || option[0].toString()),
+                disabled: props.disabled ? toValue(props.disabled) : false
+            }
+        }
+    }
+}
+
+/**
+ * Check if option is selected or nor
+ * @param val
+ * @returns
+ */
+function isChecked(val: string | number): boolean {
     if (props.multiple) {
         return Array.isArray(value.value) && value.value.includes(val);
     } else {
@@ -254,27 +245,26 @@ function isChecked(option: BalloonSelectorOptionTypes): boolean {
  * Select an option
  * @param option 
  */
-function onSelect(option: BalloonSelectorOptionTypes) {
-    if (props.disabled || (!Array.isArray(option) && (option.disabled || false))) {
+function onSelect(option: AdvancedOption) {
+    if (props.disabled || option.disabled) {
         return;
     }
 
-    let val = Array.isArray(option) ? option[0] : option.value;
     if (props.multiple) {
         let values = [...(value.value as (string|number)[])];
-        let idx = values.indexOf(val);
+        let idx = values.indexOf(option.value);
 
         if (idx >= 0) {
             values.splice(idx, 1);
         } else {
-            values.push(val);
+            values.push(option.value);
         }
         value.value = values;
     } else {
-        if (value.value == val && props.unselect) {
+        if (value.value == option.value && props.unselect) {
             value.value = null;
-        } else if (value.value != val) {
-            value.value = val;
+        } else if (value.value != option.value) {
+            value.value = option.value;
         }
     }
 }
@@ -282,7 +272,7 @@ function onSelect(option: BalloonSelectorOptionTypes) {
 
 <style scoped>
 .field-balloon-selector {
-    @apply h-10 flex flex-col gap-2;
+    @apply w-full flex flex-col gap-2;
 
     @screen lg {
         @apply flex-row;
@@ -308,6 +298,8 @@ function onSelect(option: BalloonSelectorOptionTypes) {
 
 /** States */
 .balloon-item {
+    @apply h-10;
+    
     &.item-disabled {
         @apply cursor-not-allowed;
         @apply bg-gray-100 border-gray-300 text-gray-400;
@@ -357,7 +349,9 @@ function onSelect(option: BalloonSelectorOptionTypes) {
 
 /** Sizes */
 .field-balloon-selector.field-sm {
-    @apply h-8;
+    & .balloon-item {
+        @apply h-8;
+    }
 
     & .balloon-item :slotted(.item-label) {
         @apply px-3.5 py-1.5 text-xs;
@@ -365,7 +359,9 @@ function onSelect(option: BalloonSelectorOptionTypes) {
 }
 
 .field-balloon-selector.field-lg {
-    @apply h-14;
+    & .balloon-item {
+        @apply h-14;
+    }
     
     & .balloon-item :slotted(.item-label) {
         @apply px-7 py-3.5 text-base;
