@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.14 - Experimental
+- Update: Pass `class` attribute to main modal element on `DialogStd`.
+
 ## Version 0.0.13 - Experimental
 - Fix: `debounce` utility called callback function immediately.
 

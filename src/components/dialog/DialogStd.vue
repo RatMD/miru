@@ -1,9 +1,6 @@
 <template>
     <teleport :to="props.target ? props.target : '#app'" v-if="visibleBounced">
-        <div class="modal" :class="[
-            `modal-${props.size || 'md'}`,
-            isVisible ? `is-visible` : ''
-        ]" ref="modal">
+        <div ref="modal" :class="classNames">
             <div class="modal-dialog" ref="dialog" v-click-outside="onClickOutside">
                 <slot name="dialog" v-bind="props">
                     <header class="dialog-header" v-if="$slots.header || props.title">
@@ -167,12 +164,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs, watch } from 'vue';
 import LucideXSign from '../lucide/XSign.vue';
 import BackdropSupport from '../support/BackdropSupport.vue';
 import wait from '../../utils/wait';
 
 // Define Component
+const attrs = useAttrs();
 const props = withDefaults(defineProps<DialogStdProps>(), {
     escape: true,
     backdrop: true
@@ -187,6 +185,24 @@ const dialog = ref<HTMLElement|null>(null);
 const visibleState = ref<boolean>(false);
 const visibleBounced = ref<boolean>(false);
 const isVisible = ref<boolean>(false);
+
+const classNames = computed<string[]>(() => {
+    const result = ['modal', `modal-${props.size || 'md'}`];
+
+    if (isVisible.value) {
+        result.push('is-visible');
+    }
+
+    if (typeof attrs.class != 'undefined') {
+        if (typeof attrs.class == 'string') {
+            result.push(attrs.class);
+        } else if (Array.isArray(attrs.class)) {
+            result.push(...attrs.class);
+        }
+    }
+
+    return result;
+});
 
 // Component mounted
 onMounted(() => {
