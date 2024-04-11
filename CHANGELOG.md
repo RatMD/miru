@@ -1,14 +1,16 @@
 miru.ink / Changelog
 ====================
 
-## Version 0.0.14 - Experimental
+## Version 0.0.15 - Experimental
 - Add: New `FormControl` support component & basic story demonstration.
 - Update: Use `SharedControlProps` on `BalloonSelector` & update histoire story using `FormControl`.
-- Update: Pass `class` attribute to main modal element on `DialogStd`.
 - Update: Always use `AdvancedOption` type inside items loop on `BalloonSelector` component.
 - Update: New `field-custom` class on `BalloonSelector` component, when a default item slot is passed.
 - Fix: Minor styling issues on mobile devices, `BalloonSelector` component.
 - Fix: Minor styling issues on sm and lg sized `CheckboxField` component.
+
+## Version 0.0.14 - Experimental
+- Update: Pass `class` attribute to main modal element on `DialogStd`.
 
 ## Version 0.0.13 - Experimental
 - Fix: `debounce` utility called callback function immediately.
