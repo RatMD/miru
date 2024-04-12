@@ -5,6 +5,7 @@
         props.size ? `field-${props.size}` : '',
         props.validation ? `field-${props.validation}` : '',
         props.condensed ? `field-condensed`: '',
+        props.column ? `field-column`: '',
         props.connected ? `field-connected`: '',
         $slots.default ? 'field-custom' : ''
     ]">
@@ -123,6 +124,11 @@ export interface BalloonSelectorProps extends SharedControlProps<BalloonSelector
      * Whether to support deselecting a selected option, on non-multiple fields, or not.
      */
     unselect?: boolean;
+
+    /**
+     * Whether to show the options in rows (false) or columns (true).
+     */
+    column?: boolean;
 }
 
 /**
@@ -275,7 +281,9 @@ function onSelect(option: AdvancedOption) {
     @apply w-full flex flex-col gap-2;
 
     @screen lg {
-        @apply flex-row;
+        &:not(.field-column) {
+            @apply flex-row;
+        }
     }
 }
 
@@ -283,8 +291,10 @@ function onSelect(option: AdvancedOption) {
     @apply w-full relative cursor-pointer border border-solid first:rounded-t-md last:rounded-b-md;
     @apply transition-colors duration-300 ease-in-out;
 
-    @screen md {
-        @apply w-auto first:rounded-l-md first:rounded-r-none last:rounded-r-md last:rounded-l-none;
+    @screen lg {
+        &:not(.field-column) {
+            @apply w-auto first:rounded-l-md first:rounded-r-none last:rounded-r-md last:rounded-l-none;
+        }
     }
 
     & input {

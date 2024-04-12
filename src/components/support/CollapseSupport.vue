@@ -19,6 +19,11 @@ export interface CollapseSupportProps {
      * or a control-value to calculate the duration dynamically based on the amount of content.
      */
     duration?: number | 'slow' | 'normal' | 'fast';
+
+    /**
+     * Whether to keep an eye on the default content slot or not.
+     */
+    track?: boolean;
 }
 
 /**
@@ -93,6 +98,24 @@ watch(props, async newValue => {
     } else if (!newValue.collapsed) {
         await show();
     }
+}, { immediate: true });
+
+/**
+ * Watch Property Changes
+ */
+watch(slots.default, async newValue => {
+    if (!visible.value || !props.track) {
+        return;
+    }
+    await wait(10);
+    
+    const [height, duration] = await calculate();
+    if (height == null || duration == null) {
+        visible.value = false;
+        return;
+    }
+    styles.height = `${height}px`;
+    await wait(duration);
 }, { immediate: true });
 
 /**
