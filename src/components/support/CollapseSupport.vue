@@ -213,7 +213,7 @@ async function calculate(): Promise<[null|number, null|number]> {
 
 <style scoped>
 .content {
-    @apply h-0 overflow-hidden;
+    @apply w-full h-0 overflow-hidden;
     @apply ease-in-out;
     transition-property: height;
 }

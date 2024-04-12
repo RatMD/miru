@@ -14,20 +14,20 @@
             </div>
         </Variant>
 
-        <Variant title="States" :init-state="stateStates" v-slot="{ state }">
-            <div class="max-w-[600px] mx-auto flex flex-row gap-4 p-2">
-                <div class="flex flex-col flex-1 gap-4">
-                    <SelectField v-bind="state" placeholder="Default State" v-model="state.placeholderValueNormal" />
-                    <SelectField v-bind="state" placeholder="Disabled State" disabled v-model="state.placeholderValueDisabled" />
-                    <SelectField v-bind="state" placeholder="Valid State" validation="valid" v-model="state.placeholderValueValid" />
-                    <SelectField v-bind="state" placeholder="Invalid State" validation="invalid" v-model="state.placeholderValueInvalid" />
-                </div>
-                <div class="flex flex-col flex-1 gap-4">
-                    <SelectField v-bind="state" v-model="state.valueNormal" />
-                    <SelectField v-bind="state" v-model="state.valueDisabled" disabled />
-                    <SelectField v-bind="state" v-model="state.valueValid" validation="valid" />
-                    <SelectField v-bind="state" v-model="state.valueInvalid" validation="invalid" />
-                </div>
+        <Variant title="Control States" :init-state="stateStates" v-slot="{ state }">
+            <div class="flex flex-col items-center flex-1 gap-6 w-[400px] mx-auto">
+                <FormControl class="w-full" label="Default" v-bind="state" v-model="state.valueNormal" v-slot="{ control }">
+                    <SelectField placeholder="Default State" :options="options" v-bind="control" />
+                </FormControl>
+                <FormControl class="w-full" label="Disabled" v-bind="state" v-model="state.valueDisabled" v-slot="{ control }" disabled>
+                    <SelectField placeholder="Disabled State" :options="options" v-bind="control" />
+                </FormControl>
+                <FormControl class="w-full" label="Valid" v-bind="state" v-model="state.valueValid" v-slot="{ control }" validation="valid" validation-message="This field is valid.">
+                    <SelectField placeholder="Valid State" :options="options" v-bind="control" />
+                </FormControl>
+                <FormControl class="w-full" label="Invalid" v-bind="state" v-model="state.valueInvalid" v-slot="{ control }" validation="invalid" validation-message="This field is invalid.">
+                    <SelectField placeholder="Invalid State" :options="options" v-bind="control" />
+                </FormControl>
             </div>
         </Variant>
     </Story>
@@ -36,6 +36,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import SelectField from './SelectField.vue';
+import FormControl from '../form/FormControl.vue';
 
 const options = [
     ['a', 'Option A'],
@@ -61,10 +62,6 @@ function stateSizes() {
 
 function stateStates() {
     return {
-        placeholderValueNormal: ref<string>(''),
-        placeholderValueDisabled: ref<string>(''),
-        placeholderValueValid: ref<string>(''),
-        placeholderValueInvalid: ref<string>(''),
         valueNormal: ref<string>('a'),
         valueDisabled: ref<string>('a'),
         valueValid: ref<string>('a'),

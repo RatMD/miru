@@ -4,6 +4,9 @@ miru.ink / Changelog
 ## Version 0.0.16 - Experimental
 - Add: New `track` property on `CollapseSupport` component.
 - Add: New `column` property on `BalloonSelector` component.
+- Update: Use `SharedControlProps` on `SelectField` & update histoire story using `FormControl`.
+- Fix: Minor styling issues on `CollapseSupport` component.
+- Fix: Minor styling issues on `SelectField` component.
 
 ## Version 0.0.15 - Experimental
 - Add: New `FormControl` support component & basic story demonstration.

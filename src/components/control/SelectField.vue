@@ -9,7 +9,6 @@
             props.validation ? `field-${props.validation}` : ''
         ]"
         :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
-        :readonly="toValue(props.readonly || false) || typeof readonly == 'string'"
         :required="toValue(props.required || false) || typeof required == 'string'"
         :invalid="props.validation == 'invalid' ? true : void 0"
         v-model="value">
@@ -23,12 +22,12 @@
 </template>
 
 <script lang="ts">
-import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
-export type SimpleSelectFieldOption = (string|number)[];
+export type SimpleSelectFieldOption = (null|number|string)[];
 
 export interface AdvancedFieldOption {
-    value: string;
+    value: null | number | string;
     label: string;
     disabled?: boolean;
 }
@@ -38,27 +37,11 @@ export type SelectOptions = (SimpleSelectFieldOption|AdvancedFieldOption)[];
 /**
  * SelectField Properties
  */
-export interface SelectFieldProps {
-    /**
-     * A custom select field id, usually passed by the FormControl component. The default value is an 
-     * auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this select field.
-     */
-    name?: null | string;
-
+export interface SelectFieldProps extends SharedControlProps<null | number | string> {
     /**
      * The desired options used for this select field.
      */
     options: SelectOptions;
-
-    /**
-     * The value for this select field, must be passed as v-model value.
-     */
-    modelValue?: null | string;
 
     /**
      * The placeholder attribute for this select field.
@@ -69,32 +52,6 @@ export interface SelectFieldProps {
      * The desired size for this select field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The validation state for this select field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional select field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state for this select field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this select field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this select field.
-     */
-    required?: MaybeRef<boolean>;
 }
 
 /**
@@ -104,7 +61,7 @@ export interface SelectFieldEmits {
     /**
      * Update model value handler.
      */
-    (event: 'update:modelValue', value: string | null): void;
+    (event: 'update:modelValue', value: null | number | string): void;
 }
 
 // Default Export, used for IDE-related auto-import features
@@ -135,7 +92,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 
 <style scoped>
 .field-select {
-    @apply w-full h-10 px-4 py-2 border border-solid rounded-md outline-none shadow-none appearance-none;
+    @apply w-full h-10 pl-4 pr-12 py-2 border border-solid rounded-md outline-none shadow-none appearance-none;
     @apply duration-300 ease-in-out;
     @apply bg-transparent border-gray-400;
     @apply dark:bg-gray-900 dark:border-gray-700;
@@ -143,7 +100,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
     background-size: 24px 24px;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWNoZXZyb24tZG93biI+PHBhdGggZD0ibTYgOSA2IDYgNi02Ii8+PC9zdmc+');
     background-repeat: no-repeat;
-    background-position: center right 1.0rem;
+    background-position: center right 0.75rem;
 
     &:disabled {
         @apply cursor-not-allowed;
@@ -177,10 +134,12 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 
 /** Sizes */
 .field-select.field-sm {
-    @apply h-8 py-1;
+    @apply h-8 py-0.5 pr-8;
     /* required to prevent zoom-behaviour on apple devices, added here too for consistency */
     /* @see https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/ */
     font-size: 16px;
+    background-size: 16px 16px;
+    background-position: center right 0.5rem;
 
     @screen md {
         @apply text-sm;
