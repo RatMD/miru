@@ -5,6 +5,7 @@
         'tooltip',
         `tooltip-${placementClass}`, 
         visible ? `is-visible` : '',
+        props.arrow != false ? 'has-arrow' : null,
         props.color ? `tooltip-${props.color}` : '',
         props.center ? `text-center` : ''
     ]" :style="floatingStyles">
@@ -167,7 +168,7 @@ defineExpose({
     hide,
     target,
     tooltip
-})
+});
 </script>
 
 <style scoped>
