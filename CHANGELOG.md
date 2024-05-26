@@ -1,6 +1,11 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.17 - Experimental
+- Update: package.json dependencies.
+- Update: `PopoverStd` and `ContextMenu` components.
+- Fix: Missing directives bundle entries.
+
 ## Version 0.0.16 - Experimental
 - Add: New `track` property on `CollapseSupport` component.
 - Add: New `column` property on `BalloonSelector` component.

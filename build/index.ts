@@ -44,6 +44,12 @@ export function collect(root: string) {
         entries[`constants/${constant.slice(0, -3)}`] = `src/constants/${constant}`;
     }
 
+    // Fetch Directives
+    const directivesPath = path.join(root, 'directives');
+    for (const directive of fs.readdirSync(directivesPath)) {
+        entries[`directives/${directive.slice(0, -3)}`] = `src/directives/${directive}`;
+    }
+
     // Fetch Utilities
     const utilsPath = path.join(root, 'utils');
     for (const util of fs.readdirSync(utilsPath)) {
