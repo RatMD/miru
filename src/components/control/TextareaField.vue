@@ -9,8 +9,8 @@
             props.size ? `field-${props.size}` : '',
             props.validation ? `field-${props.validation}` : ''
         ]" 
+        :tabindex="props.tabindex"
         :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
-        :readonly="toValue(props.readonly || false) || typeof readonly == 'string'"
         :required="toValue(props.required || false) || typeof required == 'string'"
         :invalid="props.validation == 'invalid' ? true : void 0"
         v-model="value"></textarea>
@@ -18,27 +18,12 @@
 
 <script lang="ts">
 import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 /**
  * TextareaField Properties
  */
-export interface TextareaFieldProps {
-    /**
-     * A custom textarea field id, usually passed by the FormControl component. The default value is an 
-     * auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this textarea field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this textarea field, must be passed as v-model value.
-     */
-    modelValue?: null | string;
-
+export interface TextareaFieldProps extends SharedControlProps<null | string> {
     /**
      * The placeholder attribute for this textarea field.
      */
@@ -48,32 +33,6 @@ export interface TextareaFieldProps {
      * The desired size for this textarea field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The validation state for this textarea field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional textarea field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state for this textarea field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this textarea field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this textarea field.
-     */
-    required?: MaybeRef<boolean>;
 }
 
 /**

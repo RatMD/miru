@@ -61,6 +61,11 @@ export interface SharedControlProps<T = any> {
     name?: null | string;
 
     /**
+     * The tabindex attribute for this form control field.
+     */
+    tabindex?: number | string;
+
+    /**
      * The v-model value attribute for this form control field.
      */
     modelValue?: T;

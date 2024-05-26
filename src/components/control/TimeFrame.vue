@@ -3,37 +3,27 @@
         <InputField v-bind="props" 
             type="time" 
             :step="props.seconds"
+            :tabindex="props.tabindex"
+            :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
+            :required="toValue(props.required || false) || typeof required == 'string'"
             v-model="valueStart" />
         <InputField v-bind="props" 
             type="time" 
             :step="props.seconds"
+            :tabindex="props.tabindex"
+            :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
+            :required="toValue(props.required || false) || typeof required == 'string'"
             v-model="valueEnd" />
     </FormFieldGroup>
 </template>
 
 <script lang="ts">
-import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 /**
  * TimeFrame Properties
  */
-export interface TimeFrameProps {
-    /**
-     * A custom time-frame field id, usually passed by the FormControl component. The default value is an 
-     * auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this time-frame field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this time-frame field, must be passed as v-model value.
-     */
-    modelValue?: null | string;
-
+export interface TimeFrameProps extends SharedControlProps<null | string> {
     /**
      * The desired time between start and end using the 01:25:00 syntax (last part can be omitted).
      */
@@ -48,32 +38,6 @@ export interface TimeFrameProps {
      * The desired size for this time-frame field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The validation state for this time-frame field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional time-frame field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state for this time-frame field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this time-frame field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this time-frame field.
-     */
-    required?: MaybeRef<boolean>;
 }
 
 /**
@@ -93,7 +57,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, ref, toValue, watch } from 'vue';
 import InputField from '../control/InputField.vue';
 import FormFieldGroup from '../form/FormFieldGroup.vue';
 

@@ -10,8 +10,8 @@
             class="checkbox-input"
             :name="props.name || fieldId"
             :value="props.value ? props.value : true"
+            :tabindex="props.tabindex"
             :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
-            :readonly="toValue(props.readonly || false) || typeof readonly == 'string'"
             :required="toValue(props.required || false) || typeof required == 'string'"
             v-model="value" />
         <label :for="`${fieldId}-input`" class="checkbox-label">
@@ -21,27 +21,16 @@
 </template>
 
 <script lang="ts">
-import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 /**
  * CheckboxField Properties
  */
-export interface CheckboxFieldProps {
-    /**
-     * A custom checkbox field id, usually passed by the FormControl component. The default value 
-     * is an auto-generated UUID.
-     */
-    id?: null | string;
-
+export interface CheckboxFieldProps extends SharedControlProps<null | boolean | number | string> {
     /**
      * The label for this checkbox field.
      */
     label?: null | string;
-
-    /**
-     * The name attribute for this checkbox field.
-     */
-    name?: null | string;
 
     /**
      * The value attribute for this checkbox field, pass nothing to use binary mode with true and 
@@ -50,40 +39,9 @@ export interface CheckboxFieldProps {
     value?: null | number | string;
 
     /**
-     * The value for this checkbox field, must be passed as v-model value.
-     */
-    modelValue?: null | boolean | number | string | (string | number)[];
-
-    /**
      * The desired size for this checkbox field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The disabled state for this checkbox field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this checkbox field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this checkbox field.
-     */
-    required?: MaybeRef<boolean>;
-
-    /**
-     * The validation state for this checkbox field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional checkbox field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
 }
 
 /**

@@ -11,7 +11,6 @@
             :name="props.name || fieldId"
             :value="props.value ? props.value : true"
             :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
-            :readonly="toValue(props.readonly || false) || typeof readonly == 'string'"
             :required="toValue(props.required || false) || typeof required == 'string'"
             v-model="value" />
         <label :for="`${fieldId}-input`" class="radio-label">
@@ -22,27 +21,17 @@
 
 <script lang="ts">
 import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 /**
  * RadioField Properties
  */
-export interface RadioFieldProps {
+export interface RadioFieldProps extends SharedControlProps<null | boolean | number | string> {
     /**
-     * A custom radio field id, usually passed by the FormControl component. The default value 
-     * is an auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The label for this radio field.
+     * The label for this checkbox field.
      */
     label?: null | string;
-
-    /**
-     * The name attribute for this radio field.
-     */
-    name?: null | string;
-
+    
     /**
      * The value attribute for this radio field, pass nothing to use binary mode with true and 
      * false.
@@ -50,40 +39,9 @@ export interface RadioFieldProps {
     value?: null | string;
 
     /**
-     * The value for this radio field, must be passed as v-model value.
-     */
-    modelValue?: null | boolean | number | string;
-
-    /**
      * The desired size for this radio field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The disabled state for this radio field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this radio field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this radio field.
-     */
-    required?: MaybeRef<boolean>;
-
-    /**
-     * The validation state for this radio field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional radio field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
 }
 
 /**

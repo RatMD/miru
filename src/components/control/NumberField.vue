@@ -4,46 +4,34 @@
             :icon="LucideMinusSign" 
             :iconProps="{ size: 16 }" 
             :size="(props.size || 'md') == 'sm' ? 'sm' : 'md'" 
-            :disabled="reachedMin"
+            :disabled="toValue(props.disabled || false) || typeof disabled == 'string' || reachedMin"
             @click="onDecrease" />
         <InputField v-bind="props" 
             type="text" 
             @keydown="onKeyDown" 
             @input.prevent="onInput" 
             inputmode="numeric" 
+            :tabindex="props.tabindex"
+            :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
+            :required="toValue(props.required || false) || typeof required == 'string'"
+            :invalid="props.validation == 'invalid' ? true : void 0"
             v-model="value" />
         <ActionButton 
             :icon="LucidePlusSign" 
             :iconProps="{ size: 16 }" 
             :size="(props.size || 'md') == 'sm' ? 'sm' : 'md'" 
-            :disabled="reachedMax"
+            :disabled="toValue(props.disabled || false) || typeof disabled == 'string' || reachedMax"
             @click="onIncrease" />
     </div>
 </template>
 
 <script lang="ts">
-import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 /**
  * NumberField Properties
  */
-export interface NumberFieldProps {
-    /**
-     * A custom number field id, usually passed by the FormControl component. The default value is an 
-     * auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this number field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this number field, must be passed as v-model value.
-     */
-    modelValue?: null | number | string;
-
+export interface NumberFieldProps extends SharedControlProps<null | number | string> {
     /**
      * The placeholder attribute for this number field.
      */
@@ -73,32 +61,6 @@ export interface NumberFieldProps {
      * The desired size for this number field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The validation state for this number field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional number field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state for this number field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this number field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this number field.
-     */
-    required?: MaybeRef<boolean>;
 }
 
 /**
@@ -118,7 +80,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed, toValue } from 'vue';
 import ActionButton from '../button/ActionButton.vue';
 import InputField from '../control/InputField.vue';
 import LucideMinusSign from '../lucide/MinusSign.vue';

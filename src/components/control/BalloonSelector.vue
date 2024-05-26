@@ -24,6 +24,7 @@
                 :type="props.multiple ? 'checkbox' : 'radio'" 
                 :name="`${props.name || props.id}${(props.multiple ? '[]' : '')}`"
                 :value="option.value"
+                :tabindex="props.tabindex"
                 :disabled="isDisabled || option.disabled || false"
                 :required="isRequired"
                 :checked="isChecked(option.value)" />

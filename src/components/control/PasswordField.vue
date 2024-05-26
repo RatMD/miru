@@ -12,29 +12,14 @@
 
 <script lang="ts">
 import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 export type PasswordAutoCompleteValues = 'new-password' | 'current-password' | 'one-time-code' | 'webauthn';
 
 /**
  * PasswordField Properties
  */
-export interface PasswordFieldProps {
-    /**
-     * A custom password field id, usually passed by the FormControl component. The default value is an 
-     * auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this password field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this password field, must be passed as v-model value.
-     */
-    modelValue?: null | string;
-
+export interface PasswordFieldProps extends SharedControlProps<null | string> {
     /**
      * The placeholder attribute for this password field.
      */
@@ -49,32 +34,6 @@ export interface PasswordFieldProps {
      * The desired size for this password field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The validation state for this password field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional password field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state for this password field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this password field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this password field.
-     */
-    required?: MaybeRef<boolean>;
 }
 
 /**

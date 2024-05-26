@@ -8,6 +8,10 @@
             @keydown="onKeyDown" 
             @blur="onBlur" 
             inputmode="numeric"
+            :tabindex="props.tabindex"
+            :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
+            :required="toValue(props.required || false) || typeof required == 'string'"
+            :invalid="props.validation == 'invalid' ? true : void 0"
             v-model="value" />
         <LucideCurrencyBitcoin v-if="props.icon == 'bitcoin'" v-bind="iconBinding" class="field-currency-icon" />
         <LucideCurrencyDefault v-else-if="props.icon == 'currency'" v-bind="iconBinding" class="field-currency-icon" />
@@ -24,29 +28,13 @@
 </template>
 
 <script lang="ts">
-import type { Component, MaybeRef } from 'vue';
+import type { Component } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 /**
  * PriceField Properties
  */
-export interface PriceFieldProps {
-
-    /**
-     * A custom price field id, usually passed by the FormControl component. The default value is an 
-     * auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this price field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this price field, must be passed as v-model value.
-     */
-    modelValue?: null | number | string;
-
+export interface PriceFieldProps extends SharedControlProps<null | number | string> {
     /**
      * An additional icon which is displayed right within the input field, if available.
      */
@@ -91,32 +79,6 @@ export interface PriceFieldProps {
      * The desired size for this price field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The validation state for this price field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional price field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state for this price field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this price field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this price field.
-     */
-    required?: MaybeRef<boolean>;
 }
 
 /**
@@ -136,7 +98,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, toValue } from 'vue';
 import InputField from '../control/InputField.vue';
 import LucideCurrencyBitcoin from '../lucide/CurrencyBitcoin.vue';
 import LucideCurrencyDefault from '../lucide/CurrencyDefault.vue';

@@ -18,6 +18,7 @@
 
 <script lang="ts">
 import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 export interface TimeSlotOption {
     /**
@@ -54,23 +55,7 @@ export interface TimeSlotOption {
 /**
  * TimeSlots Properties
  */
-export interface TimeSlotsProps {
-    /**
-     * A custom time-slots field id, usually passed by the FormControl component. The default value is an 
-     * auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this time-slots field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this time-slots field, must be passed as v-model value.
-     */
-    modelValue?: null | string;
-
+export interface TimeSlotsProps extends SharedControlProps<null | string> {
     /**
      * The available slots to book.
      */
@@ -80,32 +65,6 @@ export interface TimeSlotsProps {
      * The desired size for this time-slots field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The validation state for this time-slots field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional time-slots field validation message, requires the validation property set either
-     * to valid or invalid.
-     */
-    validationMessage?: null | string;
-
-    /**
-     * The disabled state for this time-slots field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this time-slots field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this time-slots field.
-     */
-    required?: MaybeRef<boolean>;
 }
 
 /**

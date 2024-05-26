@@ -9,16 +9,18 @@
             <CheckboxField v-for="(option, idx) of props.options" :key="`${fieldId}-${idx}`"
                 :label="Array.isArray(option) ? (option[1] || option[0]).toString() : option.label"
                 :value="Array.isArray(option) ? option[0].toString() : option.value"
+                :tabindex="props.tabindex"
                 :disabled="isDisabled || (!Array.isArray(option) ? option.disabled : false)"
                 :required="isRequired"
                 :size="props.size"
-                v-model="value" />
+                v-model="(value as number | string)" />
         </template>
 
         <template v-else>
             <RadioField v-for="(option, idx) of props.options" :key="`${fieldId}-${idx}`"
                 :label="Array.isArray(option) ? (option[1] || option[0]).toString() : option.label"
                 :value="Array.isArray(option) ? option[0].toString() : option.value"
+                :tabindex="props.tabindex"
                 :disabled="isDisabled || (!Array.isArray(option) ? option.disabled : false)"
                 :required="isRequired"
                 :size="props.size"
@@ -29,6 +31,7 @@
 
 <script lang="ts">
 import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 export type SimpleOption = [string|number] | [string|number, string];
 export interface AdvancedOption {
@@ -52,23 +55,7 @@ export type SelectableListOptionTypes = SimpleOption|AdvancedOption;
 /**
  * SelectableList Properties
  */
-export interface SelectableListProps {
-    /**
-     * A custom selectable list id, usually passed by the FormControl component. The default value 
-     * is an auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this selectable list.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this selectable list, must be passed as v-model value.
-     */
-    modelValue?: null | string | number | (string|number)[];
-
+export interface SelectableListProps extends SharedControlProps<null | string | number | (string|number)[]> {
     /**
      * The available options to be available on this selectable list field.
      */
@@ -83,32 +70,6 @@ export interface SelectableListProps {
      * Whether to support the selection of multiple options or not.
      */
     multiple?: boolean;
-
-    /**
-     * The disabled state for this selectable list.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this selectable list.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this selectable list.
-     */
-    required?: MaybeRef<boolean>;
-
-    /**
-     * The validation state for this selectable list.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional selectable list validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
 }
 
 /**
@@ -158,8 +119,6 @@ const value = computed({
 const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
 const isDisabled = computed<boolean>(() => {
     if (toValue(props.disabled || false) || typeof props.disabled == 'string') {
-        return true;
-    } else if (toValue(props.readonly || false) || typeof props.readonly == 'string') {
         return true;
     } else {
         return false;

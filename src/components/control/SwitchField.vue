@@ -10,8 +10,8 @@
             class="switch-input"
             :name="props.name || fieldId"
             :value="true"
+            :tabindex="props.tabindex"
             :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
-            :readonly="toValue(props.readonly || false) || typeof readonly == 'string'"
             :required="toValue(props.required || false) || typeof required == 'string'"
             v-model="value" />
         <label :for="`${fieldId}-input`" class="switch-label">
@@ -21,63 +21,21 @@
 </template>
 
 <script lang="ts">
-import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 /**
  * SwitchField Properties
  */
-export interface SwitchFieldProps {
-    /**
-     * A custom switch field id, usually passed by the FormControl component. The default value 
-     * is an auto-generated UUID.
-     */
-    id?: null | string;
-
+export interface SwitchFieldProps extends SharedControlProps<null | boolean> {
     /**
      * The label for this switch field.
      */
     label?: null | string;
 
     /**
-     * The name attribute for this switch field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this switch field, must be passed as v-model value.
-     */
-    modelValue?: null | boolean;
-
-    /**
      * The desired size for this switch field, note that `md` is the default value.
      */
     size?: 'sm' | 'md' | 'lg';
-
-    /**
-     * The disabled state for this switch field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this switch field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this switch field.
-     */
-    required?: MaybeRef<boolean>;
-
-    /**
-     * The validation state for this switch field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional checkbox field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
 }
 
 /**

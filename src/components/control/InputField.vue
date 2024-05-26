@@ -13,6 +13,7 @@
             props.size ? `field-${props.size}` : '',
             props.validation ? `field-${props.validation}` : ''
         ]" 
+        :tabindex="props.tabindex"
         :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
         :required="toValue(props.required || false) || typeof required == 'string'"
         :invalid="props.validation == 'invalid' ? true : void 0"

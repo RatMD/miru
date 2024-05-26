@@ -1,6 +1,11 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.18 - Experimental
+- Add: New `tabindex` property on `FormControl` and control components.
+- Update: Use `SharedControlProps` on many different control components.
+- Update: Use `disabled`, `required` and `invalid` on `NumberField` control component.
+
 ## Version 0.0.17 - Experimental
 - Update: package.json dependencies.
 - Update: `PopoverStd` and `ContextMenu` components.
