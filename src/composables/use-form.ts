@@ -148,6 +148,13 @@ export interface FormHandler<T> {
     isInvalid(key: keyof T, force?: boolean): boolean;
 
     /**
+     * Return validation messages.
+     * @param key
+     * @returns 
+     */
+    validationMessage(key: keyof T): string|null;
+
+    /**
      * Validate Form Values
      * @param keys Limit validation to the passed set of keys.
      * @returns 
@@ -353,6 +360,20 @@ export function useForm<T extends object>(
     }   
 
     /**
+     * Return validation messages.
+     * @param key
+     * @returns 
+     */
+    function validationMessage(key: keyof T): string|null {
+        let result = validate([key]);
+        if (typeof result.errors[key] == 'undefined') {
+            return null;
+        } else {
+            return result.errors[key].join('\n');
+        }
+    }   
+
+    /**
      * Validate Form Values
      * @param keys Limit validation to the passed set of keys.
      * @returns 
@@ -494,6 +515,7 @@ export function useForm<T extends object>(
         isCustomValid,
         isValid,
         isInvalid,
+        validationMessage,
         validate,
         submit,
         update,
