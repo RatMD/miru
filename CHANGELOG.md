@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.19 - Experimental
+- Update: package.json dependencies.
+
 ## Version 0.0.18 - Experimental
 - Add: New `tabindex` property on `FormControl` and control components.
 - Update: Use `SharedControlProps` on many different control components.
