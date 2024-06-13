@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.21 - Experimental
+- Add: New `validationMessage` function on `useForm` composable.
+
 ## Version 0.0.20 - Experimental
 - Fix: Missing `valibot` upgrade and typing issue.
 
