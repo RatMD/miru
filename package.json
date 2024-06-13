@@ -1,6 +1,6 @@
 {
     "name": "miru.ink",
-    "version": "0.0.19",
+    "version": "0.0.20",
     "description": "A Open-Source Vue3 / Tailwind CSS component framework and function library.",
     "keywords": [
         "ui",
@@ -45,7 +45,7 @@
     "dependencies": {
         "@floating-ui/vue": "^1.0.6",
         "polyfill-crypto-methods": "^0.2.0",
-        "valibot": "^0.30.0"
+        "valibot": "^0.31.1"
     },
     "devDependencies": {
         "@histoire/plugin-vue": "^0.17.17",

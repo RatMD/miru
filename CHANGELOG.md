@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.20 - Experimental
+- Fix: Missing `valibot` upgrade and typing issue.
+
 ## Version 0.0.19 - Experimental
 - Update: package.json dependencies.
 

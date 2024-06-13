@@ -24,7 +24,7 @@ export type ValidationResult<T> = {
 };
 
 export type ValidationRules<T> = {
-    [Property in keyof T]: BaseSchema<any, any>;
+    [Property in keyof T]: BaseSchema<any, any, any>;
 }
 
 export type ValidationCallback<T> = (rules: ValidationRules<T>, values: Nullable<T>) => boolean | SafeParseResult<any>;
