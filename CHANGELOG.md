@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.22 - Experimental
+- Add: New `label` slot on Checkbox to support HTML content.
+
 ## Version 0.0.21 - Experimental
 - Add: New `validationMessage` function on `useForm` composable.
 

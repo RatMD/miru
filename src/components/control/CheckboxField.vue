@@ -15,7 +15,8 @@
             :required="toValue(props.required || false) || typeof required == 'string'"
             v-model="value" />
         <label :for="`${fieldId}-input`" class="checkbox-label">
-            <span v-if="props.label">{{ props.label }}</span>
+            <slot name="label" v-bind="props" v-if="$slots.label"></slot>
+            <span v-else-if="props.label">{{ props.label }}</span>
         </label>
     </div>
 </template>
@@ -45,7 +46,18 @@ export interface CheckboxFieldProps extends SharedControlProps<null | boolean | 
 }
 
 /**
- * CheckboxField Emits
+ * CheckboxField Slots
+ */
+export interface CheckboxFieldSlots {
+    /**
+     * Label Slot used instead of the label property.
+     * @param props 
+     */
+    label(props: CheckboxFieldProps): any;
+}
+
+/**
+ * CheckboxField Events
  */
 export interface CheckboxFieldEmits {
     /**
@@ -66,6 +78,7 @@ import uuid from '../../utils/uuid';
 
 // Define Component
 const props = defineProps<CheckboxFieldProps>();
+const slots = defineSlots<CheckboxFieldSlots>();
 const emits = defineEmits<CheckboxFieldEmits>();
 
 // States
