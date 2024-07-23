@@ -1,6 +1,9 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.24 - Experimental
+- Update: package.json dependencies.
+
 ## Version 0.0.23 - Experimental
 - Update: package.json dependencies.
 
