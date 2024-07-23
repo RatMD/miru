@@ -1,17 +1,18 @@
 
 import type { ComputedRef, MaybeRef, Ref, UnwrapNestedRefs } from 'vue';
 import type { Nullable } from '../types';
-import * as valibot from 'valibot';
 import type { BaseSchema, SafeParseResult } from 'valibot';
 
-import { computed, toRaw, reactive, ref, unref } from 'vue';
 import * as v from 'valibot';
+import { computed, toRaw, reactive, ref, unref } from 'vue';
 import equals from '../utils/equals';
 import request, { type Payload, type Response } from '../utils/request';
 
+export type valibot = typeof v;
+
 export type FormMethods = 'GET' | 'PATCH' | 'POST' | 'PUT';
 
-export type Validator<T> = (v: typeof valibot, values: T) => ValidationRules<T>;
+export type Validator<T> = (v: valibot, values: T) => ValidationRules<T>;
 
 export type ValidationResult<T> = { 
     valid: boolean,
@@ -70,7 +71,7 @@ export interface FormHandler<T> {
     /**
      * Check if one or more fields are dirty.
      */
-    dirty: Ref<boolean>;
+    dirty: ComputedRef<boolean>;
 
     /**
      * Check if form has been touched (tried to be submitted).
@@ -317,7 +318,7 @@ export function useForm<T extends object>(
         }
 
         // Receive validation rules
-        const ruleSet = validator.value(v as typeof valibot, payload.value);
+        const ruleSet = validator.value(v as valibot, payload.value);
         const result = cb(ruleSet, toRaw(values as Nullable<T>));
         return typeof result == 'boolean' ? result : (result?.success || false);
     }
@@ -341,7 +342,7 @@ export function useForm<T extends object>(
         }
 
         // Receive validation rules
-        const ruleSet = validator.value(v as typeof valibot, payload.value);
+        const ruleSet = validator.value(v as valibot, payload.value);
         if (key in ruleSet) {
             return v.safeParse(ruleSet[key], toRaw(values as T)[key]).success;
         } else {
@@ -365,7 +366,7 @@ export function useForm<T extends object>(
      * @returns 
      */
     function validationMessage(key: keyof T): string|null {
-        let result = validate([key]);
+        const result = validate([key]);
         if (typeof result.errors[key] == 'undefined') {
             return null;
         } else {
@@ -386,7 +387,7 @@ export function useForm<T extends object>(
                 results: {} as any
             };
         }
-        const ruleSet = validator.value(v as typeof valibot, payload.value);
+        const ruleSet = validator.value(v as valibot, payload.value);
 
         let valid = true;
         const results: { [Property in keyof T]: SafeParseResult<ValidationRules<T>[keyof T]> } = {} as any;

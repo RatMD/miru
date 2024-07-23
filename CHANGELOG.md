@@ -2,6 +2,7 @@ miru.ink / Changelog
 ====================
 
 ## Version 0.0.24 - Experimental
+- Add: New `vitest` + `@vue/test-utils` testing framework.
 - Update: package.json dependencies.
 
 ## Version 0.0.23 - Experimental
