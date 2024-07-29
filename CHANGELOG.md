@@ -6,6 +6,7 @@ miru.ink / Changelog
 - Add: New `badge` variant on `AlertMessage` component.
 - Add: New `AlertDialog` component, similar to the `ConfirmDialog` one + basic story demonstration.
 - Add: New `DividerStd` component with different variants + basic story demonstration.
+- Add: New `PagedPagination` component with different variants + basic story demonstration.
 - Update: Use `info` color on `AlertMessage` component + Fix dark stylings.
 - Update: Minor styling changes on `DialogStd` component.
 - Update: package.json dependencies.

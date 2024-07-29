@@ -2,11 +2,13 @@
     <ButtonGroup :align="props.align || 'center'" :gap="props.connected ? 'none' : (props.gap || props.size || 'md')">
         <ButtonStd color="secondary" size="sm" :icon="ChevronsLeft" :disabled="isPrevDisabled" @click="onFirst" />
         <ButtonStd color="secondary" size="sm" :icon="ChevronLeft" :disabled="isPrevDisabled" @click="onPrev" />
-        <div class="pager">
-            <span class="pager-cur">{{ props.current }}</span>
-            <span class="pager-sep">/</span>
-            <span class="pager-max">{{ props.last }}</span>
-        </div>
+        <slot name="pagination" v-bind="props">
+            <div class="pager">
+                <span class="pager-cur">{{ props.current }}</span>
+                <span class="pager-sep">/</span>
+                <span class="pager-max">{{ props.last }}</span>
+            </div>
+        </slot>
         <ButtonStd color="secondary" size="sm" :icon="ChevronRight" :disabled="isNextDisabled" @click="onNext" />
         <ButtonStd color="secondary" size="sm" :icon="ChevronsRight" :disabled="isNextDisabled" @click="onLast" />
     </ButtonGroup>
@@ -54,7 +56,17 @@ export interface AdvancedPaginationProps {
 }
 
 /**
- * AdvancedPagination Emits
+ * AdvancedPagination Slots
+ */
+export interface AdvancedPaginationSlots {
+    /**
+     * The pager content.
+     */
+    pagination(props: AdvancedPaginationProps): any;
+}
+
+/**
+ * AdvancedPagination Events
  */
  export interface AdvancedPaginationEmits {
     /**
@@ -107,6 +119,7 @@ import ButtonGroup from '../button/ButtonGroup.vue';
 
 // Define Component
 const props = defineProps<AdvancedPaginationProps>();
+const slots = defineSlots<AdvancedPaginationSlots>();
 const emits = defineEmits<AdvancedPaginationEmits>();
 
 // Check if previous button is disabled
@@ -165,19 +178,19 @@ function onLast(event: Event) {
 </script>
 
 <style scoped>
-.pager {
+:slotted(.pager) {
     @apply flex flex-row self-center gap-1 mx-3 text-sm font-semibold;
-}
 
-.pager-cur {
-    @apply text-gray-600 dark:text-gray-300;
-}
-
-.pager-sep {
-    @apply text-gray-400 dark:text-gray-500;
-}
-
-.pager-max {
-    @apply text-gray-500 dark:text-gray-400;
+    & .pager-cur {
+        @apply text-gray-600 dark:text-gray-300;
+    }
+    
+    & .pager-sep {
+        @apply text-gray-400 dark:text-gray-500;
+    }
+    
+    & .pager-max {
+        @apply text-gray-500 dark:text-gray-400;
+    }
 }
 </style>

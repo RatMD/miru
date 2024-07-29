@@ -19,7 +19,7 @@
         </template>
 
         <template v-if="placement != 'icon'">
-            <span class="btn-label" v-if="typeof props.label == 'string'">{{ props.label }}</span>
+            <span class="btn-label" v-if="typeof props.label == 'string' || typeof props.label == 'number'">{{ props.label }}</span>
             <component :is="props.label" v-bind="props.labelProps" class="btn-label" v-else />
         </template>
 
@@ -44,7 +44,7 @@ export interface ButtonStdProps {
     /**
      * The desired label text for this button.
      */
-    label?: string | Component | null;
+    label?: number | string | Component | null;
 
     /**
      * Additional properties passed to the label component.

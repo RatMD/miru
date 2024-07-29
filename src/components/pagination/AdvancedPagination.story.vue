@@ -27,18 +27,32 @@
                 <AdvancedPagination v-bind="state" :current="5" />
             </div>
         </Variant>
+
+        <Variant title="Pagination Slot" :init-state="stateCustomSlot" v-slot="{ state }">
+            <div class="p-2">
+                <AdvancedPagination v-bind="state">
+                    <template #pagination="props">
+                        <div class="pager">
+                            <span class="pager-sep">Page</span>
+                            <span class="pager-cur">{{ props.current }}</span>
+                            <span class="pager-sep">of</span>
+                            <span class="pager-max">{{ props.last }}</span>
+                        </div>
+                    </template>
+                </AdvancedPagination>
+            </div>
+        </Variant>
     </Story>
 </template>
 
 <script lang="ts" setup>
 import AdvancedPagination from '../pagination/AdvancedPagination.vue';
-
+    
 // Simple variant States
 function stateSimple() {
     return {
         current: 2,
         last: 5,
-        size: 'sm',
     }
 }
 
@@ -47,7 +61,6 @@ function stateConnected() {
     return {
         current: 2,
         last: 5,
-        size: 'sm',
         connected: true
     }
 }
@@ -57,7 +70,6 @@ function stateAlignment() {
     return {
         current: 2,
         last: 5,
-        size: 'sm'
     }
 }
 
@@ -66,7 +78,14 @@ function stateDisabled() {
     return {
         current: 2,
         last: 5,
-        size: 'sm'
+    }
+}
+
+// Custom Slot variant States
+function stateCustomSlot() {
+    return {
+        current: 2,
+        last: 5
     }
 }
 </script>
