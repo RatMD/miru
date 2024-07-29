@@ -147,7 +147,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         @apply pointer-events-none;
 
         &.spin {
-            animation: spin 2.5s linear 0ms infinite;
+            animation: keyframe-rotate 2.5s linear 0ms infinite;
         }
     }
     &.btn-loading .btn-icon {
@@ -156,7 +156,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
         }
         
         &.spin {
-            animation: spin 2.5s linear 0ms infinite;
+            animation: keyframe-rotate 2.5s linear 0ms infinite;
         }
     }
     

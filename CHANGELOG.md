@@ -3,6 +3,8 @@ miru.ink / Changelog
 
 ## Version 0.0.24 - Experimental
 - Add: New `vitest` + `@vue/test-utils` testing framework.
+- Add: New `badge` variant on `AlertMessage` component.
+- Update: Use `info` color on `AlertMessage` component + Fix dark stylings.
 - Update: package.json dependencies.
 
 ## Version 0.0.23 - Experimental

@@ -43,7 +43,7 @@ const props = defineProps<LoadingSpinnerProps>();
 .spinner {
     @apply w-12 h-12 border-solid !border-t-transparent rounded-full;
     @apply border-gray-900 dark:border-gray-100;
-    animation: spin 1s linear 0s infinite;
+    animation: keyframe-rotate 1s linear 0s infinite;
     border-width: 3px;
 
     &.spinner-sm {

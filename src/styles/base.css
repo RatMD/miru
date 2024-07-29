@@ -3,7 +3,7 @@
 /*  Keyframes / Spin
 /*--- ----------------------------------------*/
 
-@keyframes spin {
+@keyframes keyframe-rotate {
     from {
         transform: rotate(0deg);
     }
@@ -12,7 +12,7 @@
     }
 }
 
-@keyframes translateX {
+@keyframes keyframe-translate-x {
     from {
         transform: translateX(-100%);
     }
@@ -21,7 +21,7 @@
     }
 }
 
-@keyframes translateY {
+@keyframes keyframe-translate-y {
     from {
         transform: translateY(-100%);
     }
@@ -52,4 +52,12 @@ html body {
     @supports (height: 100svh) {
         height: 100svh;
     }
+}
+
+/*--- ----------------------------------------*/
+/*  Animation
+/*--- ----------------------------------------*/
+
+.animate-rotate {
+    animation: keyframe-rotate 1s linear 0ms infinite;
 }

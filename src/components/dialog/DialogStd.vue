@@ -350,7 +350,7 @@ defineExpose({
 </script>
 
 <style scoped>
-@keyframes wobble {
+@keyframes keyframe-wobble {
     0% {
         transform: none;
     }
@@ -403,7 +403,7 @@ defineExpose({
 /** Wobble */
 .modal.wobble .modal-dialog {
     transition-property: none;
-    animation: wobble 500ms linear 0ms 1;
+    animation: keyframe-wobble 500ms linear 0ms 1;
 }
 
 /** Modal Sizes */

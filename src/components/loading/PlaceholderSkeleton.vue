@@ -64,14 +64,14 @@ const stylings = computed<{ [key: string]: string }>(() => {
 
     &::before {
         @apply h-full absolute top-0 left-0 right-0;
-        animation: translateX 1.0s infinite;
+        animation: keyframe-translate-x 1.0s infinite;
         z-index: 1;
         content: "";
         transform: translateX(-100%);
     }
 
     &:not(.skeleton-vertical)::before {
-        animation: translateX 1.0s infinite;
+        animation: keyframe-translate-x 1.0s infinite;
         background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
     }
     
@@ -80,7 +80,7 @@ const stylings = computed<{ [key: string]: string }>(() => {
     }
 
     &.skeleton-vertical::before {
-        animation: translateY 1.0s infinite;
+        animation: keyframe-translate-y 1.0s infinite;
         background-image: linear-gradient(0deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
     }
     
