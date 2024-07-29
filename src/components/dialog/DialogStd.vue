@@ -439,31 +439,54 @@ defineExpose({
     }
 }
 
-/** Modal Header */
+/* Modal Header */
 .modal-dialog :slotted(.dialog-header) {
     @apply w-full shrink-0 grow-0 basis-full flex items-center self-stretch;
 
     & .dialog-title {
-        @apply w-full px-5 py-3 text-sm uppercase;
-        @apply md:text-xl md:font-semibold md:normal-case;
+        @apply w-full h-10 px-5 py-3 text-sm uppercase;
+
+        @screen md {
+            @apply text-xl h-auto font-semibold normal-case;
+        }
     }
 
     & .dialog-close {
-        @apply w-12 h-12 flex items-center justify-center basis-12 ml-auto rounded-none shadow-none outline-none self-start;
+        @apply w-10 h-10 flex items-center justify-center relative p-0 border-0 outline-none cursor-pointer;
         @apply duration-300 ease-in-out transition-colors;
-        @apply bg-gray-100 dark:bg-gray-800;
+        @apply text-gray-600 bg-gray-100 dark:text-gray-400 dark:bg-gray-800;
+        
+        svg {
+            @apply z-20 pointer-events-none;
+        }
 
         &:hover {
-            @apply bg-gray-200;
+            @apply text-gray-800 bg-gray-200 dark:text-gray-300 dark:bg-gray-700;
         }
 
         @screen md {
-            @apply absolute top-1 right-1 w-10 h-10 rounded-full
+            @apply absolute top-1.5 right-1.5 w-10 h-10 rounded-full;
+            @apply bg-transparent dark:bg-transparent;
+
+            &::before {
+                @apply w-10 h-10 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full z-10 scale-0;
+                @apply bg-gray-200 dark:bg-gray-800;
+                @apply duration-300 ease-in-out transition-transform;
+                content: '';
+            }
+                
+            &:hover {
+                @apply text-gray-800 bg-transparent dark:text-gray-300 dark:bg-transparent;
+    
+                &::before {
+                    @apply scale-100;
+                }
+            }
         }
     }
 }
 
-/** Modal Body */
+/* Modal Body */
 .modal-dialog :slotted(.dialog-body) {
     @apply w-full shrink-0 grow-0 basis-full flex text-sm overflow-x-auto;
 
@@ -485,12 +508,12 @@ defineExpose({
     }
 }
 
-/** Modal Footer */
+/* Modal Footer */
 .modal-dialog :slotted(.dialog-footer) {
     @apply w-full flex text-sm mt-2;
 
     & .dialog-actions {
-        @apply w-full px-2 py-2 border-t border-solid;
+        @apply w-full px-5 py-2.5 border-t border-solid;
         @apply bg-gray-100 border-gray-200;
 
         &.dialog-actions-col {
