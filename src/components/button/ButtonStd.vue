@@ -32,6 +32,8 @@
 <script lang="ts">
 import type { Component, MaybeRef } from 'vue';
 
+export type ButtonColors = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+
 /**
  * ButtonStd Properties
  */
@@ -39,7 +41,7 @@ export interface ButtonStdProps {
     /**
      * The desired color used for this button.
      */
-    color?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+    color?: ButtonColors;
 
     /**
      * The desired label text for this button.
