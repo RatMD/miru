@@ -95,7 +95,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
     transition-property: background-color, border-color, color;
     
     &::before {
-        @apply w-6 h-6 border rounded-full shadow-white;
+        @apply w-5 h-5 border rounded-full shadow-white;
         @apply duration-200 ease-in-out;
         content: "";
         box-shadow: inset 0 0 0 0.25rem var(--tw-shadow-color);
@@ -186,7 +186,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
     @apply gap-4;
 
     &::before {
-        @apply w-8 h-8;
+        @apply w-6 h-6;
         box-shadow: inset 0 0 0 0.3175rem var(--tw-shadow-color);
     }
 

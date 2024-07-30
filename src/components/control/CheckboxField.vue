@@ -214,7 +214,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
     @apply gap-4;
 
     &::before {
-        @apply w-8 h-8;
+        @apply w-6 h-6;
     }
 
     & span {
@@ -223,7 +223,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 }
 .field-checkbox.field-lg .checkbox-input:checked ~ .checkbox-label {
     &::before {
-        background-size: 24px 24px;
+        background-size: 18px 18px;
     }
 }
 </style>

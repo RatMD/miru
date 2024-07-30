@@ -30,6 +30,7 @@
             <CollapseSupport 
                 :collapsed="!isVisible" 
                 :duration="props.duration || 300"
+                :transition="props.transition || 'ease-in-out'"
                 @hide="emits('hide')"
                 @hidden="emits('hidden')"
                 @show="emits('show')"
@@ -42,6 +43,7 @@
 
 <script lang="ts">
 import type { Component } from 'vue';
+import type { CollapseSupportTransitions } from '../support/CollapseSupport.vue';
 
 /**
  * AccordionTab Properties
@@ -78,6 +80,11 @@ export interface AccordionTabProps {
      * of content.
      */
     duration?: number | 'slow' | 'normal' | 'fast';
+
+    /**
+     * The desired transition timing function to be used for the collapsing.
+     */
+    transition?: CollapseSupportTransitions;
 
     /**
      * The visibility state of the accordion pane content, must be passed as v-model value.

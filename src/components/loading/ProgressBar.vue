@@ -46,7 +46,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 
 // Define Component
 const props = defineProps<ProgressBarProps>();
@@ -71,7 +71,7 @@ const styles = computed<any>(() => ({
 
 <style scoped>
 .progress-bar {
-    @apply relative w-full h-4 overflow-hidden rounded-full;
+    @apply relative w-full h-3 overflow-hidden rounded-full;
     @apply bg-gray-100 dark:bg-gray-800;
     
     & .progress-bar-inner {
@@ -93,10 +93,10 @@ const styles = computed<any>(() => ({
     @apply h-2;
 }
 .progress-bar.progress-bar-md {
-    @apply h-4;
+    @apply h-3;
 }
 .progress-bar.progress-bar-lg {
-    @apply h-6;
+    @apply h-4;
 }
 
 /* ProgressBar Colors */

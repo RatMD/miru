@@ -6,7 +6,8 @@
         <ActionButton 
             :icon="visible ? LucideEyeOn : LucideEyeOff" 
             :size="(props.size || 'md') == 'sm' ? 'sm' : 'md'" 
-             @click="visible = !visible" />
+            @click="visible = !visible" 
+            tabindex="-1" />
     </div>
 </template>
 

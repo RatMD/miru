@@ -1,5 +1,5 @@
 <template>
-    <Story title="Form/Control/RadioField" :layout="{ type: 'grid', width: '400px' }">
+    <Story title="Form/Control/RadioField" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default" :init-state="stateDefault" v-slot="{ state }">
             <div class="p-2">
                 <RadioField v-bind="state" v-model="state.value" />

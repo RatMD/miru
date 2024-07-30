@@ -1,10 +1,14 @@
 <template>
-    <div ref="content" class="content" :style="styles">
+    <div ref="content" class="content" :class="[
+        props.transition ? `content-${props.transition}` : null
+    ]" :style="styles">
         <slot name="default" v-bind="props" />
     </div>
 </template>
 
 <script lang="ts">
+export type CollapseSupportTransitions = 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear' | 'step-start' | 'step-end';
+
 /**
  * CollapseSupport Properties
  */
@@ -19,6 +23,11 @@ export interface CollapseSupportProps {
      * or a control-value to calculate the duration dynamically based on the amount of content.
      */
     duration?: number | 'slow' | 'normal' | 'fast';
+
+    /**
+     * The desired transition timing function to be used for the collapsing.
+     */
+    transition?: CollapseSupportTransitions;
 
     /**
      * Whether to keep an eye on the default content slot or not.
@@ -216,5 +225,28 @@ async function calculate(): Promise<[null|number, null|number]> {
     @apply w-full h-0 overflow-hidden;
     @apply ease-in-out;
     transition-property: height;
+}
+
+/* Timing Functions */
+.content.content-ease {
+    transition-timing-function: ease;
+}
+.content.content-ease-in {
+    @apply ease-in;
+}
+.content.content-ease-out {
+    @apply ease-out;
+}
+.content.content-ease-in-out {
+    @apply ease-in-out;
+}
+.content.content-linear {
+    @apply ease-linear;
+}
+.content.content-step-start {
+    transition-timing-function: step-start;
+}
+.content.content-step-end {
+    transition-timing-function: step-end;
 }
 </style>

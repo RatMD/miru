@@ -1,5 +1,5 @@
 <template>
-    <Story title="Form/Control/CheckboxField" :layout="{ type: 'grid', width: '400px' }">
+    <Story title="Form/Control/CheckboxField" :layout="{ type: 'grid', width: '800px' }">
         <Variant title="Default" :init-state="stateDefault" v-slot="{ state }">
             <div class="p-2">
                 <CheckboxField v-bind="state" v-model="state.value" />

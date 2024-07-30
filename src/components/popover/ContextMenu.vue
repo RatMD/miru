@@ -176,6 +176,5 @@ function onClick(ev: Event, action: ContextMenuAction) {
             
         }
     }
-
 }
 </style>

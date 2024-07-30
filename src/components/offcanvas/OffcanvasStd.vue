@@ -1,5 +1,5 @@
 <template>
-    <teleport :to="props.target ? props.target : '#app'" v-if="visibleBounced">
+    <teleport :to="props.target ? props.target : $miru('root')" v-if="visibleBounced">
         <div ref="offcanvas" class="offcanvas" :class="[
             `offcanvas-${props.size || 'md'}`,
             `offcanvas-${props.placement || 'right'}`,

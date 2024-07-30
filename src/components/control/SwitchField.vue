@@ -88,13 +88,13 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
     @apply duration-200 ease-in-out transition-colors;
     
     &::before {
-        @apply w-12 h-6 border rounded-full shadow-none;
+        @apply w-10 h-5 border rounded-full shadow-none;
         @apply duration-200 ease-in-out transition-colors;
         content: "";
     }
 
     &::after {
-        @apply w-4 h-4 left-1 top-1 absolute rounded-full;
+        @apply w-3.5 h-3.5 left-1 top-1 absolute rounded-full;
         @apply duration-200 ease-in-out;
         @apply bg-primary-600;
         transition-property: background-color, left;
@@ -108,7 +108,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 
 .switch-input:checked ~ .switch-label {
     &::after {
-        @apply left-7;
+        @apply left-5 ml-0.5;
     }
 }
 
@@ -193,7 +193,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
         }
 
         &::after {
-            @apply w-2.5 h-2.5;
+            @apply w-2.5 h-2.5 ml-0;
         }
 
         & span {
@@ -213,11 +213,11 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
         @apply gap-4;
 
         &::before {
-            @apply w-16 h-8;
+            @apply w-12 h-6;
         }
 
         &::after {
-            @apply w-6 h-6;
+            @apply w-4 h-4 mt-px ml-0;
         }
 
         & span {
@@ -227,7 +227,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 
     &:checked ~ .switch-label {
         &::after {
-            @apply left-9;
+            @apply left-7;
         }
     }
 }

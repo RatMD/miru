@@ -1,5 +1,5 @@
 <template>
-    <teleport :to="props.target ? props.target : '#app'" v-if="visibleBounced">
+    <teleport :to="props.target ? props.target : $miru('root')" v-if="visibleBounced">
         <div ref="modal" :class="classNames">
             <div class="modal-dialog" ref="dialog" v-click-outside="onClickOutside">
                 <slot name="dialog" v-bind="props">

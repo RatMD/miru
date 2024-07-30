@@ -2,15 +2,22 @@ miru.ink / Changelog
 ====================
 
 ## Version 0.0.24 - Experimental
+- Add: New `MiruOptions` plugin options handler + `root` as first option key.
+- Add: New `$miru` called custom property to access new $miru options.
 - Add: New `vitest` + `@vue/test-utils` testing framework.
 - Add: New `badge` variant on `AlertMessage` component.
 - Add: New `AlertDialog` component, similar to the `ConfirmDialog` one + basic story demonstration.
 - Add: New `DividerStd` component with different variants + basic story demonstration.
 - Add: New `PagedPagination` component with different variants + basic story demonstration.
-- Add: New `ProgressBAr` component with different variants + basic story demonstration.
+- Add: New `ProgressBar` component with different variants + basic story demonstration.
+- Add: New `transition` property on `CollapseSupport` component to change the desired timing function.
+- Update: package.json dependencies.
+- Update: Finish `PopoverStd` component, stylings and demonstration.
 - Update: Use `info` color on `AlertMessage` component + Fix dark stylings.
 - Update: Minor styling changes on `DialogStd` component.
-- Update: package.json dependencies.
+- Update: Change size on `CheckboxField`, `RadioField` and `SwitchField` components.
+- Update: Remove tabindex from `ActionButton` on the `PasswordField` component.
+- Fix: `PopoverStd` component.
 
 ## Version 0.0.23 - Experimental
 - Update: package.json dependencies.
