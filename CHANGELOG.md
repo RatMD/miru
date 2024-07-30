@@ -11,6 +11,7 @@ miru.ink / Changelog
 - Add: New `PagedPagination` component with different variants + basic story demonstration.
 - Add: New `ProgressBar` component with different variants + basic story demonstration.
 - Add: New `transition` property on `CollapseSupport` component to change the desired timing function.
+- Add: New `closable` and `escape` properties on `OffcanvasStd` component.
 - Update: package.json dependencies.
 - Update: Finish `PopoverStd` component, stylings and demonstration.
 - Update: Use `info` color on `AlertMessage` component + Fix dark stylings.

@@ -6,15 +6,19 @@
             isVisible ? `is-visible` : ''
         ]" v-click-outside="onClickOutside">
             <slot name="offcanvas" v-bind="props" :visible="isVisible" :open="open" :close="close" :toggle="toggle">
-                <header class="offcanvas-header" :class="{ 'header-title': !$slots.header && props.title }" v-if="$slots.header || props.title">
+                <header class="offcanvas-header" v-if="$slots.header || props.title">
                     <slot name="header" v-bind="props" :visible="isVisible" :open="open" :close="close" :toggle="toggle">
                         <div class="offcanvas-title">{{ props.title }}</div>
                     </slot>
-                    <ShadowButton :icon="LucideXSign" @click="close" />
+                    <ShadowButton :icon="LucideXSign" @click="close" class="mr-5" v-if="props.closable" />
                 </header>
 
-                <article ref="offcanvasContent" class="offcanvas-content">
-                    <slot v-bind="props" :visible="isVisible" :open="open" :close="close" :toggle="toggle" />
+                <article ref="offcanvasContent" class="offcanvas-article">
+                    <slot name="article" v-bind="props" :visible="isVisible" :open="open" :close="close" :toggle="toggle">
+                        <div class="offcanvas-content">
+                            <slot name="default" v-bind="props" :visible="isVisible" :open="open" :close="close" :toggle="toggle"></slot>
+                        </div>
+                    </slot>
                 </article>
 
                 <header class="offcanvas-footer" v-if="$slots.footer">
@@ -62,6 +66,16 @@ export interface OffcanvasStdProps {
     static?: boolean;
 
     /**
+     * Whether to display an x-close button inside the header or not.
+     */
+    closable?: boolean;
+
+    /**
+     * Whether to allow closing a modal by using escape or not.
+     */
+    escape?: boolean;
+
+    /**
      * v-model visible ref.
      */
     visible?: boolean;
@@ -97,22 +111,28 @@ export interface OffcanvasStdSlotProps extends OffcanvasStdProps {
  */
 export interface OffcanvasStdSlots {
     /**
-     * Header Offcanvas slot, rendered instead of title property.
-     * @param props 
-     */
-    header(props: OffcanvasStdSlotProps): any;
-
-    /**
      * The default offcanvas content slot.
      * @param props 
      */
     default(props: OffcanvasStdSlotProps): any;
 
     /**
+     * Header Offcanvas slot, rendered instead of title property.
+     * @param props 
+     */
+    header(props: OffcanvasStdSlotProps): any;
+
+    /**
      * Footer Offcanvas slot
      * @param props 
      */
     footer(props: OffcanvasStdSlotProps): any;
+
+    /**
+     * Footer Offcanvas slot
+     * @param props 
+     */
+    article(props: OffcanvasStdSlotProps): any;
 
     /**
      * Replace the whole offcanvas slot structure with a custom one.
@@ -173,7 +193,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import LucideXSign from '../lucide/XSign.vue';
 import ShadowButton from '../button/ShadowButton.vue';
 import BackdropSupport from '../support/BackdropSupport.vue';
@@ -194,25 +214,26 @@ const visibleState = ref<boolean>(false);
 const visibleBounced = ref<boolean>(false);
 const isVisible = ref<boolean>(false);
 
-/**
- * Component before unmount
- */
+// Component mounted
+onMounted(() => {
+    if (props.escape) {
+        document.addEventListener('keyup', onCloseEscape);
+    }
+});
+
+// Component unmounted
 onBeforeUnmount(() => {
     close();
 });
 
-/**
- * Handle property changes
- */
+// Watch property changes
 watch(props, newValue => {
     if (visibleState.value != newValue.visible) {
         visibleState.value = newValue.visible;
     }
 }, { immediate: true });
 
-/**
- * Handle visibility changes
- */
+// Watch visibility changes
 watch(visibleState, async newValue => {
     if (newValue && !visibleBounced.value) {
         await nextTick();
@@ -287,6 +308,24 @@ async function close() {
 }
 
 /**
+ * Event Listener - Click Escape
+ * @param event 
+ */
+ async function onCloseEscape(event: KeyboardEvent) {
+    if (!offcanvas.value) {
+        return;
+    }
+    if (event.key != 'Escape') {
+        return;
+    }
+    if (props.static) {
+        return;
+    }
+    
+    await close();
+}
+
+/**
  * Event Listener - Click Outside
  * @param event 
  */
@@ -316,116 +355,116 @@ defineExpose({
     @apply bg-white dark:bg-gray-800;
     width: 250px;
     z-index: 1000;
+}
 
-    /* Position */
-    &.offcanvas-top {
-        @apply w-full top-0 left-0 right-0 -translate-y-full;
+/* Placements */
+.offcanvas.offcanvas-top {
+    @apply w-full top-0 left-0 right-0 -translate-y-full;
 
-        &.is-visible {
-            @apply translate-y-0;
-        }
+    &.is-visible {
+        @apply translate-y-0;
     }
+}
+
+.offcanvas.offcanvas-bottom {
+    @apply w-full left-0 right-0 bottom-0 translate-y-full;
+
+    &.is-visible {
+        @apply translate-y-0;
+    }
+}
+
+.offcanvas.offcanvas-left {
+    @apply top-0 left-0 bottom-0 -translate-x-full;
     
+    &.is-visible {
+        @apply translate-x-0;
+    }
+}
+
+.offcanvas.offcanvas-right {
+    @apply top-0 right-0 bottom-0 translate-x-full;
+
+    &.is-visible {
+        @apply translate-x-0;
+    }
+}
+
+/* Sizes */
+.offcanvas.offcanvas-sm {
+    &.offcanvas-top,
     &.offcanvas-bottom {
-        @apply w-full left-0 right-0 bottom-0 translate-y-full;
-
-        &.is-visible {
-            @apply translate-y-0;
-        }
-    }
-    
-    &.offcanvas-left {
-        @apply top-0 left-0 bottom-0 -translate-x-full;
+        height: 100%;
         
-        &.is-visible {
-            @apply translate-x-0;
+        @screen sm {
+            height: 250px;
         }
     }
     
+    &.offcanvas-left,
     &.offcanvas-right {
-        @apply top-0 right-0 bottom-0 translate-x-full;
+        width: 100%;
 
-        &.is-visible {
-            @apply translate-x-0;
-        }
-    }
-
-    /* Sizes */
-    &.offcanvas-sm {
-        &.offcanvas-top,
-        &.offcanvas-bottom {
-            height: 100%;
-            
-            @screen sm {
-                height: 250px;
-            }
-        }
-        
-        &.offcanvas-left,
-        &.offcanvas-right {
-            width: 100%;
-
-            @screen sm {
-                width: 250px;
-            }
-        }
-    }
-
-    &.offcanvas-md {
-        &.offcanvas-top,
-        &.offcanvas-bottom {
-            height: 100%;
-            
-            @screen sm {
-                height: 400px;
-            }
-        }
-
-        &.offcanvas-left,
-        &.offcanvas-right {
-            width: 100%;
-            
-            @screen sm {
-                width: 400px;
-            }
-        }
-    }
-
-    &.offcanvas-lg {
-        &.offcanvas-top,
-        &.offcanvas-bottom {
-            height: 100%;
-            
-            @screen md {
-                height: 560px;
-            }
-        }
-
-        &.offcanvas-left,
-        &.offcanvas-right {
-            width: 100%;
-            
-            @screen md {
-                width: 560px;
-            }
+        @screen sm {
+            width: 250px;
         }
     }
 }
 
-.offcanvas-header {
+.offcanvas.offcanvas-md {
+    &.offcanvas-top,
+    &.offcanvas-bottom {
+        height: 100%;
+        
+        @screen sm {
+            height: 400px;
+        }
+    }
+
+    &.offcanvas-left,
+    &.offcanvas-right {
+        width: 100%;
+        
+        @screen sm {
+            width: 400px;
+        }
+    }
+}
+
+.offcanvas.offcanvas-lg {
+    &.offcanvas-top,
+    &.offcanvas-bottom {
+        height: 100%;
+        
+        @screen md {
+            height: 560px;
+        }
+    }
+
+    &.offcanvas-left,
+    &.offcanvas-right {
+        width: 100%;
+        
+        @screen md {
+            width: 560px;
+        }
+    }
+}
+
+/* Offcanvas Header */
+.offcanvas :slotted(.offcanvas-header) {
     @apply sticky top-0 flex w-full justify-between items-center;
 
-    &.header-title {
-        @apply p-4;
+    & .offcanvas-title {
+        @apply text-lg px-5 py-3 font-semibold font-header;
     }
-
-    & :slotted(.offcanvas-title) {
-        @apply text-lg font-semibold font-header;
-    }
-
 }
 
-.offcanvas-content {
-    @apply flex-1 overflow-x-auto;
+/* Offcanvas Article */
+.offcanvas :slotted(.offcanvas-article) {
+    @apply flex-1 flex flex-col overflow-x-auto;
+}
+.offcanvas :slotted(.offcanvas-content) {
+    @apply px-5 py-2;
 }
 </style>

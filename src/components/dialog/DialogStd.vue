@@ -14,7 +14,7 @@
                     </header>
     
                     <article class="dialog-body" v-if="$slots.default || $slots.body">
-                        <slot name="body" v-bind="props">
+                        <slot name="article" v-bind="props">
                             <div class="dialog-content">
                                 <slot name="default" v-bind="props"></slot>
                             </div>
@@ -109,7 +109,7 @@ export interface DialogStdSlots {
      * Replace the inner body slot structure with a custom one.
      * @param props 
      */
-    body(props: DialogStdProps): any;
+    article(props: DialogStdProps): any;
 }
 
 /**
@@ -217,18 +217,14 @@ onBeforeUnmount(() => {
     close();
 });
 
-/**
- * Handle property changes
- */
+// Watch property changes
 watch(props, newValue => {
     if (visibleState.value != newValue.visible) {
         visibleState.value = newValue.visible;
     }
 }, { immediate: true });
 
-/**
- * Handle visibility changes
- */
+// Watch visibility changes
 watch(visibleState, async newValue => {
     if (newValue && !visibleBounced.value) {
         await nextTick();

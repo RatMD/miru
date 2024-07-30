@@ -33,7 +33,7 @@
                     <div class="dialog-title">Header</div>
                 </template>
                 
-                <template #body>
+                <template #article>
                     <div class="dialog-content">
                         Default Content
                     </div>
