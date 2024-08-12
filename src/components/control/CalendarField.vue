@@ -1,18 +1,6 @@
 <template>
     <div class="field-calendar">
-        <div class="calendar-header">
-            <button type="button" class="header-btn" @click="onPrevMonth()">
-                <LucideChevronLeft :size="16" />
-            </button>
-
-            <button type="button" class="header-btn header-label">
-                <span>{{ monthName }}, <b>{{ year }}</b></span>
-            </button>
-
-            <button type="button" class="header-btn" @click="onNextMonth()">
-                <LucideChevronRight :size="16" />
-            </button>
-        </div>
+        <CalendarHeader :label="`${monthName} ${year}`" @prev="onPrevPage" @next="onNextPage" @view="onChangeView" />
 
         <div class="calendar-body">
             <div class="body-weeks" :class="{ 'has-week-nums': props.weekNumbers }">
@@ -52,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import type { MaybeRef } from 'vue';
+import type { SharedControlProps } from '../form/FormControl.vue';
 
 export type WeekDay = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -172,23 +160,7 @@ export interface CalendarWeek {
 /**
  * CalendarField Properties
  */
-export interface CalendarFieldProps {
-    /**
-     * A custom calendar field id, usually passed by the FormControl component. The default value 
-     * is an auto-generated UUID.
-     */
-    id?: null | string;
-
-    /**
-     * The name attribute for this calendar field.
-     */
-    name?: null | string;
-
-    /**
-     * The value for this calendar field, must be passed as v-model value.
-     */
-    modelValue?: string | Date;
-
+export interface CalendarFieldProps extends SharedControlProps<string | Date | Date[]> {
     /**
      * The weekday number (0 = Sunday, 1 = Monday, ..., 6 = Saturday) where the week starts.
      */
@@ -250,32 +222,6 @@ export interface CalendarFieldProps {
      * The desired locale, which should be used with the Intl.DateTimeFormat handler.
      */
     locale?: string;
-
-    /**
-     * The disabled state for this calendar field.
-     */
-    disabled?: MaybeRef<boolean>;
-
-    /**
-     * The readonly state for this calendar field.
-     */
-    readonly?: MaybeRef<boolean>;
-
-    /**
-     * The required state for this calendar field.
-     */
-    required?: MaybeRef<boolean>;
-
-    /**
-     * The validation state for this calendar field.
-     */
-    validation?: null | 'invalid' | 'valid';
-
-    /**
-     * Additional calendar field validation message, requires the validation property set either to 
-     * valid or invalid.
-     */
-    validationMessage?: null | string;
 }
 
 /**
@@ -288,7 +234,7 @@ export interface CalendarFieldEmits {
     (event: 'update:modelValue', value: Date | null): void;
 }
 
-// Default Export, used for IDE-related auto-import features
+// Default export, used for IDE-related auto-import features
 export default {
     name: 'CalendarField'
 }
@@ -296,8 +242,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import LucideChevronLeft from '../lucide/ChevronLeft.vue';
-import LucideChevronRight from '../lucide/ChevronRight.vue';
+import CalendarHeader from './calendar/CalendarHeader.vue';
 import InputField from '../control/InputField.vue';
 
 // Define Component
@@ -596,9 +541,18 @@ function isDisabled(date: Date): boolean {
 }
 
 /**
- * Previous Month
+ * Change View
+ * @param event
  */
-function onPrevMonth() {
+function onChangeView(event: Event) {
+
+}
+
+/**
+ * Previous Month
+ * @param event
+ */
+function onPrevPage(event: Event) {
     if (month.value > 0) {
         month.value--;
     } else {
@@ -609,8 +563,9 @@ function onPrevMonth() {
 
 /**
  * Next Month
+ * @param event
  */
-function onNextMonth() {
+function onNextPage(event: Event) {
     if (month.value < 11) {
         month.value++;
     } else {
@@ -649,30 +604,6 @@ function onSelect(date: Date) {
     @apply w-full flex flex-col border border-solid rounded-md;
     @apply bg-transparent border-gray-300;
     max-width: 400px;
-}
-
-.calendar-header {
-    @apply w-full flex flex-row justify-between p-1 relative items-center;
-
-    &::before {
-        @apply left-4 right-4 bottom-0 absolute h-px;
-        @apply bg-zinc-200;
-        content: "";
-    }
-
-    & .header-btn {
-        @apply w-10 h-10 flex items-center justify-center outline-none shadow-none border-0 rounded-md;
-        @apply transition-colors duration-300 ease-in-out;
-        @apply text-gray-600 dark:text-gray-500 bg-transparent;
-
-        &:hover {
-            @apply bg-gray-200 dark:bg-gray-800;
-        }
-    }
-
-    & .header-btn.header-label {
-        @apply w-auto h-8 px-4;
-    }
 }
 
 .calendar-body {
