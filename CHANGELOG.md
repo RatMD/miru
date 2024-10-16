@@ -2,6 +2,7 @@ miru.ink / Changelog
 ====================
 
 ## Version 0.0.24 - Experimental
+- Info: node.js support has been increased to v22.
 - Add: New `MiruOptions` plugin options handler + `root` as first option key.
 - Add: New `$miru` called custom property to access new $miru options.
 - Add: New `vitest` + `@vue/test-utils` testing framework.
