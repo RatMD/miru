@@ -1,7 +1,9 @@
 <template>
-    <div class="form-control" :class="{
+    <div :class="{
+        'form-control': true,
         'is-valid': props.validation == 'valid',
         'is-invalid': props.validation == 'invalid',
+        'is-loading': props.loading,
         'is-disabled': props.disabled,
         'is-required': props.required,
         'is-vad': validationVisible && descriptionVisible && props.vad,
@@ -13,9 +15,21 @@
             </label>
         </slot>
 
-        <div class="control-field">
-            <slot name="default" v-bind="passed" />
-        </div>
+        <slot name="field" v-bind="passed">
+            <div class="control-field">
+                <slot name="icon" v-bind="passed">
+                    <div class="field-icon animate-spin" v-if="toValue(props.loading || false)">
+                        <component 
+                            :is="props.iconLoading ? props.iconLoading : LucideLoaderCircle" 
+                            v-bind="props.iconLoadingProps || props.iconProps || { class: 'size-4' }" />
+                    </div>
+                    <div class="field-icon" v-else-if="props.icon">
+                        <component :is="props.icon" v-bind="props.iconProps || { class: 'size-4' }" />
+                    </div>
+                </slot>
+                <slot name="default" v-bind="passed" />
+            </div>
+        </slot>
 
         <div class="control-footer">
             <slot name="footer" v-bind="passed">
@@ -36,8 +50,7 @@
 </template>
 
 <script lang="ts">
-import type { MaybeRef } from 'vue';
-import type { Nullable } from '../../types';
+import type { Component, MaybeRef } from 'vue';
 
 /**
  * Shared Control Properties, available as `control` parameter on the `default` slot, to simple 
@@ -71,14 +84,19 @@ export interface SharedControlProps<T = any> {
     modelValue?: T;
 
     /**
+     * The loading state for this form control field.
+     */
+    loading?: MaybeRef<boolean> | boolean;
+
+    /**
      * The disabled state for this form control field.
      */
-    disabled?: MaybeRef<boolean>;
+    disabled?: MaybeRef<boolean> | boolean;
 
     /**
      * The required state for this form control field.
      */
-    required?: MaybeRef<boolean>;
+    required?: MaybeRef<boolean> | boolean;
 
     /**
      * The validation state for this form control field.
@@ -100,6 +118,26 @@ export interface FormControlProps<T = any> extends SharedControlProps<T> {
      * Primary form control label, shown above the control field itself in most cases.
      */
     label?: null | string;
+
+    /**
+     * A custom icon, shown on the left side of supporting input fields.
+     */
+    icon?: Component | null;
+
+    /**
+     * Additional properties passed to the icon component, such as `size` or `stroke-width`.
+     */
+    iconProps?: { [key: string]: any };
+
+    /**
+     * A custom icon, shown on the left side of supporting input fields, when loading state is passed.
+     */
+    iconLoading?: Component | null | false;
+
+    /**
+     * Additional properties passed to the loading icon component, such as `size` or `stroke-width`.
+     */
+    iconLoadingProps?: { [key: string]: any };
 
     /**
      * Additional form control description text, shown below this control field.
@@ -132,6 +170,18 @@ export interface FormControlSlots<T = any> {
      * @param props 
      */
     label(props: FormControlSlotProps<T>): any;
+
+    /**
+     * Custom form control field slot.
+     * @param props 
+     */
+    field(props: FormControlSlotProps<T>): any;
+
+    /**
+     * Custom form control icon slot.
+     * @param props 
+     */
+    icon(props: FormControlSlotProps<T>): any;
 
     /**
      * Custom form control footer message slot.
@@ -169,7 +219,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed, toValue } from 'vue';
+import LucideLoaderCircle from '../lucide/LoaderCircle.vue';
 import uuid from '../../utils/uuid';
 
 // Define Component
@@ -185,6 +236,7 @@ const passed = computed<FormControlSlotProps>(() => ({
         id: controlId.value,
         name: props.name,
         modelValue: props.modelValue,
+        loading: props.loading,
         disabled: props.disabled,
         required: props.required,
         validation: props.validation,
@@ -231,7 +283,14 @@ const descriptionVisible = computed<boolean>(() => {
 }
 
 .control-field {
-    @apply flex;
+    @apply flex relative;
+
+    & .field-icon {
+        @apply absolute top-3 left-3;
+    }
+    & .field-icon + :deep(.field-input) {
+        @apply pl-10;
+    }
 }
 
 .control-footer {

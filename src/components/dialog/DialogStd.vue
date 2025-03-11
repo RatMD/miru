@@ -374,7 +374,7 @@ defineExpose({
     @apply inset-0 fixed w-full h-full flex justify-center items-center py-10;
     @apply overflow-x-hidden overflow-y-auto outline-none;
     @apply opacity-0;
-    @apply duration-300 ease-in-out transition-opacity;
+    @apply duration-200 ease-in-out transition-opacity;
     z-index: 1000;
     perspective: 100px;
 
@@ -386,7 +386,7 @@ defineExpose({
 .modal-dialog {
     @apply relative m-auto w-full flex flex-col rounded-lg shadow-lg overflow-hidden opacity-0;
     @apply bg-gray-50 dark:bg-gray-900;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     transform: rotateX(20deg) translate(0, -120px) scale(1, 0.2);
     transition-property: transform, opacity;
     
@@ -449,7 +449,7 @@ defineExpose({
 
     & .dialog-close {
         @apply w-10 h-10 flex items-center justify-center relative p-0 border-0 outline-none cursor-pointer;
-        @apply duration-300 ease-in-out transition-colors;
+        @apply duration-200 ease-in-out transition-colors;
         @apply text-gray-600 bg-gray-100 dark:text-gray-400 dark:bg-gray-800;
         
         svg {
@@ -467,7 +467,7 @@ defineExpose({
             &::before {
                 @apply w-10 h-10 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full z-10 scale-0;
                 @apply bg-gray-200 dark:bg-gray-800;
-                @apply duration-300 ease-in-out transition-transform;
+                @apply duration-200 ease-in-out transition-transform;
                 content: '';
             }
                 

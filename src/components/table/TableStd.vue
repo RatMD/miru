@@ -315,7 +315,7 @@ function onToggleAll() {
     & .body-row {
         @apply w-full flex flex-row;
         @apply border-t border-solid;
-        @apply duration-300 ease-in-out transition-colors;
+        @apply duration-200 ease-in-out transition-colors;
         @apply border-zinc-200 dark:border-zinc-700;
 
         &:last-child {

@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<BackdropSupportProps>(), {
 <style scoped>
 .backdrop {
     @apply inset-0 backdrop-blur-none pointer-events-none select-none;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     @apply bg-transparent;
     z-index: 999;
     transition-property: background-color, backdrop-filter;

@@ -74,7 +74,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 <style scoped>
 .field-input {
     @apply w-full px-4 py-2.5 border border-solid rounded-md outline-none shadow-none resize-y;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     @apply bg-transparent border-gray-400;
     @apply dark:bg-gray-900 dark:border-gray-700;
     min-height: 3.0rem;

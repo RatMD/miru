@@ -127,7 +127,7 @@ const isVisible = computed<boolean>({
 
     & .card-btn {
         @apply flex flex-row items-center px-3 py-1.5 gap-2 rounded;
-        @apply duration-300 ease-in-out transition-colors;
+        @apply duration-200 ease-in-out transition-colors;
         @apply text-gray-500;
         
         &:hover {
@@ -135,7 +135,7 @@ const isVisible = computed<boolean>({
         }
 
         & .title-icon {
-            @apply duration-300 ease-in-out transition-transform;
+            @apply duration-200 ease-in-out transition-transform;
         }
 
         & .title-text {

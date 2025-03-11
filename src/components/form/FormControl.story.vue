@@ -61,13 +61,35 @@
                 </FormControl>
             </div>
         </Variant>
+        
+        <Variant title="Icon" :init-state="stateIcon" v-slot="{ state }">
+            <div class="flex flex-col gap-4 p-2">
+                <FormControl v-bind="state" v-model="state.value" v-slot="{ control }">
+                    <InputField placeholder="Some basic placeholder" v-bind="control" />
+                </FormControl>
+                <FormControl v-bind="state" v-model="state.value" v-slot="{ control }" loading>
+                    <InputField placeholder="Some basic placeholder" v-bind="control" />
+                </FormControl>
+            </div>
+        </Variant>
+        
+        <Variant title="Loading" :init-state="stateLoading" v-slot="{ state }">
+            <div class="flex flex-col items-end gap-4 p-2">
+                <FormControl class="w-full" v-bind="state" v-model="state.value" v-slot="{ control }">
+                    <InputField placeholder="Some basic placeholder" v-bind="control" />
+                </FormControl>
+                <ButtonStd label="Toggle Loading State" size="sm" @click="state.loading = !state.loading" />
+            </div>
+        </Variant>
     </Story>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 import FormControl from './FormControl.vue';
+import ButtonStd from '../button/ButtonStd.vue';
 import InputField from '../control/InputField.vue';
+import CalendarDays from '../lucide/CalendarDays.vue';
 
 /**
  * Default State
@@ -149,6 +171,30 @@ function stateInvalid() {
     }
 }
 
+/**
+ * Icon State
+ */
+function stateIcon() {
+    return {
+        value: ref(),
+        icon: CalendarDays,
+        iconProps: { class: 'size-4' },
+        label: 'Form Control Label',
+        description: 'Providing a custom icon for supported input fields.',
+    }
+}
+
+/**
+ * Loading State
+ */
+function stateLoading() {
+    return {
+        value: ref(),
+        loading: ref(false),
+        label: 'Form Control Label',
+        description: 'Providing a custom icon for supported input fields.',
+    }
+}
 </script>
 
 <docs lang="md">

@@ -132,7 +132,7 @@ const cardProps = computed<CardStdProps>(() => ({
         
         & :slotted(button) {
             @apply w-8 h-8 relative rounded-lg flex items-center justify-center outline-none shadow-none;
-            @apply transition-colors duration-300 ease-in-out;
+            @apply transition-colors duration-200 ease-in-out;
             @apply text-current;
             
             &:first-child {
@@ -141,7 +141,7 @@ const cardProps = computed<CardStdProps>(() => ({
 
             &::before {
                 @apply absolute inset-0 rounded-full z-10 scale-0;
-                @apply duration-300 ease-in-out transition-transform;
+                @apply duration-200 ease-in-out transition-transform;
                 @apply bg-black/10;
                 content: "";
             }

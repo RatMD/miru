@@ -93,7 +93,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 <style scoped>
 .btn.btn-shadow {
     @apply w-10 h-10 flex items-center justify-center relative p-0 border-0 outline-none rounded-full cursor-pointer;
-    @apply duration-300 ease-in-out transition-colors;
+    @apply duration-200 ease-in-out transition-colors;
     @apply text-gray-600 dark:text-gray-500 bg-transparent;
 
     svg {
@@ -103,7 +103,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
     &::before {
         @apply w-12 h-12 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full z-10 scale-0;
         @apply bg-gray-200 dark:bg-gray-800;
-        @apply duration-300 ease-in-out transition-transform;
+        @apply duration-200 ease-in-out transition-transform;
         content: '';
     }
 

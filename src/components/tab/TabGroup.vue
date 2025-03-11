@@ -150,7 +150,7 @@ function onShow(idx: number) {
 
     & .tab-item {
         @apply px-3 py-2;
-        @apply duration-300 ease-in-out transition-colors;
+        @apply duration-200 ease-in-out transition-colors;
         @apply text-gray-400 dark:text-gray-600;
     
         &:hover {
@@ -164,7 +164,7 @@ function onShow(idx: number) {
 
     & .tab-active-line {
         @apply absolute -bottom-px h-0.5 pointer-events-none;
-        @apply duration-300 ease-in-out;
+        @apply duration-200 ease-in-out;
         @apply bg-gray-800 dark:bg-gray-300;
         transition-property: width, left;
     }
@@ -174,7 +174,7 @@ function onShow(idx: number) {
 .tab-group.group-bordered .group-tabs {
     & .tab-item {
         @apply px-3 py-2 border border-solid rounded-t-lg -mb-px;
-        @apply duration-300 ease-in-out;
+        @apply duration-200 ease-in-out;
         @apply text-gray-400 dark:text-gray-500;
 
         &:not(.is-active) {

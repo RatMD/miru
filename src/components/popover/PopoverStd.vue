@@ -222,7 +222,7 @@ defineExpose({
 
 .popover {
     @apply w-auto h-auto max-w-64 absolute flex flex-col opacity-0 pointer-events-none;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     z-index: 99;
     transition-property: opacity, margin;
     

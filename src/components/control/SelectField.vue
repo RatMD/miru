@@ -94,7 +94,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 <style scoped>
 .field-select {
     @apply w-full h-10 pl-4 pr-12 py-2 border border-solid rounded-md outline-none shadow-none appearance-none;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     @apply bg-transparent border-gray-400;
     @apply dark:bg-gray-900 dark:border-gray-700;
     transition-property: background-color, border-color, box-shadow, color;

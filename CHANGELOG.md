@@ -1,6 +1,12 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.26 - Experimental
+- Add: New `icon`, `icon-props`, `icon-loading`, `icon-loading-props` properties on `FormControl` component.
+- Add: New `loading` property to `SharedControlProps` components, supporting another state.
+- Add: New `field` and `icon` slot on `FormControl` component.
+- Update: Replace `duration-300` to `duration-200` on every component.
+
 ## Version 0.0.25 - Experimental
 - Fix: Temporary solution for typing issues on TableStd component.
 - Fix: Build process stopped working on partial components.

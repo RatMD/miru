@@ -117,7 +117,7 @@ function onRemove() {
 
     & .alert-close {
         @apply absolute top-1.5 right-1.5 mt-px p-1 flex items-center justify-center rounded-md;
-        @apply duration-300 ease-in-out transition-colors;
+        @apply duration-200 ease-in-out transition-colors;
     }
 
     & :deep(a) {

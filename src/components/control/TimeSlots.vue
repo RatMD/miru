@@ -163,14 +163,14 @@ function onSelect(val: string) {
 <style scoped>
 .field-time-slots {
     @apply w-full h-auto p-2 flex flex-col gap-1.5 border border-solid rounded-md overflow-x-auto outline-none shadow-none;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     @apply bg-transparent border-gray-400 dark:border-gray-700;
     max-height: 300px;
 }
 
 .time-slot-option {
     @apply w-full px-3 py-1.5 basis-full shrink-0 grow-0 flex flex-row items-center justify-between gap-3 rounded-md;
-    @apply duration-300 ease-in-out transition-colors;
+    @apply duration-200 ease-in-out transition-colors;
 
     &:disabled {
         @apply cursor-not-allowed;

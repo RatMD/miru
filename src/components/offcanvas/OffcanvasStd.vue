@@ -351,7 +351,7 @@ defineExpose({
 <style scoped>
 .offcanvas {
     @apply fixed flex flex-col max-h-full;
-    @apply duration-300 ease-in-out transition-transform;
+    @apply duration-200 ease-in-out transition-transform;
     @apply bg-white dark:bg-gray-800;
     width: 250px;
     z-index: 1000;

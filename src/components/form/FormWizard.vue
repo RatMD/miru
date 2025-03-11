@@ -258,7 +258,7 @@ defineExpose({
 
 .form-wizard-pages {
     @apply h-full flex flex-row whitespace-nowrap flex-nowrap;
-    @apply duration-300 ease-in-out transition-transform;
+    @apply duration-200 ease-in-out transition-transform;
 }
 
 .form-wizard-controls {
@@ -283,7 +283,7 @@ defineExpose({
 
     & button {
         @apply w-12 h-12 flex items-center justify-center rounded-full border border-solid;
-        @apply duration-300 ease-in-out transition-colors;
+        @apply duration-200 ease-in-out transition-colors;
         @apply border-zinc-300 dark:border-zinc-700;
         
         &.button-primary:disabled {

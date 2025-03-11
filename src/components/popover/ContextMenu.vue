@@ -162,7 +162,7 @@ function onClick(ev: Event, action: ContextMenuAction) {
     
     & .item-btn {
         @apply flex flex-row gap-2 px-4 py-2;
-        @apply duration-300 ease-in-out transition-colors;
+        @apply duration-200 ease-in-out transition-colors;
 
         &:not(:disabled):hover {
             @apply bg-gray-200;

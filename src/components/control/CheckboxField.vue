@@ -104,7 +104,7 @@ const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g,
 
 .checkbox-input ~ .checkbox-label {
     @apply flex items-center relative gap-3;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     transition-property: background-color, border-color, color;
     
     &::before {

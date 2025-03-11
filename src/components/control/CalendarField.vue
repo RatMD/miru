@@ -651,7 +651,7 @@ function onSelect(date: Date) {
 
     & .week-btn {
         @apply w-8 h-8 flex items-center justify-center relative p-0 border-0 outline-none rounded-full cursor-pointer;
-        @apply duration-300 ease-in-out transition-colors;
+        @apply duration-200 ease-in-out transition-colors;
         @apply text-gray-800 dark:text-gray-200 bg-transparent;
 
         &:disabled {
@@ -666,7 +666,7 @@ function onSelect(date: Date) {
         &::before {
             @apply w-10 h-10 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full z-10 scale-0;
             @apply bg-gray-200 dark:bg-gray-800;
-            @apply duration-300 ease-in-out transition-transform;
+            @apply duration-200 ease-in-out transition-transform;
             content: '';
         }
 

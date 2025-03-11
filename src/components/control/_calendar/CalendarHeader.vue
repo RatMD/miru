@@ -85,7 +85,7 @@ function onNext(event: Event) {
 
 .header-action {
     @apply w-8 h-8 flex items-center outline-none shadow-none border-0 rounded-md;
-    @apply transition-colors duration-300 ease-in-out;
+    @apply transition-colors duration-200 ease-in-out;
     @apply text-gray-600 dark:text-gray-300 bg-transparent;
     
     &:hover {

@@ -14,7 +14,7 @@
             props.validation ? `field-${props.validation}` : ''
         ]" 
         :tabindex="props.tabindex"
-        :disabled="toValue(props.disabled || false) || typeof disabled == 'string'"
+        :disabled="toValue(props.loading || false) || toValue(props.disabled || false) || typeof disabled == 'string'"
         :required="toValue(props.required || false) || typeof required == 'string'"
         :invalid="props.validation == 'invalid' ? true : void 0"
         v-model="value" />
@@ -187,10 +187,10 @@ const isDateTime = computed<boolean>(() => {
 <style scoped>
 .field-input {
     @apply w-full h-10 px-4 py-2.5 border border-solid rounded-md outline-none shadow-none;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     @apply bg-transparent border-gray-400;
     @apply dark:bg-gray-900 dark:border-gray-700;
-    transition-property: background-color, border-color, box-shadow, color;
+    transition-property: background-color, border-color, box-shadow, color, padding;
 
     &:disabled {
         @apply cursor-not-allowed;
@@ -231,11 +231,21 @@ const isDateTime = computed<boolean>(() => {
     font-size: 16px;
 
     @screen md {
+        @apply text-xs;
+    }
+}
+.field-input.field-md {
+    @apply h-10 py-1.5;
+    /* required to prevent zoom-behaviour on apple devices */
+    /* @see https://css-tricks.com/16px-or-larger-text-prevents-ios-form-zoom/ */
+    font-size: 16px;
+
+    @screen md {
         @apply text-sm;
     }
 }
 .field-input.field-lg {
-    @apply h-14 py-4 text-lg;
+    @apply h-14 py-4 text-base;
 }
 
 /** Condensed */

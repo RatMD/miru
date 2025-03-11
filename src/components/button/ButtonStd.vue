@@ -140,7 +140,7 @@ const iconBinding = computed<{ [key: string]: any }>(() => {
 <style scoped>
 .btn {
     @apply w-auto h-10 px-6 py-2.5 inline-flex items-center gap-3 border border-solid rounded-lg cursor-pointer text-base;
-    @apply duration-300 ease-in-out;
+    @apply duration-200 ease-in-out;
     @apply outline-none shadow-none;
     transition-property: background-color, border-color, box-shadow, color;
 

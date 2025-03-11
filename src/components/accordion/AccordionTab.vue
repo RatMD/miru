@@ -189,7 +189,7 @@ const accordionPane = ref<HTMLElement>();
     }
 
     & :slotted(.header-icon) {
-        @apply duration-300 ease-in-out transition-transform;
+        @apply duration-200 ease-in-out transition-transform;
         @apply -rotate-90;
 
         .icon-right & {

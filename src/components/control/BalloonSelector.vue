@@ -13,6 +13,7 @@
             :id="`${fieldId}-${idx}`"
             :class="{
                 'balloon-item': true,
+                'item-loading': isLoading,
                 'item-disabled': isDisabled || option.disabled || false,
                 'item-required': isRequired,
                 'item-checked': isChecked(option.value)
@@ -25,7 +26,7 @@
                 :name="`${props.name || props.id}${(props.multiple ? '[]' : '')}`"
                 :value="option.value"
                 :tabindex="props.tabindex"
-                :disabled="isDisabled || option.disabled || false"
+                :disabled="isLoading || isDisabled || option.disabled || false"
                 :required="isRequired"
                 :checked="isChecked(option.value)" />
             <slot name="default" v-bind="props" :option="option" :idx="idx">
@@ -201,6 +202,7 @@ const value = computed({
     }
 });
 const fieldId = computed<string>(() => props.id || `field-${uuid().replace(/-/g, '')}`);
+const isLoading = computed<boolean>(() => toValue(props.loading || false));
 const isDisabled = computed<boolean>(() => {
     if (toValue(props.disabled || false) || typeof props.disabled == 'string') {
         return true;
@@ -290,7 +292,7 @@ function onSelect(option: AdvancedOption) {
 
 .balloon-item {
     @apply w-full relative cursor-pointer border border-solid first:rounded-t-md last:rounded-b-md;
-    @apply transition-colors duration-300 ease-in-out;
+    @apply transition-colors duration-200 ease-in-out;
 
     @screen lg {
         &:not(.field-column) {
