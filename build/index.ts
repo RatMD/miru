@@ -23,7 +23,7 @@ export function collect(root: string) {
 
         const entryPath = path.join(componentsPath, component);
         for (const entry of fs.readdirSync(entryPath)) {
-            if (entry.endsWith('.stories.ts') || entry.endsWith('.story.vue')) {
+            if (entry.startsWith('_') || entry.endsWith('.stories.ts') || entry.endsWith('.story.vue')) {
                 continue;
             }
             const entryName = entry.endsWith('.vue') ? entry.slice(0, -4) : entry.slice(0, -3);

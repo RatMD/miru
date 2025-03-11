@@ -1,6 +1,10 @@
 miru.ink / Changelog
 ====================
 
+## Version 0.0.25 - Experimental
+- Fix: Temporary solution for typing issues on TableStd component.
+- Fix: Build process stopped working on partial components.
+
 ## Version 0.0.24 - Experimental
 - Info: node.js support has been increased to v22.
 - Add: New `MiruOptions` plugin options handler + `root` as first option key.

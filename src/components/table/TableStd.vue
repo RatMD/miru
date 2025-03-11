@@ -23,7 +23,7 @@
                         @change="onToggleAll" />
                 </div>
 
-                <div v-for="(column, cdx) of columns" :key="cdx"
+                <div v-for="(column, cdx) of (columns as any)" :key="cdx"
                     :class="[
                         'data-cell head-cell',
                         `cell-align-${(column.props as any).align || 'left'}`,
@@ -68,7 +68,7 @@
                             @change="onToggleAll" />
                     </div>
 
-                    <div v-for="(column, cdx) of columns" :key="cdx"
+                    <div v-for="(column, cdx) of (columns as any)" :key="cdx"
                         :class="[
                             'data-cell body-cell',
                             `cell-${(idx+1) % 2 == 0 ? 'even' : 'odd'}`,

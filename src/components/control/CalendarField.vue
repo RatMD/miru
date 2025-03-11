@@ -242,7 +242,7 @@ export default {
 
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue';
-import CalendarHeader from './calendar/CalendarHeader.vue';
+import CalendarHeader from './_calendar/CalendarHeader.vue';
 import InputField from '../control/InputField.vue';
 
 // Define Component
