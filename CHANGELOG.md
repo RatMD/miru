@@ -13,6 +13,11 @@ miru.ink / Changelog
 - Add: New `ProgressBar` component with different variants + basic story demonstration.
 - Add: New `transition` property on `CollapseSupport` component to change the desired timing function.
 - Add: New `closable` and `escape` properties on `OffcanvasStd` component.
+- Add: New `Queue` utility class.
+- Add: New `merge` utility function to deeply merge multiple objects.
+- Add: New `slugify` utility function as Laravel-inspired slugifier.
+- Add: New `strspn` utility function.
+- Add: New `versionCompare` utility function prociing semantic versioning comparison.
 - Update: package.json dependencies.
 - Update: Finish `PopoverStd` component, stylings and demonstration.
 - Update: Use `info` color on `AlertMessage` component + Fix dark stylings.
