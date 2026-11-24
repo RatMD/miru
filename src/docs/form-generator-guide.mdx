@@ -1,0 +1,120 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../layouts/FormGenerator.stories';
+
+<Meta of={Stories} name="Guide" />
+
+# Form generator
+
+The generator is the composition `FormLayout → FormPageLayout → FormSectionRenderer → FormFieldRenderer`. There is no separate `FormGenerator` Vue export. Start with the complete form in [Forms and submission](/reference/form-guide), then add fields as needed.
+
+## Define sections and fields
+
+```ts
+import { defineFormSections, literal } from '@rat.md/miru';
+
+const sections = defineFormSections([
+    {
+        id: 'project',
+        label: literal('Project'),
+        fields: [
+            { type: 'header', id: 'details', title: literal('The basics') },
+            { type: 'input', name: 'name', label: literal('Name'), required: true, span: 6 },
+            {
+                type: 'select',
+                name: 'status',
+                label: literal('Status'),
+                span: 6,
+                options: [
+                    { value: 'draft', label: literal('Draft') },
+                    { value: 'live', label: literal('Live') },
+                ],
+            },
+            {
+                type: 'textarea',
+                name: 'notes',
+                label: literal('Notes'),
+                rows: 3,
+                maxLength: 240,
+                counter: true,
+            },
+            { type: 'switch', name: 'enabled', label: literal('Allow notifications') },
+        ],
+    },
+]);
+```
+
+Add matching values and rules to `useForm`: for example `{ name: '', status: 'draft', notes: '', enabled: true }`. Field `name` values must match your form paths.
+
+## Built-in field types
+
+| Fields                     | Definition types                                                                  |
+| -------------------------- | --------------------------------------------------------------------------------- |
+| Text and dates             | `input`, `password`, `date`, `textarea`                                           |
+| Selection                  | `select`, `combobox`, `category`, `checkbox`, `checkbox-group`, `radio`, `switch` |
+| Editors                    | `markdown`, `json`, `richtext`                                                    |
+| Layout and custom controls | `header`, `spacer`, `custom`                                                      |
+
+`inputType` supports native types such as `email`, `url`, `tel` and `number`. `select` supports grouped options and optional search. `richtext` uses TinyMCE; configure its license in your host. JSON fields check syntax while editing; also validate the JSON string in your Zod schema before submission.
+
+## Responsive columns
+
+Sections use a 12-column grid. `span: 6` means a full row on mobile and half a row from `md`. Use `span: { base: 12, lg: 4 }` for explicit breakpoints. Set a section's `gridColumns: 10` for fifths. Headers and spacers do not create form values.
+
+## Add a specialized control
+
+Use a custom slot to keep the native component API. Add `seats` to your schema and initial values, then put this definition in `fields`:
+
+```ts
+{ type: 'custom', name: 'seats', slot: 'seats', span: 6 }
+```
+
+Add these imports to your setup, then use the slot on the same `FormLayout`:
+
+```ts
+import {
+    Field,
+    FieldLabel,
+    FieldError,
+    InputNumber,
+    InputNumberContent,
+    InputNumberInput,
+    InputNumberDecrement,
+    InputNumberIncrement,
+} from '@rat.md/miru';
+```
+
+```vue
+<FormLayout
+    :form="form"
+    :sections="sections"
+    title="Project"
+    :actions-label="literal('Project actions')"
+    :section-selector-label="literal('Project sections')"
+    cancel-href="/projects"
+    @submit="submitForm">
+  <template #field-seats="{ field }">
+    <Field :invalid="field.state.meta.errors.length > 0">
+      <FieldLabel :for="field.name">Team size</FieldLabel>
+      <InputNumber :model-value="Number(field.state.value)" :min="1"
+        @update:model-value="field.handleChange($event)">
+        <InputNumberContent>
+          <InputNumberDecrement aria-label="Fewer members" />
+          <InputNumberInput :id="field.name" aria-label="Team size" @blur="field.handleBlur" />
+          <InputNumberIncrement aria-label="More members" />
+        </InputNumberContent>
+      </InputNumber>
+      <FieldError :errors="field.state.meta.errors" />
+    </Field>
+  </template>
+</FormLayout>
+```
+
+The same pattern works for Tags, Phone, OTP, Calendar, uploads, sliders and application-specific widgets. Bind `field.state.value`, call `field.handleChange`, and mark blur when the control supports it.
+
+## Text, sections and actions
+
+Use `literal('Name')` for ready-to-display text or `translated('profile.name')` for a host translation key. For localized values, pass `localization` to `FormLayout`; it supports nested paths or locale-suffixed fields.
+
+Each section becomes a tab. Hidden sections stay mounted. A section with `standalone: true` hides form actions. Add extra actions with `additionalActions` and handle their IDs through `@action`. On mobile, extra actions move into a drawer; the footer keeps primary and secondary actions available.
+
+See [FormLayout and mobile behavior](/reference/form-page-layout) and [form validation](/reference/form-guide).

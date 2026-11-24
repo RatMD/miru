@@ -1,0 +1,163 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Getting Started" />
+
+# Application installation
+
+## Vue plugin
+
+Import the compiled CSS once, before host theme overrides. No host Tailwind source scan is needed.
+
+```ts
+import '@rat.md/miru/style.css';
+import { createMiru } from '@rat.md/miru/miru';
+
+const ui = createMiru({
+    locale: uiLocale, // Vue ref, getter or locale string; Laravel en_US/de_DE are normalized.
+    translate: trans,
+    translateChoice: transChoice,
+    currency: 'EUR',
+});
+app.use(ui);
+```
+
+The factory installs app-local translations, locale, the validation factory registry and the existing UI directives. The equivalent
+options API is app.use(MiruPlugin, options). useMiru() reads the current locale, translators,
+currency and options in setup; UiProvider may override locale/translations for a subtree. There is
+no module-global UI locale and no automatic router subscription. Missing host translations (undefined
+or the unchanged key) fall back to the library English/German dictionary, then the unchanged key.
+Host domain strings remain in the application's translation files.
+
+The entry implementation lives in `src/miru.ts`. `useMiru` and `useI18n` live under `composables`;
+Vue configuration lives alongside the entry in `src/miru.ts`; the i18n installer lives under
+`plugins/i18n`. These are not support utilities. `createMiru` remains a named export from the package root and plugin barrel.
+
+### Configure before installation
+
+```ts
+app.use(
+    createMiru({
+        configure({ app, options }) {
+            app.use(hostPlugin);
+            options.locale = uiLocale;
+            return { currency: 'CHF' };
+        },
+    }),
+);
+```
+
+The hook runs synchronously in the Vue app's injection context after configuration is provided,
+before default i18n/directive registration. It runs once per installation in each app. Async
+initialization must finish before `app.use`; async configure hooks are rejected.
+
+`plugins: { validation: false }` skips custom validation factory registration; see **Composables / Validation** for `useValidation` and typed schema extensions.
+`plugins: { directives: false }` skips the directive plugin. `plugins: { i18n: false }` leaves i18n
+installation to the host. The existing `directives: false` option remains supported. To install
+everything manually inside `configure`, set `plugins: false`; defaults will not overwrite your setup.
+
+```ts
+import { createMiruConfig } from '@rat.md/miru/miru';
+import { createMiruI18n } from '@rat.md/miru/plugins/i18n';
+import { createMiruValidation } from '@rat.md/miru/plugins/validation';
+import { createMiruDirectives } from '@rat.md/miru/plugins/directives';
+
+app.use(createMiruConfig({ locale: uiLocale, currency: 'EUR' }));
+app.use(createMiruI18n());
+app.use(createMiruValidation());
+app.use(createMiruDirectives());
+```
+
+These standalone plugins read the installed app configuration when no explicit options are passed.
+The configuration installer alone does not execute a configure hook. Inertia is a host integration
+and remains opt-in, rather than being installed in every Vue app. Components remain explicit imports;
+the root provider/toast host is mounted with `UiRoot` or `ui.wrap` as described below.
+
+Mount UiRoot once around the persistent application content. It provides Reka's ConfigProvider
+and one Toast host, and consumes optional pageToasts with ID deduplication. It must not be mounted
+again inside each page. Its watcher is disposed when the root unmounts.
+
+```vue
+<script setup lang="ts">
+import { UiRoot } from '@rat.md/miru';
+</script>
+
+<template>
+    <UiRoot><slot /></UiRoot>
+</template>
+```
+
+For hosts that own their Vue render function, ui.wrap(App, props) is the equivalent root wrapper:
+
+```ts
+const app = createApp({ render: () => ui.wrap(App, props) });
+app.use(ui);
+app.mount(el);
+```
+
+Use either UiRoot or ui.wrap, not both. Set toast: false when keeping the host's existing Toast and
+notification integration. Set directives: false when keeping existing registrations. Existing
+installUiDirectives and individual directive exports remain available. Price/date directives track
+locale changes even when their bound values do not change, and stop their watchers on unmount.
+The existing TinyMCE license configuration remains process-wide; UI locale and translator settings
+are app-local. The plugin does not register every component globally; explicit imports retain the
+normal component API.
+
+### MIRU / Inertia integration
+
+An optional adapter is available from @rat.md/miru/plugins/inertia. createInertiaMiru reads the
+reactive page.props.app.locale and page.props.app.toasts envelope by default. Both sources can be
+overridden using the same locale/pageToasts options. It uses the existing Inertia page, with no
+second router, translation loader or navigate listener.
+
+For an asynchronous laravel-vue-i18n process, create a Vue locale ref from the initial page,
+update it in the existing i18nOptions.onLoad callback after language loading succeeds, and pass that
+ref explicitly. Keep the existing document language/dayjs updates in that callback. This prevents
+formatters from changing to the next page locale before its host translations have loaded.
+
+```ts
+import { ref } from 'vue';
+import { trans, transChoice } from 'laravel-vue-i18n';
+import { createInertiaMiru } from '@rat.md/miru/plugins/inertia';
+
+// Beside the existing initialPage / i18nOptions initialization:
+const uiLocale = ref(initialPage.props.app.locale);
+// In the existing onLoad(lang) callback, retain its other work and add:
+// uiLocale.value = lang;
+
+// In createInertiaApp's existing withApp callback, after installing i18nVue:
+app.use(
+    createInertiaMiru({
+        locale: uiLocale,
+        translate: trans,
+        translateChoice: transChoice,
+        currency: 'EUR',
+    }),
+);
+```
+
+Mount UiRoot in the persistent host layout/provider, replacing the old Toast mount and its page
+notification watcher together to prevent duplicate notifications. If retaining that integration
+for an incremental migration, pass toast: false. For an SSR host, create the plugin and locale ref
+inside the per-request application factory. For another page envelope, provide explicit getters.
+
+### Directive template types
+
+Importing Miru through the package root, `@rat.md/miru/miru`, `@rat.md/miru/plugins` or
+`@rat.md/miru/plugins/directives` also loads its Vue `GlobalDirectives` type augmentation.
+Vue language tooling can then check bindings for `v-filesize`, `v-file-size`, `v-price`,
+`v-dayjs`, `v-click-outside`, `v-resize` and `v-tinymce` in templates. Enable
+`vueCompilerOptions.strictTemplates` in the host's TypeScript configuration for strict checks.
+These types do not register directives at runtime; install Miru or `createMiruDirectives()` as usual.
+
+### Existing Data Table pagination
+
+DataTablePagination is publicly exported and already contains the result range/empty state,
+page-size Select, current/last page label, first/previous/next/last navigation, locale formatting
+and disabled states. It can be reused outside DataTable with the same `ListPagination<T>` payload
+and page/per-page events. No second summary component is needed. Pagination remains the general
+navigation primitive for callers that do not need these table controls.
+
+FormLayout owns the standard save/cancel actions on desktop and mobile. Use additionalActions or
+the additional-actions slot for supplemental actions; mobile renders these in the Drawer. Do not
+put another save button in mobile-actions (a Drawer-content slot). Replace legacy primary action
+slots in consumers when migrating to the shared layout.

@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/boolean" />
+
+# boolean
+
+Normalize explicit boolean-like values, including case-insensitive yes/no and on/off strings.
+
+**Runtime:** Universal.
+
+## Example
+
+```ts
+import { boolean, truly, falsy } from '@rat.md/miru/support';
+boolean('YES'); // true
+boolean('unknown'); // null
+truly('1'); // true
+falsy(null); // true
+```
+
+Whitespace is not trimmed. Unknown values return null; truly/falsy return booleans.

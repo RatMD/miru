@@ -1,50 +1,198 @@
-import type { App, Plugin } from "vue";
+import type { ToastAppearance } from './components/toast/appearance';
+import type { PageToast } from './composables/useToast';
+import type { BreakpointMap } from './constants/breakpoints';
+import type { I18nOptions } from './plugins/i18n';
+import type { TinymceOptions } from './plugins/tinymce';
+import type { ValidationFactories } from './plugins/validation';
+import type { App, Component, InjectionKey, MaybeRefOrGetter, Plugin, VNode } from 'vue';
+import type { ToasterProps } from 'vue-sonner';
 
-import FilesizeDirective from './directives/filesize';
-import OutsideDirective from "./directives/outside";
-import TooltipDirective from './directives/tooltip';
+import { h, shallowReactive } from 'vue';
+import UiRoot from './components/provider/UiRoot.vue';
+import { createMiruDirectives } from './plugins/directives';
+import { createMiruI18n } from './plugins/i18n';
+import { createMiruValidation } from './plugins/validation';
 
-export interface MiruConfig {
+/** App-local settings shared by Miru plugins, composables and the optional UiRoot wrapper. */
+interface MiruOptions extends I18nOptions {
+    /** App-local viewport thresholds for Breakpoint/useBreakpoint; component options override these values. */
+    breakpoints?: BreakpointMap;
     /**
-     * The application root selector (defaults to '#app').
+     * Select automatic plugin installation; all built-in plugins are enabled by default.
+     * Set false for configuration-only setup. Configuration and configure still run.
      */
-    root?: string;
+    plugins?:
+        | false
+        | {
+              /** Provide app-local translations and the configured host adapter. */
+              i18n?: boolean;
+              /** Register formatting, editor and DOM directives. */
+              directives?: boolean;
+              /** Register custom schema factories for useValidation. */
+              validation?: boolean;
+          };
+    /**
+     * Custom Zod schema factories exposed by useValidation alongside the built-in validators.
+     * The validation plugin captures a snapshot at installation; built-in names are reserved.
+     */
+    validators?: ValidationFactories;
+    /**
+     * Run synchronous setup after configuration is provided and before automatic plugins.
+     * Use app.use() for host plugins, mutate options or return shallow configuration overrides.
+     * Vue inject() is available here; complete asynchronous preparation before app.use(miru).
+     */
+    configure?: (context: MiruConfigureContext) => MiruConfiguration | void;
+    /** ISO 4217 currency used by v-price; defaults to EUR when the directive is installed. */
+    currency?: string;
+    /**
+     * Set false to skip all automatic directive registration, equivalent to plugins.directives.
+     * Includes v-price, v-dayjs, v-filesize/v-file-size, v-resize, v-click-outside and v-tinymce.
+     */
+    directives?: boolean;
+    /** Host TinyMCE settings, currently licenseKey; applied when directives are installed. */
+    tinymce?: TinymceOptions;
+    /**
+     * Options and appearance for the Toast container mounted by UiRoot/miru.wrap().
+     * Set false to disable that container and page-toast processing; app.use() alone mounts neither.
+     */
+    toast?: false | (ToasterProps & { appearance?: ToastAppearance });
+    /**
+     * Reactive host-owned notifications consumed by UiRoot, with deduplication and teardown.
+     * Accept an array, ref or getter; capture composables such as usePage() in setup first.
+     * Defaults to no page notifications and is ignored by UiRoot when toast is false.
+     */
+    pageToasts?: MaybeRefOrGetter<readonly PageToast[] | undefined>;
+}
+
+/** Typed injection key for the configuration belonging to the current Vue application. */
+const miruOptionsKey: InjectionKey<MiruOptions> = Symbol('MiruOptions');
+
+/** Settings that configure may inspect, mutate or return without supplying another setup hook. */
+type MiruConfiguration = Omit<MiruOptions, 'configure'>;
+
+/** Context passed to the synchronous configure callback during installation. */
+interface MiruConfigureContext {
+    /** Host application; use it to register host-owned plugins and services. */
+    app: App;
+    /** This app's shallow-reactive configuration; returned overrides are assigned onto it. */
+    options: MiruConfiguration;
 }
 
 /**
- * Configuration Object
+ * Provide a fresh reactive configuration for one Vue application.
+ * @param app Vue application receiving the configuration.
+ * @param options Initial Miru settings; the top-level object is copied per app.
+ * @returns The provided mutable configuration.
  */
-const MiruOptions: Required<MiruConfig> = {
-    root: '#app'
+function installMiruConfig(app: App, options: MiruOptions = {}): MiruOptions {
+    const config = shallowReactive({
+        ...options,
+        ...(options.breakpoints
+            ? { breakpoints: shallowReactive({ ...options.breakpoints }) }
+            : {}),
+    });
+    app.provide(miruOptionsKey, config);
+    return config;
+}
+
+/**
+ * Create a configuration-only plugin for manual Miru installation.
+ * @param options Settings made available to composables and separately installed plugins.
+ * @returns A Vue plugin that provides configuration without running configure or other plugins.
+ */
+function createMiruConfig(options: MiruOptions = {}): Plugin {
+    return {
+        /**
+         * Provide configuration without automatically installing Miru services.
+         * @param app Vue application receiving the settings.
+         * @returns Nothing.
+         */
+        install(app) {
+            installMiruConfig(app, options);
+        },
+    };
+}
+
+type MiruInstallation = Plugin & {
+    /**
+     * Wrap the application root with Miru's shared UI services.
+     * @param component Root component to render inside UiRoot.
+     * @param props Optional props forwarded to the root component.
+     * @returns A UiRoot vnode containing the supplied component.
+     */
+    wrap(component: Component, props?: object): VNode;
 };
 
 /**
- * Miru Vue3 Plugin
+ * Provide app-local configuration, run setup and register the enabled built-in plugins.
+ * @param app Vue application receiving the Miru configuration and plugins.
+ * @param options Translation, validation, directive and root-service settings.
+ * @returns Nothing; an asynchronous configure callback throws before plugins are installed.
  */
-const MiruPlugin = {
-    /**
-     * Install Miru Plugin
-     * @param app 
-     * @param options 
-     */
-    install(app: App, options: MiruConfig) {
-        if (typeof options == 'object' && options !== null) {
-            for (const [key, val] of Object.entries(options)) {
-                if (typeof MiruOptions[(key as keyof MiruConfig)] != 'undefined') {
-                    MiruOptions[(key as keyof MiruConfig)] = val;
-                }
-            }
-        }
+function install(app: App, options: MiruOptions = {}): void {
+    const config = installMiruConfig(app, options);
+    const configured = app.runWithContext(() => config.configure?.({ app, options: config }));
+    if (configured && typeof (configured as { then?: unknown }).then === 'function') {
+        throw new TypeError(
+            'Miru configure must be synchronous. Complete asynchronous setup before app.use().',
+        );
+    }
 
-        app.config.globalProperties.$miru = (key: keyof MiruConfig) => {
-            return MiruOptions[key] ?? null;
-        };
+    if (configured) {
+        Object.assign(config, configured);
+    }
 
-        app.directive('click-outside', OutsideDirective);
-        app.directive('filesize', FilesizeDirective);
-        app.directive('tooltip', TooltipDirective);
-    },
-} as Plugin<MiruConfig>;
+    if (config.plugins === false) {
+        return;
+    }
 
-// Export Module
+    if (config.plugins?.i18n !== false) {
+        app.use(createMiruI18n());
+    }
+
+    if (config.plugins?.validation !== false) {
+        app.use(createMiruValidation());
+    }
+
+    if (config.plugins?.directives !== false && config.directives !== false) {
+        app.use(createMiruDirectives());
+    }
+}
+
+/**
+ * Create a Vue plugin with configuration and an optional application-root wrapper.
+ * @param options Settings applied when the host calls app.use(); import the stylesheet separately.
+ * @returns A Miru plugin whose wrap method adds the shared UiRoot services.
+ */
+function createMiru(options: MiruOptions = {}): MiruInstallation {
+    return {
+        /**
+         * Install Miru in the host application using the captured options.
+         * @param app Vue application receiving Miru.
+         * @returns Nothing.
+         */
+        install(app: App): void {
+            install(app, options);
+        },
+
+        /**
+         * Render the host root inside UiRoot; use once around the application.
+         * @param component Root component to wrap.
+         * @param props Optional props forwarded to the root component.
+         * @returns A vnode containing the root and Miru's shared UI services.
+         */
+        wrap(component: Component, props?: object): VNode {
+            return h(UiRoot, null, { default: () => h(component, props) });
+        },
+    };
+}
+
+/** Vue plugin for hosts using app.use(MiruPlugin, options) without the wrap helper. */
+const MiruPlugin: Plugin<[MiruOptions?]> = { install };
+
+// Export module
+export { createMiru, MiruPlugin, createMiruConfig, installMiruConfig, miruOptionsKey };
+export type { MiruInstallation };
+export type { MiruOptions, MiruConfiguration, MiruConfigureContext };
+export type { MiruGlobalDirectives } from './types/directives';
 export default MiruPlugin;

@@ -1,0 +1,106 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Extensions/DataTable/Behavior" />
+
+# DataTable actions and state
+
+Your app owns requests and permissions. For a JSON backend, supply queryHandler and, when used, bulkActionHandler and moveHandler. These replace the corresponding Inertia operations.
+
+## Bulk actions
+
+Selection actions come from `list.config.actions`. The bulk selector appears only when at least one row is selected and actions are configured. Each entry supplies `key`, `label` or `label_key`, `method`, `url` and optional `confirmation`, `min_selection` and `max_selection`.
+
+By default actions submit through Inertia. For a local data source, provide `bulkActionHandler(action, selection)` returning void or a Promise. Selection contains the configured `selection_field` values (id by default); successful completion clears selection. A rejected handler keeps selection and emits `bulk-action-error`. The examples configure archive/delete actions and update local rows without network calls.
+
+## Reorder transport
+
+Existing moveUrl callbacks keep their Inertia PATCH behavior, including the
+current page, page size and filters. moveHandler takes precedence when supplied.
+It receives the original row and 'up' or 'down' and may return a Promise. Update
+the bound list after a successful move. Buttons honor can_reorder, can_move_up,
+can_move_down and an in-progress request. A rejected callback shows a localized
+error and releases the controls for retry.
+
+```ts
+const orderColumn = createSortOrderColumn<Item>({
+    labelKey: 'common.position', // supplied by your application translator
+    moveHandler: async (item, direction) => {
+        await reorderItem(item.id, direction); // your application API
+        await reloadList();
+    },
+});
+```
+
+The Sort Order example performs a local reorder and updates the position and
+boundary flags, rather than sending a request to a nonexistent Storybook route.
+
+## Other extension points
+
+- leading-rows inserts table rows before data; hasLeadingRows suppresses the
+  default empty message when that slot already represents the empty state.
+- before-row and after-row receive item, row and colspan for group headings,
+  separators and summaries. Render tr/td/th markup inside these slots.
+- toolbar-actions adds host controls to the shared toolbar.
+- content receives rows, table and toggleSort and replaces the table layout while
+  preserving toolbar and pagination. Custom Content demonstrates cards.
+- rowAction accepts a key or priority-ordered keys. It excludes hidden, disabled
+  and confirmation actions. Interactive elements inside rows retain their own
+  behavior. Row Actions shows confirmation, primary/overflow actions and a
+  rowSelectable restriction. The native desktop overflow rule activates above four visible actions; primary actions stay inline and secondary actions move to the menu. Up to four visible actions remain inline.
+- embedded removes the table's inner border/scroll container; the host surface
+  owns scrolling and borders. Embedded demonstrates this with the compact variant.
+
+Native query examples cover search, searchable Select filters, sorting, page size,
+pagination and bulk actions. Filtering is server-shaped: a local queryHandler
+must update ListPayload just as a server response would. UI preferences live in
+localStorage; application rows, sorting and filters remain host-owned.
+
+## Responsive filter chips
+
+The toolbar connects Filter and the conditional FilterOff icon in a ButtonGroup.
+Applied filters and applied search appear as individually removable badges.
+FilterBadges measures the remaining width; a dots badge exposes all active filters
+in a Popover when they do not fit. The same behavior is available in default and
+compact layouts. Clearing/removing still delegates to the existing query contract.
+
+## Controlled selection and loading
+
+Bind `v-model:selected` to an array of string row keys. Without the binding, selection remains
+internal. The default key is a record's string/numeric `id`, falling back to its row index.
+For records without an id, supply `rowKey="filename"` or a function returning a unique string/number.
+Keys must be unique across the result set; index fallback cannot preserve identity after reordering.
+Changing the bound array updates checkboxes without replacing rows. Navigation still clears selection.
+Bulk actions operate on selected rows present in the current result page; cross-page bulk execution
+is not implied by storing keys for other pages. Row keys and a bulk action's selection_field are
+independent: the latter still selects the submitted value from each original row.
+
+Use `rowSelectable(item)` for selection eligibility, `rowDisabled(item)` for a locked row and
+`rowLoading(item)` for a busy, locked row. Row locks do not erase the host's selected keys.
+Busy/disabled rows are excluded from bulk execution. Global `disabled`, `loading` and pending bulk
+actions block built-in selection, sorting, navigation and row actions, including already-open
+portalled action menus. In-flight host requests are not cancelled by changing these flags.
+
+`loadingText` / `emptyText` override fallback copy. The `loading` and `empty` slots replace the
+contents of the corresponding full-width table cell. While loading, existing data rows are hidden.
+Custom cell slots receive `disabled` and `loading`; the content slot receives the table-wide flags.
+A host that replaces content or portals its own controls must apply these flags to its own controls.
+Use `searchable="false"` to hide search for endpoints supporting only filters.
+
+## Multi-value and range filters
+
+Existing filter definitions remain valid. Additional types are:
+
+- `multiselect`: an array of option values, with optional search and disabled options.
+- `date-range`: an object with optional `from` / `to` ISO calendar dates.
+- `number-range`: an object with optional `from` / `to` numbers or numeric input strings.
+
+All definitions retain `options` (use an empty array for ranges). Ranges accept optional `min`,
+`max` and `step` attributes. Invalid, reversed or out-of-bounds ranges prevent applying filters.
+Zero is a valid boundary. Empty arrays/ranges do not count as active filters. Filter badges display
+translated option labels or range boundaries. Cancelling a sheet/drawer leaves source filters
+unchanged; values are cloned before editing. Units, comma-separated API formats, separate
+minimum/maximum parameter names and timezone parameters belong to the host query serializer.
+
+The Lucid Selection And Filters story exercises real selection, loading, filter drafts and
+range-validation interactions without sending a network request. Contract tests run through
+`npm test`.

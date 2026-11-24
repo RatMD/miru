@@ -1,0 +1,15 @@
+node_modules/
+dist/
+build/
+storybook-static/
+coverage/
+test-results/
+playwright-report/
+.tmp/
+.qa/
+tmp/
+.codex-staging/
+.agents/
+package-lock.json
+*.tgz
+*.tsbuildinfo

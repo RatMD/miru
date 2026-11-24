@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useWorker" />
+
+# useWorker
+
+Register and message a Service Worker. This does not run a dedicated Web Worker.
+
+```ts
+import { useWorker } from '@rat.md/miru/composables';
+
+const worker = useWorker({ script: '/service.js', scope: '/', cachePrefix: 'my-app-' });
+async function connect() {
+    if (!worker.isSupported) return;
+    await worker.register();
+    const reply = await worker.communicate({ type: 'ping' });
+    console.log(reply);
+}
+```
+
+Your app supplies `/service.js`. Creating the composable does not register it. The worker must echo `messageId` in its reply; unanswered messages time out. Example worker handler:
+
+```js
+self.addEventListener('message', (event) => {
+    if (event.data?.type === 'ping') {
+        event.source?.postMessage({ messageId: event.data.messageId, type: 'pong' });
+    }
+});
+```
+
+State refs include `registration`, `controller`, `waiting`, `state`, `error` and `updateAvailable`. Use `update`, `unregister` and `clearCaches` explicitly. Cache deletion requires a prefix, names or `all: true`. Disposal only stops local listeners and pending work. Service Workers need a secure context (localhost also works).

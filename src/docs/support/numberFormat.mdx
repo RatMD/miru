@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/numberFormat" />
+
+# numberFormat
+
+Build locale-aware numeric formatting and a supported Intl unit from display metadata.
+
+**Runtime:** Universal.
+
+## Example
+
+```ts
+import { numberFormat } from '@rat.md/miru/support';
+const display = numberFormat({ unit: 'kg', decimal_places: 2 }, 'de-DE');
+new Intl.NumberFormat('de-DE', display.format).format(12.5);
+```
+
+Precision is clamped to 0–20. Unknown units remain available to the host as a separate input suffix.

@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/creditCard" />
+
+# creditCard
+
+Validate a payment card number's length and Luhn (modulus 10) checksum.
+
+**Runtime:** Universal; no network access or additional dependency is required.
+
+## Example
+
+```ts
+import { isValidCreditCard } from '@rat.md/miru/support';
+isValidCreditCard('4242 4242 4242 4242'); // true (test number)
+isValidCreditCard('4242 4242 4242 4241'); // false
+```
+
+Accepts 12–19 digits with spaces or hyphens. Returns false for an invalid checksum, masked values or unexpected characters. This checks format and checksum, not payment authorization.

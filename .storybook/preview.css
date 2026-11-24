@@ -1,0 +1,21 @@
+@import '../src/styles/index.css';
+@source '../src/stories';
+@source '../src/components/**/*.stories.ts';
+
+html,
+body,
+.docs-story {
+    background: var(--ui-background);
+    color: var(--ui-foreground);
+    font-family: var(--ui-font-sans);
+}
+
+body {
+    margin: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}

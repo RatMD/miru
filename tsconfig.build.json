@@ -1,0 +1,18 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "rootDir": "src",
+        "outDir": "dist"
+    },
+    "include": ["src/**/*.ts", "src/**/*.vue"],
+    "exclude": [
+        "src/**/*.stories.ts",
+        "src/styles.ts",
+        "src/stories/**",
+        "src/docs/**",
+        "src/types/vitest.d.ts"
+    ]
+}

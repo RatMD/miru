@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/editor-frame/EditorFrame.stories';
+
+<Meta of={Stories} name="Guide" />
+
+# EditorFrame
+
+EditorFrame is the common shell used by EditorJson and EditorMarkdown. It supplies a label, border,
+toolbar, optional counter and a textarea by default. TinyMCE keeps its own editor lifecycle.
+
+Attach local commands through `extensions`. Extensions are plain objects; no global registry,
+installation order or additional editor dependency is required.
+
+```ts
+import type { EditorFrameExtension } from '@rat.md/miru';
+
+const extensions: EditorFrameExtension[] = [
+    {
+        id: 'uppercase',
+        commands: [
+            {
+                id: 'uppercase.all',
+                label: 'Uppercase',
+                run: (api) => api.setValue(api.value.toUpperCase()),
+            },
+        ],
+    },
+];
+```
+
+```vue
+<EditorFrame v-model="text" label="Notes" :extensions="extensions" counter />
+```
+
+Each command accepts an optional icon, `disabled`, `active` and `mutates: false` for actions such as
+preview. The frame disables all commands while disabled and mutation commands while readonly.
+The same guards apply when calling the exposed API programmatically. Values exceeding `maxlength`
+are rejected as a whole, so a command never truncates JSON or a Markdown fragment.
+
+The component ref and command callback expose `value`, `disabled`, `readonly`, `getTextarea()`,
+`getSelection()`, `setValue()`, `setSelection()`, `replaceSelection()`, `focus()` and `execute(id)`.
+Selection changes await the Vue update before restoring focus. Command ids should be unique;
+the last attached command with a duplicate id wins. `command` emits the executed id.
+
+Use the default slot for a custom text surface and `toolbar`, `toolbar-end`, `counter` or `footer`
+to customize the shell. The default and toolbar slots receive `api`; the default slot also receives
+`inputId`. Custom surfaces own their input events/model binding. JSON uses this for synchronized
+line numbers, validation and its preview; Markdown keeps its composition-aware undo/redo and list
+continuation, attaching their actions through the same command API.

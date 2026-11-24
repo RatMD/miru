@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/storage" />
+
+# storage
+
+A prefixed browser Storage wrapper with scalar/JSON encoding and per-instance change listeners.
+
+**Runtime:** Browser by default.
+
+## Example
+
+```ts
+import { MiruStorage } from '@rat.md/miru/support';
+const settings = new MiruStorage('example', localStorage);
+settings.set('theme', { mode: 'dark' });
+settings.get('theme');
+```
+
+Methods include get/set, exists/has, all, remove/delete/unset, clear, listen and listenTo. An injected Storage-compatible engine can be used outside browsers. all returns stored strings; get decodes values. Listeners are local to the instance.

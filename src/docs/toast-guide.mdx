@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/toast/Toast.stories';
+
+<Meta of={Stories} name="Integration" />
+
+# Toast layout integration
+
+Mount one Toast (also exported as Toaster) in your persistent layout. Local calls
+use the same vue-sonner queue; titles and descriptions must come from the host's translations.
+
+```vue
+<script setup lang="ts">
+import { Toast } from '@rat.md/miru';
+import { useToast } from '@rat.md/miru/composables';
+import type { PageToast } from '@rat.md/miru/composables';
+import { usePage } from '@inertiajs/vue3';
+
+const page = usePage<{ app: { toasts: PageToast[] } }>();
+useToast({ pageToasts: () => page.props.app?.toasts ?? [] });
+</script>
+
+<template>
+    <slot />
+    <Toast position="bottom-right" close-button />
+</template>
+```
+
+The watcher consumes initial and subsequent page props. Stable toast IDs prevent
+the same server message from appearing again during reactive updates. The recent
+500 IDs are retained per mounted integration. Pass immediate: false to skip the
+initial page, or call pushPageToasts explicitly. An absent source is valid;
+the composable does not access MIRU page props by itself.
+
+```ts
+const toast = useToast();
+toast.success(t('common.saved'));
+toast.error(t('common.failed'), { description: t('common.retry') });
+const id = toast.loading(t('common.loading'));
+toast.dismiss(id);
+```
+
+PageToast retains MIRU's id, status, title, description, duration and closable
+fields. A null duration retains the original persistent notification behavior.
+useToaster is available as an alias; its page source must be passed explicitly.
+Wrap the layout in UiProvider to translate built-in accessibility text. The
+container and toast options can override those defaults. Styles are bundled in
+@rat.md/miru/style.css; no separate CSS import is required by consumers.
+
+## MIRU appearance and inline examples
+
+Toast now includes the PageProvider styling: status stripe, tinted icon tile, host-provided UI heading typography and top-right close control. Choose `appearance="frost"` (default), `"flat"` or `"graphite"`. `toastOptions.classes` can override each part.
+
+`inline=true` renders real Sonner toasts in normal page flow, as shown in the examples. The component defaults to floating notifications for application layouts. Story examples use unique Toaster ids and persistent sample messages so concurrent Docs canvases never receive each other’s notifications. Interactive buttons show action/cancel callbacks, promise success/error and loading-to-success updates.

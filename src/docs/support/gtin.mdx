@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/gtin" />
+
+# gtin
+
+Validate GTIN-8, GTIN-12 (UPC-A), GTIN-13 and GTIN-14 using the GS1 modulo 10 check digit.
+
+**Runtime:** Universal.
+
+## Example
+
+```ts
+import { isValidGtin } from '@rat.md/miru/support';
+isValidGtin('4006381333931'); // true
+isValidGtin('4006381333932'); // false
+```
+
+Supports GTIN-8, GTIN-12, GTIN-13 and GTIN-14. Pass a digit string to keep leading zeros. Unsupported lengths, whitespace and invalid check digits return false. A valid checksum does not confirm an allocated product identifier.

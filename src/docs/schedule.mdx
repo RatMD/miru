@@ -1,0 +1,72 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/schedule/Schedule.stories';
+
+<Meta of={Stories} name="Integration" />
+
+# Schedule: shared organizer and booking integration
+
+Schedule renders appointments; Calendar selects dates; CalendarBooking combines date selection and optional time slots. The host owns persistence, URLs and permission checks.
+
+## Host scenarios
+
+| Host                  | Story                            | Integration                                                                                                                 |
+| --------------------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Dashboard             | CompactCard                      | Compact Schedule inside Card: dots, holidays, title link, day popover and mobile drawer. Connected navigation on the right. |
+| Calendar application  | Organizer                        | Connected navigation on the left; title month/year picker, create/edit, host-owned note action.                             |
+| Read-only application | ReadOnly                         | Same organizer, read-only actions; opening event/note details remains possible.                                             |
+| Marketing planner     | MarketingRanges                  | Multi-day bars, ongoing campaigns, overlapping lanes, overflow, search and filters.                                         |
+| Store calendar        | DayDetails                       | Shared grid, selected-day sidebar and summary slots. Ticket cards, counts and booking restrictions remain host data.        |
+| Remote source         | CachedDataSource                 | Optional per-instance range cache; independent of Inertia.                                                                  |
+| Ticket booking        | Calendar Booking / TicketBooking | Date/range, optional slots, capacity, retained booking and special appointment confirmation.                                |
+
+## Event contract and host adapters
+
+ScheduleEvent contains id, title, start, optional end, allDay, openEnded, color, description, readonly and optional data. All ends are **exclusive**. Date-only events use YYYY-MM-DD; timed events require ISO timestamps with Z or a numeric offset. timeZone determines their day placement. Missing end means a single-day/instant event; openEnded explicitly marks an ongoing interval.
+
+Appointment data: map starts_at/ends_at, all_day and editable. Convert inclusive all-day end dates to the following date in the adapter, including the existing timezone-less timestamp convention. Preserve the original event in data for note details and routes. Marketing: map start_date/end_date, add one day to inclusive ends and mark genuinely ongoing campaigns explicitly. Keep unscheduled advertisements outside the grid. Store: use day-summary, day-content and day-details slots for counts, notices, capacity and cards.
+
+Month and week render date columns. Week is not an hourly resource grid. Agenda lists occupied dates in the selected month. Configure available views per host. Test narrow viewports for drawers, touch targets and overflow.
+
+## Controlled integration
+
+Use v-model:date, v-model:view and v-model:selected-date with events. Listen to range-change to load the entire padded visible interval, and create/edit/select-event/select-date to route host actions. Named slots: title-actions, actions, filters, event, event-details, event-actions, day-summary, day-content, day-details and error.
+
+The compact presentation is intended to fill a Card: use Card with gap-0 and py-0, then Schedule with border-0 and rounded-none. Choose event-display dots and views containing only month. Full pages use bars and their configured views. readonly disables mutations independently of viewing details. canCreate and canEdit accept booleans or predicates.
+
+## Composables and optional data cache
+
+useSchedule() exposes date, view, selectedDate, selectedEventId, range, dates, navigate() and goToday(). Controlled refs or Inertia props can be used instead. `useScheduleSource({ key, load, initial, staleTime, maxEntries })` exposes data/loading/error, refresh(), invalidate() and dispose(). Include source identity, permission/location scope, visible range, timezone and filters in the key. Cache is per instance in memory with bounded entries; no localStorage. Dispose cancels requests; stale responses cannot replace the current range. Invalidate after mutations. The host supplies transport and authoritative backend checks.
+
+For backend search set searchMode to server, bind v-model:search and include search in the source key. Otherwise filtering is local. No application endpoint is hardcoded by the library.
+
+## Booking
+
+useCalendarBooking() owns date/slot selection and pending warning confirmation. Slots/rules remain reactive host inputs. A date change clears the slot; unavailable slots cannot be selected unless retained. Confirmation checks the latest availability. CalendarBooking adds optional UI: showSlots, showCapacity, confirmWarnings, range, numberOfMonths and hideOutsideDays. visible-month-change lets the host load availability. maxValue limits the calendar day, not the time-of-day of an InputDateTime value.
+
+Use useScheduleSource with separate keys for availability and time slots when caching is desired. Neither composable saves a booking automatically.
+
+## Calendar fields and optional upload processing
+
+Calendar supports numberOfMonths, hideOutsideDays and sm/default/lg sizes in single/range modes. InputDateTime in mode="date" accepts explicit maxValue, overriding its automatic today limit; allowFuture still defaults to false. The default datetime mode forwards the optional day bound and otherwise permits future dates.
+
+UploadZone accepts transformFiles: (files: File[]) => File[] or Promise of File[]. It waits before creating previews/emitting files, validates transformed output and emits processing-error on failure. Without the hook existing behavior remains unchanged. `resize(dataUrl, 1920, 1920, { type: 'image/jpeg', quality: 0.9 })` enables optional image processing; the hook converts the result to File. Payload persistence stays in the host.
+
+The executable image-processing example belongs to **Form Fields / Upload Dropzone / Image Processing**. It demonstrates the optional hook; it is not a standalone library component.
+
+## Day popovers and event details
+
+Day headers show the ISO calendar week (including week-year boundaries). Desktop day popovers prefer right-center in the first three visible date columns and left-center in the remaining columns; collision handling can flip this to keep content on screen. The arrow follows the trigger. Mobile uses a Drawer. Headers stay fixed while a height-limited ScrollArea scrolls the list or details with bottom padding.
+
+Optional ScheduleEvent fields: typeLabel (event kind in the header), summary (extra date-summary lines), details (label/value pairs), and detailPresentation (list, cards or description). Schedule.detailPresentation sets the fallback. Text, booleans, numbers and null values are rendered safely; host-specific content can still use event-details. ScheduleEventDetails can be reused in this slot. See ScrollableDayDetails, CardEventDetails and TextEventDetails for overflow and presentation examples.
+
+## Organizer controls and marketing strips
+
+Stories use generic names: CompactCard, Organizer, ReadOnly, MarketingRanges and DayDetails. Host names in the table describe integrations, not component specialization. The standalone week/agenda stories are consolidated into the view switch. ReadOnly uses the same organizer while suppressing create/edit actions; the readonly control also demonstrates this on other examples.
+
+The view switch defaults to week, month, agenda in that order; the controlled view defaults to month. Override views to change ordering and v-model:view to choose another initial/current view. The title picker switches to a scrollable ISO-week list in week view, with year navigation and explicit date ranges; it handles ISO week-years around New Year.
+
+Define filters as key/label/options, supply event.filterValues facets, and optionally bind v-model:filter-values. The filter button is placed before the view switch. The filter/search bar starts collapsed and animates its height; v-model:filters-open controls this. Collapsed controls are inert. Local filtering combines every selected facet with search. With filterMode=server and/or searchMode=server the host supplies filtered results and includes controlled values in its request/cache key. The filters slot remains available for application-specific controls.
+
+Full organizers show muted plus buttons continuously by default; compact cards retain the hover-neighborhood effect. Set createVisibility to always or hover explicitly. minDayHeight sets a per-week/day minimum in pixels (compact 80, full 128 by default). highlightSundays and highlightHolidays independently control red day styling. Holiday labels can come from holidays or events marked holiday=true.
+
+rangePresentation=strips renders narrow solid-color marketing intervals from the middle of the first occupied date to the middle of the last occupied date, independent of time-of-day. Exclusive end dates still apply. Each week renders its own label. Hover/focus expands a visual preview without resizing the lane or moving the trigger; the full details remain available on click. A single-day range remains a small marker at day center. Cards use exact date-column geometry with a uniform inset; active borders are subdued.

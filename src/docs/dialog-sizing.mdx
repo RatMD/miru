@@ -1,0 +1,47 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/dialog/Dialog.stories';
+
+<Meta of={Stories} name="Sizing" />
+
+# Dialog sizes
+
+Set size on **DialogContent**, the surface, rather than on the Dialog state root.
+The Size select controls the live Default story; individual stories demonstrate
+all supported widths. Opening buttons are centered at their natural width.
+
+| size         | Maximum width                       |
+| ------------ | ----------------------------------- |
+| sm           | 384px                               |
+| md           | 448px                               |
+| lg (default) | 512px                               |
+| xl           | 576px                               |
+| 2xl          | 672px                               |
+| 3xl          | 768px                               |
+| 4xl          | 896px                               |
+| 5xl          | 1024px                              |
+| 6xl          | 1152px                              |
+| 7xl          | 1280px                              |
+| full         | Available viewport width minus 32px |
+
+The content width is always limited by the viewport with 16px left/right gutters.
+full changes width only; it is not a fullscreen/height mode. Values use the default
+Tailwind spacing scale and assume a 16px root font size. A class override can still
+customize the cap, for example sm:max-w-4xl.
+
+```vue
+<Dialog v-model:open="open">
+  <DialogTrigger as-child><Button>{{ labels.open }}</Button></DialogTrigger>
+  <DialogContent size="4xl" :close-label="labels.close">
+    <DialogTitle>{{ labels.title }}</DialogTitle>
+    <DialogDescription>{{ labels.description }}</DialogDescription>
+    <YourContent />
+  </DialogContent>
+</Dialog>
+```
+
+For responsive surfaces use Overlay and its Choice, Notice or Details variants.
+They accept the same size options and use a bottom Drawer below 768px. Defaults are
+2xl for Overlay, lg for Choice/Notice and 5xl for Details. Existing widthClass
+customizations remain supported; Overlay wide=true remains the 6xl legacy alias.
+
+Mobile Drawer defaults to 50% with an expanded 90% stop. Overlay exposes drawerSnapPoints and drawerMaxHeight; loading/nondismissible overlays cancel swipe dismissal. The mobile body uses ScrollArea while header/footer stay visible.

@@ -1,0 +1,40 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/deferred/Deferred.stories';
+
+<Meta of={Stories} name="Guide" />
+
+# Deferred
+
+```vue
+<Deferred
+    :loader="() => import('./Workspace.vue')"
+    :delay="150"
+    :timeout="8000"
+    :component-props="{ workspaceId }"
+    @loaded="onReady">
+    <template #loading>Loading workspace…</template>
+    <template #error="{ error, retry }">
+        <p>{{ error.message }}</p><Button @click="retry">Try again</Button>
+    </template>
+</Deferred>
+```
+
+The loader returns a Vue component or an import module with a default component. It receives
+`{ signal, attempt }`; use the signal for cancellable host requests. Retry, changing the loader and
+unmount abort the old attempt. Results from a loader that ignores abort do not replace newer content.
+Keep a stable loader reference instead of creating a fresh function on every parent render.
+
+Without loader, put an async setup component or Vue async component in the default slot:
+
+```vue
+<Deferred><AsyncWorkspace /><template #loading>Loading…</template></Deferred>
+```
+
+The native Vue Suspense boundary tracks async descendants. `delay` defaults to 200ms before showing
+the loading slot. `timeout` defaults to 10000ms on the client; 0 disables it. Synchronous slot children
+render normally. Error slots receive error/retry/attempt; loading receives attempt. The exposed
+component ref has retry(), pending and error. Events are pending, loaded and error.
+
+The server follows Vue SSR and awaits async content; the client-side timeout is not a server request
+deadline. Bound the host's SSR request/loader separately if necessary. Cancellation of work in async
+slot children belongs to those children. Deferred does not fetch arbitrary data or register global state.

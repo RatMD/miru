@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useStorage" />
+
+# useStorage
+
+Store JSON values in a reactive, namespaced local or session store.
+
+```ts
+import { computed } from 'vue';
+import { useStorage } from '@rat.md/miru/composables';
+
+const settings = useStorage('my-app');
+const theme = computed(() => settings.get<string>('theme', 'light'));
+function setTheme(value: string) {
+    settings.set('theme', value);
+}
+
+const temporary = useStorage('my-app', true); // sessionStorage
+```
+
+Use `get`, `set`, `has`, `remove`, `clear` and `all`. `clear()` affects only this namespace. Change objects through `set`, rather than mutating a snapshot. `listenTo(key, callback)` returns an unsubscribe function.
+
+Persisted values load after mount. Instances synchronize API writes in the same tab and storage events from other tabs. `error` and `isPersistent` describe failures/fallbacks. The default namespace is `miru:`. SSR uses isolated state; scope disposal releases listeners, not saved data.

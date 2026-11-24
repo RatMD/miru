@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Plugins/dayjs" />
+
+# dayjs
+
+Format a date as element text.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { vDayjs } from '@rat.md/miru/plugins';
+const date = ref('2026-12-01T09:30:00');
+</script>
+
+<template><span v-dayjs="date">DD MMMM YYYY</span></template>
+```
+
+Use a directive argument or `data-dayjs-format` for an explicit format. Empty/invalid values render empty text; timestamp zero is valid. Formatting uses the app locale and replaces text content. For pure formatting, use `dayjs` from `@rat.md/miru/support`.

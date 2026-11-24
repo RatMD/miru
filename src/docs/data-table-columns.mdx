@@ -1,0 +1,130 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Extensions/DataTable/Columns" />
+
+# DataTable columns and composition
+
+Start with the [DataTable guide](/reference/data-table-guide). These patterns work with every backend after its data is normalized.
+
+## Native columns and cells
+
+The original MIRU renderers are exported. The live examples use these components,
+not lookalike markup. Create translated factories inside Vue setup, below UiProvider.
+
+| Factory / component     | Behavior                                                              | Story                              |
+| ----------------------- | --------------------------------------------------------------------- | ---------------------------------- |
+| createSelectionColumn   | Page selection, indeterminate state, rowSelectable restrictions       | Row Actions                        |
+| createExpansionColumn   | Native expand button and rowExpandable predicate                      | Sub Tables                         |
+| createActionsColumn     | Sticky action cell, primary icons, overflow menu and mobile sheet     | Row Actions                        |
+| createCountColumn       | Circular counter with a subdued zero state                            | Native Counters                    |
+| createMultiCountsColumn | Several counts with icon headers and individual tooltips              | Native Counters                    |
+| createSortOrderColumn   | Position badge and move-up/down controls                              | Sort Order                         |
+| createStatusColumn      | Status indicator with custom icons/classes and translated definitions | Native Value Columns               |
+| createBadgeColumn       | Status/source badge with optional translationPrefix                   | Native Value Columns               |
+| createDateTimeColumn    | Date, time or date-time formatting in the provider locale             | Native Value Columns               |
+| createAddressColumn     | Structured, copyable address badges                                   | Native Value Columns               |
+| DataTableMoneyCell      | Currency formatting via meta.component and optional meta.currencyKey  | Native Value Columns               |
+| DataTableBooleanToggle  | Interactive boolean display via a cell slot                           | Native Value Columns / Row Actions |
+
+MultiCounts definitions use key, labelKey and an optional icon. labelKey resolves
+through UiProvider.translate, so host translation keys remain outside the package.
+Status definitions accept reactive label getters, labelKey, colorClass,
+containerClass and icon. DataTableMoneyCell defaults to the row's currency field
+and EUR when no valid currency is supplied.
+
+## Remaining width: size = 0
+
+A zero size is a deliberate MIRU convention. It means **automatic width**, not
+zero pixels. Give the primary text column size: 0 and give utility columns explicit
+pixel widths. The table stays width: 100%; the automatic column absorbs remaining
+space. Multiple automatic columns share space using the browser table layout.
+Long unbreakable content can still require horizontal scrolling; size: 0 does not
+truncate content or impose a fixed table layout.
+
+```ts
+const columns: DataTableColumnDef<Item>[] = [
+    {
+        accessorKey: 'name',
+        header: nameLabel,
+        size: 0,
+        enableHiding: false,
+        meta: { label: nameLabel },
+    },
+    { accessorKey: 'team', header: teamLabel, size: 140 },
+    createCountColumn<Item>({ accessorKey: 'quantity', label: quantityLabel, size: 96 }),
+];
+```
+
+The Remaining Width story demonstrates this convention. Column definitions also
+support minSize/maxSize. meta.mobileSize overrides a fixed column's width below
+768px; meta.mobileHidden hides it there. size: 0 retains automatic width, including
+on mobile. meta.defaultHidden defines initial visibility; users can change and
+persist leaf-column visibility/order through Modify. A unique tableKey isolates
+preferences for each table and child table. The default and compact variants share
+these column rules.
+
+## Subcolumns: grouped headers and stacked cells
+
+These are two supported compositions:
+
+1. Nest column definitions in columns for grouped header rows. Header colSpan
+   tracks visible leaf columns. Preferences operate on the leaf columns.
+2. Use cell-columnId or meta.component for several visual lines within a cell.
+   DataTableCellRenderer passes value, item, row, column and actions to components.
+
+```ts
+const columns: DataTableColumnDef<Item>[] = [
+    {
+        id: 'identity',
+        header: identityLabel,
+        columns: [
+            { accessorKey: 'name', header: nameLabel, size: 0 },
+            { accessorKey: 'team', header: teamLabel, size: 140 },
+        ],
+    },
+    createCountColumn<Item>({ accessorKey: 'quantity', label: quantityLabel, size: 96 }),
+];
+```
+
+```vue
+<DataTable table-key="projects" :list="list" :columns="columns">
+  <template #cell-name="{ item }">
+    <div class="font-medium">{{ item.name }}</div>
+    <div class="mt-1 text-xs text-muted-foreground">{{ item.code }} · {{ item.team }}</div>
+  </template>
+</DataTable>
+```
+
+See Grouped Sub Columns and Sub Columns. A stacked cell is application content;
+it is not a separate subColumns prop or a different table implementation.
+
+## Subtables and expansion
+
+Add createExpansionColumn and rowExpandable, then compose the child view in
+expanded-row. Reuse DataTable with embedded, showToolbar=false and
+paginationPosition="none" when the outer expansion owns its surface. A child can
+also have its own toolbar, queryHandler and pagination when required.
+
+```vue
+<DataTable
+    table-key="projects"
+    :list="list"
+    :columns="columns"
+    :row-expandable="(item) => item.units.length > 0">
+  <template #expanded-row="{ item }">
+    <section class="bg-muted/20 p-4">
+      <div class="overflow-x-auto rounded-md border bg-background">
+        <DataTable :table-key="'project-units-' + item.id"
+          :list="childLists[item.id]" :columns="childColumns"
+          embedded :show-toolbar="false" pagination-position="none" />
+      </div>
+    </section>
+  </template>
+</DataTable>
+```
+
+The host supplies each child ListPayload and owns lazy loading, errors and retry
+state. No application route, domain model or implicit fetching is built into the
+UI package. The Sub Tables story renders actual nested DataTables with independent
+keys. Expansion and selection are independent; interacting with nested controls
+must not activate a parent row action.

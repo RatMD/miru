@@ -1,0 +1,4 @@
+{
+    "extends": "../tsconfig.json",
+    "include": ["validation-types.ts", "directive-types.vue"]
+}

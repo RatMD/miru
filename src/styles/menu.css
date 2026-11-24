@@ -1,0 +1,70 @@
+/* Shared by component-owned menu rows, including portalled search results. */
+:is(
+    [data-slot='select-item'],
+    [data-slot='select-search-item'],
+    [data-slot='combobox-item'],
+    [data-slot='dropdown-menu-item'],
+    [data-slot='dropdown-menu-checkbox-item'],
+    [data-slot='dropdown-menu-radio-item'],
+    [data-slot='dropdown-menu-sub-trigger']
+) {
+    --ui-menu-hover: var(--ui-surface-hover);
+    border-radius: 0;
+    cursor: pointer;
+    transition:
+        background-color 180ms ease,
+        color 180ms ease;
+}
+:is(
+        [data-slot='select-item'],
+        [data-slot='select-search-item'],
+        [data-slot='combobox-item'],
+        [data-slot='dropdown-menu-item'],
+        [data-slot='dropdown-menu-checkbox-item'],
+        [data-slot='dropdown-menu-radio-item'],
+        [data-slot='dropdown-menu-sub-trigger']
+    ):not([data-disabled]):not([aria-disabled='true']):is(
+        :hover,
+        :focus-visible,
+        [data-highlighted]
+    ) {
+    background-color: var(--ui-menu-hover);
+    color: var(--ui-surface-hover-foreground);
+}
+[data-slot='dropdown-menu-item'][data-variant='danger'] {
+    --ui-menu-hover: color-mix(in srgb, var(--ui-danger) 12%, transparent);
+}
+[data-slot='dropdown-menu-item'][data-variant='danger']:not([data-disabled]):is(
+        :hover,
+        :focus-visible,
+        [data-highlighted]
+    ) {
+    color: var(--ui-danger);
+}
+:is(
+    [data-slot='select-item'],
+    [data-slot='select-search-item'],
+    [data-slot='combobox-item'],
+    [data-slot='dropdown-menu-item'],
+    [data-slot='dropdown-menu-checkbox-item'],
+    [data-slot='dropdown-menu-radio-item'],
+    [data-slot='dropdown-menu-sub-trigger']
+):is([data-disabled], [aria-disabled='true']) {
+    cursor: not-allowed;
+}
+:is([data-slot='combobox-viewport'], [data-slot='combobox-group']) {
+    padding-inline: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+    :is(
+        [data-slot='select-item'],
+        [data-slot='select-search-item'],
+        [data-slot='combobox-item'],
+        [data-slot='dropdown-menu-item'],
+        [data-slot='dropdown-menu-checkbox-item'],
+        [data-slot='dropdown-menu-radio-item'],
+        [data-slot='dropdown-menu-sub-trigger']
+    ) {
+        transition: none;
+    }
+}

@@ -1,0 +1,100 @@
+import type { DataTableFormat, ListPayload, ListState } from './contracts';
+import type { RequestPayload } from '@inertiajs/core';
+import type { MaybeRef, MaybeRefOrGetter } from 'vue';
+import { router } from '@inertiajs/vue3';
+import { toValue, unref } from 'vue';
+import { serializeLucidQuery } from './adapters';
+
+interface UseDataTableQueryOptions<TData> {
+    list: MaybeRefOrGetter<ListPayload<TData>>;
+    additionalQuery?: MaybeRefOrGetter<Record<string, unknown> | undefined>;
+    onNavigate?: () => void;
+    disabled?: MaybeRefOrGetter<boolean>;
+    dataFormat?: MaybeRefOrGetter<DataTableFormat>;
+    queryProps?: MaybeRefOrGetter<string[] | undefined>;
+    querySerializer?: MaybeRef<
+        | ((state: ListState, filters: Record<string, unknown>) => Record<string, unknown>)
+        | undefined
+    >;
+    queryHandler?: MaybeRef<
+        ((state: ListPayload<TData>['state'], filters: Record<string, unknown>) => void) | undefined
+    >;
+}
+
+/**
+ * Coordinate server-owned search, filtering, sorting and pagination via Inertia.
+ * Advanced search can later be added at this serialization boundary.
+ */
+export function useDataTableQuery<TData>(options: UseDataTableQueryOptions<TData>) {
+    function visit(
+        overrides: Partial<ListPayload<TData>['state']>,
+        filters = toValue(options.list).filters,
+        replace = true,
+    ): void {
+        if (toValue(options.disabled)) return;
+        const list = toValue(options.list);
+        options.onNavigate?.();
+        const state: ListState = {
+            ...list.state,
+            ...overrides,
+            search: String(filters.search ?? '') || null,
+        };
+        const queryHandler = unref(options.queryHandler);
+        if (queryHandler) {
+            queryHandler(state, filters);
+            return;
+        }
+        const serializer = unref(options.querySerializer);
+        const format = toValue(options.dataFormat) ?? 'default';
+        const payload = {
+            ...(serializer
+                ? serializer(state, filters)
+                : format === 'lucid'
+                  ? serializeLucidQuery(state, filters)
+                  : {
+                        page: state.page,
+                        per_page: state.per_page,
+                        order_by: state.order_by,
+                        order: state.order,
+                        filters,
+                    }),
+            ...toValue(options.additionalQuery),
+        } as RequestPayload;
+
+        router.get(window.location.pathname, payload, {
+            preserveScroll: true,
+            preserveState: true,
+            replace,
+            only: toValue(options.queryProps) ?? (format === 'default' ? ['list'] : undefined),
+        });
+    }
+
+    function visitPage(page: number): void {
+        visit({ page }, toValue(options.list).filters, false);
+    }
+
+    function visitPerPage(per_page: number): void {
+        visit({ page: 1, per_page });
+    }
+
+    function visitFilters(filters: Record<string, unknown>): void {
+        visit({ page: 1 }, filters);
+    }
+
+    function toggleSort(id: string): void {
+        const list = toValue(options.list);
+        if (!list.config.sortable.includes(id)) return;
+        visit({
+            page: 1,
+            order_by: id,
+            order: list.state.order_by === id && list.state.order === 'ASC' ? 'DESC' : 'ASC',
+        });
+    }
+
+    return {
+        toggleSort,
+        visitFilters,
+        visitPage,
+        visitPerPage,
+    };
+}

@@ -1,0 +1,94 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/attachment/Attachment.stories';
+
+<Meta of={Stories} name="Guide" />
+
+# Attachment
+
+Attachment presents a file or image; AttachmentList owns collection layout and reorder interactions. These are MIRU helpers inspired by [shadcn-vue Attachment](https://www.shadcn-vue.com/docs/components/attachment), with controlled metadata and application-owned upload state. They do not initiate requests, create object URLs, or delete server files.
+
+## Item contract
+
+An AttachmentItem has a stable id and optional name, title, description, url, thumbnailUrl, kind, mimeType, size (bytes), file, status, progress (0–100), error, disabled and translations. Name falls back to File.name or title. kind can be image, video, audio, document, archive, code or file; it is otherwise detected from MIME/type/extension. Images use url for their preview; video/document previews use thumbnailUrl. An unreadable thumbnail falls back to a type icon. Video/audio files are not automatically played or downloaded.
+
+```vue
+<Attachment :item="file" orientation="horizontal" show-mime removable @remove="removeFile" />
+<AttachmentList
+    v-model="files"
+    layout="grid"
+    sortable
+    removable
+    show-primary
+    @reorder="persistOrder"
+    @remove="removeFile" />
+```
+
+Use orientation=horizontal/vertical, size=sm/default/lg and aspectRatio for the preview. primary adds an overlay badge; primaryLabel customizes its text. In a list, showPrimary marks the first item, or primaryId selects a specific item. layout supports list, responsive grid, or horizontally scrolling row. The first item becomes primary after reordering only when primaryId is absent.
+
+## Upload states and metadata
+
+status accepts idle, uploading, processing, success or error. Loading/processing use a spinner, success uses a check, and error uses an X plus optional error text. During loading, a finite progress value shows the progress bar and a localized percentage; absent progress displays a spinner/status only. showStatus/showProgress control the presentation. Progress is clamped to 0–100.
+
+showType, showMime and showSize control metadata. Long MIME text is shortened via mimeMaxLength (default 40), with the complete value in its title tooltip. File size uses the locally imported v-file-size directive; global registration is unnecessary. sizeDigits controls precision and sizeMetric switches binary IEC to metric SI units. The old v-filesize export/directive remains compatible.
+
+Standalone dragHandle/moveButtons emit move(previous/next); the host decides how to reorder. AttachmentList enables sorting with sortable=true. dragHandle and moveButtons can then be toggled independently. Move controls are disabled at the boundaries, and drag handles also support arrow keys. SortableJS is loaded on the client and destroyed on unmount. remove emits the item id; list removal also emits the updated array. Disabled items and disabled lists reject their own edit/remove/move actions. SortableJS restores Vue's DOM order before applying model updates.
+
+## Optional metadata editing
+
+Set editable=true for shared Input/Textarea fields. A standalone Attachment uses v-model:item (or update:item). A list updates its v-model and emits update:item for the changed record. Add locales using the existing FormLocaleOption contract to edit translations[locale].title/description; without locales, title and description are edited directly. activeLocale/update:activeLocale support an external language selector. Existing metadata and File references are retained in immutable updates. namePrefix generates optional native field names, but does not register a TanStack field by itself.
+
+```vue
+<AttachmentList v-model="files" editable :locales="locales" base-locale="en" />
+```
+
+For actual form validation, supply the fields slot. It receives item, locale, update(patch) and disabled; AttachmentList also supplies index. Bind those controls to your existing useForm instance, use its handleChange/handleBlur and render FieldError from field metadata. The With Form story is a complete working useForm/Zod example with required EN/DE titles and local validation.
+
+```vue
+<Attachment
+    :item="attachment"
+    :locales="locales"
+    :active-locale="editingLocale"
+    @update:active-locale="editingLocale = $event">
+  <template #fields="{ disabled }">
+    <form.Field :name="titlePath">
+      <template #default="{ field }">
+        <Field :invalid="field.state.meta.isTouched && !field.state.meta.isValid">
+          <FieldLabel :for="field.name" required>{{ labels.title }}</FieldLabel>
+          <Input :id="field.name" :model-value="field.state.value" :disabled="disabled"
+            @blur="field.handleBlur" @update:model-value="field.handleChange($event)" />
+          <FieldError :errors="field.state.meta.errors" />
+        </Field>
+      </template>
+    </form.Field>
+  </template>
+</Attachment>
+```
+
+The actions slot adds host-owned preview/download/retry actions alongside optional removal; media overrides the preview. Labels for host titles/descriptions/errors must already be localized. Built-in copy follows UiProvider's English/German locale.
+
+## UploadZone integration
+
+SortableImageGallery remains a compatibility wrapper for existing UploadImage[] models and events, but delegates rendering and sorting to AttachmentList. Additional attachment metadata can be supplied on UploadImage. UploadZone retains validation, local preview URL creation/cleanup, files, reorder and remove events. Its new attachments slot can customize the collection:
+
+```vue
+<UploadZone v-model="images" gallery :title="labels.upload">
+  <template #attachments="{ items, update, disabled }">
+    <AttachmentList :model-value="items" :disabled="disabled" editable sortable
+      :locales="locales" @update:model-value="update($event)" />
+  </template>
+</UploadZone>
+```
+
+The slot update callback normalizes title/url back to the existing UploadImage contract, so AttachmentList updates need no type casts. For a completely general document collection, use AttachmentList with the existing files event and your own AttachmentItem model. UploadZone does not infer server progress; the host updates status/progress from its transport callbacks. Removing or reordering an item does not by itself cancel a request or persist changes. Keep File references for uploads and sanitize metadata/validate files on the server.
+
+## Presentation limits and thumbnail states
+
+Standalone examples limit horizontal width to 32rem and image-card width to 20rem. Vertical Attachment cards also default to a 20rem maximum width and 240px maximum preview height; maxWidth/maxPreviewHeight override those limits, and AttachmentList forwards them. The CSS variable --ui-attachment-max-width adjusts the default vertical cap. Horizontal rows continue to follow their parent width.
+
+The default border uses gray-300 (gray-700 in dark mode). Type, MIME and size appear as outline Badges; long MIME values have a keyboard-focusable Tooltip with the complete value. The size directive is applied to the text inside its Badge. Trash always uses the default ButtonAction size and muted resting color, retaining danger interactions.
+
+Success/error icons sit in a background cutout at the thumbnail's upper-right edge. Loading/processing display a centered spinner with a light overlay over the preview. Status copy remains beneath the filename. Upload progress runs along the bottom card border with a floating percentage label. Standard examples omit optional title/description metadata, so the filename becomes the heading. Metadata and multilingual form examples remain available separately; an explicitly supplied title still takes precedence over filename.
+
+Completed thumbnail states use compact filled success/danger bubbles with plain check/X glyphs and a 2px background cutout. Icon-only previews use a darker neutral background; their loading overlay adds a slight primary tint. Error details replace the generic failed-status line when present, with the generic line retained for missing/blank error messages.
+
+When a busy attachment has progress, its track is positioned absolutely on the bottom card edge. The percentage floats above the filled edge, clamped inside the card at 0/100%. Reserved bottom padding keeps it clear of actions and metadata fields. The progressbar retains its accessible filename label and numeric value; its visual percentage bubble is aria-hidden to avoid duplication.

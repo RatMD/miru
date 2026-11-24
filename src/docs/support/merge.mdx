@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/merge" />
+
+# merge
+
+Merge plain records recursively into a target while replacing arrays and non-record values.
+
+**Runtime:** Universal.
+
+## Example
+
+```ts
+import { merge } from '@rat.md/miru/support';
+const config: Record<string, unknown> = { theme: { radius: 4 } };
+merge(config, { theme: { color: 'blue' } });
+```
+
+Mutates and returns the target. Unsafe prototype keys are skipped; arrays are replaced rather than merged by index.

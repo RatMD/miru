@@ -1,0 +1,11 @@
+<template>
+    <Separator data-slot="item-separator" v-bind="props" :class="cn('my-0', props.class)" />
+</template>
+<script setup lang="ts">
+import type { SeparatorProps } from 'reka-ui';
+import type { HTMLAttributes } from 'vue';
+import { cn } from '../../support/classNames';
+import { Separator } from '../separator';
+
+const props = defineProps<SeparatorProps & { class?: HTMLAttributes['class'] }>();
+</script>

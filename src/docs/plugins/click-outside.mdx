@@ -1,0 +1,24 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Plugins/click-outside" />
+
+# click-outside
+
+Run a handler when a click happens outside an element.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { vClickOutside } from '@rat.md/miru/plugins';
+const open = ref(true);
+const close = () => {
+    open.value = false;
+};
+</script>
+
+<template>
+    <div v-if="open" v-click-outside="close">Click outside to close.</div>
+</template>
+```
+
+Clicks inside, including composed event paths, do not trigger the handler. Listeners are removed on unmount. No global registration is needed for this local import.

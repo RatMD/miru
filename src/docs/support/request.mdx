@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/request" />
+
+# request
+
+A low-level fetch wrapper with GET/HEAD query parameters, JSON records and success/error envelopes.
+
+**Runtime:** Fetch-capable runtime.
+
+## Example
+
+```ts
+import { request } from '@rat.md/miru/support';
+const result = await request.get<{ items: string[] }>('/example/items', { page: '1' });
+if (result.status === 'success') console.log(result.result.items);
+```
+
+Available methods: get, head, post, put, patch and delete. Relative URLs require a browser/base-aware fetch. Records become JSON; FormData remains multipart. Use useForm for form handling.
