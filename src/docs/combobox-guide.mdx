@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/combobox/Combobox.stories';
+
+<Meta of={Stories} name="Integration" />
+
+# Combobox integration
+
+ComboboxField is the ready-to-use, searchable single-select field. The underlying Combobox primitives are also exported for custom composition. Labels belong to the host application and are supplied as translated strings.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { ComboboxField, type ComboboxOption } from '@rat.md/miru';
+const selected = ref<string | null>(null);
+defineProps<{ projectLabel: string; projects: ComboboxOption[] }>();
+</script>
+<template>
+    <ComboboxField
+        v-model="selected"
+        :label="projectLabel"
+        :placeholder="projectLabel"
+        :options="projects"
+        clearable
+        name="project" />
+</template>
+```
+
+## FormLayout and useForm
+
+Use `type: "combobox"` in a form definition. Values are option keys (strings); clearing emits null. The In Form story demonstrates the actual TanStack-backed FormFieldRenderer integration and its values without submitting an HTTP request.
+
+```ts
+import { literal, type ComboboxFieldDefinition } from '@rat.md/miru';
+const definition: ComboboxFieldDefinition = {
+    type: 'combobox',
+    name: 'project',
+    label: literal(projectLabel),
+    clearable: true,
+    options: projects.map((option) => ({ ...option, label: literal(option.label) })),
+};
+```
+
+Disabled options cannot be selected. The input supports keyboard navigation, an empty state and blur handling. The name/required props are forwarded to the underlying Reka field for native form integration.

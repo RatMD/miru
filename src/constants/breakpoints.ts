@@ -1,8 +1,15 @@
+/** Default viewport thresholds in CSS pixels, including the legacy small-screen names. */
+const defaultBreakpoints = Object.freeze({
+    xxs: 364,
+    xs: 576,
+    sm: 640,
+    md: 768,
+    lg: 1024,
+    xl: 1280,
+    xxl: 1536,
+});
+type BreakpointMap = Readonly<Record<string, number>>;
+type BreakpointValue = number | string | null;
 
-export const BREAKPOINT_XXS: number = __BREAKPOINT_XXS__ || 364;
-export const BREAKPOINT_XS: number = __BREAKPOINT_XS__ || 576;
-export const BREAKPOINT_SM: number = __BREAKPOINT_SM__ || 640;
-export const BREAKPOINT_MD: number = __BREAKPOINT_MD__ || 768;
-export const BREAKPOINT_LG: number = __BREAKPOINT_LG__ || 1024;
-export const BREAKPOINT_XL: number = __BREAKPOINT_XL__ || 1280;
-export const BREAKPOINT_XXL: number = __BREAKPOINT_XXL__ || 1536;
+export { defaultBreakpoints };
+export type { BreakpointMap, BreakpointValue };

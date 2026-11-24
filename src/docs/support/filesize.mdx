@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/filesize" />
+
+# filesize
+
+Format a byte count using binary IEC or metric SI units.
+
+**Runtime:** Universal.
+
+## Example
+
+```ts
+import { filesize } from '@rat.md/miru/support';
+filesize(1024); // '1.0 KiB'
+filesize(1000, true, 2); // '1.00 kB'
+```
+
+Arguments are bytes, metric (default false) and decimal digits (default 1).

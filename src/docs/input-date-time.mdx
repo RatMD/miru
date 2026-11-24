@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/input-date-time/InputDateTime.stories';
+
+<Meta of={Stories} name="Guide" />
+
+# InputDateTime
+
+One field handles four modes. Values represent local dates and times, without implicit timezone conversion.
+
+| mode                 | v-model value                                                     |
+| -------------------- | ----------------------------------------------------------------- |
+| `datetime` (default) | `"2026-11-17T12:30"` or `null`                                    |
+| `date`               | `"2026-11-17"` or `null`                                          |
+| `time`               | `"12:30"` or `null`                                               |
+| `timeframe`          | `{ start: "09:00", end: "17:00" }`, nullable endpoints, or `null` |
+
+```vue
+<InputDateTime v-model="appointment" />
+<InputDateTime v-model="birthday" mode="date" />
+<InputDateTime v-model="startTime" mode="time" />
+<InputDateTime
+    v-model="hours"
+    mode="timeframe"
+    start-label="Opening time"
+    end-label="Closing time" />
+```
+
+`InputDate` and `InputTime` are internal picker surfaces now. Replace their imports with `InputDateTime`
+and the matching `mode`. When changing mode dynamically, supply the corresponding value shape; the
+field does not guess how to convert an existing date into a timeframe.
+
+Date modes forward Calendar rules (`minValue`, `maxValue`, `disabledDates`, `disabledWeekdays`,
+`holidays`, `availability` and callbacks). `allowFuture` defaults to false for date and true for datetime.
+Selecting the date enables its time control; clearing the date clears the combined value.
+
+Timeframe endpoints are independent and may remain partially filled. An end before the start is
+preserved so applications can represent overnight hours. Validate business rules (ordering, overnight
+permissions, maximum duration) with your form schema. Endpoints have separate accessible labels.
+`id` refers to the date/first time button; timeframe adds `-end` for its second button.
+
+Calendar remains publicly exported and is documented under Utilities.

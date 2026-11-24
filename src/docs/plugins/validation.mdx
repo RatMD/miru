@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Plugins/validation" />
+
+# validation
+
+Register reusable Zod factories for one Vue app.
+
+```ts
+import { createMiru } from '@rat.md/miru';
+import { defineValidators } from '@rat.md/miru/plugins/validation';
+
+const validators = defineValidators({
+    sku: ({ z }) => z.string().min(3),
+});
+const miru = createMiru({ validators });
+// app.use(miru)
+```
+
+In setup, call `useValidation()` and use `validators.sku()` in a schema. Factories receive `{ z, locale, t, tc }` and return a schema synchronously; the schema may contain async rules. `createMiruValidation()` is available for manual plugin installation.
+
+[useValidation examples](/reference/composables/useValidation).

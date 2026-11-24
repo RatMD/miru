@@ -1,0 +1,7 @@
+{
+    "extends": "../tsconfig.json",
+    "include": ["directive-types.vue"],
+    "vueCompilerOptions": {
+        "strictTemplates": true
+    }
+}

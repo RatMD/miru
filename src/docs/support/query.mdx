@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/query" />
+
+# query
+
+Select multiple DOM elements, optionally mapping the result in a supplied context.
+
+**Runtime:** Browser.
+
+## Example
+
+```ts
+import { query } from '@rat.md/miru/support';
+const fields = query('input', document);
+const names = query('input', (element) => element.getAttribute('name'));
+```
+
+Without a callback the result is HTMLElement[]. With a callback the result contains the mapped values.

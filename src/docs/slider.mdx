@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/slider/Slider.stories';
+
+<Meta of={Stories} name="Guide" />
+
+# Slider
+
+```vue
+<Slider v-model="volume" :min="0" :max="100" :step="5" label="Volume" />
+<Slider
+    v-model="priceRange"
+    :min="0"
+    :max="500"
+    :step="25"
+    :min-steps-between-thumbs="1"
+    :thumb-labels="['Minimum price', 'Maximum price']"
+    show-steps />
+```
+
+Use number arrays: `[50]` for a single value, `[100, 300]` for a range. The number of values determines
+the number of handles. `defaultValue` supports uncontrolled usage; `valueCommit` reports the final
+value after an interaction. `name`/`required` integrate with Reka's native form controls.
+
+`min`, `max`, `step` and `minStepsBetweenThumbs` constrain selection. Configure finite bounds with
+`max > min` and a positive step. `showSteps` draws ticks for up to 200 intervals; larger ranges keep
+their configured step without drawing hundreds of marks. `variant` supports the eight standard
+semantic tones; `size` is sm/default/lg. `orientation`, `inverted`, `dir` and disabled are forwarded.
+
+Arrow keys move by a step; PageUp/PageDown and Shift+Arrow move by ten steps. Home/End target the
+range's first/last endpoint. Reka supplies keyboard, pointer and touch handling and prevents handles
+from violating the configured minimum spacing. Use distinct `thumbLabels` for range accessibility.

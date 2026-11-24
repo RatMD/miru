@@ -1,0 +1,34 @@
+import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { componentControls, controlNames } from '../../stories/component-controls';
+import { componentDescription } from '../../stories/component-descriptions';
+import { componentStory } from '../../stories/component-fixtures';
+import { CodePanel } from './index';
+const meta = {
+    ...componentControls('CodePanel'),
+    title: 'Components/CodePanel',
+    component: CodePanel,
+    parameters: {
+        controls: { include: controlNames('CodePanel') },
+        docs: { description: { component: componentDescription('CodePanel') } },
+    },
+} satisfies Meta;
+export default meta;
+export const Default: StoryObj = {
+    render: componentStory('<CodePanel v-bind="controlProps()"/>', 'CodePanel'),
+};
+export const Condensed: StoryObj = {
+    args: { condensed: true },
+    render: componentStory('<CodePanel v-bind="controlProps()"/>', 'CodePanel'),
+};
+export const Html: StoryObj = {
+    args: { language: 'html', value: '<section><h2>MIRU</h2><p>Shared UI</p></section>' },
+    render: componentStory('<CodePanel v-bind="controlProps()"/>', 'CodePanel'),
+};
+export const PlainText: StoryObj = {
+    args: { language: 'text', value: 'SH-2026-001\n200 OK' },
+    render: componentStory('<CodePanel v-bind="controlProps()"/>', 'CodePanel'),
+};
+export const InvalidJson: StoryObj = {
+    args: { value: '{invalid JSON' },
+    render: componentStory('<CodePanel v-bind="controlProps()"/>', 'CodePanel'),
+};

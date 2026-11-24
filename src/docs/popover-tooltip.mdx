@@ -1,0 +1,24 @@
+# Popover triggers with tooltips
+
+Use the optional `tooltip` prop on Miru's `PopoverTrigger` instead of manually nesting a separate TooltipRoot around the trigger.
+
+```vue
+<Popover>
+  <PopoverTrigger
+    as-child
+    tooltip="Customize your palette"
+    tooltip-side="bottom"
+    :tooltip-delay-duration="200"
+  >
+    <ButtonAction aria-label="Customize your palette"><IconAdjustments /></ButtonAction>
+  </PopoverTrigger>
+  <PopoverContent align="end">
+    Your settings
+    <PopoverArrow />
+  </PopoverContent>
+</Popover>
+```
+
+The integrated trigger registers an explicit anchor outside the tooltip's nested positioning root. With manually nested roots, both triggers can register against the same Floating UI context: the click opens the popover, but its content remains at the off-screen placeholder because its own root has no anchor. The integrated API keeps both overlays attached to the same button and hides the tooltip while the popover is open. Keyboard activation, Escape and focus return remain handled by Reka.
+
+`tooltip-side` defaults to `bottom`, `tooltip-align` to `center`, and `tooltip-delay-duration` to `300`. Omitting `tooltip` retains a plain Popover trigger.

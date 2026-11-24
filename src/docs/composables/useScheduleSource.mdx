@@ -1,0 +1,26 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useScheduleSource" />
+
+# useScheduleSource
+
+Load reactive event ranges with cancellation and optional per-instance caching.
+
+```ts
+import { computed } from 'vue';
+import { useSchedule, useScheduleSource } from '@rat.md/miru/composables';
+
+const schedule = useSchedule();
+const key = computed(() => JSON.stringify(schedule.range.value));
+const source = useScheduleSource({
+    key,
+    load: async (signal) => {
+        const params = new URLSearchParams({ range: key.value });
+        const response = await fetch('/api/events?' + params, { signal });
+        if (!response.ok) throw new Error('Could not load events');
+        return response.json();
+    },
+});
+```
+
+Use your endpoint and include range, filters and time zone in the key. Read `data`, `loading`, `error`; call `refresh(force)`, `invalidate(key?)` or `dispose()`. Old requests cannot replace newer data. Vue scope disposal is automatic.

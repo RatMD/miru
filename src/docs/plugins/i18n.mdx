@@ -1,0 +1,40 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Plugins/i18n" />
+
+# i18n
+
+Use built-in English/German labels, add a dictionary, or connect your host translator.
+
+```ts
+import { ref } from 'vue';
+import { createMiru } from '@rat.md/miru';
+
+const locale = ref('en');
+const miru = createMiru({
+    locale,
+    fallbackLocale: 'en',
+    messages: { fr: { common: { actions: { close: 'Fermer' } } } },
+});
+// Install with app.use(miru).
+function useFrench() {
+    locale.value = 'fr';
+}
+```
+
+`locale`, `messages` and `fallbackLocale` may be refs/getters. Resolution tries the active locale, its base language, the configured fallback, then English. Missing keys return the key. Messages support `:name` parameters.
+
+## Connect a host translator
+
+```ts
+// Add this to createMiru({...}); these functions belong to your host.
+i18n: {
+  locale: () => hostLocale.value,
+  translate: (key, parameters, locale) =>
+    hostHasKey(key, locale) ? hostTranslate(key, parameters, locale) : undefined,
+}
+```
+
+Return `undefined` or the original key for missing translations to preserve Miru fallbacks. `translateChoice(key, count, parameters, locale)` handles plural forms. Miru does not load host translation files.
+
+Use `<UiProvider locale="de">...</UiProvider>` for a local UI language. Read labels with [useI18n](/reference/composables/useI18n). Configuration is isolated per Vue app and SSR request.

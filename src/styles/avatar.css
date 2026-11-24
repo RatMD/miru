@@ -1,0 +1,64 @@
+.miru-avatar-stack-item {
+    --miru-avatar-next-x: var(--miru-avatar-next-x-ltr);
+    mask-image: var(--miru-avatar-cutout-ltr, none);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+}
+
+.miru-avatar-stack-item:dir(rtl) {
+    --miru-avatar-next-x: var(--miru-avatar-next-x-rtl);
+    mask-image: var(--miru-avatar-cutout-rtl, none);
+}
+
+/* Match rounded-md in CSS so theme radius and avatar size remain independent.
+   Subtract the union of two strips and four circles: the next rounded rectangle,
+   expanded by exactly 4px. The transparent area never paints a separator color. */
+.miru-avatar-stack-item[data-cutout-shape='square'] {
+    --cutout-gap: 4px;
+    --cutout-radius: min(
+        calc(var(--miru-avatar-next-size) / 2),
+        max(0px, calc(var(--ui-radius) - 2px))
+    );
+    --cutout-diameter: calc(2 * (var(--cutout-radius) + var(--cutout-gap)));
+    --cutout-left: calc(var(--miru-avatar-next-x) - var(--cutout-gap));
+    --cutout-top: calc(var(--miru-avatar-next-y) - var(--cutout-gap));
+    --cutout-right: calc(
+        var(--miru-avatar-next-x) + var(--miru-avatar-next-size) - 2 * var(--cutout-radius) -
+            var(--cutout-gap)
+    );
+    --cutout-bottom: calc(
+        var(--miru-avatar-next-y) + var(--miru-avatar-next-size) - 2 * var(--cutout-radius) -
+            var(--cutout-gap)
+    );
+    mask-image:
+        linear-gradient(black, black), linear-gradient(black, black), linear-gradient(black, black),
+        radial-gradient(circle closest-side, black 100%, transparent 100%),
+        radial-gradient(circle closest-side, black 100%, transparent 100%),
+        radial-gradient(circle closest-side, black 100%, transparent 100%),
+        radial-gradient(circle closest-side, black 100%, transparent 100%);
+    mask-size:
+        100% 100%,
+        calc(var(--miru-avatar-next-size) + 2 * var(--cutout-gap))
+            calc(var(--miru-avatar-next-size) - 2 * var(--cutout-radius)),
+        calc(var(--miru-avatar-next-size) - 2 * var(--cutout-radius))
+            calc(var(--miru-avatar-next-size) + 2 * var(--cutout-gap)),
+        var(--cutout-diameter) var(--cutout-diameter),
+        var(--cutout-diameter) var(--cutout-diameter),
+        var(--cutout-diameter) var(--cutout-diameter),
+        var(--cutout-diameter) var(--cutout-diameter);
+    mask-position:
+        0 0,
+        var(--cutout-left) calc(var(--miru-avatar-next-y) + var(--cutout-radius)),
+        calc(var(--miru-avatar-next-x) + var(--cutout-radius)) var(--cutout-top),
+        var(--cutout-left) var(--cutout-top),
+        var(--cutout-right) var(--cutout-top),
+        var(--cutout-left) var(--cutout-bottom),
+        var(--cutout-right) var(--cutout-bottom);
+    mask-composite: subtract, add, add, add, add, add;
+}
+
+.miru-avatar-stack-item + .miru-avatar-stack-item {
+    margin-inline-start: calc(
+        var(--miru-avatar-stack-size) * var(--miru-avatar-stack-overlap) * -1
+    );
+}

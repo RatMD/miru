@@ -1,0 +1,202 @@
+/* Border-only hover; focus and validation keep their existing rings. */
+@layer utilities {
+    .miru-field {
+        transition-property: color, border-color, box-shadow;
+        --ui-field-ink: var(--ui-muted-foreground);
+    }
+    .miru-field:not(:disabled):not([disabled]):not([aria-disabled='true']):not(
+            [data-disabled='true']
+        ):not([data-disabled='']):not(
+            :has(:is(input, textarea, [data-slot='input-group-control']):disabled)
+        ):is(
+            :hover,
+            :focus-within,
+            [data-state='open'],
+            [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])) *
+        ) {
+        --ui-field-ink: var(--ui-foreground);
+    }
+    .miru-field:not(:disabled):not([disabled]):not([aria-disabled='true']):not(
+            [data-disabled='true']
+        ):not([data-disabled='']):not(
+            :has(:is(input, textarea, [data-slot='input-group-control']):disabled)
+        ):is(
+            :hover,
+            [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])) *
+        ):not(:focus-within):not([data-state='open']):not([data-active='true']) {
+        border-color: var(--ui-muted-foreground);
+    }
+    .miru-field:is([aria-valid='true'], :has([aria-valid='true'])):not([aria-invalid='true']):not(
+            :has([aria-invalid='true'])
+        ) {
+        border-color: var(--ui-success);
+        --ui-field-ink: var(--ui-success);
+    }
+    .miru-field:not(:disabled):not([disabled]):not([aria-disabled='true']):not(
+            [data-disabled='true']
+        ):not([data-disabled='']):not(
+            :has(:is(input, textarea, [data-slot='input-group-control']):disabled)
+        ):is([aria-valid='true'], :has([aria-valid='true'])):not([aria-invalid='true']):not(
+            :has([aria-invalid='true'])
+        ):is(
+            :hover,
+            :focus-within,
+            [data-state='open'],
+            [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])) *
+        ) {
+        --ui-field-ink: var(--ui-success-hover);
+    }
+    .miru-field:not(:disabled):not([disabled]):not([aria-disabled='true']):not(
+            [data-disabled='true']
+        ):not([data-disabled='']):not(
+            :has(:is(input, textarea, [data-slot='input-group-control']):disabled)
+        ):is([aria-valid='true'], :has([aria-valid='true'])):not([aria-invalid='true']):not(
+            :has([aria-invalid='true'])
+        ):is(
+            :hover,
+            [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])) *
+        ):not(:focus-within):not([data-state='open']):not([data-active='true']) {
+        border-color: var(--ui-success-hover);
+    }
+    .miru-field:is([aria-invalid='true'], :has([aria-invalid='true'])) {
+        border-color: var(--ui-danger);
+        --ui-field-ink: var(--ui-danger);
+    }
+    .miru-field:not(:disabled):not([disabled]):not([aria-disabled='true']):not(
+            [data-disabled='true']
+        ):not([data-disabled='']):not(
+            :has(:is(input, textarea, [data-slot='input-group-control']):disabled)
+        ):is([aria-invalid='true'], :has([aria-invalid='true'])):is(
+            :hover,
+            :focus-within,
+            [data-state='open'],
+            [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])) *
+        ) {
+        --ui-field-ink: var(--ui-danger-hover);
+    }
+    .miru-field:not(:disabled):not([disabled]):not([aria-disabled='true']):not(
+            [data-disabled='true']
+        ):not([data-disabled='']):not(
+            :has(:is(input, textarea, [data-slot='input-group-control']):disabled)
+        ):is([aria-invalid='true'], :has([aria-invalid='true'])):is(
+            :hover,
+            [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])) *
+        ):not(:focus-within):not([data-state='open']):not([data-active='true']) {
+        border-color: var(--ui-danger-hover);
+    }
+    :is([data-slot='input-group'], [data-slot='select-trigger'], [data-slot='tags-input'])
+        > :is(svg, [data-slot='input-group-addon'])
+        svg,
+    .miru-field[data-slot='select-trigger'][data-size] > svg,
+    .miru-field:is([data-slot='input-date-trigger'], [data-slot='input-time-trigger']) > svg {
+        color: var(--ui-field-ink);
+        transition: color 150ms ease;
+    }
+    [data-slot='input-search']:is(:hover, :focus-within):not(:has(input:disabled)) > svg,
+    [data-slot='input-search']:is(:hover, :focus-within):not(:has(input:disabled))
+        > [data-slot='combobox-input-wrapper']
+        > svg,
+    [data-slot='input-search']:is(:hover, :focus-within):not(:has(input:disabled)) > button svg {
+        color: var(--ui-foreground);
+        transition: color 150ms ease;
+    }
+    [data-slot='input-search']:has([aria-valid='true']):not(:has(input:disabled)) > svg,
+    [data-slot='input-search']:has([aria-valid='true']):not(:has(input:disabled))
+        > [data-slot='combobox-input-wrapper']
+        > svg,
+    [data-slot='input-search']:has([aria-valid='true']):not(:has(input:disabled)) > button svg {
+        color: var(--ui-success);
+        transition: color 150ms ease;
+    }
+    [data-slot='input-search']:has([aria-invalid='true']):not(:has(input:disabled)) > svg,
+    [data-slot='input-search']:has([aria-invalid='true']):not(:has(input:disabled))
+        > [data-slot='combobox-input-wrapper']
+        > svg,
+    [data-slot='input-search']:has([aria-invalid='true']):not(:has(input:disabled)) > button svg {
+        color: var(--ui-danger);
+        transition: color 150ms ease;
+    }
+    [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])):not(
+            :has(input:disabled)
+        )
+        > svg,
+    [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])):not(
+            :has(input:disabled)
+        )
+        > [data-slot='combobox-input-wrapper']
+        > svg,
+    [data-slot='combobox-anchor']:is(:hover, :focus-within, :has([aria-expanded='true'])):not(
+            :has(input:disabled)
+        )
+        > button
+        svg {
+        color: var(--ui-foreground);
+        transition: color 150ms ease;
+    }
+    [data-slot='combobox-anchor']:has([aria-valid='true']):not(:has(input:disabled)) > svg,
+    [data-slot='combobox-anchor']:has([aria-valid='true']):not(:has(input:disabled))
+        > [data-slot='combobox-input-wrapper']
+        > svg,
+    [data-slot='combobox-anchor']:has([aria-valid='true']):not(:has(input:disabled)) > button svg {
+        color: var(--ui-success);
+        transition: color 150ms ease;
+    }
+    [data-slot='combobox-anchor']:has([aria-invalid='true']):not(:has(input:disabled)) > svg,
+    [data-slot='combobox-anchor']:has([aria-invalid='true']):not(:has(input:disabled))
+        > [data-slot='combobox-input-wrapper']
+        > svg,
+    [data-slot='combobox-anchor']:has([aria-invalid='true']):not(:has(input:disabled))
+        > button
+        svg {
+        color: var(--ui-danger);
+        transition: color 150ms ease;
+    }
+}
+@layer utilities {
+    [data-input-otp-container]:hover:not(:has(input:disabled))
+        [data-slot='input-otp-slot']:not([data-active='true']) {
+        border-color: var(--ui-muted-foreground);
+    }
+    [data-input-otp-container]:has(input[aria-valid='true']):not(:has(input[aria-invalid='true']))
+        [data-slot='input-otp-slot'] {
+        border-color: var(--ui-success);
+    }
+    [data-input-otp-container]:hover:not(:has(input:disabled)):has(input[aria-valid='true']):not(
+            :has(input[aria-invalid='true'])
+        )
+        [data-slot='input-otp-slot']:not([data-active='true']) {
+        border-color: var(--ui-success-hover);
+    }
+    [data-input-otp-container]:has(input[aria-invalid='true']) [data-slot='input-otp-slot'] {
+        border-color: var(--ui-danger);
+    }
+    [data-input-otp-container]:hover:not(:has(input:disabled)):has(input[aria-invalid='true'])
+        [data-slot='input-otp-slot']:not([data-active='true']) {
+        border-color: var(--ui-danger-hover);
+    }
+}
+
+/* The picker ships unlayered vendor CSS, so its surface overrides must also be unlayered. */
+.miru-color-picker .ck-cp-container {
+    max-width: 100%;
+    border-radius: max(0px, calc(var(--ui-radius) - 2px));
+    box-shadow: none;
+}
+
+@layer utilities {
+    [data-slot='select-trigger']:not(:disabled):not([data-disabled]):is(
+            :hover,
+            :focus-within,
+            [data-state='open']
+        )
+        > svg,
+    [data-slot='combobox-anchor']:not(:has(input:disabled)):is(
+            :hover,
+            :focus-within,
+            :has([aria-expanded='true'])
+        )
+        > button
+        svg {
+        opacity: 1;
+    }
+}

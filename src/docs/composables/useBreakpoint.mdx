@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useBreakpoint" />
+
+# useBreakpoint
+
+```ts
+import { useBreakpoint } from '@rat.md/miru/composables';
+
+const viewport = useBreakpoint({ min: 'md', max: 'xl' });
+const desktop = viewport.greaterOrEqual('lg');
+const compact = viewport.smaller('md');
+```
+
+The composable returns computed matches, width, height, orientation, current, ready and breakpoints.
+`resolve(name)` resolves a named threshold, `between(min,max)` evaluates a range, and greaterOrEqual/
+smaller return computed booleans. Pass a reactive getter for live options:
+`useBreakpoint(() => ({ min: minimum.value, breakpoints: custom.value }))`.
+
+It shares the renderless Breakpoint component's defaults, app configuration and SSR rules.
+No plugin is required for default/local settings; `createMiru({ breakpoints })` provides app defaults.
+Its existing useClient instance disposes viewport listeners with the Vue effect scope. For usage
+outside an effect scope, call the returned `dispose()` when done.

@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/tabs/Tabs.stories';
+
+<Meta of={Stories} name="Colors" />
+
+# Selection colors
+
+Tabs, Checkbox, CheckboxGroup, RadioBox, RadioGroup, InputTags and InputTagsItem accept
+`variant="default|primary|secondary|accent|info|success|warning|danger"`.
+
+```vue
+<Tabs v-model="tab" :tabs="tabs" variant="accent" />
+<Checkbox v-model="accepted" variant="success" label="Accept" />
+<CheckboxGroup v-model="channels" :options="options" variant="primary" />
+<RadioGroup v-model="visibility" variant="accent">
+    <RadioBox value="team" label="Team" />
+    <RadioBox value="public" label="Public" variant="warning" />
+</RadioGroup>
+<InputTags v-model="tags" variant="accent">
+    <InputTagsItem v-for="tag in tags" :key="tag" :value="tag">
+        <InputTagsItemText /><InputTagsItemDelete :aria-label="`Remove ${tag}`" />
+    </InputTagsItem>
+    <InputTagsInput aria-label="Add a tag" />
+</InputTags>
+```
+
+Checkbox/radio/tag children inherit their nearest group's reactive variant. A child's explicit
+variant overrides it. Option objects in CheckboxGroup and RadioGroup may specify a variant too.
+Existing default checkbox/radio presentation is retained; default tags use neutral muted surfaces
+in light and dark mode. Checked and indeterminate checkboxes share the selected color. Invalid
+fields retain their danger styling, and disabled controls do not gain interactive hover colors.
+
+Tabs default to the primary theme palette. `TabItem.variant` colors a single tab and its active
+indicator. Existing `tone` status options remain supported: explicit item variant takes precedence,
+then a non-default tone, then the root variant. A custom `indicatorClass` still overrides indicator
+presentation. Horizontal, vertical and overflow navigation share the same color resolution.
+
+Form generator checkbox, checkbox-group and radio definitions forward their `variant` too.
+Use the Variants stories to change the inherited color live; Item Overrides demonstrates local colors.

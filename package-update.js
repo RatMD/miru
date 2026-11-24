@@ -1,22 +1,78 @@
-
 import fs from 'node:fs';
-import pkg from './package.json' with { type: 'json' };
 import pkgLock from './package-lock.json' with { type: 'json' };
+import pkg from './package.json' with { type: 'json' };
 
-for (const [p, ver] of Object.entries(pkg.dependencies)) {
-    let val = ver.slice(0, 1);
-    if (ver.slice(1) != pkgLock.packages[`node_modules/${p}`].version) {
-        pkg.dependencies[p] = val + pkgLock.packages[`node_modules/${p}`].version;
-        console.log(`  - Updated ${p} from ${ver} to ${pkgLock.packages[`node_modules/${p}`].version}`);
+// ANSI color helpers
+const ANSI = {
+    reset: '\x1b[0m',
+    yellowBg: '\x1b[43m\x1b[30m', // black on yellow
+    greenBg: '\x1b[42m\x1b[30m', // black on green
+};
+
+/**
+ * Update Dependencies
+ * @param {*} deps
+ * @param {*} depType
+ * @returns
+ */
+function updateDependencies(deps, depType = 'dependencies') {
+    if (!deps) {
+        return;
+    }
+
+    for (const [name, currentVersion] of Object.entries(deps)) {
+        // Preserve Git/URL/local sources, tags and complex version ranges.
+        const simpleVersion = /^(\^|~|>=|<=|>|<|=)?v?\d+\.\d+\.\d+(?:-[\w.-]+)?(?:\+[\w.-]+)?$/;
+        if (!currentVersion.startsWith('npm:') && !simpleVersion.test(currentVersion)) {
+            continue;
+        }
+
+        const lockEntry = pkgLock.packages?.[`node_modules/${name}`];
+        if (!lockEntry?.version) {
+            console.warn(
+                `${ANSI.yellowBg} WARN ${ANSI.reset} ${name} not found in lock file – skipping.`,
+            );
+            continue;
+        }
+
+        const lockedVersion = lockEntry.version;
+        let newVersion;
+
+        if (currentVersion.startsWith('npm:')) {
+            const aliasMatch = currentVersion.match(
+                /^(npm:(?:@[^/]+\/)?[^@]+@)(\^|~|>=|<=|>|<|=)?(.+)$/,
+            );
+
+            if (!aliasMatch) {
+                console.warn(
+                    `${ANSI.yellowBg} WARN ${ANSI.reset} Could not parse npm alias ${name}: ${currentVersion}`,
+                );
+                continue;
+            }
+
+            const [, aliasPrefix, versionPrefix = ''] = aliasMatch;
+
+            newVersion = `${aliasPrefix}${versionPrefix}${lockedVersion}`;
+        } else {
+            const prefixMatch = currentVersion.match(/^(\^|~|>=|<=|>|<|=)?/);
+            const prefix = prefixMatch?.[0] || '';
+
+            newVersion = `${prefix}${lockedVersion}`;
+        }
+
+        if (currentVersion !== newVersion) {
+            deps[name] = newVersion;
+            console.log(
+                `${ANSI.greenBg} OKAY ${ANSI.reset} ${depType}: ${name} ${currentVersion} → ${newVersion}`,
+            );
+        }
     }
 }
 
-for (const [p, ver] of Object.entries(pkg.devDependencies)) {
-    let val = ver.slice(0, 1);
-    if (ver.slice(1) != pkgLock.packages[`node_modules/${p}`].version) {
-        pkg.devDependencies[p] = val + pkgLock.packages[`node_modules/${p}`].version;
-        console.log(`  - Updated ${p} from ${ver} to ${pkgLock.packages[`node_modules/${p}`].version}`);
-    }
-}
+updateDependencies(pkg.dependencies, 'dependencies');
+updateDependencies(pkg.devDependencies, 'devDependencies');
 
-fs.writeFileSync('package.json', JSON.stringify(pkg, void 0, 4))
+fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4));
+console.log(
+    `\n${ANSI.greenBg} DONE ${ANSI.reset} package.json updated based on package-lock.json\n`,
+);

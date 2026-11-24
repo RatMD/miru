@@ -1,0 +1,354 @@
+/* Compile only library components; do not ship a global Preflight reset. */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import 'tw-animate-css';
+@import '@cyhnkckali/vue3-color-picker/dist/style.css';
+@import './tokens.css';
+@import './menu.css';
+@import './fields.css';
+@import './avatar.css';
+
+@source '../components';
+@source '../layouts';
+@source inline('text-accent bg-accent text-accent-foreground border-accent');
+@custom-variant dark (&:where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *));
+
+@theme inline {
+    --font-heading: var(--ui-font-heading);
+    --breakpoint-xxs: 364px;
+    --breakpoint-xs: 576px;
+    --breakpoint-xxl: 1536px;
+    --animate-accordion-down: accordion-down 0.2s ease-out;
+    --animate-accordion-up: accordion-up 0.2s ease-out;
+    @keyframes accordion-down {
+        from {
+            height: 0;
+        }
+        to {
+            height: var(--reka-accordion-content-height);
+        }
+    }
+    @keyframes accordion-up {
+        from {
+            height: var(--reka-accordion-content-height);
+        }
+        to {
+            height: 0;
+        }
+    }
+    --color-gray-50: var(--ui-neutral-50);
+    --color-gray-100: var(--ui-neutral-100);
+    --color-gray-200: var(--ui-neutral-200);
+    --color-gray-300: var(--ui-neutral-300);
+    --color-gray-400: var(--ui-neutral-400);
+    --color-gray-500: var(--ui-neutral-500);
+    --color-gray-600: var(--ui-neutral-600);
+    --color-gray-700: var(--ui-neutral-700);
+    --color-gray-800: var(--ui-neutral-800);
+    --color-gray-900: var(--ui-neutral-900);
+    --color-gray-950: var(--ui-neutral-950);
+    --color-card: var(--ui-background);
+    --color-card-foreground: var(--ui-foreground);
+    --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+    --color-popover: var(--ui-background);
+    --color-popover-foreground: var(--ui-foreground);
+    --inset-shadow-pressed: var(--ui-pressed-shadow);
+    --font-sans: var(--ui-font-sans);
+    --radius-sm: max(0px, calc(var(--ui-radius) - 4px));
+    --radius-md: max(0px, calc(var(--ui-radius) - 2px));
+    --radius-lg: var(--ui-radius);
+    --color-background: var(--ui-background);
+    --color-foreground: var(--ui-foreground);
+    --color-default: var(--ui-default);
+    --color-default-foreground: var(--ui-default-foreground);
+    --color-primary: var(--ui-primary);
+    --color-primary-foreground: var(--ui-primary-foreground);
+    --color-secondary: var(--ui-secondary);
+    --color-secondary-foreground: var(--ui-secondary-foreground);
+    --color-muted: var(--ui-muted);
+    --color-muted-foreground: var(--ui-muted-foreground);
+    --color-surface-hover: var(--ui-surface-hover);
+    --color-surface-hover-foreground: var(--ui-surface-hover-foreground);
+    --color-accent: var(--ui-accent);
+    --color-accent-foreground: var(--ui-accent-foreground);
+    --color-ghostly: var(--ui-ghostly);
+    --color-ghostly-foreground: var(--ui-ghostly-foreground);
+    --color-info: var(--ui-info);
+    --color-info-foreground: var(--ui-info-foreground);
+    --color-success: var(--ui-success);
+    --color-success-foreground: var(--ui-success-foreground);
+    --color-warning: var(--ui-warning);
+    --color-warning-foreground: var(--ui-warning-foreground);
+    --color-danger: var(--ui-danger);
+    --color-danger-foreground: var(--ui-danger-foreground);
+    --color-border: var(--ui-border);
+    --color-input: var(--ui-input);
+    --color-ring: var(--ui-ring);
+
+    /* Semantic interaction states. */
+    --color-default-hover: var(--ui-default-hover);
+    --color-default-active: var(--ui-default-active);
+    --color-primary-hover: var(--ui-primary-hover);
+    --color-primary-active: var(--ui-primary-active);
+    --color-secondary-hover: var(--ui-secondary-hover);
+    --color-secondary-active: var(--ui-secondary-active);
+    --color-accent-hover: var(--ui-accent-hover);
+    --color-accent-active: var(--ui-accent-active);
+    --color-outline-hover: var(--ui-outline-hover);
+    --color-outline-active: var(--ui-outline-active);
+    --color-outline: var(--ui-outline);
+    --color-outline-foreground: var(--ui-outline-foreground);
+    --color-ghost-hover: var(--ui-ghost-hover);
+    --color-ghost-active: var(--ui-ghost-active);
+    --color-ghost: var(--ui-ghost);
+    --color-ghost-foreground: var(--ui-ghost-foreground);
+    --color-ghostly-hover: var(--ui-ghostly-hover);
+    --color-ghostly-active: var(--ui-ghostly-active);
+    --color-info-hover: var(--ui-info-hover);
+    --color-info-active: var(--ui-info-active);
+    --color-success-hover: var(--ui-success-hover);
+    --color-success-active: var(--ui-success-active);
+    --color-warning-hover: var(--ui-warning-hover);
+    --color-warning-active: var(--ui-warning-active);
+    --color-danger-hover: var(--ui-danger-hover);
+    --color-danger-active: var(--ui-danger-active);
+
+    /* Complete palettes for other components and host Tailwind builds. */
+    --color-primary-50: var(--ui-primary-50);
+    --color-primary-100: var(--ui-primary-100);
+    --color-primary-200: var(--ui-primary-200);
+    --color-primary-300: var(--ui-primary-300);
+    --color-primary-400: var(--ui-primary-400);
+    --color-primary-500: var(--ui-primary-500);
+    --color-primary-600: var(--ui-primary-600);
+    --color-primary-700: var(--ui-primary-700);
+    --color-primary-800: var(--ui-primary-800);
+    --color-primary-900: var(--ui-primary-900);
+    --color-primary-950: var(--ui-primary-950);
+    --color-secondary-50: var(--ui-secondary-50);
+    --color-secondary-100: var(--ui-secondary-100);
+    --color-secondary-200: var(--ui-secondary-200);
+    --color-secondary-300: var(--ui-secondary-300);
+    --color-secondary-400: var(--ui-secondary-400);
+    --color-secondary-500: var(--ui-secondary-500);
+    --color-secondary-600: var(--ui-secondary-600);
+    --color-secondary-700: var(--ui-secondary-700);
+    --color-secondary-800: var(--ui-secondary-800);
+    --color-secondary-900: var(--ui-secondary-900);
+    --color-secondary-950: var(--ui-secondary-950);
+    --color-accent-50: var(--ui-accent-50);
+    --color-accent-100: var(--ui-accent-100);
+    --color-accent-200: var(--ui-accent-200);
+    --color-accent-300: var(--ui-accent-300);
+    --color-accent-400: var(--ui-accent-400);
+    --color-accent-500: var(--ui-accent-500);
+    --color-accent-600: var(--ui-accent-600);
+    --color-accent-700: var(--ui-accent-700);
+    --color-accent-800: var(--ui-accent-800);
+    --color-accent-900: var(--ui-accent-900);
+    --color-accent-950: var(--ui-accent-950);
+    --color-info-50: var(--ui-info-50);
+    --color-info-100: var(--ui-info-100);
+    --color-info-200: var(--ui-info-200);
+    --color-info-300: var(--ui-info-300);
+    --color-info-400: var(--ui-info-400);
+    --color-info-500: var(--ui-info-500);
+    --color-info-600: var(--ui-info-600);
+    --color-info-700: var(--ui-info-700);
+    --color-info-800: var(--ui-info-800);
+    --color-info-900: var(--ui-info-900);
+    --color-info-950: var(--ui-info-950);
+    --color-success-50: var(--ui-success-50);
+    --color-success-100: var(--ui-success-100);
+    --color-success-200: var(--ui-success-200);
+    --color-success-300: var(--ui-success-300);
+    --color-success-400: var(--ui-success-400);
+    --color-success-500: var(--ui-success-500);
+    --color-success-600: var(--ui-success-600);
+    --color-success-700: var(--ui-success-700);
+    --color-success-800: var(--ui-success-800);
+    --color-success-900: var(--ui-success-900);
+    --color-success-950: var(--ui-success-950);
+    --color-warning-50: var(--ui-warning-50);
+    --color-warning-100: var(--ui-warning-100);
+    --color-warning-200: var(--ui-warning-200);
+    --color-warning-300: var(--ui-warning-300);
+    --color-warning-400: var(--ui-warning-400);
+    --color-warning-500: var(--ui-warning-500);
+    --color-warning-600: var(--ui-warning-600);
+    --color-warning-700: var(--ui-warning-700);
+    --color-warning-800: var(--ui-warning-800);
+    --color-warning-900: var(--ui-warning-900);
+    --color-warning-950: var(--ui-warning-950);
+    --color-danger-50: var(--ui-danger-50);
+    --color-danger-100: var(--ui-danger-100);
+    --color-danger-200: var(--ui-danger-200);
+    --color-danger-300: var(--ui-danger-300);
+    --color-danger-400: var(--ui-danger-400);
+    --color-danger-500: var(--ui-danger-500);
+    --color-danger-600: var(--ui-danger-600);
+    --color-danger-700: var(--ui-danger-700);
+    --color-danger-800: var(--ui-danger-800);
+    --color-danger-900: var(--ui-danger-900);
+    --color-danger-950: var(--ui-danger-950);
+    --color-neutral-50: var(--ui-neutral-50);
+    --color-neutral-100: var(--ui-neutral-100);
+    --color-neutral-200: var(--ui-neutral-200);
+    --color-neutral-300: var(--ui-neutral-300);
+    --color-neutral-400: var(--ui-neutral-400);
+    --color-neutral-500: var(--ui-neutral-500);
+    --color-neutral-600: var(--ui-neutral-600);
+    --color-neutral-700: var(--ui-neutral-700);
+    --color-neutral-800: var(--ui-neutral-800);
+    --color-neutral-900: var(--ui-neutral-900);
+    --color-neutral-950: var(--ui-neutral-950);
+}
+
+/* MIRU's Preflight defaults, scoped to component-owned DOM and portal roots. */
+@layer base {
+    :where(
+        [data-slot],
+        [data-slot] *,
+        [data-slot]::before,
+        [data-slot]::after,
+        [data-slot] *::before,
+        [data-slot] *::after
+    ) {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        border-width: 0;
+        border-style: solid;
+        border-color: var(--ui-border);
+    }
+    :where(
+        h1[data-slot],
+        h2[data-slot],
+        h3[data-slot],
+        h4[data-slot],
+        h5[data-slot],
+        h6[data-slot],
+        [data-slot] h1,
+        [data-slot] h2,
+        [data-slot] h3,
+        [data-slot] h4,
+        [data-slot] h5,
+        [data-slot] h6
+    ) {
+        font-size: inherit;
+        font-weight: inherit;
+    }
+    :where(a[data-slot], [data-slot] a) {
+        color: inherit;
+        text-decoration: inherit;
+    }
+    :where(
+        ol[data-slot],
+        ul[data-slot],
+        menu[data-slot],
+        [data-slot] ol,
+        [data-slot] ul,
+        [data-slot] menu
+    ) {
+        list-style: none;
+    }
+    :where(table[data-slot], [data-slot] table) {
+        text-indent: 0;
+        border-color: inherit;
+        border-collapse: collapse;
+    }
+    :where(
+        button[data-slot],
+        input[data-slot],
+        select[data-slot],
+        optgroup[data-slot],
+        textarea[data-slot],
+        [data-slot] button,
+        [data-slot] input,
+        [data-slot] select,
+        [data-slot] optgroup,
+        [data-slot] textarea,
+        [data-slot] ::file-selector-button
+    ) {
+        font: inherit;
+        font-feature-settings: inherit;
+        font-variation-settings: inherit;
+        letter-spacing: inherit;
+        color: inherit;
+        border-radius: 0;
+        background-color: transparent;
+        opacity: 1;
+    }
+    :where(
+        button[data-slot],
+        [data-slot] button,
+        input[data-slot]:is([type='button'], [type='reset'], [type='submit'])
+    ) {
+        appearance: button;
+    }
+    :where(
+        img[data-slot],
+        svg[data-slot],
+        video[data-slot],
+        canvas[data-slot],
+        audio[data-slot],
+        iframe[data-slot],
+        embed[data-slot],
+        object[data-slot],
+        [data-slot] img,
+        [data-slot] svg,
+        [data-slot] video,
+        [data-slot] canvas,
+        [data-slot] audio,
+        [data-slot] iframe,
+        [data-slot] embed,
+        [data-slot] object
+    ) {
+        display: block;
+        vertical-align: middle;
+    }
+    :where(img[data-slot], video[data-slot], [data-slot] img, [data-slot] video) {
+        max-width: 100%;
+        height: auto;
+    }
+    :where([data-slot]:not([data-slot] *)) {
+        font-family: var(--ui-font-sans);
+        line-height: 1.5;
+    }
+    :where(
+        [data-slot][hidden]:not([hidden='until-found']),
+        [data-slot] [hidden]:not([hidden='until-found'])
+    ) {
+        display: none !important;
+    }
+}
+@keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+        opacity: 1;
+    }
+    20%,
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Vendor picker surfaces inherit the same light/dark tokens as every other field. */
+@layer components {
+    .miru-color-picker .ck-cp-container {
+        --cp-container-bg: var(--ui-popover, var(--ui-background));
+        --cp-gray-100: var(--ui-ghostly);
+        --cp-gray-200: var(--ui-border);
+        --cp-gray-300: var(--ui-border);
+        --cp-gray-400: var(--ui-muted-foreground);
+        --cp-gray-500: var(--ui-muted-foreground);
+        --cp-gray-600: var(--ui-muted-foreground);
+        --cp-gray-700: var(--ui-muted-foreground);
+        --cp-gray-800: var(--ui-foreground);
+        --cp-gray-900: var(--ui-foreground);
+        --cp-primary: var(--ui-primary);
+        color: var(--ui-foreground);
+    }
+}

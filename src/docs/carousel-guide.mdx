@@ -1,0 +1,90 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/carousel/Carousel.stories';
+
+<Meta of={Stories} name="Guide" />
+
+# Carousel
+
+The public Carousel wraps embla-carousel-vue and the official Autoplay, Auto Scroll, Auto Height, Fade and Accessibility plugins. All Embla packages are pinned to 9.0.0-rc04. Scale, Parallax and Opacity are built-in scroll-driven effects. No plugin array is required.
+
+Documentation: [Embla Vue](https://www.embla-carousel.com/docs/get-started/vue), [predefined examples](https://www.embla-carousel.com/docs/examples/predefined), [options](https://www.embla-carousel.com/docs/api/options).
+
+## Basic composition
+
+Provide an items array and a slide slot. The slot receives item, index and selected. Content, images, alt text and links belong to the host; the component does not fetch images. getKey should return a stable ID for dynamic lists. An empty slot customizes the no-items state.
+
+```vue
+<script setup lang="ts">
+import { Carousel } from '@rat.md/miru';
+import { ref } from 'vue';
+const page = ref(0);
+// slides and labels come from the application's data and translations.
+</script>
+
+<template>
+    <Carousel
+        v-model="page"
+        :items="slides"
+        :get-key="(slide) => slide.id"
+        :label="labels.gallery"
+        :slides-per-view="{ base: 1, md: 2, lg: 3 }"
+        :gap="{ base: 12, md: 20 }"
+        align="start"
+        slides-to-scroll="auto"
+        loop>
+        <template #slide="{ item }">
+            <img :src="item.url" :alt="item.alt" class="aspect-video w-full object-cover" />
+        </template>
+    </Carousel>
+</template>
+```
+
+Model values and goTo use zero-based **snap/page indexes**, not raw slide indexes. Grouped slides may produce fewer pages than items. change emits index/count and ready emits the Embla v9 API. The template ref exposes api, previous, next, goTo(index, instant?), play, pause and reInit.
+
+## Layout and navigation
+
+| Property             | Values / default                                                                   |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| slidesPerView        | Number (including fractions), or base/sm/md/lg/xl object; default 1                |
+| gap                  | Pixels as number, CSS length string, or responsive object; default 16              |
+| align                | start, center, end; default center                                                 |
+| loop                 | false by default; Embla may fall back when there are too few slides to loop        |
+| slidesToScroll       | Positive number or auto; default 1                                                 |
+| dragFree             | false, true, or snap; default false                                                |
+| draggable / disabled | true / false                                                                       |
+| orientation          | horizontal (default) or vertical; height sets the vertical viewport, default 320px |
+| direction            | ltr (default) or rtl                                                               |
+| navigation           | Previous/next Buttons, true by default                                             |
+| navigationPosition   | bottom (default) or overlay                                                        |
+| pagination           | dots (default), numbers, counter, progress, or none                                |
+| duration             | Embla's attraction duration, default 25; not milliseconds. 0 is instant.           |
+
+Breakpoints follow Tailwind defaults: sm=640, md=768, lg=1024, xl=1280. Styles inherit down from the last specified breakpoint. Responsive properties are viewport-based. Pass slideClass to style slide roots and class for the whole region. Use the slide slot for Cards, images or other shared UI.
+
+The advanced options prop accepts Embla v9 options such as breakpoints or containScroll. Explicit helper props take precedence. containScroll defaults to false so start/center/end alignment remains visible at the edges; choose trimSnaps explicitly when desired. The wrapper owns the viewport/container/slide structure; avoid overriding container, slides or active through options. The controls slot can replace the bottom controls and receives previous, next, goTo, selected, count, canPrevious, canNext, playing, play and pause. Overlay arrows remain controlled by navigationPosition.
+
+## Effects and automatic movement
+
+| Property                     | Behavior                                                                |
+| ---------------------------- | ----------------------------------------------------------------------- |
+| effect                       | slide (default), fade, scale, parallax, opacity                         |
+| effectStrength               | Optional 0–0.95 tween strength; defaults depend on the effect           |
+| autoplay / autoplayDelay     | Opt-in snap-based movement; delay defaults to 4000ms                    |
+| autoScroll / autoScrollSpeed | Opt-in continuous movement; default speed 2, direction forward/backward |
+| autoHeight                   | Opt-in selected-slide height, horizontal layouts only                   |
+| pauseOnHover                 | true by default; focus always pauses automatic movement                 |
+| showPlayButton               | true by default when automatic movement is requested                    |
+
+Fade uses one full-width slide, no gap, one slide per snap and disables dragFree. Auto Scroll is ignored with Fade; use Autoplay instead. Auto Scroll takes precedence when both automatic modes are enabled. Auto Height aligns slides to the start and animates the viewport height; override --ui-carousel-height-duration (default 250ms) in host styles. Give loaded images dimensions/aspect-ratio to avoid unnecessary layout shifts.
+
+Scale and Opacity tween an inner wrapper. Parallax clips and transforms that wrapper, so image-led slides are the best fit; use slide for content that must remain geometrically fixed. Effects measure actual slide positions, including loop translations, and clean up with the component.
+
+Automatic movement stops while hovering (unless disabled), while focus is inside, and during dragging. The pause button preserves an explicit pause until resumed. Reduced-motion preferences disable automatic movement and tween effects and make navigation instant; the pause control stays disabled in that mode. The root supports arrow keys, Home and End; inputs/contenteditable keep their own keys. Labels come from UiProvider (English/German); label and locale can override the region label and language.
+
+The official Accessibility plugin handles region/slide semantics, pagination labels, focusability and optional live announcements. The live region is enabled for manual navigation and suppressed during automatic movement. Keep a visible pause control for automatically moving content.
+
+## Examples and tests
+
+The stories cover pagination variants, gaps, all alignments, responsive/grouped slides, looping, free drag, RTL, vertical layout, automatic movement, variable height and every effect. Default tests arrows, dots and keyboard navigation; Loop tests wrapping; Autoplay Controls tests advancement and explicit pause. Consumers can call the exposed API or add play assertions without supplying Embla plugins.
+
+The component renders content during SSR and initializes browser measurement on mount. Embla and its plugins are import-safe on the server and clean up listeners/timers on unmount. This component uses the v9 API (goToNext, goToPrev, goTo, selectedSnap), not v8's scrollNext/selectedScrollSnap names.

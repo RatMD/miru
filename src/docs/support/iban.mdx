@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Support/iban" />
+
+# iban
+
+Validate an IBAN's registered country format and ISO 7064 MOD 97-10 check digits.
+
+**Runtime:** Universal; no network access or additional dependency is required.
+
+## Example
+
+```ts
+import { isValidIban } from '@rat.md/miru/support';
+isValidIban('DE89 3704 0044 0532 0130 00'); // true
+isValidIban('DE88 3704 0044 0532 0130 00'); // false
+```
+
+Accepts lowercase letters and printed spaces; validates the country format and MOD 97-10 checksum. Unknown country codes and invalid characters return false. This does not verify that an account exists.

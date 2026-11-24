@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useToast" />
+
+# useToast
+
+Show notifications from component setup.
+
+```ts
+import { useToast } from '@rat.md/miru/composables';
+
+const toast = useToast();
+function save() {
+    toast.success('Changes saved');
+}
+function fail() {
+    toast.error('Could not save changes');
+}
+```
+
+Mount UiRoot once (or use `miru.wrap(App)`) to host toasts. Methods include `success`, `warning`, `error`, `info`, `message`, `loading`, `promise` and `dismiss`. `useToaster` is a compatibility alias. Consume a host `pageToasts` feed only once in a persistent root.

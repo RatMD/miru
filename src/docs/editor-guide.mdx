@@ -1,0 +1,42 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as Stories from '../components/editor/Editor.stories';
+
+<Meta of={Stories} name="Integration" />
+
+# Editor
+
+Editor wraps the existing MIRU TinyMCE integration. TinyMCE, its DOM model, Silver theme, icons and lists plugin load from installed dependencies rather than a remote cloud script. No additional Vue TinyMCE adapter is required.
+
+```vue
+<script setup lang="ts">
+import { Editor } from '@rat.md/miru';
+import { ref } from 'vue';
+const html = ref('');
+// Labels and placeholders come from the application's translations.
+defineProps<{ label: string; placeholder: string; editorLicenseKey?: string }>();
+const emit = defineEmits<{ blur: [] }>();
+</script>
+<template>
+    <Editor
+        v-model="html"
+        :label="label"
+        :placeholder="placeholder"
+        :license-key="editorLicenseKey"
+        :height="380"
+        @blur="emit('blur')" />
+</template>
+```
+
+HTML is emitted through update:modelValue; sanitize untrusted HTML at the application boundary before rendering it. FormLayout's richtext type now uses Editor as well.
+
+Pass disabled or readonly to stop editing. Height updates without remounting. Toolbar and locale changes recreate the instance while retaining the bound HTML; light/dark changes update the toolbar and content colors without resetting the editing session. Extra attributes such as id, name and aria-invalid are forwarded to the source textarea. ready emits the TinyMCE instance and error emits initialization failures; a textarea remains available if initialization fails.
+
+License configuration retains MIRU's existing GPL fallback. Supply the license appropriate for your application through licenseKey or globally with configureTinymce from @rat.md/miru/plugins/tinymce. This wrapper does not change the application's TinyMCE licensing terms.
+
+## MIRU appearance
+
+The Editor wrapper applies a scoped UI layer over TinyMCE's bundled skin. The outer border follows --ui-border (gray-300 in light mode) and the radius follows --ui-radius. The toolbar uses 36px controls with 6px outer padding and generous spacing. Default toolbar icons, menu chevrons and checkmarks come from the installed Tabler Vue library. Controls use borderless ghost surfaces with muted icons. Hover and pressed/selected states use subtle primary tints rather than dark fills. The editor border and a soft outer ring use --ui-editor-focus (primary by default) while its toolbar or editable iframe has focus. TinyMCE retains command state, shortcuts, tooltips and keyboard navigation; these remain native TinyMCE controls rather than nested Vue buttons. Toolbar/menu separators inherit the UI border token. Menus use TinyMCE's split UI mode to stay local to the editor and inherit its theme. Dropdowns follow Select geometry: a radius of --ui-radius minus 2px, full-width square rows, 10px/16px item padding and uniform text without formatting previews. Their hover/keyboard highlight sweeps from left to right and respects reduced motion. Enabled toolbar controls and menu items use a pointer cursor; disabled controls retain a not-allowed cursor.
+
+The editable iframe uses the host UI font stack, 14px default text, 1.6 line height and 16px content padding. UI variables are copied into the iframe at initialization and theme updates; this does not change the stored HTML or recreate the editor during a theme switch. Fonts still belong to the host application.
+
+Override --ui-editor-focus, --ui-editor-border, --ui-editor-radius, --ui-editor-content-padding, --ui-editor-font-size, --ui-editor-toolbar-padding or --ui-editor-button-size through the Editor style/class or an ancestor. Defaults remain aligned with shared UI tokens. CSS is scoped to Editor wrappers; other TinyMCE instances keep their own skin. The existing toolbar, height, disabled/readonly, locale and licensing APIs remain available.

@@ -1,87 +1,81 @@
-/// <reference types="histoire" />
-
-import type { PreRenderedAsset } from 'rollup';
-
-import path from 'node:path';
-import { fileURLToPath, URL } from 'node:url';
-
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
+import ts from 'typescript';
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
-import { collect, pkg, sty } from './build';
 import packageJson from './package.json' with { type: 'json' };
 
-// Collect components and entries
-const { components, entries } = collect(path.resolve(__dirname, 'src'));
-
-// https://vitejs.dev/config/
-export default defineConfig({
-    define: {
-        __MIRU_VERSION__: JSON.stringify(packageJson.version),
-        __BREAKPOINT_XXS__: JSON.stringify(364),
-        __BREAKPOINT_XS__: JSON.stringify(576),
-        __BREAKPOINT_SM__: JSON.stringify(640),
-        __BREAKPOINT_MD__: JSON.stringify(768),
-        __BREAKPOINT_LG__: JSON.stringify(1024),
-        __BREAKPOINT_XL__: JSON.stringify(1280),
-        __BREAKPOINT_XXL__: JSON.stringify(1536),
-    },
-    plugins: [
-        vue(),
-        pkg(),
-        sty(),
-        dts({
-            beforeWriteFile(filePath: string, content: string) {
-                const mainPath = path.resolve(__dirname, 'dist', 'miru.d.ts').replace(/\\/g, '/');
-                if (filePath.startsWith(mainPath)) {
-                    return {
-                        filePath: filePath.replace('/miru.d.ts', '/index.d.ts'),
-                        content
-                    }     
-                }
-
-                const componentsPath = path.resolve(__dirname, 'dist', 'components').replace(/\\/g, '/');
-                if (filePath.startsWith(componentsPath)) {
-                    return {
-                        filePath: filePath.replace('/components/', '/'),
-                        content
-                    }                    
-                }
-            },
-            copyDtsFiles: true,
-            //cleanVueFileName: true,
-            tsconfigPath: 'tsconfig.types.json'
-        })
-    ],
-    build: {
-        outDir: 'dist',
-        lib: {
-            entry: entries,
-            name: 'miru',
-            formats: ['es']
-        },
-        cssCodeSplit: true,
-        rollupOptions: {
-            external: ['vue'],
-            output: {
-                assetFileNames(chunkInfo: PreRenderedAsset) {
-                    if (chunkInfo.name) {
-                        let name = chunkInfo.name?.slice(0, -4);
-                        if (name in components) {
-                            return `${components[name]}/${chunkInfo.name}`;
-                        } else {
-                            return '';
-                        }
-                    } else {
-                        return '';
-                    }
-                },
-                chunkFileNames: '_shared/[name]-[hash].js',
-                entryFileNames: '[name].js',
-                globals: {
-                    vue: 'Vue'
-                },
-            },
+const { dependencies, peerDependencies } = packageJson;
+// The public barrels are the source of truth for individual module entry points.
+function publicModuleEntries(group: 'composables' | 'support'): Record<string, string> {
+    const url = new URL(`./src/${group}/index.ts`, import.meta.url);
+    const source = ts.createSourceFile(
+        'index.ts',
+        readFileSync(url, 'utf8'),
+        ts.ScriptTarget.Latest,
+    );
+    const modules = new Set<string>();
+    for (const statement of source.statements) {
+        if (
+            ts.isExportDeclaration(statement) &&
+            statement.moduleSpecifier &&
+            ts.isStringLiteral(statement.moduleSpecifier) &&
+            statement.moduleSpecifier.text.startsWith('./')
+        ) {
+            modules.add(statement.moduleSpecifier.text.slice(2));
         }
     }
+    return Object.fromEntries(
+        [...modules].map((name) => [
+            `${group}/${name}`,
+            fileURLToPath(new URL(`./src/${group}/${name}.ts`, import.meta.url)),
+        ]),
+    );
+}
+const externalPackages = [...Object.keys(dependencies), ...Object.keys(peerDependencies)];
+export default defineConfig({
+    base: './',
+    plugins: [vue(), tailwindcss()],
+    build: {
+        assetsDir: '',
+        lib: {
+            entry: {
+                layouts: fileURLToPath(new URL('./src/layouts/index.ts', import.meta.url)),
+                plugins: fileURLToPath(new URL('./src/plugins/index.ts', import.meta.url)),
+                miru: fileURLToPath(new URL('./src/miru.ts', import.meta.url)),
+                ...Object.fromEntries(
+                    [
+                        'click-outside',
+                        'dayjs',
+                        'filesize',
+                        'price',
+                        'resize',
+                        'tinymce',
+                        'inertia',
+                        'i18n',
+                        'directives',
+                        'validation',
+                    ].map((name) => [
+                        'plugins/' + name,
+                        fileURLToPath(new URL('./src/plugins/' + name + '.ts', import.meta.url)),
+                    ]),
+                ),
+                composables: fileURLToPath(new URL('./src/composables/index.ts', import.meta.url)),
+                support: fileURLToPath(new URL('./src/support/index.ts', import.meta.url)),
+                ...publicModuleEntries('composables'),
+                ...publicModuleEntries('support'),
+                index: fileURLToPath(new URL('./src/index.ts', import.meta.url)),
+                styles: fileURLToPath(new URL('./src/styles.ts', import.meta.url)),
+            },
+            formats: ['es'],
+            fileName: (_format, entryName) => `${entryName}.js`,
+            cssFileName: 'style',
+        },
+        rollupOptions: {
+            external: (id) =>
+                !id.includes('.css') &&
+                externalPackages.some((name) => id === name || id.startsWith(`${name}/`)),
+        },
+    },
 });

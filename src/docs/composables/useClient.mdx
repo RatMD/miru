@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useClient" />
+
+# useClient
+
+Read reactive browser, screen and connection information.
+
+```ts
+import { computed } from 'vue';
+import { useClient } from '@rat.md/miru/composables';
+
+const client = useClient();
+const connection = computed(() => (client.online.value ? 'Online' : 'Offline'));
+const width = computed(() => client.screen.width);
+```
+
+Browser values initialize after mount. Use CSS media/container queries for responsive layout so SSR and the first client render match. User-agent flags are hints; use feature detection for browser capabilities. Listeners are cleaned up with the Vue scope.
