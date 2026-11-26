@@ -1,5 +1,5 @@
-MIRU - Changelog
-=====================
+miru. / Chagnelog
+=================
 
 ## Version 0.1.0 (Alpha)
 - Info: Complete redesign and reimagining.

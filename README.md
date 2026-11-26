@@ -1,7 +1,7 @@
 [<img src=".github/miru-mark.svg" alt="miru." width="80" height="80">](https://miru.at)
 
-MIRU - Vue3 UI Kit
-==================
+miru. - A Vue3 UI Kit
+=====================
 
 A Vue 3 UI kit for thoughtful application interfaces, expressive forms and adaptable layouts. Built 
 with [Vue](https://vuejs.org/), [Reka UI](https://reka-ui.com/), [TypeScript](https://www.typescriptlang.org/) 
