@@ -1,52 +1,205 @@
 MIRU - Changelog
 =====================
 
-## Unreleased
+## Version 0.1.0 (Alpha)
+- Info: Complete redesign and reimagining.
 
-- Add: six hand-maintained CSS colour schemes with explicit shade foregrounds and semantic role border tokens. The colour scheme calculator is confined to VitePress custom palettes. Miru Original remains the package default; the website uses Miru Modern.
-- Fix: uncontrolled Tabs selection, Schedule initial dates in the configured time zone, date-field label/blur wiring and AutoComplete attribute forwarding.
-- Change: align composed input `class`/`wrapperClass`, add native date/phone serialization, readonly selection controls and `lg` date/time inputs.
-- Add: CSS breakpoint tokens for runtime structural switches, preserving explicit breakpoint overrides.
-- Build: publish from the package root after the same lint/build/types/browser/Storybook checks used by CI and Husky pre-commit.
+## Version 0.0.26 (Experimental)
+- Add: `icon`, `icon-props`, `icon-loading` and `icon-loading-props` properties to `FormControl`.
+- Add: `loading` state to components using `SharedControlProps`.
+- Add: `field` and `icon` slots to `FormControl`.
+- Update: Replace `duration-300` with `duration-200` across all components.
 
-- Add: Backdrop with plain, uniform blur and origin-based faded blur; Breakpoint/useBreakpoint with app/local viewport thresholds; Deferred with async loading, errors, retry and cancellation.
-- Add: ContextMenu and Item families adapted from Spottle using existing dependencies.
+## Version 0.0.25 (Experimental)
+- Fix: Temporary workaround for `TableStd` typing issues.
+- Fix: Broken builds for partial components.
 
-- Add: reactive semantic variants for Tabs, checkboxes, radios and InputTags, with group inheritance and per-item overrides.
-- Add: distinct Anchor hover tones and automatic external-link icons for external/new-tab destinations, including router adapters.
+## Version 0.0.24 (Experimental)
+- Info: Raise the supported Node.js version to v22.
+- Add: `MiruOptions` plugin options handler with `root` as its first option.
+- Add: `$miru` custom property to access Miru options.
+- Add: Testing with `vitest` and `@vue/test-utils`.
+- Add: `badge` variant to `AlertMessage`.
+- Add: `AlertDialog`, similar to `ConfirmDialog`, with a basic story.
+- Add: `DividerStd` with variants and a basic story.
+- Add: `PagedPagination` with variants and a basic story.
+- Add: `ProgressBar` with variants and a basic story.
+- Add: `transition` property to `CollapseSupport` to customise the timing function.
+- Add: `closable` and `escape` properties to `OffcanvasStd`.
+- Add: `Queue` utility class.
+- Add: `merge` utility for deep merging of multiple objects.
+- Add: Laravel-inspired `slugify` utility.
+- Add: `strspn` utility.
+- Add: `versionCompare` utility for semantic version comparison.
+- Update: Package dependencies.
+- Update: Complete `PopoverStd`, including styles and examples.
+- Update: Use the `info` colour for `AlertMessage` and fix dark mode styles.
+- Update: Minor `DialogStd` styling adjustments.
+- Update: Adjust sizing for `CheckboxField`, `RadioField` and `SwitchField`.
+- Update: Remove `tabindex` from the `ActionButton` in `PasswordField`.
+- Fix: `PopoverStd` component.
 
-- Add: themed Anchor with fade/slide underlines, copyable inline Code with prompt prefix, and Kbd/KbdGroup keyboard hints.
-- Change: rename UploadDropzone to UploadZone, including source directory, public export and examples.
-- Docs: include Accent in soft Alert variants and demonstrate vertical Separator usage.
+## Version 0.0.23 (Experimental)
+- Update: Package dependencies.
 
-- Change: consolidate InputDate/InputTime into InputDateTime with datetime/date/time/timeframe modes and local range values.
-- Add: accessible single/range Slider with steps, theme variants and keyboard controls.
-- Add: reusable EditorFrame with local command extensions, shared by JSON/Markdown editors.
-- Change: move Calendar documentation to Utilities and rename the floating-app-bar source directory to app-bar.
+## Version 0.0.22 (Experimental)
+- Add: `label` slot to Checkbox for HTML content.
 
-- Add: AuthPage and DashboardPage under layouts, with split/card authentication, palette artwork, configurable sidebar/icon rail, nested navigation, mobile Sheet and host-owned page slots.
-- Update: Reorganize Storybook navigation and public composable/plugin guides; add Spinner and a separate condensed CodePanel appearance for embedded dialogs.
-- Update: Give filled buttons dark palette surfaces with bright text/borders, lighter hover states and darker pressed states with inset shadows in dark mode.
-- Add: Alert appearance="soft" with Spottle-style tinted surfaces, round outline icons and light/dark colors; add a neutral default status while retaining the existing default appearance and info status.
-- Add: Numeric AvatarStack overlap controls and coral cutout previews; Accordion iconMode with default, modern and rotating plus/minus animations.
-- Add: AvatarStack with overlapping avatars, max/overflow support and shared size/shape defaults; add squircle and rounded hexagon avatar shapes with Storybook examples.
-- Add: Vue global directive types for template binding checks, including the file-size alias and manual plugin installation.
-- Add: `useValidation` with localized Zod schema factories, app-local custom registration, local overrides and typed host extensions; install automatically through `createMiru` or manually through `createMiruValidation`.
-- Add: Country-format/MOD 97 IBAN validation and length/Luhn card-number validation in dedicated support modules.
-- Update: Use `isValidMailAddress` and `isValidGtin` directly without export aliases; correct GTIN lengths to 8, 12, 13 and 14 (18-digit SSCC is not GTIN).
-- Update: Rename `support/utils` to `support/classNames` and `CentralStorage` to `MiruStorage`, including its callback type.
-- Update: Standardize support utility JSDoc, control-flow braces and spacing. Remove support default exports in favor of named imports.
-- Update: Move the Vue entry to `src/miru.ts`, configuration/i18n to plugins, and expose `useMiru` / `useI18n` as composables. Add synchronous configure hooks, standalone plugin factories, host i18n adapters and custom locale dictionaries.
-- Add: SSR-safe browser/PWA composables `useClient`, `useStorage` and `useWorker`, with reactive state, scope cleanup, namespaced storage synchronization and HL Portal-compatible correlated worker messaging.
-- Update: Rename the library to MIRU (`@rat.md/miru`, miru.at), generalize application-specific names and publish under the MIT License.
-- Update: Use `createMiru`, `MiruPlugin`, `useMiru` and `createMiru({ adapter: inertiaAdapter() })`; rename the table variant to `compact` and the default data format to `default`.
-- Add: Share provider-scoped floating bar state, owned stack layers and automatic page cleanup across applications.
-- Add: Demonstrate nested input and camera bar restoration with the shared Storybook state controller.
+## Version 0.0.21 - Experimental
+- Add: `validationMessage` function to `useForm`.
 
-- Add: Shared responsive form page layout with optional FloatingAppBar docking.
-- Add: Layout Storybook category with bilingual demos, integration guide and interaction checks.
-- Update: Use shared page layout in FormLayout while preserving its props and slots.
+## Version 0.0.20 (Experimental)
+- Fix: Missing `valibot` upgrade and a typing issue.
 
-## Version 0.1.0
+## Version 0.0.19 (Experimental)
+- Update: Package dependencies.
 
-- Initial Release
+## Version 0.0.18 (Experimental)
+- Add: `tabindex` property to `FormControl` and control components.
+- Update: Use `SharedControlProps` across control components.
+- Update: Support `disabled`, `required` and `invalid` on `NumberField`.
+
+## Version 0.0.17 (Experimental)
+- Update: Package dependencies.
+- Update: `PopoverStd` and `ContextMenu` components.
+- Fix: Missing directive bundle entries.
+
+## Version 0.0.16 (Experimental)
+- Add: `track` property to `CollapseSupport`.
+- Add: `column` property to `BalloonSelector`.
+- Update: Use `SharedControlProps` on `SelectField` and update its Histoire story to use `FormControl`.
+- Fix: Minor `CollapseSupport` styling issues.
+- Fix: Minor `SelectField` styling issues.
+
+## Version 0.0.15 (Experimental)
+- Add: `FormControl` support component with a basic story.
+- Update: Use `SharedControlProps` on `BalloonSelector` and update its Histoire story to use `FormControl`.
+- Update: Always use the `AdvancedOption` type when iterating over `BalloonSelector` items.
+- Update: Apply the `field-custom` class to `BalloonSelector` when a default item slot is provided.
+- Fix: Minor `BalloonSelector` styling issues on mobile devices.
+- Fix: Minor styling issues with `sm` and `lg` sizes of `CheckboxField`.
+
+## Version 0.0.14 (Experimental)
+- Update: Pass the `class` attribute to the main modal element in `DialogStd`.
+
+## Version 0.0.13 (Experimental)
+- Fix: `debounce` invoking its callback immediately.
+
+## Version 0.0.12 (Experimental)
+- Add: `CardXen` component with a basic story.
+- Update: Expose visibility state and `open` / `close` functions on `ConfirmDialog`.
+- Update: Increase `z-index` for `BackdropSupport` and related components.
+- Update: Support disabled options in `SelectField`.
+- Fix: Allow numeric values in `AdvancedOption` / `BalloonSelector`.
+- Fix: `CardStd` prop inheritance in `CardCollapse`.
+- Fix: Incorrect import paths in bundled `.vue` files.
+- Fix: Omit `ConfirmDialog` properties when passing props to `DialogStd`.
+- Fix: Missing event forwarding from `DialogStd` through `ConfirmDialog`.
+- Fix: Return joined error messages instead of the static `'invalid'` string in `useForm`.
+
+## Version 0.0.11 (Experimental)
+- Add: `valibot` validation library to replace `zod`.
+- Add: `ArrowLeft` / `ArrowRight` Lucide icon components.
+- Add: `FormWizard` / `FormWizardPage` components.
+- Add: `isCustomValid` callback helper to `useForm`.
+- Add: Custom `requestHandler` callback support in `useForm`.
+- Update: Support nullable values in `useForm`.
+- Update: Include types in the distribution bundle.
+- Fix: Typing issues in the `tooltip` directive.
+
+## Version 0.0.10 (Experimental)
+- Add: `default` slot to `AvatarStd` to replace `props.name` when `props.avatar` is absent.
+- Add: `arrow` and `center` options to `TooltipStd`.
+- Add: `v-tooltip` directive for tooltips without `TooltipStd`.
+- Add: `content` slot to `CardStd` to replace its `<article>` structure.
+- Add: `format` property to `TableColumn`, three formats and a basic story.
+- Add: `metric` and `digits` modifiers to `v-filesize`.
+- Add: `once` modifier to `v-click-outside`.
+- Add: TabGroup / TabPane components with a basic story.
+- Add: `bordered` property to `AlertStd`.
+- Add: `body` slot to `DialogStd` to replace its inner `<article>` structure.
+- Add: `escape` property to `DialogStd` to close the modal with Esc.
+- Add: Wobble animation when clicking outside a static modal.
+- Add: `CheckCircle` / `XCircle` Lucide icon components.
+- Add: `TimeSlots` input component for booking time slots.
+- Update: Adjust the `AvatarGroup` limit class and label when space is limited.
+- Update: Package dependencies.
+- Update: Reduce `BadgeStd` height by decreasing padding.
+- Update: Adjust `TableStd` styles for use inside `CardStd` via the new content slot.
+- Update: Adjust the font size and icons in `AlertMessage`.
+- Update: Adjust the font size in `AlertStd`.
+- Update: Apply the 32 / 40 / 56 px height system to `BallonSelector`.
+- Update: Apply the 32 / 40 / 56 px height system to `InputField`.
+- Update: Apply the 32 / 40 / 56 px height system to `NumberField`.
+- Update: Apply the 32 / 40 / 56 px height system to `PasswordField`.
+- Update: Apply the 32 / 40 / 56 px height system to `SelectField`.
+- Update: Rename `TimeFrameField` to `TimeFrame`.
+- Update: Add a `type` option to `now()` to control its return value.
+- Fix: Add responsive `max-width` styles to `DialogStd` to leave space at screen edges.
+- Fix: Demo icons in Histoire stories.
+- Fix: Minor `TooltipStd` styling issues.
+- Fix: TypeScript issues in the DTS plugin and Vite build.
+- Fix: Broken animations when reusing a tooltip instance with `v-tooltip`.
+- Fix: Styling issues with `lg` sizes of `NumberField` and `PasswordField`.
+
+## Version 0.0.9 (Experimental)
+- Add: `AlertMessage` / `AlertStd` components with a basic story.
+- Add: `AvatarStd` / `AvatarGroup` components with a basic story.
+- Add: `SimplePagination` / `AdvancedPagination` components with a basic story.
+- Add: `CardStd` / `CardCollapse` components with a basic story.
+- Add: `TableStd` / `TableColumn` components with a basic story.
+- Add: `CheckSign` / `ChevronsLeft` / `ChevronsRight` / `DotCircle` / `InfoCircle` / `TriangleAlert` Lucide icon components.
+- Add: `BackdropSupport` support component with a basic story.
+- Add: `BreakpointSupport` support component with a basic story.
+- Add: `CollapseSupport` support component with a basic story.
+- Add: `DeferredSupport` support component with a basic story (not working due to Histoire's `<Suspense />` wrapper).
+- Add: `FloatingSupport` support component with a basic story.
+- Add: `now` utility for database-style "YYYY-MM-DD HH:ii:ss" timestamps.
+- Add: Modal, dialog and offcanvas handling through `BackdropSupport`.
+- Add: `v-click-outside` directive to handle clicks outside the target element.
+- Add: TypeScript support for the `select` utility.
+- Update: Rename the `ButtonGroup` property `size` to `gap`.
+- Update: Accept components in the `ButtonStd` property `label` and add `labelProps`.
+- Update: Add the `reverse` property and styles to `ButtonGroup`.
+- Update: Add the `else` slot and story content to `BreakpointSupport`.
+- Update: Handle the `duration` property and add story content to `CollapseSupport`.
+- Update: Integrate `Base*` variants into `*Std` components.
+- Update: Refactor the `request` utility to support individual HTTP methods.
+- Fix: Include base styles in the distribution bundle (temporary workaround).
+- Fix: Incorrect date/time formatting in `now`.
+- Fix: Incorrect typing and return type in `query`.
+- Fix: Incorrect typing and return type in `reader`.
+
+## Version 0.0.8 (Experimental)
+- Add: MiruStorage class and utility composable.
+- Add: ServiceWorker utility composable.
+- Fix: Remaining `@/` imports in source files.
+- Remove: `@/` aliases from TypeScript and Vite configuration.
+
+## Version 0.0.7 (Experimental)
+- Fix: Minor Histoire issues.
+- Fix: CSS bundling and distribution generation.
+- Fix: Replace absolute imports with relative paths to resolve broken `@/` imports in consuming projects.
+- Remove: Module-relative index.ts exports.
+
+## Version 0.0.6 (Experimental)
+- Info: Switch from Storybook to Histoire.
+- Add: ESLint rules and fix existing issues.
+- Fix: Minor issues.
+- Remove: Storybook dependencies.
+
+## Version 0.0.5 (Experimental)
+- Add: `.vue` files to the distribution bundle.
+
+## Version 0.0.4 (Experimental)
+- Test: GitHub Actions workflow.
+
+## Version 0.0.3 (Experimental)
+- Test: GitHub Actions workflow.
+
+## Version 0.0.2 (Experimental)
+- Add: `waitUntil` support function.
+- Update: Dependencies.
+
+## Version 0.0.1 (Experimental)
+- Initial release.

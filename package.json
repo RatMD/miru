@@ -1,11 +1,29 @@
 {
     "name": "@rat.md/miru",
     "version": "0.1.0",
-    "description": "MIRU \u2014 reusable Vue 3 components, forms and application UI.",
+    "description": "A themeable Vue 3 UI kit with expressive forms, adaptable layouts and TypeScript support, built with Reka UI and Tailwind CSS.",
     "type": "module",
     "license": "MIT",
     "author": "rat.md",
     "homepage": "https://miru.at",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/RatMD/miru.git"
+    },
+    "bugs": {
+        "url": "https://github.com/RatMD/miru/issues"
+    },
+    "keywords": [
+        "vue",
+        "vue3",
+        "ui-kit",
+        "components",
+        "forms",
+        "typescript",
+        "reka-ui",
+        "tailwindcss",
+        "theming"
+    ],
     "publishConfig": {
         "access": "public"
     },
