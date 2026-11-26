@@ -2,6 +2,46 @@
 export const messages = {
     en: {
         common: {
+            stepper: {
+                label: 'Progress',
+                status: 'Step :current of :total',
+                previous: 'Back',
+                next: 'Next',
+                complete: 'Complete',
+                invalid: 'Please check this step before continuing.',
+                failed: 'Could not save this step. Please try again.',
+            },
+            resizable: {
+                resize: 'Resize panels',
+                expand: 'Expand panel',
+                collapse: 'Collapse panel',
+            },
+            autocomplete: { clear: 'Clear text', empty: 'No suggestions' },
+            editable: {
+                value: 'Edit value',
+                edit: 'Edit',
+                cancel: 'Cancel',
+                save: 'Save',
+                saving: 'Saving',
+                failed: 'Could not save the value.',
+            },
+            rating: {
+                label: 'Rating',
+                stars: ':value of :max stars',
+                vote: 'Feedback',
+                like: 'Like',
+                dislike: 'Dislike',
+                neutral: 'No feedback',
+            },
+
+            color_picker: {
+                color: 'Color',
+                mode: 'Color mode',
+                hex: 'HEX color',
+                swatches: 'Preset colors',
+                recent: 'Recent colors',
+                eyedropper: 'Pick a color from the screen',
+            },
             layout: {
                 navigation: 'Main navigation',
                 navigation_description: 'Browse the application sections.',
@@ -332,6 +372,46 @@ export const messages = {
     },
     de: {
         common: {
+            stepper: {
+                label: 'Fortschritt',
+                status: 'Schritt :current von :total',
+                previous: 'Zurück',
+                next: 'Weiter',
+                complete: 'Abschließen',
+                invalid: 'Bitte diesen Schritt vor dem Fortfahren prüfen.',
+                failed: 'Der Schritt konnte nicht gespeichert werden. Bitte erneut versuchen.',
+            },
+            resizable: {
+                resize: 'Bereiche vergrößern oder verkleinern',
+                expand: 'Bereich ausklappen',
+                collapse: 'Bereich einklappen',
+            },
+            autocomplete: { clear: 'Text löschen', empty: 'Keine Vorschläge' },
+            editable: {
+                value: 'Wert bearbeiten',
+                edit: 'Bearbeiten',
+                cancel: 'Abbrechen',
+                save: 'Speichern',
+                saving: 'Wird gespeichert',
+                failed: 'Der Wert konnte nicht gespeichert werden.',
+            },
+            rating: {
+                label: 'Bewertung',
+                stars: ':value von :max Sternen',
+                vote: 'Feedback',
+                like: 'Gefällt mir',
+                dislike: 'Gefällt mir nicht',
+                neutral: 'Keine Bewertung',
+            },
+
+            color_picker: {
+                color: 'Farbe',
+                mode: 'Farbmodus',
+                hex: 'HEX-Farbe',
+                swatches: 'Vordefinierte Farben',
+                recent: 'Zuletzt verwendet',
+                eyedropper: 'Farbe vom Bildschirm aufnehmen',
+            },
             layout: {
                 navigation: 'Hauptnavigation',
                 navigation_description: 'Bereiche der Anwendung öffnen.',

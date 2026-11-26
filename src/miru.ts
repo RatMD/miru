@@ -1,20 +1,33 @@
-import type { ToastAppearance } from './components/toast/appearance';
+import type { NavigationAdapter } from './adapters/ajax';
+import type { DataTableBackendAdapter } from './components/data-table/contracts';
+import type { ToasterProps } from './components/toast';
 import type { PageToast } from './composables/useToast';
 import type { BreakpointMap } from './constants/breakpoints';
 import type { I18nOptions } from './plugins/i18n';
 import type { TinymceOptions } from './plugins/tinymce';
 import type { ValidationFactories } from './plugins/validation';
+import type { FormAdapter, FormAdapterSelection, MiruAdapter } from './types/adapters';
 import type { App, Component, InjectionKey, MaybeRefOrGetter, Plugin, VNode } from 'vue';
-import type { ToasterProps } from 'vue-sonner';
 
 import { h, shallowReactive } from 'vue';
-import UiRoot from './components/provider/UiRoot.vue';
+import { ajaxAdapter } from './adapters/ajax';
+import PageRoot from './layouts/PageRoot.vue';
 import { createMiruDirectives } from './plugins/directives';
 import { createMiruI18n } from './plugins/i18n';
 import { createMiruValidation } from './plugins/validation';
 
-/** App-local settings shared by Miru plugins, composables and the optional UiRoot wrapper. */
+/** App-local settings shared by Miru plugins, composables and the optional PageRoot wrapper. */
 interface MiruOptions extends I18nOptions {
+    /** Host form/navigation integration; AJAX is installed by default. */
+    adapter?: MiruAdapter;
+    /** Default form transport; individual useForm adapters/modes take precedence. */
+    formAdapter?: FormAdapterSelection;
+    /** Optional app-local integrations for named form adapters. */
+    formAdapters?: Partial<Record<'ajax' | 'inertia', FormAdapter>>;
+    /** Host navigation and link component; defaults to browser navigation. */
+    navigation?: NavigationAdapter;
+    /** Backend list/pagination conventions; independent of the transport adapter. */
+    dataTable?: DataTableBackendAdapter;
     /** App-local viewport thresholds for Breakpoint/useBreakpoint; component options override these values. */
     breakpoints?: BreakpointMap;
     /**
@@ -46,20 +59,20 @@ interface MiruOptions extends I18nOptions {
     currency?: string;
     /**
      * Set false to skip all automatic directive registration, equivalent to plugins.directives.
-     * Includes v-price, v-dayjs, v-filesize/v-file-size, v-resize, v-click-outside and v-tinymce.
+     * Includes v-price, v-number-format, v-dayjs, v-filesize/v-file-size, v-resize, v-click-outside and v-tinymce.
      */
     directives?: boolean;
     /** Host TinyMCE settings, currently licenseKey; applied when directives are installed. */
     tinymce?: TinymceOptions;
     /**
-     * Options and appearance for the Toast container mounted by UiRoot/miru.wrap().
+     * Options and appearance for the Toast container mounted by PageRoot/miru.wrap().
      * Set false to disable that container and page-toast processing; app.use() alone mounts neither.
      */
-    toast?: false | (ToasterProps & { appearance?: ToastAppearance });
+    toast?: false | ToasterProps;
     /**
-     * Reactive host-owned notifications consumed by UiRoot, with deduplication and teardown.
+     * Reactive host-owned notifications consumed by PageRoot, with deduplication and teardown.
      * Accept an array, ref or getter; capture composables such as usePage() in setup first.
-     * Defaults to no page notifications and is ignored by UiRoot when toast is false.
+     * Defaults to no page notifications and is ignored by PageRoot when toast is false.
      */
     pageToasts?: MaybeRefOrGetter<readonly PageToast[] | undefined>;
 }
@@ -85,8 +98,22 @@ interface MiruConfigureContext {
  * @returns The provided mutable configuration.
  */
 function installMiruConfig(app: App, options: MiruOptions = {}): MiruOptions {
+    const defaults = ajaxAdapter();
+    const adapter = { ...defaults, ...options.adapter };
     const config = shallowReactive({
+        ...adapter,
         ...options,
+        formAdapter: options.formAdapter ?? adapter?.formAdapter,
+        navigation: options.navigation ?? adapter?.navigation,
+        locale:
+            options.locale ??
+            (adapter?.locale !== undefined ? (options.i18n?.locale ?? adapter.locale) : undefined),
+        pageToasts: options.pageToasts ?? adapter?.pageToasts,
+        formAdapters: {
+            ...defaults.formAdapters,
+            ...adapter.formAdapters,
+            ...options.formAdapters,
+        },
         ...(options.breakpoints
             ? { breakpoints: shallowReactive({ ...options.breakpoints }) }
             : {}),
@@ -116,9 +143,9 @@ function createMiruConfig(options: MiruOptions = {}): Plugin {
 type MiruInstallation = Plugin & {
     /**
      * Wrap the application root with Miru's shared UI services.
-     * @param component Root component to render inside UiRoot.
+     * @param component Root component to render inside PageRoot.
      * @param props Optional props forwarded to the root component.
-     * @returns A UiRoot vnode containing the supplied component.
+     * @returns A PageRoot vnode containing the supplied component.
      */
     wrap(component: Component, props?: object): VNode;
 };
@@ -162,7 +189,7 @@ function install(app: App, options: MiruOptions = {}): void {
 /**
  * Create a Vue plugin with configuration and an optional application-root wrapper.
  * @param options Settings applied when the host calls app.use(); import the stylesheet separately.
- * @returns A Miru plugin whose wrap method adds the shared UiRoot services.
+ * @returns A Miru plugin whose wrap method adds the shared PageRoot services.
  */
 function createMiru(options: MiruOptions = {}): MiruInstallation {
     return {
@@ -176,13 +203,13 @@ function createMiru(options: MiruOptions = {}): MiruInstallation {
         },
 
         /**
-         * Render the host root inside UiRoot; use once around the application.
+         * Render the host root inside PageRoot; use once around the application.
          * @param component Root component to wrap.
          * @param props Optional props forwarded to the root component.
          * @returns A vnode containing the root and Miru's shared UI services.
          */
         wrap(component: Component, props?: object): VNode {
-            return h(UiRoot, null, { default: () => h(component, props) });
+            return h(PageRoot, null, { default: () => h(component, props) });
         },
     };
 }
@@ -192,7 +219,7 @@ const MiruPlugin: Plugin<[MiruOptions?]> = { install };
 
 // Export module
 export { createMiru, MiruPlugin, createMiruConfig, installMiruConfig, miruOptionsKey };
-export type { MiruInstallation };
+export type { MiruInstallation, MiruAdapter };
 export type { MiruOptions, MiruConfiguration, MiruConfigureContext };
 export type { MiruGlobalDirectives } from './types/directives';
 export default MiruPlugin;

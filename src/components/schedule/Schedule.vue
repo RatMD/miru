@@ -590,8 +590,11 @@ const props = withDefaults(
     },
 );
 const { trans, locale } = useI18n(() => props.locale);
-const date = defineModel<string>('date', {
-    default: () => dateInZone(new Date(), 'Europe/Berlin'),
+const dateModel = defineModel<string>('date');
+const initialDate = ref(props.today || dateInZone(new Date(), props.timeZone));
+const date = computed({
+    get: () => dateModel.value ?? initialDate.value,
+    set: (value: string) => { dateModel.value = value; },
 });
 const view = defineModel<ScheduleView>('view', { default: 'month' });
 const selectedDate = defineModel<string | null>('selectedDate', { default: null });

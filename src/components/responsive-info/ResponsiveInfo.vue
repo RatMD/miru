@@ -53,7 +53,8 @@
 <script setup lang="ts">
 import { IconInfoSquareRounded } from '@tabler/icons-vue';
 import { useMediaQuery } from '@vueuse/core';
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
+import { useBreakpoint } from '../../composables/useBreakpoint';
 import { Button } from '../button';
 import {
     Drawer,
@@ -75,10 +76,12 @@ const props = withDefaults(
         side?: 'top' | 'right' | 'bottom' | 'left';
         breakpoint?: string;
     }>(),
-    { align: 'start', side: 'bottom', breakpoint: '(min-width: 768px)' },
+    { align: 'start', side: 'bottom' },
 );
 
-const isDesktop = useMediaQuery(() => props.breakpoint);
+const { matches: tokenDesktop } = useBreakpoint({ min: 'md' });
+const explicitDesktop = useMediaQuery(() => props.breakpoint || '(min-width: 0px)');
+const isDesktop = computed(() => props.breakpoint ? explicitDesktop.value : tokenDesktop.value);
 const open = defineModel<boolean>('open', { default: false });
 
 // Unmount the active overlay when crossing the breakpoint, including its focus trap.

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { accordionApiCopy, accordionCommonProps } from '../../stories/accordion-documentation';
+import { AccordionDocs } from '../../stories/AccordionDocs';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
@@ -12,11 +14,42 @@ import {
 } from './index';
 const meta = {
     ...componentControls('Accordion'),
+    argTypes: Object.fromEntries(
+        Object.entries(componentControls('Accordion').argTypes).map(([name, control]) => {
+            const owner = Object.entries(accordionApiCopy).find(
+                ([, copy]) => name in (copy.props ?? {}),
+            );
+            const description = owner?.[1].props?.[name] ?? accordionCommonProps[name];
+            const previewCopy: Record<string, string> = {
+                showDescription: 'Show supporting text in the description slot.',
+                showBadges: 'Show example badges in the badges slot.',
+                showActions: 'Show example buttons in the actions slot.',
+            };
+            return [
+                name,
+                {
+                    ...control,
+                    description: description ?? previewCopy[name],
+                    table: {
+                        ...control.table,
+                        category: owner
+                            ? owner[0] + ' props'
+                            : name in accordionCommonProps
+                              ? 'Accordion props'
+                              : 'Example content',
+                    },
+                },
+            ];
+        }),
+    ),
     title: 'Components/Accordion',
     component: Accordion,
     parameters: {
         controls: { include: controlNames('Accordion') },
-        docs: { description: { component: componentDescription('Accordion') } },
+        docs: {
+            page: AccordionDocs,
+            description: { component: componentDescription('Accordion') },
+        },
     },
 } satisfies Meta;
 export default meta;

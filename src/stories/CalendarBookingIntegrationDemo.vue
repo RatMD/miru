@@ -1,5 +1,5 @@
 <template>
-    <UiProvider :locale="locale">
+    <ContextProvider :locale="locale">
         <div class="max-w-3xl space-y-4">
             <div class="flex flex-wrap gap-2">
                 <Button variant="outline" size="sm" @click="multi = !multi">
@@ -40,7 +40,7 @@
                 {{ date }} · {{ slot }} · {{ rangeValue }}
             </output>
         </div>
-    </UiProvider>
+    </ContextProvider>
 </template>
 <script setup lang="ts">
 import type { CalendarTimeSlot } from '../components/calendar';
@@ -49,7 +49,7 @@ import { parseDate } from '@internationalized/date';
 import { computed, ref, shallowRef } from 'vue';
 import { Button } from '../components/button';
 import { CalendarBooking } from '../components/calendar-booking';
-import { UiProvider } from '../components/provider';
+import { ContextProvider } from '../components/provider';
 const props = defineProps<{ locale: string }>();
 const de = computed(() => props.locale.startsWith('de'));
 const date = ref<string | null>('2026-11-18'),

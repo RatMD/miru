@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { cardApiCopy } from '../../stories/card-documentation';
+import { CardChartDocs } from '../../stories/CardChartDocs';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
@@ -9,9 +11,20 @@ const meta = {
     component: CardChart,
     parameters: {
         controls: { include: controlNames('CardChart') },
-        docs: { description: { component: componentDescription('CardChart') } },
+        docs: {
+            page: CardChartDocs,
+            description: { component: componentDescription('CardChart') },
+        },
     },
 } satisfies Meta;
+for (const [name, control] of Object.entries(meta.argTypes ?? {})) {
+    if (!control) continue;
+    meta.argTypes[name] = {
+        ...control,
+        description: cardApiCopy.CardChart.props[name],
+        table: { category: 'CardChart props' },
+    };
+}
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

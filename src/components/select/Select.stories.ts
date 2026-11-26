@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
 import { formStory } from '../../stories/form-fixtures';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { Select } from './index';
 
 const meta: Meta = {
     title: 'FormFields/Select',
-    parameters: { docs: { description: { component: componentDescription('Select') } } },
+    parameters: {
+        docs: { page: FormFieldDocs, description: { component: componentDescription('Select') } },
+    },
     component: Select,
     args: { size: 'default', shape: 'default', disabled: false, clearable: false },
     argTypes: {
@@ -19,6 +23,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('Select', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

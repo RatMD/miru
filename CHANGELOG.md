@@ -3,6 +3,12 @@ MIRU - Changelog
 
 ## Unreleased
 
+- Add: six hand-maintained CSS colour schemes with explicit shade foregrounds and semantic role border tokens. The colour scheme calculator is confined to VitePress custom palettes. Miru Original remains the package default; the website uses Miru Modern.
+- Fix: uncontrolled Tabs selection, Schedule initial dates in the configured time zone, date-field label/blur wiring and AutoComplete attribute forwarding.
+- Change: align composed input `class`/`wrapperClass`, add native date/phone serialization, readonly selection controls and `lg` date/time inputs.
+- Add: CSS breakpoint tokens for runtime structural switches, preserving explicit breakpoint overrides.
+- Build: publish from the package root after the same lint/build/types/browser/Storybook checks used by CI and Husky pre-commit.
+
 - Add: Backdrop with plain, uniform blur and origin-based faded blur; Breakpoint/useBreakpoint with app/local viewport thresholds; Deferred with async loading, errors, retry and cancellation.
 - Add: ContextMenu and Item families adapted from Spottle using existing dependencies.
 
@@ -33,7 +39,7 @@ MIRU - Changelog
 - Update: Move the Vue entry to `src/miru.ts`, configuration/i18n to plugins, and expose `useMiru` / `useI18n` as composables. Add synchronous configure hooks, standalone plugin factories, host i18n adapters and custom locale dictionaries.
 - Add: SSR-safe browser/PWA composables `useClient`, `useStorage` and `useWorker`, with reactive state, scope cleanup, namespaced storage synchronization and HL Portal-compatible correlated worker messaging.
 - Update: Rename the library to MIRU (`@rat.md/miru`, miru.at), generalize application-specific names and publish under the MIT License.
-- Update: Use `createMiru`, `MiruPlugin`, `useMiru` and `createInertiaMiru`; rename the table variant to `compact` and the default data format to `default`.
+- Update: Use `createMiru`, `MiruPlugin`, `useMiru` and `createMiru({ adapter: inertiaAdapter() })`; rename the table variant to `compact` and the default data format to `default`.
 - Add: Share provider-scoped floating bar state, owned stack layers and automatic page cleanup across applications.
 - Add: Demonstrate nested input and camera bar restoration with the shared Storybook state controller.
 

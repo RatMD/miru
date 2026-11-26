@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, within } from 'storybook/test';
 import { defineComponent, h, onUnmounted, ref } from 'vue';
+import { buttonApiCopy } from '../../stories/button-documentation';
+import { ButtonDocs } from '../../stories/ButtonDocs';
 import { componentDescription } from '../../stories/component-descriptions';
 import { Button, buttonColorVariants } from './index';
 
@@ -49,7 +51,9 @@ const StoryIcon = defineComponent({
 
 const meta = {
     title: 'Components/Button',
-    parameters: { docs: { description: { component: componentDescription('Button') } } },
+    parameters: {
+        docs: { page: ButtonDocs, description: { component: componentDescription('Button') } },
+    },
     component: Button,
     args: {
         variant: 'default',
@@ -80,6 +84,14 @@ const meta = {
     }),
 } satisfies Meta<typeof Button>;
 
+for (const [name, control] of Object.entries(meta.argTypes)) {
+    const description = buttonApiCopy.Button.props[name];
+    const examples: Record<string, string> = {};
+    Object.assign(control, {
+        description: description ?? examples[name],
+        table: { category: description ? 'Button props' : 'Example content' },
+    });
+}
 export default meta;
 type Story = StoryObj<typeof meta>;
 
@@ -191,70 +203,3 @@ export const AsChild: Story = {
 };
 
 export const German: Story = { globals: { locale: 'de' } };
-
-export const DarkMode: Story = {
-    parameters: { controls: { disable: true }, layout: 'padded' },
-    render: () => ({
-        components: { Button },
-        setup: () => ({
-            variants: [
-                'default',
-                'primary',
-                'secondary',
-                'accent',
-                'info',
-                'success',
-                'warning',
-                'danger',
-            ],
-        }),
-        template: `<div class="dark grid gap-5 rounded-xl bg-background p-6 text-foreground">
-            <div v-for="variant in variants" :key="variant" class="grid gap-2">
-                <span class="text-xs text-muted-foreground">{{ variant }}</span>
-                <div class="flex flex-wrap items-center gap-3">
-                    <Button :variant="variant">{{ variant }}</Button>
-                    <Button :variant="variant" disabled>{{ variant }} disabled</Button>
-                    <Button :variant="variant" loading>{{ variant }} loading</Button>
-                    <Button :variant="variant" size="lg" shape="round">{{ variant }} large</Button>
-                </div>
-            </div>
-        </div>`,
-    }),
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement);
-        const variants = [
-            'default',
-            'primary',
-            'secondary',
-            'accent',
-            'info',
-            'success',
-            'warning',
-            'danger',
-        ];
-        for (const variant of variants) {
-            const button = canvas.getByRole('button', { name: variant });
-            const tone = variant === 'default' ? 'neutral' : variant;
-            const probe = document.createElement('span');
-            button.parentElement!.appendChild(probe);
-            try {
-                probe.style.backgroundColor =
-                    'var(--ui-' + tone + '-' + (variant === 'default' ? 800 : 900) + ')';
-                probe.style.color = 'var(--ui-' + tone + '-200)';
-                await expect(getComputedStyle(button).backgroundColor).toBe(
-                    getComputedStyle(probe).backgroundColor,
-                );
-                await expect(getComputedStyle(button).color).toBe(getComputedStyle(probe).color);
-                await expect(getComputedStyle(button).borderTopWidth).toBe('1px');
-                await expect(
-                    canvas.getByRole('button', { name: variant + ' disabled' }),
-                ).toBeDisabled();
-                await expect(
-                    canvas.getByRole('button', { name: variant + ' loading' }),
-                ).toHaveAttribute('aria-busy', 'true');
-            } finally {
-                probe.remove();
-            }
-        }
-    },
-};

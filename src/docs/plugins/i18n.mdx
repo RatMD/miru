@@ -29,12 +29,12 @@ function useFrench() {
 ```ts
 // Add this to createMiru({...}); these functions belong to your host.
 i18n: {
-  locale: () => hostLocale.value,
-  translate: (key, parameters, locale) =>
-    hostHasKey(key, locale) ? hostTranslate(key, parameters, locale) : undefined,
+    locale: () => hostLocale.value,
+    translate: (key, parameters, locale) =>
+        hostHasKey(key, locale) ? hostTranslate(key, parameters, locale) : undefined,
 }
 ```
 
 Return `undefined` or the original key for missing translations to preserve Miru fallbacks. `translateChoice(key, count, parameters, locale)` handles plural forms. Miru does not load host translation files.
 
-Use `<UiProvider locale="de">...</UiProvider>` for a local UI language. Read labels with [useI18n](/reference/composables/useI18n). Configuration is isolated per Vue app and SSR request.
+Use `<ContextProvider locale="de">...</ContextProvider>` for a local UI language. Read labels with [useI18n](/docs/composables/useI18n). Configuration is isolated per Vue app and SSR request.

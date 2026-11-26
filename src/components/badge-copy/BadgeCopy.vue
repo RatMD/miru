@@ -3,6 +3,7 @@
         <Badge
             interactive
             :variant="variant"
+            :appearance="appearance"
             :size="size"
             :class="cn(iconPosition === 'right' && '[&>svg]:order-2', badgeClass)">
             <slot name="icon">
@@ -27,6 +28,7 @@ const props = withDefaults(
     defineProps<
         CopyProps & {
             variant?: BadgeVariants['variant'];
+            appearance?: BadgeVariants['appearance'];
             size?: BadgeVariants['size'];
             icon?: Component;
             iconPosition?: 'left' | 'right';

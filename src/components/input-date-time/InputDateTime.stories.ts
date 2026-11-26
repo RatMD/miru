@@ -3,11 +3,18 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { computed, ref } from 'vue';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { InputDateTime } from './index';
 
 const meta: Meta = {
     title: 'FormFields/InputDateTime',
-    parameters: { docs: { description: { component: componentDescription('InputDateTime') } } },
+    parameters: {
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('InputDateTime') },
+        },
+    },
     component: InputDateTime,
     args: { mode: 'datetime', size: 'default', disabled: false },
     argTypes: {
@@ -37,6 +44,7 @@ const meta: Meta = {
     }),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('InputDateTime', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

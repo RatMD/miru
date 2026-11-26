@@ -2,6 +2,13 @@
     <div v-filesize:2.metric="1024" />
     <div v-file-size="'2048'" />
     <div v-price.cents="1234" />
+    <div v-number-format="1234.5" />
+    <span
+        v-number-format="{
+            value: '1234.50',
+            locale: 'de-DE',
+            options: { minimumFractionDigits: 2 },
+        }" />
     <div v-dayjs="new Date()" />
     <div v-click-outside.once="onOutside" />
     <div v-resize.immediate="onResize" />
@@ -13,6 +20,10 @@
     <div v-file-size="true" />
     <!-- @vue-expect-error Price does not accept booleans. -->
     <div v-price="true" />
+    <!-- @vue-expect-error Number formatting does not accept booleans. -->
+    <div v-number-format="true" />
+    <!-- @vue-expect-error Intl notation is a fixed set of string values. -->
+    <span v-number-format="{ value: 42, options: { notation: 'unknown' } }" />
     <!-- @vue-expect-error Dates do not accept arbitrary objects. -->
     <div v-dayjs="{}" />
     <!-- @vue-expect-error Click handlers receive a MouseEvent. -->

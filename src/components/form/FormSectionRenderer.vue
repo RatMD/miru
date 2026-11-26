@@ -2,7 +2,7 @@
     <section class="space-y-6">
         <div
             v-if="!section.hideHeader"
-            class="flex items-start justify-between gap-4 border-b pb-4">
+            class="flex items-start justify-between gap-4 border-b border-border pb-4">
             <div>
                 <h2 class="text-xl font-semibold">
                     <FormText :text="section.title ?? section.label" />

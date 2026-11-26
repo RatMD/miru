@@ -1,5 +1,10 @@
 <template>
     <TagsInputRoot
+        :aria-readonly="isReadonly || undefined"
+        @click.capture="guardReadonly"
+        @keydown.capture="guardReadonly"
+        @beforeinput.capture="guardReadonly"
+        @paste.capture="guardReadonly"
         data-slot="tags-input"
         :data-size="size"
         :data-variant="variant"
@@ -30,12 +35,14 @@ import { reactiveOmit } from '@vueuse/core';
 import { TagsInputRoot, useForwardPropsEmits } from 'reka-ui';
 import { computed, provide } from 'vue';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 import { tagsVariantKey } from './context';
 
 const props = withDefaults(
     defineProps<
         TagsInputRootProps & {
             class?: HTMLAttributes['class'];
+            readonly?: boolean;
             size?: 'sm' | 'default' | 'lg';
             variant?: InlineVariant;
         }
@@ -46,9 +53,10 @@ provide(
     tagsVariantKey,
     computed(() => props.variant),
 );
+const { readonly: isReadonly, guard: guardReadonly } = useReadonlyField(() => props.readonly);
 const emits = defineEmits<TagsInputRootEmits>();
 
-const delegatedProps = reactiveOmit(props, 'class', 'size', 'variant');
+const delegatedProps = reactiveOmit(props, 'readonly', 'class', 'size', 'variant');
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>

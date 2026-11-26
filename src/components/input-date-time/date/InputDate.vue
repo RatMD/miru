@@ -1,6 +1,12 @@
 <template>
     <div class="flex w-full gap-2">
-        <Popover v-model:open="open">
+        <Popover
+            :open="readonly ? false : open"
+            @update:open="
+                (value) => {
+                    if (!readonly) open = value;
+                }
+            ">
             <PopoverTrigger as-child>
                 <Button
                     v-bind="$attrs"
@@ -35,7 +41,7 @@
             </PopoverContent>
         </Popover>
         <Button
-            v-if="modelValue"
+            v-if="modelValue && !readonly"
             type="button"
             variant="ghost"
             :size="size"
@@ -71,7 +77,8 @@ const props = withDefaults(
             /** Explicit bound overrides the automatic today limit. */
             maxValue?: DateValue;
             disabled?: boolean;
-            size?: 'default' | 'sm';
+            readonly?: boolean;
+            size?: 'default' | 'sm' | 'lg';
         }
     >(),
     {

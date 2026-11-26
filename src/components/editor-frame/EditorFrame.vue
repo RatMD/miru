@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" data-slot="editor-frame-root" :class="cn('space-y-2', props.class)">
+    <div ref="root" data-slot="editor-frame-root" :class="cn('space-y-2', props.wrapperClass)">
         <Label v-if="label" :for="labelFor || inputId" :required="required">{{ label }}</Label>
         <div
             data-slot="editor-frame"
@@ -53,6 +53,7 @@
                     :aria-label="label || trans('common.form.editor.area')"
                     :aria-invalid="invalid || $attrs['aria-invalid']"
                     class="min-h-64 resize-y rounded-none border-0 shadow-none focus-visible:ring-0"
+                    :class="props.class"
                     style="field-sizing: fixed"
                     @update:model-value="setValue(String($event))"
                     @blur="emit('blur')" />
@@ -109,6 +110,7 @@ const props = withDefaults(
         counterMode?: 'limit' | 'count' | 'remaining';
         locale?: string;
         class?: HTMLAttributes['class'];
+        wrapperClass?: HTMLAttributes['class'];
     }>(),
     { modelValue: '', extensions: () => [], rows: 10, counterMode: 'limit' },
 );

@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
 import { formStory } from '../../stories/form-fixtures';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { selectionVariantsPlay } from '../../stories/selection-checks';
 import SelectionVariantsDemo from '../../stories/SelectionVariantsDemo.vue';
 import { inlineColorVariants } from '../inline-variants';
@@ -8,7 +10,12 @@ import { InputTags } from './index';
 
 const meta: Meta = {
     title: 'FormFields/InputTags',
-    parameters: { docs: { description: { component: componentDescription('InputTags') } } },
+    parameters: {
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('InputTags') },
+        },
+    },
     component: InputTags,
     args: { variant: 'default', size: 'default', disabled: false },
     argTypes: {
@@ -21,6 +28,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('InputTags', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

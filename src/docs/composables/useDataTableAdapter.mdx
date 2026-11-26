@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useDataTableAdapter" />
+
+# useDataTableAdapter
+
+Resolve the backend conventions for a DataTable inside Vue setup. The result is a computed adapter containing its format, list normaliser and query serialiser; it does not load records or choose the navigation transport.
+
+```ts
+import { useDataTableAdapter } from '@rat.md/miru/composables';
+
+const backend = useDataTableAdapter();
+// Read backend.value.normalize(source) or backend.value.serializeQuery(state, filters).
+```
+
+Without an explicit format, the composable uses `createMiru({ dataTable })` when configured, otherwise the default contract. Pass a string, ref or getter for `'default'`, `'lucid'` or `'laravel'` to choose a table-specific format. A matching application adapter is retained, including its custom query options; a different explicit format uses that format’s standard adapter.
+
+See [Adapters](/docs/guide/adapters) for application defaults and [Response adapters](/docs/data-table/adapters) for payload contracts and custom APIs.

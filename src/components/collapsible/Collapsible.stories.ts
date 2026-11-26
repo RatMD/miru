@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
-import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { ComponentDocs } from '../../stories/ComponentDocs';
+import {
+    utilitySummaries,
+    utilityDependencyMarkdown,
+    describeUtilityControls,
+} from '../../stories/utilities-documentation';
 import { Collapsible } from './index';
 const meta = {
     ...componentControls('Collapsible'),
@@ -9,9 +14,18 @@ const meta = {
     component: Collapsible,
     parameters: {
         controls: { include: controlNames('Collapsible') },
-        docs: { description: { component: componentDescription('Collapsible') } },
+        docs: {
+            page: ComponentDocs,
+            description: {
+                component:
+                    utilitySummaries.Collapsible +
+                    '\n\n' +
+                    utilityDependencyMarkdown('Collapsible', true),
+            },
+        },
     },
 } satisfies Meta;
+describeUtilityControls('Collapsible', meta.argTypes ?? {}, meta);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

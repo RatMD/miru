@@ -1,6 +1,7 @@
 import type { vClickOutside } from '../plugins/click-outside';
 import type { vDayjs } from '../plugins/dayjs';
 import type { vFileSize, vFilesize } from '../plugins/filesize';
+import type { vNumberFormat } from '../plugins/number-format';
 import type { vPrice } from '../plugins/price';
 import type { vResize } from '../plugins/resize';
 import type { vTinymce } from '../plugins/tinymce';
@@ -12,6 +13,7 @@ interface MiruGlobalDirectives {
     vFilesize: typeof vFilesize;
     vFileSize: typeof vFileSize;
     vPrice: typeof vPrice;
+    vNumberFormat: typeof vNumberFormat;
     vResize: typeof vResize;
     vTinymce: typeof vTinymce;
 }

@@ -1,5 +1,5 @@
 <template>
-    <UiProvider :locale="locale">
+    <ContextProvider :locale="locale">
         <div class="w-full min-w-0 space-y-4" data-slot="composition-demo">
             <template v-if="mode === 'buttons'">
                 <ButtonGroup
@@ -60,7 +60,7 @@
             </template>
             <template v-else-if="mode === 'badges'">
                 <div :class="args.narrow ? 'w-64 max-w-full' : 'w-full'" class="flex min-w-0">
-                    <FilterBadges
+                    <FilterBar
                         :items="badgeItems"
                         :size="args.size"
                         :disabled="args.disabled"
@@ -168,7 +168,7 @@
                 </AspectRatio>
             </template>
         </div>
-    </UiProvider>
+    </ContextProvider>
 </template>
 <script setup lang="ts">
 import type { CommandItem } from '../components/command';
@@ -199,9 +199,9 @@ import {
     DrawerDescription,
     DrawerClose,
 } from '../components/drawer';
-import { FilterBadges } from '../components/filter-badges';
+import { FilterBar } from '../components/filter-bar';
 import { Input } from '../components/input';
-import { UiProvider } from '../components/provider';
+import { ContextProvider } from '../components/provider';
 import { compositionCopy } from './composition-copy';
 const props = defineProps<{
     mode: 'buttons' | 'badges' | 'command' | 'drawer' | 'aspect';

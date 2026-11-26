@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
 import { formStory } from '../../stories/form-fixtures';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { Toggle } from './index';
 
 const meta: Meta = {
     title: 'FormFields/Toggle',
-    parameters: { docs: { description: { component: componentDescription('Toggle') } } },
+    parameters: {
+        docs: { page: FormFieldDocs, description: { component: componentDescription('Toggle') } },
+    },
     component: Toggle,
     args: { size: 'default', disabled: false },
     argTypes: {
@@ -17,6 +21,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('Toggle', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

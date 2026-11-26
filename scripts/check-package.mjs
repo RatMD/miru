@@ -29,6 +29,23 @@ assert.ok(
 );
 assert.ok(paths.every((path) => !/stories|storybook|node_modules/.test(path)));
 const manifest = JSON.parse(readFileSync('package.json', 'utf8'));
+assert.ok(!paths.some((path) => path.startsWith('dist/form-adapters')));
+assert.ok(!paths.includes('dist/adapters.js'));
+assert.ok(!paths.includes('dist/plugins/inertia.js'));
+assert.ok(!paths.includes('dist/plugins/inertia.d.ts'));
+assert.ok(!paths.includes('dist/support/navigation.js'));
+for (const removed of [
+    './adapters',
+    './form-adapters',
+    './form-adapters/ajax',
+    './form-adapters/inertia',
+    './plugins/inertia',
+    './support/navigation',
+]) {
+    await assert.rejects(import(manifest.name + removed.slice(1)), (error) =>
+        ['ERR_PACKAGE_PATH_NOT_EXPORTED', 'ERR_MODULE_NOT_FOUND'].includes(error.code),
+    );
+}
 for (const [subpath, entry] of Object.entries(manifest.exports)) {
     const targets = typeof entry === 'string' ? { default: entry } : entry;
     if (!subpath.includes('*')) {
@@ -90,7 +107,7 @@ const entry = await import(manifest.name + '/miru');
 const composables = await import(manifest.name + '/composables');
 const layouts = await import(manifest.name + '/layouts');
 const root = await import(manifest.name);
-for (const name of ['AuthPage', 'DashboardPage', 'FormPageLayout']) {
+for (const name of ['AuthPage', 'DashboardPage', 'PageRoot']) {
     assert.equal(typeof layouts[name], 'object', `Missing layout: ${name}`);
     assert.equal(root[name], layouts[name], `Root layout export differs: ${name}`);
 }

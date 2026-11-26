@@ -23,8 +23,8 @@ const { defineValidators, createMiruValidation } = await server.ssrLoadModule(
 );
 const { useValidation } = await server.ssrLoadModule('/src/composables/useValidation.ts');
 const { useForm } = await server.ssrLoadModule('/src/composables/useForm.ts');
-const { default: UiProvider } = await server.ssrLoadModule(
-    '/src/components/provider/UiProvider.vue',
+const { default: ContextProvider } = await server.ssrLoadModule(
+    '/src/components/provider/ContextProvider.vue',
 );
 
 function installed(options = {}) {
@@ -206,7 +206,7 @@ test('registered factories use the nearest provider, with no cross-tree locale m
     };
     const app = createSSRApp({
         render: () =>
-            h('main', [h(UiProvider, { locale: 'de' }, { default: () => h(probe) }), h(probe)]),
+            h('main', [h(ContextProvider, { locale: 'de' }, { default: () => h(probe) }), h(probe)]),
     });
     app.use(
         createMiru({

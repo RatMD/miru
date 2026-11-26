@@ -29,7 +29,10 @@
             :expand="expand"
             :duration="duration"
             :visible-toasts="visibleToasts"
-            :theme="theme" />
+            :theme="theme"
+            :swipe-direction="swipeDirection"
+            :disable-swipe="disableSwipe"
+            :swipe-threshold="swipeThreshold" />
         <output class="text-sm" aria-live="polite">{{ feedback }}</output>
     </div>
 </template>
@@ -38,10 +41,10 @@ let nextDemoId = 0;
 </script>
 <script setup lang="ts">
 import type { ToastAppearance } from '../components/toast';
-import type { ToasterProps } from 'vue-sonner';
+import type { ToasterProps } from '../components/toast';
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
-import { toast } from 'vue-sonner';
 import { Button } from '../components/button';
+import { toast } from '../components/toast';
 import { Toast } from '../components/toast';
 const props = withDefaults(
     defineProps<{
@@ -55,6 +58,9 @@ const props = withDefaults(
         duration?: number;
         visibleToasts?: number;
         theme?: ToasterProps['theme'];
+        swipeDirection?: ToasterProps['swipeDirection'];
+        disableSwipe?: boolean;
+        swipeThreshold?: number;
         seed?: boolean;
     }>(),
     { locale: 'en', inline: true, appearance: 'frost', closeButton: true, seed: true },

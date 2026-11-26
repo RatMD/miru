@@ -3,16 +3,20 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { describeOverlayControls } from '../../stories/overlay-documentation';
+import { OverlayDocs } from '../../stories/OverlayDocs';
 import { Dialog } from './index';
 const meta = {
     ...componentControls('Dialog'),
-    title: 'Overlay/Dialog',
+    title: 'Overlays/Dialog',
+    id: 'overlay-dialog',
     component: Dialog,
     parameters: {
         controls: { include: controlNames('Dialog') },
-        docs: { description: { component: componentDescription('Dialog') } },
+        docs: { page: OverlayDocs, description: { component: componentDescription('Dialog') } },
     },
 } satisfies Meta;
+describeOverlayControls('Dialog', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

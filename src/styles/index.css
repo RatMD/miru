@@ -3,11 +3,14 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities) source(none);
 @import 'tw-animate-css';
-@import '@cyhnkckali/vue3-color-picker/dist/style.css';
 @import './tokens.css';
+@import './palette-foregrounds.css';
+@import './breakpoints.css';
 @import './menu.css';
 @import './fields.css';
 @import './avatar.css';
+@import './stepper.css';
+@import './toast.css';
 
 @source '../components';
 @source '../layouts';
@@ -95,6 +98,13 @@
     --color-secondary-active: var(--ui-secondary-active);
     --color-accent-hover: var(--ui-accent-hover);
     --color-accent-active: var(--ui-accent-active);
+    --color-primary-border: var(--ui-primary-border);
+    --color-secondary-border: var(--ui-secondary-border);
+    --color-accent-border: var(--ui-accent-border);
+    --color-info-border: var(--ui-info-border);
+    --color-success-border: var(--ui-success-border);
+    --color-warning-border: var(--ui-warning-border);
+    --color-danger-border: var(--ui-danger-border);
     --color-outline-hover: var(--ui-outline-hover);
     --color-outline-active: var(--ui-outline-active);
     --color-outline: var(--ui-outline);
@@ -332,23 +342,5 @@
     20%,
     50% {
         opacity: 0;
-    }
-}
-
-/* Vendor picker surfaces inherit the same light/dark tokens as every other field. */
-@layer components {
-    .miru-color-picker .ck-cp-container {
-        --cp-container-bg: var(--ui-popover, var(--ui-background));
-        --cp-gray-100: var(--ui-ghostly);
-        --cp-gray-200: var(--ui-border);
-        --cp-gray-300: var(--ui-border);
-        --cp-gray-400: var(--ui-muted-foreground);
-        --cp-gray-500: var(--ui-muted-foreground);
-        --cp-gray-600: var(--ui-muted-foreground);
-        --cp-gray-700: var(--ui-muted-foreground);
-        --cp-gray-800: var(--ui-foreground);
-        --cp-gray-900: var(--ui-foreground);
-        --cp-primary: var(--ui-primary);
-        color: var(--ui-foreground);
     }
 }

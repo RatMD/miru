@@ -5,14 +5,16 @@
         :name="name"
         :required="required"
         :disabled="disabled"
+        :readonly="readonly"
         open-on-focus
         open-on-click
         :reset-model-value-on-clear="false">
-        <ComboboxAnchor :class="cn('relative w-full', props.class)">
+        <ComboboxAnchor :class="cn('relative w-full', props.wrapperClass)">
             <ComboboxInput
                 v-bind="$attrs"
                 :id="id"
                 :disabled="disabled"
+                :readonly="readonly"
                 :placeholder="placeholder"
                 :aria-label="label || placeholder"
                 :aria-invalid="invalid || undefined"
@@ -25,6 +27,7 @@
                         size === 'sm' && 'h-8 text-xs',
                         size === 'lg' && 'h-12 text-base',
                         invalid && 'border-danger',
+                        props.class,
                     )
                 "
                 @blur="emit('blur')" />
@@ -36,7 +39,7 @@
                 icon-only
                 :aria-label="trans('common.actions.clear')"
                 class="absolute top-1/2 right-8 -translate-y-1/2"
-                :disabled="disabled"
+                :disabled="disabled || readonly"
                 @click="value = null">
                 <IconX />
             </Button>
@@ -45,7 +48,7 @@
                     variant="ghost"
                     size="xs"
                     icon-only
-                    :disabled="disabled"
+                    :disabled="disabled || readonly"
                     :aria-label="trans('common.actions.open')"
                     class="absolute top-1/2 right-1.5 -translate-y-1/2">
                     <IconChevronDown class="size-4 shrink-0 opacity-50" aria-hidden="true" />
@@ -112,6 +115,8 @@ const props = withDefaults(
         clearable?: boolean;
         size?: 'sm' | 'default' | 'lg';
         class?: HTMLAttributes['class'];
+        wrapperClass?: HTMLAttributes['class'];
+        readonly?: boolean;
     }>(),
     { modelValue: null, size: 'default', disabled: false, clearable: false },
 );
@@ -120,8 +125,9 @@ const { trans } = useI18n();
 const open = ref(false);
 const value = computed({
     get: () => props.modelValue ?? null,
-    set: (next: unknown) =>
-        emit('update:modelValue', next == null || next === '' ? null : String(next)),
+    set: (next: unknown) => {
+        if (!props.disabled && !props.readonly) emit('update:modelValue', next == null || next === '' ? null : String(next));
+    },
 });
 const displayValue = (value: unknown) =>
     props.options.find((option) => option.value === value)?.label ?? '';

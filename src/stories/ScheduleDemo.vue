@@ -1,5 +1,5 @@
 <template>
-    <UiProvider :locale="locale">
+    <ContextProvider :locale="locale">
         <div class="space-y-4">
             <component
                 :is="scenario === 'compact' ? Card : 'div'"
@@ -95,7 +95,7 @@
                 {{ message }}
             </output>
         </div>
-    </UiProvider>
+    </ContextProvider>
 </template>
 <script setup lang="ts">
 import type { ScheduleEvent, ScheduleView, ScheduleFilter } from '../components/schedule';
@@ -104,7 +104,7 @@ import { computed, ref } from 'vue';
 import { Badge } from '../components/badge';
 import { Button } from '../components/button';
 import { Card } from '../components/card';
-import { UiProvider } from '../components/provider';
+import { ContextProvider } from '../components/provider';
 import { Schedule, ScheduleEventDetails } from '../components/schedule';
 import { useScheduleSource } from '../composables/useScheduleSource';
 const props = withDefaults(

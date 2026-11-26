@@ -57,6 +57,24 @@ function numberFormat(
     };
 }
 
+type NumberValue = number | bigint | string | null | undefined;
+
+/** Format a numeric value with Intl; numeric strings use a dot as the decimal separator. */
+function formatNumber(
+    value: NumberValue,
+    locale = 'de-DE',
+    options: Intl.NumberFormatOptions = {},
+): string {
+    if (value == null || (typeof value === 'string' && value.trim() === '')) {
+        return '—';
+    }
+    const numeric = typeof value === 'bigint' ? value : Number(value);
+    if (typeof numeric === 'number' && !Number.isFinite(numeric)) {
+        return '—';
+    }
+    return new Intl.NumberFormat(locale.replaceAll('_', '-'), options).format(numeric);
+}
+
 // Export module
-export { numberFormat };
-export type { NumberFormatMetadata };
+export { numberFormat, formatNumber };
+export type { NumberFormatMetadata, NumberValue };

@@ -81,7 +81,7 @@
             <template v-else>{{ trans('common.datatable.no_entries') }}</template>
         </p>
 
-        <FilterBadges
+        <FilterBar
             v-if="activeFilters.length"
             :items="activeFilters"
             :disabled="disabled"
@@ -202,7 +202,7 @@
                 :pagination="list.results"
                 :disabled="disabled"
                 @page="$emit('page', $event)" />
-            <FilterBadges
+            <FilterBar
                 v-if="activeFilters.length"
                 :items="activeFilters"
                 :disabled="disabled"
@@ -235,7 +235,7 @@ import { useI18n } from '../../composables/useI18n';
 import { Button } from '../button';
 import { ButtonGroup } from '../button-group';
 import { Dialog, DialogContent, DialogTitle } from '../dialog';
-import { FilterBadges } from '../filter-badges';
+import { FilterBar } from '../filter-bar';
 import { Input } from '../input';
 import { Separator } from '../separator';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../tooltip';

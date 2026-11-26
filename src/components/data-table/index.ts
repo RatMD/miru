@@ -27,4 +27,7 @@ export { useDataTable } from './useDataTable';
 export { useDataTableQuery } from './useDataTableQuery';
 export { default as DataTablePagination } from './DataTablePagination.vue';
 
-export * from './adapters';
+export { adaptLaravelPagination, adaptLaravelList } from './normalization';
+export { adaptLucidPagination, adaptLucidList, serializeLucidQuery } from './normalization';
+export type { LucidQueryOptions } from './normalization';
+export { normalizeDataTableList } from './normalization';

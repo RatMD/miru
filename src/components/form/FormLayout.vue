@@ -1,360 +1,369 @@
 <template>
-    <section data-slot="form-layout" class="miru-form">
-        <FormPageLayout
-            v-model="activeSectionId"
-            :tabs="layoutTabs"
-            :navigation-label="resolveText(sectionSelectorLabel)"
-            :actions-label="resolveText(actionsLabel)"
-            :primary-label="resolveText(loading ? loadingLabel : saveLabel)"
-            :primary-variant="primaryVariant"
-            :additional-actions="layoutActions"
-            :loading="loading"
-            :show-actions="!activeSection?.standalone"
-            @submit="emit('submit')"
-            @action="emit('action', $event)">
-            <template #header>
-                <slot
-                    name="header"
-                    :title="title"
-                    :description="description"
-                    :cancel-href="cancelHref">
-                    <header
-                        class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <div class="flex flex-row flex-wrap items-center gap-4">
-                            <h1 class="flex min-w-0 items-start gap-1 text-2xl font-semibold">
-                                <span class="min-w-0">{{ title }}</span>
-                                <Description
-                                    v-if="description"
-                                    :title="title"
-                                    :description="description" />
-                            </h1>
-
-                            <div
-                                data-slot="form-header-controls"
-                                class="flex shrink-0 items-center gap-3">
-                                <Button
-                                    variant="ghostly"
-                                    shape="round"
-                                    size="sm"
-                                    class="size-8 p-0 md:w-auto md:px-3"
-                                    as-child>
-                                    <Link :href="cancelHref" :aria-label="resolveText(cancelLabel)">
-                                        <IconArrowLeft class="size-4" />
-                                        <span class="hidden md:inline">
-                                            <FormText :text="cancelLabel" />
-                                        </span>
-                                    </Link>
-                                </Button>
-
-                                <FormLocaleSwitcher
-                                    v-if="localization"
-                                    v-model="activeLocale"
-                                    :locales="localization.locales"
-                                    :base-locale="localization.baseLocale" />
-                            </div>
+    <section
+        data-slot="form-page-layout"
+        ref="layoutRoot"
+        class="ui-form-page-layout"
+        :style="clearanceStyle">
+        <slot name="header" />
+        <form novalidate @submit.prevent="emit('submit')">
+            <slot name="before-content" />
+            <div class="ui-form-page-grid" :data-actions="showActions">
+                <Tabs
+                    v-if="tabs.length"
+                    v-model="activeTab"
+                    class="ui-form-page-tabs"
+                    :tabs="tabs"
+                    appearance="buttons"
+                    :aria-label="navigationLabel"
+                    :orientation="isDesktop ? 'vertical' : 'horizontal'"
+                    :unmount-on-hide="false"
+                    :collapse-overflow="!isDesktop">
+                    <template v-if="$slots['tab-action']" #tab-action="scope">
+                        <slot name="tab-action" v-bind="scope" />
+                    </template>
+                    <template v-for="tab in tabs" :key="tab.value" #[tab.value]>
+                        <slot :tab="tab" />
+                    </template>
+                </Tabs>
+                <div v-else class="min-w-0"><slot /></div>
+                <aside
+                    v-if="showActions"
+                    data-slot="form-actions"
+                    class="ui-form-page-desktop-actions">
+                    <slot name="desktop-actions" :loading="loading">
+                        <p v-if="actionsLabel" class="text-sm font-semibold">{{ actionsLabel }}</p>
+                        <slot name="primary-action" surface="desktop" :loading="loading">
+                            <Button
+                                type="submit"
+                                :variant="primaryVariant"
+                                :disabled="loading"
+                                :loading="loading"
+                                class="w-full">
+                                {{ primaryLabel ?? trans('common.actions.save') }}
+                            </Button>
+                        </slot>
+                        <slot name="secondary-action" surface="desktop" :loading="loading">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                class="w-full"
+                                :disabled="loading"
+                                @click="emit('secondary')">
+                                {{ secondaryLabel ?? trans('common.actions.cancel') }}
+                            </Button>
+                        </slot>
+                        <div
+                            v-if="hasDesktopAdditionalActions()"
+                            data-slot="form-actions-divider"
+                            class="flex flex-col gap-3 border-t pt-3">
+                            <Button
+                                v-for="action in additionalActions"
+                                :key="action.id"
+                                type="button"
+                                :variant="action.variant ?? 'outline'"
+                                :disabled="loading || action.disabled"
+                                :data-action="action.id"
+                                class="w-full"
+                                @click="emit('action', action.id)">
+                                <component :is="action.icon" v-if="action.icon" class="size-4" />
+                                {{ action.label }}
+                            </Button>
+                            <slot
+                                name="additional-actions"
+                                surface="desktop"
+                                :loading="loading"
+                                :close="closeAdditionalActions" />
                         </div>
-                    </header>
-                </slot>
-            </template>
-            <template #before-content>
-                <FieldError v-if="formError" class="mb-6" :errors="[formError]" />
-            </template>
-            <template #default="{ tab }">
+                    </slot>
+                </aside>
+            </div>
+            <div
+                v-if="showActions || $slots['floating-app-bar']"
+                ref="dock"
+                data-slot="form-page-dock"
+                class="ui-form-page-dock">
                 <div
-                    v-if="
-                        activeSection &&
-                        activeSection.id === tab?.value &&
-                        sectionErrorCount(activeSection)
-                    "
-                    class="mb-4 flex justify-end">
-                    <FormErrorBadge
-                        :section-label="resolveText(activeSection.label)"
-                        :errors="sectionErrors(activeSection)" />
+                    v-if="showActions"
+                    data-slot="form-mobile-actions"
+                    class="ui-form-page-mobile-actions">
+                    <Button
+                        v-if="hasAdditionalActions()"
+                        type="button"
+                        variant="outline"
+                        icon-only
+                        :disabled="loading"
+                        :aria-label="trans('common.form.additional_actions')"
+                        aria-haspopup="dialog"
+                        :aria-expanded="additionalActionsOpen"
+                        @click="additionalActionsOpen = true">
+                        <IconDots class="size-4" />
+                    </Button>
+                    <div class="min-w-0 flex-1">
+                        <slot name="secondary-action" surface="mobile" :loading="loading">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                class="w-full"
+                                :disabled="loading"
+                                @click="emit('secondary')">
+                                {{ secondaryLabel ?? trans('common.actions.cancel') }}
+                            </Button>
+                        </slot>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <slot name="primary-action" surface="mobile" :loading="loading">
+                            <Button
+                                type="submit"
+                                :variant="primaryVariant"
+                                :disabled="loading"
+                                :loading="loading"
+                                class="w-full">
+                                {{ primaryLabel ?? trans('common.actions.save') }}
+                            </Button>
+                        </slot>
+                    </div>
                 </div>
-                <FormSectionRenderer
-                    v-for="section in sections.filter((item) => item.id === tab?.value)"
-                    :key="section.id"
-                    :form="form"
-                    :section="section"
-                    :locale="activeLocale"
-                    :locale-field-path="localization?.fieldPath">
-                    <template #before="slotProps">
-                        <slot :name="`section-${section.id}-before`" v-bind="slotProps" />
-                    </template>
-                    <template #actions="slotProps">
-                        <slot :name="`section-${section.id}-actions`" v-bind="slotProps" />
-                    </template>
-                    <template #custom="slotProps">
-                        <slot :name="`field-${slotProps.definition.slot}`" v-bind="slotProps" />
-                    </template>
-                    <template #after="slotProps">
-                        <slot :name="`section-${section.id}-after`" v-bind="slotProps" />
-                    </template>
-                </FormSectionRenderer>
-            </template>
-            <template #primary-action>
-                <Button
-                    :variant="primaryVariant"
-                    type="submit"
-                    class="w-full"
-                    :disabled="loading"
-                    :loading="loading">
-                    <IconDeviceFloppy class="size-4" />
-                    <FormText :text="loading ? loadingLabel : saveLabel" />
-                </Button>
-            </template>
-            <template #secondary-action="{ surface }">
-                <Button variant="outline" class="w-full" as-child>
-                    <Link :href="cancelHref">
-                        <IconArrowLeft v-if="surface === 'desktop'" class="size-4" />
-                        <span class="truncate"><FormText :text="cancelLabel" /></span>
-                    </Link>
-                </Button>
-            </template>
-            <template v-if="$slots.actions" #desktop-actions="slotProps">
-                <slot name="actions" v-bind="slotProps" />
-            </template>
-            <template
-                v-if="
-                    $slots['additional-actions'] ||
-                    $slots['actions-before'] ||
-                    $slots['actions-after']
-                "
-                #additional-actions="slotProps">
-                <slot name="additional-actions" v-bind="slotProps">
-                    <slot name="actions-before" :loading="loading" />
-                    <slot name="actions-after" :loading="loading" />
-                </slot>
-            </template>
-            <template v-if="$slots['mobile-actions']" #mobile-additional-actions="slotProps">
-                <slot name="mobile-actions" v-bind="slotProps" />
-            </template>
-            <template v-if="$slots['floating-app-bar']" #floating-app-bar="slotProps">
-                <slot name="floating-app-bar" v-bind="slotProps" />
-            </template>
-        </FormPageLayout>
+                <div
+                    v-if="$slots['floating-app-bar']"
+                    data-slot="form-page-floating-bar"
+                    class="ui-form-page-floating-bar">
+                    <slot
+                        name="floating-app-bar"
+                        :fixed="false as const"
+                        :orientation="'horizontal' as const" />
+                </div>
+            </div>
+        </form>
+        <Drawer v-if="!isDesktop" v-model:open="additionalActionsOpen">
+            <DrawerContent>
+                <DrawerHeader>
+                    <DrawerTitle>{{ trans('common.form.additional_actions') }}</DrawerTitle>
+                    <DrawerDescription class="sr-only">
+                        {{ trans('common.form.additional_actions_description') }}
+                    </DrawerDescription>
+                </DrawerHeader>
+                <div class="flex flex-col gap-3 overflow-y-auto px-4 pb-6">
+                    <Button
+                        v-for="action in additionalActions"
+                        :key="action.id"
+                        type="button"
+                        :variant="action.variant ?? 'outline'"
+                        :disabled="loading || action.disabled"
+                        :data-action="action.id"
+                        @click="
+                            emit('action', action.id);
+                            closeAdditionalActions();
+                        ">
+                        <component :is="action.icon" v-if="action.icon" class="size-4" />
+                        {{ action.label }}
+                    </Button>
+                    <slot
+                        name="mobile-additional-actions"
+                        :loading="loading"
+                        :close="closeAdditionalActions" />
+                    <slot
+                        name="additional-actions"
+                        surface="mobile"
+                        :loading="loading"
+                        :close="closeAdditionalActions" />
+                </div>
+            </DrawerContent>
+        </Drawer>
     </section>
 </template>
 
 <script setup lang="ts">
+import type { FormPageAction } from '../../layouts/types';
 import type { ButtonVariants } from '../button';
-import type {
-    FormLocalizationConfig,
-    FormActionDefinition,
-    FormRendererApi,
-    FormSectionDefinition,
-    FormText as FormTextDefinition,
-} from './types';
-import type { AnyFormApi } from '@tanstack/vue-form';
-import type { Ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
-import { IconArrowLeft, IconDeviceFloppy } from '@tabler/icons-vue';
-import { computed, ref, watch } from 'vue';
+import type { TabItem } from '../tabs';
+import type { CSSProperties, VNode } from 'vue';
+import { IconDots } from '@tabler/icons-vue';
+import { useElementSize } from '@vueuse/core';
+import { computed, onUpdated, ref, watch } from 'vue';
 import { useI18n } from '../../composables/useI18n';
-import { FormPageLayout } from '../../layouts';
 import { Button } from '../button';
-import { Description } from '../description';
-import { FieldError } from '../field';
-import FormErrorBadge from './FormErrorBadge.vue';
-import FormLocaleSwitcher from './FormLocaleSwitcher.vue';
-import FormSectionRenderer from './FormSectionRenderer.vue';
-import FormText from './FormText.vue';
-import { translated } from './types';
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from '../drawer';
+import { Tabs } from '../tabs';
+
 const props = withDefaults(
     defineProps<{
-        title: string;
-        description?: string;
-        form: FormRendererApi;
-        sections: FormSectionDefinition[];
-        cancelHref: string;
-        loading?: boolean;
+        tabs?: TabItem[];
+        modelValue?: string;
+        navigationLabel?: string;
+        actionsLabel?: string;
+        primaryLabel?: string;
+        secondaryLabel?: string;
         primaryVariant?: NonNullable<ButtonVariants['variant']>;
-        additionalActions?: FormActionDefinition[];
-        formError?: string;
-        initialSection?: string;
-        activeSection?: string;
-        cancelLabel?: FormTextDefinition;
-        saveLabel?: FormTextDefinition;
-        loadingLabel?: FormTextDefinition;
-        actionsLabel: FormTextDefinition;
-        sectionSelectorLabel: FormTextDefinition;
-        localization?: FormLocalizationConfig;
+        additionalActions?: FormPageAction[];
+        loading?: boolean;
+        /** Standalone sections can suppress form actions while retaining the app bar. */
+        showActions?: boolean;
     }>(),
     {
-        loading: false,
-        primaryVariant: 'success',
+        tabs: () => [],
         additionalActions: () => [],
-        formError: undefined,
-        initialSection: undefined,
-        activeSection: undefined,
-        cancelLabel: () => translated('common.actions.cancel'),
-        saveLabel: () => translated('common.actions.save'),
-        loadingLabel: () => translated('common.states.loading'),
+        loading: false,
+        showActions: true,
+        primaryVariant: 'success',
     },
 );
-
 const emit = defineEmits<{
+    'update:modelValue': [value: string];
     submit: [];
+    secondary: [];
     action: [id: string];
-    'update:activeSection': [value: string];
 }>();
-
-const activeLocale = ref(
-    props.localization?.initialLocale ??
-        props.localization?.baseLocale ??
-        props.localization?.locales[0]?.value ??
-        '',
-);
-const internalActiveSectionId = ref(props.initialSection ?? props.sections[0]?.id ?? '');
-const activeSectionId = computed({
-    get: () => props.activeSection ?? internalActiveSectionId.value,
+const { trans } = useI18n();
+type ActionSlotScope = { surface: 'desktop' | 'mobile'; loading: boolean };
+type AdditionalSlotScope = ActionSlotScope & { close: () => void };
+const slots = defineSlots<{
+    default?: (props: { tab?: TabItem }) => VNode[];
+    header?: () => VNode[];
+    'tab-action'?: (props: { tab: TabItem }) => VNode[];
+    'before-content'?: () => VNode[];
+    'desktop-actions'?: (props: { loading: boolean }) => VNode[];
+    'primary-action'?: (props: ActionSlotScope) => VNode[];
+    'secondary-action'?: (props: ActionSlotScope) => VNode[];
+    'additional-actions'?: (props: AdditionalSlotScope) => VNode[];
+    'mobile-additional-actions'?: (props: { loading: boolean; close: () => void }) => VNode[];
+    'floating-app-bar'?: (props: { fixed: false; orientation: 'horizontal' }) => VNode[];
+}>();
+const internalTab = ref(props.modelValue ?? props.tabs[0]?.value ?? '');
+const activeTab = computed({
+    get: () => props.modelValue ?? internalTab.value,
     set: (value: string) => {
-        internalActiveSectionId.value = value;
-        emit('update:activeSection', value);
+        internalTab.value = value;
+        emit('update:modelValue', value);
     },
 });
-const activeSection = computed(() =>
-    props.sections.find((section) => section.id === activeSectionId.value),
-);
-
-const layoutTabs = computed(() =>
-    props.sections.map((section) => ({
-        value: section.id,
-        label:
-            resolveText(section.label) +
-            (sectionHasLocalizedFields(section) ? ' · ' + activeLocale.value.toUpperCase() : ''),
-        icon: section.icon,
-        separatorBefore: section.separatorBefore,
-        badge: sectionErrorCount(section) || undefined,
-        attention: sectionErrorCount(section)
-            ? errorCountLabel(sectionErrorCount(section))
-            : undefined,
-    })),
-);
-const layoutActions = computed(() =>
-    props.additionalActions.map((action) => ({
-        ...action,
-        label: resolveText(action.label),
-    })),
-);
-interface ReactiveFormApi extends FormRendererApi {
-    useSelector<TSelected>(
-        selector: (state: AnyFormApi['state']) => TSelected,
-    ): Readonly<Ref<TSelected>>;
-}
-const fieldMeta = (props.form as ReactiveFormApi).useSelector((state) => state.fieldMeta);
-
 watch(
-    () => props.sections,
-    (sections) => {
-        if (!sections.some((section) => section.id === activeSectionId.value)) {
-            activeSectionId.value = props.initialSection ?? sections[0]?.id ?? '';
-        }
+    () => props.tabs.map((tab) => tab.value),
+    (values) => {
+        if (!values.includes(activeTab.value)) activeTab.value = values[0] ?? '';
     },
 );
-
+const layoutRoot = ref<HTMLElement>();
+const { width: layoutWidth } = useElementSize(layoutRoot);
+const isDesktop = computed(() => layoutWidth.value >= 1024);
+const dock = ref<HTMLElement>();
+const { height: dockHeight } = useElementSize(dock, { width: 0, height: 0 }, { box: 'border-box' });
+const clearanceStyle = computed<CSSProperties>(() => ({
+    '--ui-form-page-dock-height': dockHeight.value + 'px',
+}));
+/** Evaluate slot presence on each render because Vue's slots object is not reactive. */
+function hasDesktopAdditionalActions(): boolean {
+    return props.additionalActions.length > 0 || !!slots['additional-actions'];
+}
+function hasAdditionalActions(): boolean {
+    return hasDesktopAdditionalActions() || !!slots['mobile-additional-actions'];
+}
+const additionalActionsOpen = ref(false);
+function closeAdditionalActions(): void {
+    additionalActionsOpen.value = false;
+}
 watch(
-    () => props.localization,
-    (localization) => {
-        if (
-            localization &&
-            !localization.locales.some((locale) => locale.value === activeLocale.value)
-        ) {
-            activeLocale.value = localization.initialLocale ?? localization.baseLocale;
-        }
-    },
+    [isDesktop, () => props.showActions, () => props.additionalActions.length],
+    closeAdditionalActions,
 );
-
-function resolveText(text: FormTextDefinition): string {
-    return 'translation' in text
-        ? trans(text.translation, stringReplacements(text.replacements))
-        : text.value;
-}
-
-function sectionErrorCount(section: FormSectionDefinition): number {
-    return sectionErrors(section).length;
-}
-
-function sectionErrors(section: FormSectionDefinition): { field: string; messages: string[] }[] {
-    return Object.entries(fieldMeta.value).flatMap(([fieldName, metadata]) => {
-        if (!fieldBelongsToSection(fieldName, section) || !metadata?.errors?.length) {
-            return [];
-        }
-        const messages = metadata.errors.flatMap((error: unknown) => {
-            if (typeof error === 'string' && error) return [error];
-            if (
-                error &&
-                typeof error === 'object' &&
-                'message' in error &&
-                typeof error.message === 'string' &&
-                error.message
-            ) {
-                return [error.message];
-            }
-            return [];
-        });
-        return [
-            {
-                field: fieldName,
-                messages: messages.length
-                    ? [...new Set(messages)]
-                    : [trans('common.form.validation_error_unknown')],
-            },
-        ];
-    });
-}
-
-function sectionHasLocalizedFields(section: FormSectionDefinition): boolean {
-    return (
-        Boolean(props.localization) &&
-        section.fields.some(
-            (definition) => 'localized' in definition && definition.localized === true,
-        )
-    );
-}
-
-function fieldBelongsToSection(fieldName: string, section: FormSectionDefinition): boolean {
-    return section.fields.some((definition) => {
-        if (!('name' in definition)) {
-            return false;
-        }
-
-        if (definition.localized && props.localization) {
-            return props.localization.locales.some((locale) => {
-                const localizedName =
-                    props.localization?.fieldPath === 'locale_suffix'
-                        ? `${definition.name}_${locale.value}`
-                        : `translations.${locale.value}.${definition.name}`;
-
-                return fieldPathMatches(fieldName, localizedName);
-            });
-        }
-
-        return fieldPathMatches(fieldName, definition.name);
-    });
-}
-
-function fieldPathMatches(fieldName: string, sectionFieldName: string): boolean {
-    return (
-        fieldName === sectionFieldName ||
-        fieldName.startsWith(`${sectionFieldName}.`) ||
-        fieldName.startsWith(`${sectionFieldName}[`)
-    );
-}
-
-function errorCountLabel(count: number): string {
-    return trans('common.form.validation_errors', { count: String(count) });
-}
-
-function stringReplacements(
-    replacements?: Record<string, string | number>,
-): Record<string, string> | undefined {
-    return replacements === undefined
-        ? undefined
-        : Object.fromEntries(
-              Object.entries(replacements).map(([key, value]) => [key, String(value)]),
-          );
-}
-
-const { trans } = useI18n();
+onUpdated(() => {
+    if (!hasAdditionalActions()) closeAdditionalActions();
+});
 </script>
+
+<style>
+.ui-form-page-layout {
+    --ui-form-page-sticky-top: 1rem;
+    container: ui-form-page / inline-size;
+    display: grid;
+    gap: 1.5rem;
+    min-width: 0;
+}
+.ui-form-page-layout > form {
+    padding-bottom: calc(var(--ui-form-page-dock-height, 0px) + 1rem);
+}
+.ui-form-page-grid {
+    display: grid;
+    align-items: start;
+    gap: 2rem;
+    min-width: 0;
+}
+.ui-form-page-tabs[data-slot='tabs'] {
+    overflow: visible;
+}
+.ui-form-page-tabs > [role='tabpanel'] {
+    overflow: visible;
+}
+.ui-form-page-desktop-actions {
+    display: none;
+}
+.ui-form-page-dock {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 40;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--ui-background);
+}
+.ui-form-page-mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-top: 1px solid var(--ui-border);
+    padding: 0.75rem max(0.75rem, env(safe-area-inset-right, 0px)) 0.75rem
+        max(0.75rem, env(safe-area-inset-left, 0px));
+    box-shadow: 0 -4px 16px #0001;
+}
+.ui-form-page-floating-bar {
+    display: flex;
+    justify-content: center;
+    padding-inline: max(0.5rem, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+}
+/* The dock owns the safe area once, including an inline FloatingAppBar. */
+.ui-form-page-floating-bar > .ui-floating-app-bar {
+    padding-bottom: 1rem;
+}
+@container ui-form-page (min-width: 1024px) {
+    .ui-form-page-layout > form {
+        padding-bottom: 0;
+    }
+    .ui-form-page-grid[data-actions='true'] {
+        grid-template-columns: minmax(0, 1fr) 12rem;
+    }
+    .ui-form-page-tabs[data-slot='tabs'] {
+        display: grid;
+        grid-template-columns: 14rem minmax(0, 1fr);
+        align-items: start;
+        gap: 2rem;
+    }
+    .ui-form-page-tabs > div:first-child {
+        position: sticky;
+        top: var(--ui-form-page-sticky-top);
+        width: auto;
+    }
+    .ui-form-page-tabs > [role='tabpanel'] {
+        grid-column: 2;
+        grid-row: 1;
+        padding: 0;
+    }
+    .ui-form-page-desktop-actions {
+        position: sticky;
+        top: var(--ui-form-page-sticky-top);
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        border-left: 1px solid var(--ui-border);
+        padding-left: 1.5rem;
+    }
+    .ui-form-page-dock {
+        display: none;
+    }
+}
+@container ui-form-page (min-width: 1280px) {
+    .ui-form-page-grid[data-actions='true'] {
+        grid-template-columns: minmax(0, 1fr) 14rem;
+    }
+    .ui-form-page-tabs[data-slot='tabs'] {
+        grid-template-columns: 16rem minmax(0, 1fr);
+    }
+}
+</style>

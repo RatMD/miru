@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { carouselApiCopy } from '../../stories/carousel-documentation';
+import { CarouselDocs } from '../../stories/CarouselDocs';
 import CarouselExamples from '../../stories/CarouselExamples.vue';
 import { componentDescription } from '../../stories/component-descriptions';
 import { Carousel } from './index';
@@ -13,7 +15,7 @@ const meta: Meta = {
     component: Carousel as unknown as NonNullable<Meta['component']>,
     parameters: {
         layout: 'padded',
-        docs: { description: { component: componentDescription('Carousel') } },
+        docs: { page: CarouselDocs, description: { component: componentDescription('Carousel') } },
     },
     args: {
         slidesPerView: 1,
@@ -42,6 +44,9 @@ const meta: Meta = {
         showPlayButton: true,
     },
     argTypes: {
+        label: { control: 'text' },
+        class: { control: 'text' },
+        slideClass: { control: 'text' },
         slidesPerView: select([1, 1.5, 2, 3, 4]),
         gap: { control: { type: 'number', min: 0, max: 64 } },
         align: select(['start', 'center', 'end']),
@@ -84,6 +89,19 @@ const meta: Meta = {
         template: '<CarouselExamples :args="args" :locale="locale"/>',
     }),
 };
+Object.assign(
+    meta.argTypes ?? {},
+    Object.fromEntries(
+        Object.entries(meta.argTypes ?? {}).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: carouselApiCopy.Carousel.props[name],
+                table: { ...control?.table, category: 'Carousel props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 async function rootOf(canvasElement: HTMLElement) {
     const root = canvasElement.querySelector<HTMLElement>('[data-slot="carousel"]')!;

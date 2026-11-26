@@ -2,11 +2,16 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import type { ComponentOptions } from 'vue';
 import { expect, fireEvent, userEvent, waitFor, within } from 'storybook/test';
 import { componentControls, controlNames } from '../../stories/component-controls';
-import { componentDescription } from '../../stories/component-descriptions';
+import { ComponentDocs } from '../../stories/ComponentDocs';
 import DataTableAdaptersDemo from '../../stories/DataTableAdaptersDemo.vue';
 import DataTableAdvancedDemo from '../../stories/DataTableAdvancedDemo.vue';
 import DataTableDemo from '../../stories/DataTableDemo.vue';
 import DataTableMigrationDemo from '../../stories/DataTableMigrationDemo.vue';
+import {
+    extensionSummaries,
+    extensionDependencyMarkdown,
+    describeExtensionControls,
+} from '../../stories/extensions-documentation';
 import { DataTable } from './index';
 const meta = {
     ...componentControls('DataTable'),
@@ -15,9 +20,22 @@ const meta = {
     parameters: {
         layout: 'padded',
         controls: { include: controlNames('DataTable') },
-        docs: { description: { component: componentDescription('DataTable') } },
+        docs: {
+            page: ComponentDocs,
+            description: {
+                component:
+                    extensionSummaries.DataTable +
+                    '\n\n' +
+                    extensionDependencyMarkdown('DataTable', true),
+            },
+        },
     },
 } satisfies Meta;
+describeExtensionControls('DataTable', meta.argTypes ?? {});
+meta.parameters = {
+    ...meta.parameters,
+    controls: { ...meta.parameters?.controls, include: Object.keys(meta.argTypes ?? {}) },
+};
 export default meta;
 type Story = StoryObj;
 const render =

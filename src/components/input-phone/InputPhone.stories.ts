@@ -1,11 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
 import { formStory } from '../../stories/form-fixtures';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { InputPhone } from './index';
 
 const meta: Meta = {
     title: 'FormFields/InputPhone',
-    parameters: { docs: { description: { component: componentDescription('InputPhone') } } },
+    parameters: {
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('InputPhone') },
+        },
+    },
     component: InputPhone,
     args: { size: 'default', disabled: false },
     argTypes: {
@@ -17,6 +24,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('InputPhone', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { attachmentApiCopy } from '../../stories/attachment-documentation';
+import { AttachmentDocs } from '../../stories/AttachmentDocs';
 import AttachmentExamples from '../../stories/AttachmentExamples.vue';
 import AttachmentFormDemo from '../../stories/AttachmentFormDemo.vue';
 import { componentDescription } from '../../stories/component-descriptions';
@@ -15,7 +17,10 @@ const meta: Meta = {
     component: Attachment,
     parameters: {
         layout: 'padded',
-        docs: { description: { component: componentDescription('Attachment') } },
+        docs: {
+            page: AttachmentDocs,
+            description: { component: componentDescription('Attachment') },
+        },
     },
     args: {
         orientation: 'horizontal',
@@ -68,6 +73,29 @@ const meta: Meta = {
         template: '<AttachmentExamples :args="args" :locale="locale"/>',
     }),
 };
+// Keep the existing example controls while sharing the API descriptions.
+for (const [name, control] of Object.entries(meta.argTypes ?? {})) {
+    if (!control) continue;
+    const description = attachmentApiCopy.Attachment.props[name];
+    const preview: Record<string, string> = {
+        status: 'The example upload state stored on item.status.',
+        progress: 'The example upload progress stored on item.progress.',
+    };
+    Object.assign(control, {
+        description: description ?? preview[name],
+        table: { ...control.table, category: description ? 'Attachment props' : 'Example content' },
+    });
+}
+for (const [name, description] of Object.entries(attachmentApiCopy.Attachment.props)) {
+    meta.argTypes ??= {};
+    const control = meta.argTypes[name] ?? {};
+    meta.argTypes[name] = {
+        ...control,
+        description,
+        ...(name === 'class' || name === 'listClass' ? { control: 'text' } : {}),
+        table: { ...control.table, category: 'Attachment props' },
+    };
+}
 export default meta;
 export const Default: StoryObj = {};
 export const Image: StoryObj = {

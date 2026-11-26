@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { markerApiCopy } from '../../stories/marker-documentation';
+import { MarkerDocs } from '../../stories/MarkerDocs';
 import { Marker } from './index';
 const meta = {
     ...componentControls('Marker'),
@@ -9,9 +11,27 @@ const meta = {
     component: Marker,
     parameters: {
         controls: { include: controlNames('Marker') },
-        docs: { description: { component: componentDescription('Marker') } },
+        docs: { page: MarkerDocs, description: { component: componentDescription('Marker') } },
     },
 } satisfies Meta;
+const exampleCopy: Record<string, string> = {
+    title: 'The heading text used in this example.',
+    description: 'The supporting text used in this example.',
+    showIcon: 'Show the example marker icon.',
+};
+Object.assign(
+    meta.argTypes,
+    Object.fromEntries(
+        Object.entries(meta.argTypes).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: markerApiCopy.Marker.props[name] ?? exampleCopy[name],
+                table: { category: exampleCopy[name] ? 'Example content' : 'Marker props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

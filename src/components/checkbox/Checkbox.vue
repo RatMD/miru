@@ -1,6 +1,10 @@
 <template>
-    <div data-slot="checkbox-field" :class="cn('flex items-center gap-2', props.class)">
-        <CheckboxControl v-bind="{ ...$attrs, ...forwarded }" :id="inputId">
+    <div data-slot="checkbox-field" :class="cn('flex items-center gap-2', props.wrapperClass)">
+        <CheckboxControl
+            :class="props.class"
+            :readonly="readonly"
+            v-bind="{ ...$attrs, ...forwarded }"
+            :id="inputId">
             <template v-if="$slots.indicator" #default="scope">
                 <slot name="indicator" v-bind="scope" />
             </template>
@@ -31,10 +35,15 @@ const props = defineProps<
         label?: string;
         size?: 'sm' | 'default' | 'lg';
         class?: HTMLAttributes['class'];
+        wrapperClass?: HTMLAttributes['class'];
+        readonly?: boolean;
     }
 >();
 const emit = defineEmits<CheckboxRootEmits>();
 const generatedId = useId();
 const inputId = computed(() => props.id || generatedId);
-const forwarded = useForwardPropsEmits(reactiveOmit(props, 'class', 'label'), emit);
+const forwarded = useForwardPropsEmits(
+    reactiveOmit(props, 'class', 'wrapperClass', 'readonly', 'label'),
+    emit,
+);
 </script>

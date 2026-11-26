@@ -1,5 +1,5 @@
 <template>
-    <UiProvider :locale="locale">
+    <ContextProvider :locale="locale">
         <div class="grid max-w-xl gap-4">
             <div>
                 <h3 class="font-semibold">{{ copy.title }}</h3>
@@ -65,7 +65,7 @@
                 @update:open="!$event && (pending = null)"
                 @confirm="confirm" />
         </div>
-    </UiProvider>
+    </ContextProvider>
 </template>
 <script setup lang="ts">
 import type {
@@ -79,7 +79,7 @@ import { computed, ref, shallowRef, watch } from 'vue';
 import { Button } from '../components/button';
 import { Calendar } from '../components/calendar';
 import { OverlayChoice } from '../components/overlay-choice';
-import { UiProvider } from '../components/provider';
+import { ContextProvider } from '../components/provider';
 const props = defineProps<{ locale: string; weekStartsOn?: CalendarWeekday }>();
 const day = shallowRef<DateValue | undefined>(parseDate('2026-11-17'));
 const selected = ref<string | null>(null);

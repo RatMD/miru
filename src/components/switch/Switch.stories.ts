@@ -1,13 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { ref } from 'vue';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
 import { formStory, nextFormStoryId } from '../../stories/form-fixtures';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { Label } from '../label';
 import { Switch } from './index';
 
 const meta: Meta = {
     title: 'FormFields/Switch',
-    parameters: { docs: { description: { component: componentDescription('Switch') } } },
+    parameters: {
+        docs: { page: FormFieldDocs, description: { component: componentDescription('Switch') } },
+    },
     component: Switch,
     args: { size: 'default', variant: 'default', trackPadding: 0, disabled: false },
     argTypes: {
@@ -21,6 +25,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('Switch', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

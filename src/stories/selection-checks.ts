@@ -55,12 +55,22 @@ function selectionVariantsPlay(kind: 'checkbox' | 'radio' | 'tags' | 'tabs') {
                 'true',
             );
             await expect(scope.getByRole('tab', { name: 'Disabled' })).toBeDisabled();
-            const indicator = row.querySelector<HTMLElement>('[data-slot="tabs-indicator"]')!;
-            await waitFor(() =>
-                expect(getComputedStyle(indicator).color).toBe(
-                    getComputedStyle(scope.getByRole('tab', { name: 'Activity' })).color,
-                ),
-            );
+            const indicator = row.querySelector<HTMLElement>('[data-slot="tabs-indicator"]');
+            if (indicator) {
+                await waitFor(() =>
+                    expect(getComputedStyle(indicator).color).toBe(
+                        getComputedStyle(scope.getByRole('tab', { name: 'Activity' })).color,
+                    ),
+                );
+            } else {
+                await expect(row.querySelector('[data-slot="tabs"]')!).toHaveAttribute(
+                    'data-appearance',
+                    'buttons',
+                );
+                await expect(
+                    getComputedStyle(scope.getByRole('tab', { name: 'Activity' })).backgroundColor,
+                ).not.toBe('rgba(0, 0, 0, 0)');
+            }
         }
     };
 }

@@ -145,8 +145,9 @@
 <script setup lang="ts">
 import type { ScheduleEvent, ScheduleDetailPresentation } from './types';
 import { IconArrowLeft, IconChevronRight } from '@tabler/icons-vue';
-import { useMediaQuery, useResizeObserver } from '@vueuse/core';
+import { useResizeObserver } from '@vueuse/core';
 import { computed, nextTick, ref, useId, watch } from 'vue';
+import { useBreakpoint } from '../../composables/useBreakpoint';
 import { useI18n } from '../../composables/useI18n';
 import { Button } from '../button';
 import { Drawer, DrawerTrigger, DrawerContent, DrawerTitle, DrawerDescription } from '../drawer';
@@ -167,7 +168,7 @@ const props = withDefaults(
     { columnIndex: 0, timeZone: 'Europe/Berlin', detailPresentation: 'list' },
 );
 const { trans } = useI18n(() => props.locale);
-const mobile = useMediaQuery('(max-width:767px)');
+const { matches: mobile } = useBreakpoint({ max: 'md' });
 const open = ref(false),
     selectedId = ref<string | null>(null),
     pane = ref<HTMLElement>(),

@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
-import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { ComponentDocs } from '../../stories/ComponentDocs';
+import {
+    extensionSummaries,
+    extensionDependencyMarkdown,
+    describeExtensionControls,
+} from '../../stories/extensions-documentation';
 import { ApexChart } from './index';
 const meta = {
     ...componentControls('ApexChart'),
@@ -9,9 +14,22 @@ const meta = {
     component: ApexChart,
     parameters: {
         controls: { include: controlNames('ApexChart') },
-        docs: { description: { component: componentDescription('ApexChart') } },
+        docs: {
+            page: ComponentDocs,
+            description: {
+                component:
+                    extensionSummaries.ApexChart +
+                    '\n\n' +
+                    extensionDependencyMarkdown('ApexChart', true),
+            },
+        },
     },
 } satisfies Meta;
+describeExtensionControls('ApexChart', meta.argTypes ?? {});
+meta.parameters = {
+    ...meta.parameters,
+    controls: { ...meta.parameters?.controls, include: Object.keys(meta.argTypes ?? {}) },
+};
 export default meta;
 export const Line: StoryObj = {
     render: componentStory(

@@ -11,18 +11,28 @@
                 props.class,
             )
         "
+        :data-readonly="isReadonly || undefined"
+        @click.capture="guard"
+        @keydown.capture="guard"
+        @drop.capture="guard"
         @change="onChange" />
 </template>
 
 <script setup lang="ts">
 import type { HTMLAttributes } from 'vue';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 import { inputVariants } from '../input';
 
 const props = withDefaults(
-    defineProps<{ size?: 'sm' | 'default' | 'lg'; class?: HTMLAttributes['class'] }>(),
+    defineProps<{
+        size?: 'sm' | 'default' | 'lg';
+        class?: HTMLAttributes['class'];
+        readonly?: boolean;
+    }>(),
     { size: 'default' },
 );
+const { readonly: isReadonly, guard } = useReadonlyField(() => props.readonly);
 const emit = defineEmits<{ files: [files: File[]] }>();
 
 /** Expose selected files while retaining native file-input attributes and events. */

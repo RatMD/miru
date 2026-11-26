@@ -75,43 +75,17 @@ function guardKeyboard(event: KeyboardEvent): void {
 </script>
 
 <style scoped>
-/* Scope semantic button tokens; dark filled variants use their explicit palette shades. */
-.miru-button:where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *) {
-    --ui-primary: var(--ui-primary-600);
-    --ui-primary-foreground: #ffffff;
-    --ui-primary-hover: var(--ui-primary-700);
-    --ui-primary-active: var(--ui-primary-800);
-    --ui-accent: var(--ui-accent-600);
-    --ui-accent-foreground: #ffffff;
-    --ui-accent-hover: var(--ui-accent-700);
-    --ui-accent-active: var(--ui-accent-800);
-    --ui-secondary: var(--ui-secondary-600);
-    --ui-secondary-foreground: #ffffff;
-    --ui-secondary-hover: var(--ui-secondary-700);
-    --ui-secondary-active: var(--ui-secondary-800);
-    --ui-info: var(--ui-info-700);
-    --ui-info-foreground: #ffffff;
-    --ui-info-hover: var(--ui-info-800);
-    --ui-info-active: var(--ui-info-900);
-    --ui-success: var(--ui-success-700);
-    --ui-success-foreground: #ffffff;
-    --ui-success-hover: var(--ui-success-800);
-    --ui-success-active: var(--ui-success-900);
-    --ui-warning: var(--ui-warning-400);
-    --ui-warning-foreground: #000000;
-    --ui-warning-hover: var(--ui-warning-500);
-    --ui-warning-active: var(--ui-warning-600);
-    --ui-danger: var(--ui-danger-700);
-    --ui-danger-foreground: #ffffff;
-    --ui-danger-hover: var(--ui-danger-800);
-    --ui-danger-active: var(--ui-danger-900);
-}
-
 /* Tabler Loader2 path (MIT). Preserve the original slot and as-child root. */
 .miru-button {
-    --ui-warning-foreground: #000000;
     --button-loader-size: 1rem;
     --button-loader-gap: 0.5rem;
+}
+
+/* Show the pressed feedback even when a click is shorter than the hover transition. */
+.miru-button:is([data-variant='ghost'], [data-variant='ghostly']):not(:disabled):not(
+        [aria-disabled='true']
+    ):not([data-disabled]):active {
+    transition-duration: 0s;
 }
 
 .miru-button[data-size='xs'] {
@@ -177,5 +151,78 @@ function guardKeyboard(event: KeyboardEvent): void {
     .miru-button[data-loading='true']::before {
         animation: none;
     }
+}
+</style>
+
+<style scoped>
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='primary']:not(:disabled):not([aria-disabled='true']):hover {
+    color: var(--ui-primary-hover-foreground, var(--ui-primary-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='primary']:not(:disabled):not([aria-disabled='true']):active {
+    color: var(--ui-primary-active-foreground, var(--ui-primary-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='secondary']:not(:disabled):not([aria-disabled='true']):hover {
+    color: var(--ui-secondary-hover-foreground, var(--ui-secondary-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='secondary']:not(:disabled):not([aria-disabled='true']):active {
+    color: var(--ui-secondary-active-foreground, var(--ui-secondary-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='accent']:not(:disabled):not([aria-disabled='true']):hover {
+    color: var(--ui-accent-hover-foreground, var(--ui-accent-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='accent']:not(:disabled):not([aria-disabled='true']):active {
+    color: var(--ui-accent-active-foreground, var(--ui-accent-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='info']:not(:disabled):not([aria-disabled='true']):hover {
+    color: var(--ui-info-hover-foreground, var(--ui-info-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='info']:not(:disabled):not([aria-disabled='true']):active {
+    color: var(--ui-info-active-foreground, var(--ui-info-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='success']:not(:disabled):not([aria-disabled='true']):hover {
+    color: var(--ui-success-hover-foreground, var(--ui-success-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='success']:not(:disabled):not([aria-disabled='true']):active {
+    color: var(--ui-success-active-foreground, var(--ui-success-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='warning']:not(:disabled):not([aria-disabled='true']):hover {
+    color: var(--ui-warning-hover-foreground, var(--ui-warning-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='warning']:not(:disabled):not([aria-disabled='true']):active {
+    color: var(--ui-warning-active-foreground, var(--ui-warning-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='danger']:not(:disabled):not([aria-disabled='true']):hover {
+    color: var(--ui-danger-hover-foreground, var(--ui-danger-foreground));
+}
+.miru-button:not(
+        :where(.dark, .dark *, [data-theme='dark'], [data-theme='dark'] *)
+    )[data-variant='danger']:not(:disabled):not([aria-disabled='true']):active {
+    color: var(--ui-danger-active-foreground, var(--ui-danger-foreground));
 }
 </style>

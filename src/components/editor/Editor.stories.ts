@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { ref } from 'vue';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { Editor } from './index';
 const meta = {
     title: 'FormFields/EditorTinyMCE',
@@ -23,9 +25,10 @@ const meta = {
     },
     parameters: {
         controls: { include: ['height', 'disabled', 'readonly', 'placeholder', 'toolbar'] },
-        docs: { description: { component: componentDescription('Editor') } },
+        docs: { page: FormFieldDocs, description: { component: componentDescription('Editor') } },
     },
 } satisfies Meta<typeof Editor>;
+describeFormFieldControls('Editor', meta.argTypes);
 export default meta;
 export const Default: StoryObj<typeof meta> = {
     render: (args, { globals }) => ({

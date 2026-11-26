@@ -1,13 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
 import EditorExamples from '../../stories/EditorExamples.vue';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { EditorMarkdown } from './index';
 const meta = {
     title: 'FormFields/EditorMarkdown',
     component: EditorMarkdown,
     parameters: {
         layout: 'padded',
-        docs: { description: { component: componentDescription('EditorMarkdown') } },
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('EditorMarkdown') },
+        },
     },
     args: {
         counter: false,
@@ -37,6 +42,7 @@ const meta = {
         template: '<EditorExamples kind="markdown" :args="args"/>',
     }),
 } satisfies Meta;
+describeFormFieldControls('EditorMarkdown', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Kleinanzeigen: StoryObj = { args: { syntax: 'kleinanzeigen' } };

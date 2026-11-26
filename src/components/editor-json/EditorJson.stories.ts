@@ -2,13 +2,18 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { componentDescription } from '../../stories/component-descriptions';
 import EditorExamples from '../../stories/EditorExamples.vue';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { EditorJson } from './index';
 const meta = {
     title: 'FormFields/EditorJSON',
     component: EditorJson,
     parameters: {
         layout: 'padded',
-        docs: { description: { component: componentDescription('EditorJson') } },
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('EditorJson') },
+        },
     },
     args: {
         counter: false,
@@ -43,6 +48,7 @@ const meta = {
         template: '<EditorExamples kind="json" :args="args"/>',
     }),
 } satisfies Meta;
+describeFormFieldControls('EditorJson', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Invalid: StoryObj = { args: { invalidExample: true } };

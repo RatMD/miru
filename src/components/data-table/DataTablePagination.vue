@@ -5,9 +5,9 @@
             <template v-if="pagination.total">
                 {{
                     trans('common.datatable.range', {
-                        from: formatNumber(pagination.from),
-                        to: formatNumber(pagination.to),
-                        total: formatNumber(pagination.total),
+                        from: formatPaginationNumber(pagination.from),
+                        to: formatPaginationNumber(pagination.to),
+                        total: formatPaginationNumber(pagination.total),
                     })
                 }}
             </template>
@@ -25,7 +25,7 @@
                     <SelectTrigger size="sm" class="w-20"><SelectValue /></SelectTrigger>
                     <SelectContent side="top">
                         <SelectItem v-for="size in pageSizes" :key="size" :value="String(size)">
-                            {{ formatNumber(size) }}
+                            {{ formatPaginationNumber(size) }}
                         </SelectItem>
                     </SelectContent>
                 </Select>
@@ -33,8 +33,8 @@
             <span class="min-w-28 text-center text-sm font-medium">
                 {{
                     trans('common.datatable.page', {
-                        current: formatNumber(pagination.current_page),
-                        last: formatNumber(pagination.last_page),
+                        current: formatPaginationNumber(pagination.current_page),
+                        last: formatPaginationNumber(pagination.last_page),
                     })
                 }}
             </span>
@@ -93,7 +93,7 @@ import {
     IconChevronsRight,
 } from '@tabler/icons-vue';
 import { useI18n } from '../../composables/useI18n';
-import { formatCounterValue } from '../badge-counter/formatCounterValue';
+import { formatNumber } from '../../support/numberFormat';
 import { Button } from '../button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select';
 const { trans, transChoice, locale } = useI18n();
@@ -109,8 +109,8 @@ const emit = defineEmits<{
     (event: 'per-page', value: number): void;
 }>();
 /** Format pagination numbers using the active interface language. */
-function formatNumber(value: number): string {
-    return formatCounterValue(value, locale.value, 0);
+function formatPaginationNumber(value: number): string {
+    return formatNumber(value, locale.value, { maximumFractionDigits: 0 });
 }
 
 function changePerPage(value: number): void {

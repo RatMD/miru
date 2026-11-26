@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
-import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { ComponentDocs } from '../../stories/ComponentDocs';
+import {
+    utilitySummaries,
+    utilityDependencyMarkdown,
+    describeUtilityControls,
+} from '../../stories/utilities-documentation';
 import { ScrollArea } from './index';
 const meta = {
     ...componentControls('ScrollArea'),
@@ -9,9 +14,18 @@ const meta = {
     component: ScrollArea,
     parameters: {
         controls: { include: controlNames('ScrollArea') },
-        docs: { description: { component: componentDescription('ScrollArea') } },
+        docs: {
+            page: ComponentDocs,
+            description: {
+                component:
+                    utilitySummaries.ScrollArea +
+                    '\n\n' +
+                    utilityDependencyMarkdown('ScrollArea', true),
+            },
+        },
     },
 } satisfies Meta;
+describeUtilityControls('ScrollArea', meta.argTypes ?? {}, meta);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

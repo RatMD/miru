@@ -80,8 +80,8 @@
 <script setup lang="ts">
 import type { DialogSize } from '../dialog';
 import type { Component, HTMLAttributes } from 'vue';
-import { useMediaQuery } from '@vueuse/core';
 import { computed, nextTick, watch, provide } from 'vue';
+import { useBreakpoint } from '../../composables/useBreakpoint';
 import { useI18n } from '../../composables/useI18n';
 import { cn } from '../../support/classNames';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '../dialog';
@@ -118,7 +118,7 @@ const props = withDefaults(
 );
 const open = defineModel<boolean>('open', { default: false });
 const { trans } = useI18n();
-const desktop = useMediaQuery('(min-width: 768px)');
+const { matches: desktop } = useBreakpoint({ min: 'md' });
 provide(
     overlayDesktopKey,
     computed(() => desktop.value),

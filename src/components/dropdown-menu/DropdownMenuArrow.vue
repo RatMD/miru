@@ -2,7 +2,7 @@
     <RekaDropdownMenuArrow
         v-bind="forwarded"
         data-slot="dropdown-menu-arrow"
-        :class="cn('relative -top-px fill-popover stroke-border', props.class)">
+        :class="cn('relative top-0 fill-popover stroke-border', props.class)">
         <path d="M0 0L6 6L12 0" vector-effect="non-scaling-stroke" />
     </RekaDropdownMenuArrow>
 </template>

@@ -248,3 +248,37 @@
 :where(.light, [data-theme='light']) {
     color-scheme: light;
 }
+
+/* Public semantic recipes. Override an alias or a palette step independently. */
+:where(:root) {
+    --ui-primary-border: var(--ui-primary-400);
+    --ui-primary-hover-foreground: var(--ui-primary-foreground);
+    --ui-primary-active-foreground: var(--ui-primary-foreground);
+    --ui-secondary-border: var(--ui-secondary-400);
+    --ui-secondary-hover-foreground: var(--ui-secondary-foreground);
+    --ui-secondary-active-foreground: var(--ui-secondary-foreground);
+    --ui-accent-border: var(--ui-accent-400);
+    --ui-accent-hover-foreground: var(--ui-accent-foreground);
+    --ui-accent-active-foreground: var(--ui-accent-foreground);
+    --ui-info-border: var(--ui-info-400);
+    --ui-info-hover-foreground: var(--ui-info-foreground);
+    --ui-info-active-foreground: var(--ui-info-foreground);
+    --ui-success-border: var(--ui-success-400);
+    --ui-success-hover-foreground: var(--ui-success-foreground);
+    --ui-success-active-foreground: var(--ui-success-foreground);
+    --ui-warning-border: var(--ui-warning-400);
+    --ui-warning-hover-foreground: var(--ui-warning-foreground);
+    --ui-warning-active-foreground: var(--ui-warning-foreground);
+    --ui-danger-border: var(--ui-danger-400);
+    --ui-danger-hover-foreground: var(--ui-danger-foreground);
+    --ui-danger-active-foreground: var(--ui-danger-foreground);
+}
+:where(.dark, [data-theme="dark"]) {
+    --ui-primary-border: var(--ui-primary-600);
+    --ui-secondary-border: var(--ui-secondary-600);
+    --ui-accent-border: var(--ui-accent-600);
+    --ui-info-border: var(--ui-info-600);
+    --ui-success-border: var(--ui-success-600);
+    --ui-warning-border: var(--ui-warning-600);
+    --ui-danger-border: var(--ui-danger-600);
+}

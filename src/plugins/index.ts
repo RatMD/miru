@@ -7,7 +7,7 @@ export type {
     CustomValidationFactories,
 } from './validation';
 export { createMiru, MiruPlugin, default } from '../miru';
-export type { MiruInstallation } from '../miru';
+export type { MiruInstallation, MiruAdapter } from '../miru';
 export { createMiruConfig, installMiruConfig } from '../miru';
 export type { MiruOptions, MiruConfiguration, MiruConfigureContext } from '../miru';
 export { createMiruI18n, installI18n, translateI18n } from './i18n';

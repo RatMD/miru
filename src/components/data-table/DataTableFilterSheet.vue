@@ -78,8 +78,8 @@
 <script setup lang="ts" generic="TData">
 import type { ListPayload } from './contracts';
 import { IconFilter } from '@tabler/icons-vue';
-import { useMediaQuery } from '@vueuse/core';
 import { computed, reactive, ref, watch } from 'vue';
+import { useBreakpoint } from '../../composables/useBreakpoint';
 import { useI18n } from '../../composables/useI18n';
 import { Badge } from '../badge';
 import { Button } from '../button';
@@ -123,7 +123,7 @@ const invalid = computed(() =>
     ),
 );
 const open = ref(false);
-const isDesktop = useMediaQuery('(min-width: 768px)');
+const { matches: isDesktop } = useBreakpoint({ min: 'md' });
 const draftFilters = reactive<Record<string, unknown>>({});
 
 watch(open, (value) => {

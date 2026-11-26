@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { codeApiCopy } from '../../stories/code-documentation';
+import { CodeDocs } from '../../stories/CodeDocs';
+import { componentDescription } from '../../stories/component-descriptions';
 import { inlineColorVariants } from '../inline-variants';
-import { UiProvider } from '../provider';
+import { ContextProvider } from '../provider';
 import { Code } from './index';
 
 const meta = {
@@ -9,9 +12,9 @@ const meta = {
     component: Code,
     parameters: {
         docs: {
+            page: CodeDocs,
             description: {
-                component:
-                    'Inline monospace code with a softly tinted background, optional borderless styling and eight theme tones. Use value or the default slot. copyable makes the entire element a native copy button with hover/focus feedback and a centered tooltip; copyTarget=button keeps a separate icon button. prefixVariant colors only the decorative prefix, independently of the neutral/colored code surface. The prefix is excluded from copied text. No syntax-highlighting dependency.',
+                component: componentDescription('Code'),
             },
         },
     },
@@ -23,8 +26,10 @@ const meta = {
         prefix: '',
         prefixVariant: undefined,
         copyTarget: 'all',
+        class: '',
     },
     argTypes: {
+        class: { control: 'text' },
         variant: { control: 'select', options: inlineColorVariants },
         borderless: { control: 'boolean' },
         copyable: { control: 'boolean' },
@@ -39,6 +44,19 @@ const meta = {
         template: '<p>Run <Code v-bind="args" /> to get started.</p>',
     }),
 } satisfies Meta;
+Object.assign(
+    meta.argTypes,
+    Object.fromEntries(
+        Object.entries(meta.argTypes).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: codeApiCopy.Code.props[name],
+                table: { category: 'Code props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 export const Default: StoryObj = {};
 export const Borderless: StoryObj = { args: { borderless: true } };
@@ -49,10 +67,10 @@ export const CopyButton: StoryObj = {
 };
 export const CopyFeedback: StoryObj = {
     render: () => ({
-        components: { Code, UiProvider },
+        components: { Code, ContextProvider },
         template: `<div class="flex flex-col items-start gap-6">
-            <UiProvider locale="en"><Code copyable prefix="$" prefix-variant="accent" value="npm install @rat.md/miru" /></UiProvider>
-            <UiProvider locale="de"><Code copyable copy-target="button" prefix="$" prefix-variant="accent" value="npm install @rat.md/miru" /></UiProvider>
+            <ContextProvider locale="en"><Code copyable prefix="$" prefix-variant="accent" value="npm install @rat.md/miru" /></ContextProvider>
+            <ContextProvider locale="de"><Code copyable copy-target="button" prefix="$" prefix-variant="accent" value="npm install @rat.md/miru" /></ContextProvider>
         </div>`,
     }),
     play: async ({ canvasElement }) => {

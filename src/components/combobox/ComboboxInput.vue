@@ -6,6 +6,10 @@
             class="absolute top-1/2 left-2.5 -translate-y-1/2 size-4 shrink-0 text-muted-foreground"
             v-if="disableIcon === false" />
         <ComboboxInput
+        :aria-readonly="isReadonly || undefined"
+        @click.capture="guardReadonly"
+        @keydown.capture="guardReadonly"
+        :readonly="isReadonly"
             data-slot="combobox-input"
             :class="
                 cn(
@@ -26,6 +30,7 @@ import { IconSearch as SearchIcon } from '@tabler/icons-vue';
 import { reactiveOmit } from '@vueuse/core';
 import { ComboboxInput, useForwardPropsEmits } from 'reka-ui';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 
 defineOptions({
     inheritAttrs: false,
@@ -34,6 +39,7 @@ defineOptions({
 const props = defineProps<
     ComboboxInputProps & {
         wrapperClass?: HTMLAttributes['class'];
+        readonly?: boolean;
         class?: HTMLAttributes['class'];
         disableIcon?: boolean;
     }
@@ -41,6 +47,7 @@ const props = defineProps<
 
 const emits = defineEmits<ComboboxInputEmits>();
 
+const { readonly: isReadonly, guard: guardReadonly } = useReadonlyField(() => props.readonly);
 const delegatedProps = reactiveOmit(props, 'class', 'wrapperClass', 'disableIcon');
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);

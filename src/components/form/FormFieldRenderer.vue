@@ -3,7 +3,7 @@
         v-if="!definition.hidden"
         :class="[
             spanClasses,
-            definition.class,
+            definition.wrapperClass,
             isLocalized && definition.localizedBackground !== false
                 ? 'rounded-md bg-primary/5 px-3 py-2'
                 : undefined,
@@ -17,6 +17,7 @@
                     :field="field"
                     :locale="locale" />
                 <FieldError
+                    :id="`${field.name}-error`"
                     v-if="definition.type === 'custom' && isInvalid(field)"
                     :errors="field.state.meta.errors" />
 
@@ -26,11 +27,16 @@
                     :invalid="isInvalid(field)"
                     :valid="isValidated(field)">
                     <Checkbox
+                        :class="fieldClass"
+                        :name="field.name"
+                        :required="definition.required"
                         :variant="definition.variant"
                         :id="field.name"
                         :model-value="Boolean(field.state.value)"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :aria-invalid="isInvalid(field)"
+                        :aria-describedby="describedBy(field)"
                         @update:model-value="field.handleChange(Boolean($event))" />
                     <FieldContent>
                         <FieldLabel
@@ -46,10 +52,13 @@
                                 {{ localeCode }}
                             </span>
                         </FieldLabel>
-                        <FieldDescription v-if="definition.description && !hasErrorMessage(field)">
+                        <FieldDescription
+                            :id="`${field.name}-description`"
+                            v-if="definition.description && !hasErrorMessage(field)">
                             <FormText :text="definition.description" />
                         </FieldDescription>
                         <FieldError
+                            :id="`${field.name}-error`"
                             v-if="hasErrorMessage(field)"
                             :errors="field.state.meta.errors" />
                     </FieldContent>
@@ -66,15 +75,20 @@
                     :invalid="isInvalid(field)"
                     :valid="isValidated(field)">
                     <Switch
+                        :name="field.name"
+                        :required="definition.required"
                         :variant="definition.variant"
                         :id="field.name"
                         class="shrink-0 cursor-pointer"
-                        :class="
-                            definition.description || hasErrorMessage(field) ? 'mt-0.5' : undefined
-                        "
+                        :class="[
+                            fieldClass,
+                            definition.description || hasErrorMessage(field) ? 'mt-0.5' : undefined,
+                        ]"
                         :model-value="Boolean(field.state.value)"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :aria-invalid="isInvalid(field)"
+                        :aria-describedby="describedBy(field)"
                         @update:model-value="field.handleChange(Boolean($event))" />
                     <FieldContent>
                         <FieldLabel
@@ -91,10 +105,13 @@
                                 {{ localeCode }}
                             </span>
                         </FieldLabel>
-                        <FieldDescription v-if="definition.description && !hasErrorMessage(field)">
+                        <FieldDescription
+                            :id="`${field.name}-description`"
+                            v-if="definition.description && !hasErrorMessage(field)">
                             <FormText :text="definition.description" />
                         </FieldDescription>
                         <FieldError
+                            :id="`${field.name}-error`"
                             v-if="hasErrorMessage(field)"
                             :errors="field.state.meta.errors" />
                     </FieldContent>
@@ -121,11 +138,19 @@
                     <InputDateTime
                         mode="date"
                         v-if="definition.type === 'date'"
+                        :id="field.name"
+                        :name="field.name"
+                        :required="definition.required"
+                        :aria-invalid="isInvalid(field)"
+                        :aria-describedby="describedBy(field)"
+                        :class="fieldClass"
                         :model-value="stringValue(field.state.value) || null"
                         :locale="applicationLocale"
                         :placeholder="placeholder(definition) ?? ''"
                         :allow-future="definition.allowFuture"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
+                        @blur="field.handleBlur"
                         @update:model-value="field.handleChange($event ?? '')" />
 
                     <InputGroup v-else-if="definition.type === 'input' && definition.suffix">
@@ -138,11 +163,10 @@
                             :placeholder="placeholder(definition)"
                             :required="definition.required"
                             :disabled="definition.disabled"
+                            :readonly="definition.readonly"
                             :aria-invalid="isInvalid(field)"
-                            :class="[
-                                isLocalized ? 'bg-background' : undefined,
-                                definition.inputClass,
-                            ]"
+                            :aria-describedby="describedBy(field)"
+                            :class="[isLocalized ? 'bg-background' : undefined, fieldClass]"
                             @blur="field.handleBlur"
                             @update:model-value="
                                 field.handleChange(normalizeInputValue($event, definition))
@@ -163,8 +187,10 @@
                         :placeholder="placeholder(definition)"
                         :required="definition.required"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :aria-invalid="isInvalid(field)"
-                        :class="[isLocalized ? 'bg-background' : undefined, definition.inputClass]"
+                        :aria-describedby="describedBy(field)"
+                        :class="[isLocalized ? 'bg-background' : undefined, fieldClass]"
                         @blur="field.handleBlur"
                         @update:model-value="
                             field.handleChange(normalizeInputValue($event, definition))
@@ -179,21 +205,26 @@
                         :placeholder="placeholder(definition)"
                         :required="definition.required"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :aria-invalid="isInvalid(field)"
-                        :class="[isLocalized ? 'bg-background' : undefined, definition.inputClass]"
+                        :aria-describedby="describedBy(field)"
+                        :class="[isLocalized ? 'bg-background' : undefined, fieldClass]"
                         @blur="field.handleBlur"
                         @update:model-value="field.handleChange(String($event ?? ''))" />
 
                     <Editor
                         v-else-if="definition.type === 'richtext'"
+                        :required="definition.required"
                         :id="field.name"
                         :name="field.name"
                         :model-value="stringValue(field.state.value)"
                         :label="resolveText(definition.label)"
                         :locale="applicationLocale"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :aria-invalid="isInvalid(field)"
-                        :class="definition.inputClass"
+                        :aria-describedby="describedBy(field)"
+                        :class="fieldClass"
                         @blur="field.handleBlur"
                         @update:model-value="field.handleChange($event)" />
                     <EditorJson
@@ -208,8 +239,10 @@
                         :rows="definition.rows"
                         :required="definition.required"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :aria-invalid="isInvalid(field)"
-                        :class="definition.inputClass"
+                        :aria-describedby="describedBy(field)"
+                        :class="fieldClass"
                         @blur="field.handleBlur"
                         @update:model-value="field.handleChange($event)" />
                     <EditorMarkdown
@@ -227,8 +260,10 @@
                         :toolbar="definition.markdownToolbar"
                         :required="definition.required"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :aria-invalid="isInvalid(field)"
-                        :class="definition.inputClass"
+                        :aria-describedby="describedBy(field)"
+                        :class="fieldClass"
                         @blur="field.handleBlur"
                         @update:model-value="field.handleChange($event)" />
                     <Textarea
@@ -243,12 +278,16 @@
                         :placeholder="placeholder(definition)"
                         :required="definition.required"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :aria-invalid="isInvalid(field)"
-                        :class="[isLocalized ? 'bg-background' : undefined, definition.inputClass]"
+                        :aria-describedby="describedBy(field)"
+                        :class="[isLocalized ? 'bg-background' : undefined, fieldClass]"
                         @blur="field.handleBlur"
                         @update:model-value="field.handleChange($event)" />
 
                     <CategoryHierarchySelect
+                        :name="field.name"
+                        :required="definition.required"
                         v-else-if="definition.type === 'category'"
                         :id="field.name"
                         :model-value="stringValue(field.state.value)"
@@ -259,9 +298,10 @@
                         "
                         :searchable="definition.searchable"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :invalid="isInvalid(field)"
                         :aria-label="resolveText(definition.label)"
-                        :trigger-class="definition.inputClass"
+                        :trigger-class="fieldClass"
                         size="default"
                         @blur="field.handleBlur"
                         @update:model-value="field.handleChange($event || null)" />
@@ -282,12 +322,15 @@
                         :placeholder="placeholder(definition)"
                         :label="resolveText(definition.label)"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :required="definition.required"
                         :invalid="isInvalid(field)"
-                        :class="definition.inputClass"
+                        :class="fieldClass"
                         @blur="field.handleBlur"
                         @update:model-value="field.handleChange($event)" />
                     <CategoryHierarchySelect
+                        :name="field.name"
+                        :required="definition.required"
                         v-else-if="definition.type === 'select' && definition.searchable"
                         :id="field.name"
                         :model-value="selectValue(field.state.value, definition)"
@@ -308,6 +351,7 @@
                         :placeholder="resolveText(definition.label)"
                         :aria-label="resolveText(definition.label)"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         :invalid="isInvalid(field)"
                         searchable
                         size="default"
@@ -319,17 +363,16 @@
                         v-else-if="definition.type === 'select'"
                         :model-value="selectValue(field.state.value, definition)"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         @update:model-value="
                             field.handleChange(normalizeSelectValue($event, definition))
                         ">
                         <SelectTrigger
                             :id="field.name"
                             :aria-invalid="isInvalid(field)"
+                            :aria-describedby="describedBy(field)"
                             :aria-required="definition.required"
-                            :class="[
-                                isLocalized ? 'bg-background' : undefined,
-                                definition.inputClass,
-                            ]">
+                            :class="[isLocalized ? 'bg-background' : undefined, fieldClass]">
                             <span
                                 v-if="selectedOption(field.state.value, definition)?.color"
                                 class="size-2.5 shrink-0 rounded-full"
@@ -373,29 +416,35 @@
                         </SelectContent>
                     </Select>
 
-                    <div v-else-if="definition.type === 'checkbox-group'" class="grid gap-3">
-                        <label
-                            v-for="option in definition.options"
-                            :key="option.value"
-                            class="flex items-center gap-2 text-sm">
-                            <Checkbox
-                                :variant="definition.variant"
-                                :model-value="
-                                    selectedValues(field.state.value).includes(option.value)
-                                "
-                                :disabled="definition.disabled || option.disabled"
-                                @update:model-value="
-                                    toggleCheckboxValue(field, option.value, Boolean($event))
-                                " />
-                            <FormText :text="option.label" />
-                        </label>
-                    </div>
+                    <CheckboxGroup
+                        v-else-if="definition.type === 'checkbox-group'"
+                        :name="field.name"
+                        :model-value="selectedValues(field.state.value)"
+                        :options="
+                            definition.options.map((option) => ({
+                                ...option,
+                                label: resolveText(option.label),
+                            }))
+                        "
+                        :variant="definition.variant"
+                        :disabled="definition.disabled"
+                        :readonly="definition.readonly"
+                        :required="definition.required"
+                        :aria-label="resolveText(definition.label)"
+                        :aria-invalid="isInvalid(field)"
+                        :aria-describedby="describedBy(field)"
+                        :class="fieldClass"
+                        @update:model-value="field.handleChange($event)" />
 
                     <RadioGroup
+                        :class="fieldClass"
+                        :name="field.name"
+                        :required="definition.required"
                         :variant="definition.variant"
                         v-else-if="definition.type === 'radio'"
                         :model-value="stringValue(field.state.value)"
                         :disabled="definition.disabled"
+                        :readonly="definition.readonly"
                         @update:model-value="field.handleChange(String($event))">
                         <label
                             v-for="option in definition.options"
@@ -420,10 +469,15 @@
                             })
                         }}
                     </p>
-                    <FieldDescription v-if="definition.description && !hasErrorMessage(field)">
+                    <FieldDescription
+                        :id="`${field.name}-description`"
+                        v-if="definition.description && !hasErrorMessage(field)">
                         <FormText :text="definition.description" />
                     </FieldDescription>
-                    <FieldError v-if="hasErrorMessage(field)" :errors="field.state.meta.errors" />
+                    <FieldError
+                        :id="`${field.name}-error`"
+                        v-if="hasErrorMessage(field)"
+                        :errors="field.state.meta.errors" />
                 </Field>
             </template>
         </form.Field>
@@ -442,6 +496,7 @@ import type { AnyFieldApi } from '@tanstack/vue-form';
 import { computed } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { Checkbox } from '../checkbox';
+import { CheckboxGroup } from '../checkbox-group';
 import { ComboboxField } from '../combobox';
 import { Editor } from '../editor';
 import { EditorJson } from '../editor-json';
@@ -474,6 +529,7 @@ const props = defineProps<{
     localeFieldPath?: 'nested' | 'locale_suffix';
 }>();
 
+const fieldClass = computed(() => [props.definition.class, props.definition.inputClass]);
 const spanClasses = computed(() => formSpanClasses(props.definition.span));
 const isLocalized = computed(() => Boolean(props.definition.localized && props.locale));
 const localeCode = computed(() => props.locale?.toUpperCase() ?? '');
@@ -484,6 +540,19 @@ const fieldName = computed(() =>
             : `translations.${props.locale}.${props.definition.name}`
         : props.definition.name,
 );
+
+function describedBy(field: AnyFieldApi): string | undefined {
+    return (
+        [
+            props.definition.description && !hasErrorMessage(field)
+                ? `${field.name}-description`
+                : '',
+            hasErrorMessage(field) ? `${field.name}-error` : '',
+        ]
+            .filter(Boolean)
+            .join(' ') || undefined
+    );
+}
 
 function isInvalid(field: AnyFieldApi): boolean {
     return field.state.meta.isTouched && !field.state.meta.isValid;
@@ -529,13 +598,6 @@ function normalizeInputValue(
     }
 
     return value === '' ? null : Number(value);
-}
-
-function toggleCheckboxValue(field: AnyFieldApi, value: string, selected: boolean): void {
-    const values = selectedValues(field.state.value);
-    field.handleChange(
-        selected ? [...new Set([...values, value])] : values.filter((current) => current !== value),
-    );
 }
 
 function selectValue(value: unknown, definition: SelectFieldDefinition): string | undefined {

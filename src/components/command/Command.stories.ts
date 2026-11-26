@@ -1,16 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
 import CompositionDemo from '../../stories/CompositionDemo.vue';
+import { describeOverlayControls } from '../../stories/overlay-documentation';
+import { OverlayDocs } from '../../stories/OverlayDocs';
 import { Command } from './index';
 const meta = {
-    title: 'Overlay/Command',
+    title: 'Overlays/Command',
+    id: 'overlay-command',
     component: Command,
     parameters: {
         layout: 'padded',
         controls: {
             include: ['dialog', 'narrow', 'disabled', 'loading', 'empty'],
         },
-        docs: { description: { component: componentDescription('Command') } },
+        docs: { page: OverlayDocs, description: { component: componentDescription('Command') } },
     },
     args: {
         dialog: true,
@@ -32,6 +35,7 @@ const meta = {
         template: '<CompositionDemo mode="command" :args="args" :locale="locale"/>',
     }),
 } satisfies Meta;
+describeOverlayControls('Command', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Dialog: StoryObj = { args: { dialog: true } };

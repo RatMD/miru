@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import { defineComponent, h, ref } from 'vue';
+import { anchorApiCopy } from '../../stories/anchor-documentation';
+import { AnchorDocs } from '../../stories/AnchorDocs';
+import { componentDescription } from '../../stories/component-descriptions';
 import { inlineColorVariants } from '../inline-variants';
 import { Anchor } from './index';
 
@@ -8,11 +11,12 @@ const meta = {
     title: 'Components/Anchor',
     component: Anchor,
     parameters: {
+        controls: {
+            include: Object.keys(anchorApiCopy.Anchor.props).filter((name) => name !== 'asChild'),
+        },
         docs: {
-            description: {
-                component:
-                    'Semantic inline links in eight theme tones. underline=none/hover/always controls the bottom line; animation=fade fades it in, while slide draws from left to right and leaves toward the right. Each color has a distinct hover tone unless disabled. Keyboard focus shows the same underline. external or target=_blank adds a Tabler external-link icon. asChild supports router links; disabled blocks navigation and click handlers. New-tab links add noopener/noreferrer.',
-            },
+            page: AnchorDocs,
+            description: { component: componentDescription('Anchor') },
         },
     },
     args: {
@@ -23,13 +27,25 @@ const meta = {
         disabled: false,
         external: false,
     },
-    argTypes: {
-        variant: { control: 'select', options: inlineColorVariants },
-        underline: { control: 'select', options: ['none', 'hover', 'always'] },
-        animation: { control: 'select', options: ['fade', 'slide'] },
-        disabled: { control: 'boolean' },
-        external: { control: 'boolean' },
-    },
+    // Use the same short descriptions in controls and the extracted API reference.
+    argTypes: Object.fromEntries(
+        Object.entries(anchorApiCopy.Anchor.props).map(([name, description]) => [
+            name,
+            {
+                description,
+                table: { category: 'Anchor props' },
+                ...(['href', 'target', 'rel', 'class'].includes(name) ? { control: 'text' } : {}),
+                ...(name === 'variant' ? { control: 'select', options: inlineColorVariants } : {}),
+                ...(name === 'underline'
+                    ? { control: 'select', options: ['none', 'hover', 'always'] }
+                    : {}),
+                ...(name === 'animation' ? { control: 'select', options: ['fade', 'slide'] } : {}),
+                ...(['asChild', 'disabled', 'external'].includes(name)
+                    ? { control: 'boolean' }
+                    : {}),
+            },
+        ]),
+    ),
     render: (args) => ({
         components: { Anchor },
         setup: () => ({ args }),

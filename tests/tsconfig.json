@@ -1,4 +1,9 @@
 {
     "extends": "../tsconfig.json",
-    "include": ["validation-types.ts", "directive-types.vue"]
+    "include": [
+        "validation-types.ts",
+        "directive-types.vue",
+        "form-adapter-types.ts",
+        "toast-types.ts"
+    ]
 }

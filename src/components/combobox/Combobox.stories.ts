@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { ref } from 'vue';
 import ComboboxFormDemo from '../../stories/ComboboxFormDemo.vue';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { ComboboxField } from './index';
 const meta = {
     title: 'FormFields/Combobox',
@@ -22,9 +24,13 @@ const meta = {
     },
     parameters: {
         controls: { include: ['disabled', 'clearable', 'invalid', 'size'] },
-        docs: { description: { component: componentDescription('ComboboxField') } },
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('ComboboxField') },
+        },
     },
 } satisfies Meta;
+describeFormFieldControls('ComboboxField', meta.argTypes);
 export default meta;
 export const Default: StoryObj<typeof meta> = {
     render: (args, { globals }) => ({

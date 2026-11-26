@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" data-slot="editor-json" :data-invalid="!validation.valid">
+    <div ref="container" data-slot="editor-json" :class="wrapperClass" :data-invalid="!validation.valid">
         <EditorFrame
             :id="inputId"
             :model-value="modelValue"
@@ -91,6 +91,7 @@
                     </div>
                     <Textarea
                         v-bind="$attrs"
+                    :class="props.class"
                         :id="inputId"
                         :name="name"
                         :model-value="modelValue"
@@ -140,6 +141,7 @@
 </template>
 <script setup lang="ts">
 import type { EditorFrameExtension } from '../editor-frame';
+import type { HTMLAttributes } from 'vue';
 import { IconBraces, IconCodeDots, IconEye, IconPencil, IconCheck, IconX } from '@tabler/icons-vue';
 import { computed, nextTick, ref, useId, watch } from 'vue';
 import { useI18n } from '../../composables/useI18n';
@@ -150,6 +152,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../too
 defineOptions({ inheritAttrs: false });
 const props = withDefaults(
     defineProps<{
+        class?: HTMLAttributes['class'];
+        wrapperClass?: HTMLAttributes['class'];
         modelValue?: string;
         id?: string;
         name?: string;

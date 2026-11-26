@@ -1,16 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, within } from 'storybook/test';
+import { alertApiCopy } from '../../stories/alert-documentation';
+import { AlertDocs } from '../../stories/AlertDocs';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
 import { Alert, AlertDescription, AlertTitle } from './index';
 const meta = {
     ...componentControls('Alert'),
+    argTypes: Object.fromEntries(
+        Object.entries(componentControls('Alert').argTypes).map(([name, control]) => {
+            const description = alertApiCopy.Alert.props?.[name];
+            const previewCopy: Record<string, string> = {
+                title: 'The example heading in AlertTitle.',
+                description: 'The example message in AlertDescription.',
+            };
+            return [
+                name,
+                {
+                    ...control,
+                    description: description ?? previewCopy[name],
+                    table: {
+                        ...control.table,
+                        category: description ? 'Alert props' : 'Example content',
+                    },
+                },
+            ];
+        }),
+    ),
     title: 'Components/Alert',
     component: Alert,
     parameters: {
         controls: { include: controlNames('Alert') },
-        docs: { description: { component: componentDescription('Alert') } },
+        docs: { page: AlertDocs, description: { component: componentDescription('Alert') } },
     },
 } satisfies Meta;
 export default meta;

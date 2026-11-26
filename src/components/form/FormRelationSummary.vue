@@ -26,8 +26,8 @@
 
 <script setup lang="ts">
 import type { FormText as FormTextDefinition } from './types';
-import { Link } from '@inertiajs/vue3';
 import { useI18n } from '../../composables/useI18n';
+import Link from '../anchor/NavigationLink.vue';
 import { Button } from '../button';
 import FormText from './FormText.vue';
 import { translated } from './types';

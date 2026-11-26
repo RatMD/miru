@@ -1,0 +1,251 @@
+.miru-stepper {
+    --stepper-dot: 2rem;
+    --stepper-gap: 0.75rem;
+    color: var(--ui-foreground);
+}
+/* Replace Reka's fixed English announcement with the translated status above. */
+.miru-stepper > div[role='status'][aria-atomic='true']:not([data-slot]) {
+    display: none;
+}
+.miru-stepper[data-size='sm'] {
+    --stepper-dot: 1.5rem;
+    --stepper-gap: 0.5rem;
+}
+.miru-stepper[data-size='lg'] {
+    --stepper-dot: 2.75rem;
+    --stepper-gap: 1rem;
+}
+.miru-stepper-list {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+}
+.miru-stepper-item {
+    position: relative;
+    flex: 1 1 0%;
+    min-width: 0;
+}
+.miru-stepper-trigger {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--stepper-gap);
+    width: 100%;
+    padding: 0.5rem;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+    border-radius: var(--ui-radius);
+    outline: none;
+}
+.miru-stepper-trigger:focus-visible {
+    box-shadow: 0 0 0 2px var(--ui-ring);
+}
+.miru-stepper-trigger:disabled {
+    cursor: default;
+}
+.miru-stepper-item[data-disabled] .miru-stepper-trigger {
+    opacity: 0.55;
+}
+.miru-stepper-indicator {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--stepper-dot);
+    height: var(--stepper-dot);
+    border: 1px solid var(--ui-border);
+    border-radius: 9999px;
+    background: var(--ui-background);
+    color: var(--ui-muted-foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+.miru-stepper-title {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+.miru-stepper-description {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--ui-muted-foreground);
+    overflow-wrap: anywhere;
+}
+.miru-stepper[data-size='lg'] .miru-stepper-title {
+    font-size: 1.125rem;
+}
+.miru-stepper[data-size='lg'] .miru-stepper-description {
+    font-size: 0.875rem;
+}
+.miru-stepper-item[data-state='active'] .miru-stepper-indicator {
+    background: var(--stepper-active);
+    border-color: var(--stepper-active);
+    color: var(--stepper-active-text);
+}
+.miru-stepper[data-inactive-appearance='solid']
+    .miru-stepper-item[data-state='inactive']
+    .miru-stepper-indicator {
+    background: var(--ui-foreground);
+    border-color: var(--ui-foreground);
+    color: var(--ui-background);
+}
+.miru-stepper[data-inactive-appearance='muted']
+    .miru-stepper-item[data-state='inactive']
+    .miru-stepper-indicator {
+    background: var(--ui-muted);
+}
+.miru-stepper-item[data-state='completed'] .miru-stepper-indicator {
+    background: var(--stepper-complete);
+    border-color: var(--stepper-complete);
+    color: var(--stepper-complete-text);
+}
+.miru-stepper-item[data-error] .miru-stepper-indicator {
+    background: var(--ui-danger);
+    border-color: var(--ui-danger);
+    color: var(--ui-danger-foreground);
+}
+.miru-stepper-item[data-error] .miru-stepper-title {
+    color: var(--ui-danger);
+}
+.miru-stepper-separator {
+    position: absolute;
+    top: calc(var(--stepper-dot) / 2 + 0.5rem);
+    inset-inline-start: calc(50% + var(--stepper-dot) / 2 + 0.5rem);
+    width: calc(100% - var(--stepper-dot) - 1rem);
+    height: 1px;
+    background: var(--ui-border);
+}
+.miru-stepper-item[data-state='completed'] > .miru-stepper-separator {
+    background: var(--stepper-complete);
+}
+.miru-stepper-item:last-child > .miru-stepper-separator {
+    display: none;
+}
+.miru-stepper-content {
+    min-width: 0;
+    padding-block: 1.5rem;
+    outline: none;
+}
+.miru-stepper-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1rem;
+}
+.miru-stepper-actions[data-error] {
+    color: var(--ui-danger);
+}
+.miru-stepper[data-variant='bordered'] {
+    border: 1px solid var(--ui-border);
+    border-radius: var(--ui-radius);
+    background: var(--ui-background);
+}
+.miru-stepper[data-variant='bordered'] .miru-stepper-trigger {
+    flex-direction: row;
+    text-align: start;
+    padding: 1rem;
+    border-radius: 0;
+}
+.miru-stepper[data-variant='bordered'] .miru-stepper-item + .miru-stepper-item {
+    border-inline-start: 1px solid var(--ui-border);
+}
+.miru-stepper[data-variant='bordered'] .miru-stepper-separator {
+    display: none;
+}
+.miru-stepper[data-variant='bordered'] > .miru-stepper-content {
+    padding: 1.5rem;
+    border-top: 1px solid var(--ui-border);
+}
+.miru-stepper[data-variant='bordered'] > .miru-stepper-actions {
+    padding: 1rem;
+    border-top: 1px solid var(--ui-border);
+}
+.miru-stepper[data-variant='bordered'] > .miru-stepper-actions[data-error] {
+    background: color-mix(in srgb, var(--ui-danger) 6%, transparent);
+    border-top-color: color-mix(in srgb, var(--ui-danger) 35%, var(--ui-border));
+}
+.miru-stepper[data-orientation='vertical'] .miru-stepper-list {
+    flex-direction: column;
+}
+.miru-stepper[data-orientation='vertical'] .miru-stepper-item {
+    padding-bottom: 1.5rem;
+}
+.miru-stepper[data-orientation='vertical'] .miru-stepper-item:last-child {
+    padding-bottom: 0;
+}
+.miru-stepper[data-orientation='vertical'] .miru-stepper-trigger {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: start;
+    padding: 0;
+}
+.miru-stepper[data-orientation='vertical'] .miru-stepper-trigger > :not(.miru-stepper-indicator) {
+    padding-top: calc((var(--stepper-dot) - 1.3125rem) / 2);
+}
+.miru-stepper[data-orientation='vertical'] .miru-stepper-separator {
+    top: var(--stepper-dot);
+    bottom: 0;
+    inset-inline-start: calc(var(--stepper-dot) / 2);
+    width: 1px;
+    height: auto;
+}
+.miru-stepper[data-orientation='vertical'] .miru-stepper-item > .miru-stepper-content {
+    margin-inline-start: calc(var(--stepper-dot) + var(--stepper-gap));
+    padding-block: 1rem 0;
+}
+.miru-stepper[data-orientation='vertical'][data-variant='bordered'] .miru-stepper-list {
+    padding: 1rem;
+}
+.miru-stepper[data-orientation='vertical'][data-variant='bordered']
+    .miru-stepper-item
+    + .miru-stepper-item {
+    border-inline-start: 0;
+}
+.miru-stepper[data-orientation='vertical'][data-variant='bordered'] .miru-stepper-separator {
+    display: block;
+}
+.miru-stepper[data-orientation='vertical'][data-variant='bordered']
+    .miru-stepper-item:last-child
+    .miru-stepper-separator {
+    display: none;
+}
+.miru-stepper[data-mobile-layout='compact'] .miru-stepper-description {
+    display: none;
+}
+.miru-stepper[data-mobile-layout='compact']
+    .miru-stepper-item:not([data-state='active'])
+    .miru-stepper-labels {
+    display: none;
+}
+.miru-stepper[data-mobile-layout='compact'][data-variant='bordered'] .miru-stepper-trigger {
+    flex-direction: column;
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+}
+.miru-stepper[data-mobile-layout='scroll'][data-orientation='horizontal'] .miru-stepper-list {
+    min-width: max-content;
+}
+.miru-stepper[data-mobile-layout='scroll'][data-orientation='horizontal'] .miru-stepper-item {
+    min-width: 10rem;
+}
+.miru-stepper[data-mobile-layout] .miru-stepper-actions {
+    flex-wrap: wrap;
+}
+.miru-stepper[data-mobile-layout] .miru-stepper-actions > :first-child {
+    flex-basis: 100%;
+}
+.miru-stepper[data-mobile-layout] [data-slot='stepper-buttons'] {
+    margin-inline-start: auto;
+}

@@ -1,12 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
 import { formStory } from '../../stories/form-fixtures';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { inlineColorVariants } from '../inline-variants';
 import { RadioGroup } from './index';
 
 const meta: Meta = {
     title: 'FormFields/RadioGroup',
-    parameters: { docs: { description: { component: componentDescription('RadioGroup') } } },
+    parameters: {
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('RadioGroup') },
+        },
+    },
     component: RadioGroup,
     args: { variant: 'default', size: 'default', disabled: false },
     argTypes: {
@@ -20,6 +27,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('RadioGroup', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

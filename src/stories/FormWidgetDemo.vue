@@ -22,14 +22,16 @@
                 { value: 'gb', label: copy.uk, callingCode: '+44', pinned: false },
             ]"
             @update:model-value="field.handleChange($event)" />
-        <InputOTP
+        <InputPin
             v-else-if="widget === 'otp'"
+            :id="field.name"
             :model-value="text"
             :maxlength="6"
             :aria-label="label"
+            @blur="field.handleBlur"
             @update:model-value="field.handleChange($event)">
-            <InputOTPGroup><InputOTPSlot v-for="n in 6" :key="n" :index="n - 1" /></InputOTPGroup>
-        </InputOTP>
+            <InputPinGroup><InputPinSlot v-for="n in 6" :key="n" :index="n - 1" /></InputPinGroup>
+        </InputPin>
         <InputNumber
             v-else-if="widget === 'number'"
             :model-value="Number(field.state.value) || 0"
@@ -177,9 +179,9 @@ import {
     FieldError,
     InputSearch,
     InputPhone,
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSlot,
+    InputPin,
+    InputPinGroup,
+    InputPinSlot,
     InputNumber,
     InputNumberContent,
     InputNumberInput,

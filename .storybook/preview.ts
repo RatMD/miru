@@ -1,13 +1,17 @@
 import type { Preview } from '@storybook/vue3-vite';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import { setup } from '@storybook/vue3';
-import { UiProvider } from '../src/components/provider';
+import { ContextProvider } from '../src/components/provider';
+import { ComponentDocs } from '../src/stories/ComponentDocs';
 import './preview.css';
 import { MiruDocsContainer } from './docs-theme';
 
 // Keep interactive examples quiet without changing library or consumer Vue settings.
 // Opt into diagnostics with VITE_STORYBOOK_VUE_WARNINGS=true; tests keep Vue warnings.
+let previewAppSequence = 0;
 setup((app) => {
+    // Docs mounts each story as a separate app within the same document.
+    app.config.idPrefix = `miru-story-${++previewAppSequence}`;
     if (
         import.meta.env.DEV &&
         import.meta.env.MODE !== 'test' &&
@@ -35,9 +39,9 @@ const preview: Preview = {
     },
     decorators: [
         (story, context) => ({
-            components: { story, UiProvider },
+            components: { story, ContextProvider },
             setup: () => ({ locale: context.globals.locale || 'en' }),
-            template: '<UiProvider :locale="locale"><story /></UiProvider>',
+            template: '<ContextProvider :locale="locale"><story /></ContextProvider>',
         }),
         withThemeByClassName({
             themes: { light: 'light', dark: 'dark' },
@@ -45,113 +49,21 @@ const preview: Preview = {
         }),
     ],
     parameters: {
-        docs: { container: MiruDocsContainer },
+        docs: { container: MiruDocsContainer, page: ComponentDocs },
         options: {
             storySort: {
                 method: 'alphabetical',
+                includeNames: false,
                 order: [
+                    'Components',
+                    'Forms',
+                    'FormFields',
+                    'Overlays',
+                    'Utilities',
+                    'Extensions',
+                    'Layouts',
                     'Getting Started',
                     'Theming',
-                    'Components',
-                    [
-                        'Accordion',
-                        'Alert',
-                        'Anchor',
-                        'Attachment',
-                        'AttachmentList',
-                        'Avatar',
-                        'AvatarStack',
-                        'Badge',
-                        'BadgeCopy',
-                        'BadgeCounter',
-                        'Breadcrumbs',
-                        'Button',
-                        'ButtonAction',
-                        'ButtonGroup',
-                        'ButtonShadow',
-                        'Card',
-                        'CardChart',
-                        'Carousel',
-                        'Code',
-                        'CodePanel',
-                        'FilterBadges',
-                        'Item',
-                        'Kbd',
-                        'Marker',
-                        'Pagination',
-                        'Progress',
-                        'Separator',
-                        'Skeleton',
-                        'Spinner',
-                        'Tabs',
-                        '*',
-                    ],
-                    'Form',
-                    ['Field', 'Generator', 'Form', 'InputGroup', 'Label', '*'],
-                    'FormFields',
-                    [
-                        'Checkbox',
-                        'CheckboxGroup',
-                        'ColorPicker',
-                        'Combobox',
-                        'EditorJSON',
-                        'EditorMarkdown',
-                        'EditorTinyMCE',
-                        'Input',
-                        'InputDateTime',
-                        'InputFile',
-                        'InputNumber',
-                        'InputOtp',
-                        'InputPassword',
-                        'InputPhone',
-                        'InputSearch',
-                        'InputTags',
-                        'Radiobox',
-                        'RadioGroup',
-                        'Select',
-                        'Slider',
-                        'Switch',
-                        'Textarea',
-                        'Toggle',
-                        'ToggleGroup',
-                        'UploadZone',
-                        '*',
-                    ],
-                    'Extensions',
-                    ['ApexCharts', 'TimeSlots', 'DataTable', 'FormGenerator', 'Schedule', '*'],
-                    'Layout',
-                    ['AppBar', 'AuthPage', 'DashboardPage', 'FormPage', '*'],
-                    'Overlay',
-                    [
-                        'Command',
-                        'ContextMenu',
-                        'Description',
-                        'Dialog',
-                        'Drawer',
-                        'Overlay',
-                        'OverlayChoice',
-                        'OverlayDetail',
-                        'OverlayNotice',
-                        'Popover',
-                        'Sheet',
-                        'Toast',
-                        'Tooltip',
-                        '*',
-                    ],
-                    'Utilities',
-                    [
-                        'AspectRatio',
-                        'Backdrop',
-                        'Breakpoint',
-                        'Collapsible',
-                        'Copy',
-                        'Calendar',
-                        'EditorFrame',
-                        'Deferred',
-                        'DropdownMenu',
-                        'ScrollArea',
-                        '*',
-                    ],
                     'Composables',
                     'Plugins',
                     'Support',

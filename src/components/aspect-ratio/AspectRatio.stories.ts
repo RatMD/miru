@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { componentDescription } from '../../stories/component-descriptions';
+import { ComponentDocs } from '../../stories/ComponentDocs';
 import CompositionDemo from '../../stories/CompositionDemo.vue';
+import {
+    utilitySummaries,
+    utilityDependencyMarkdown,
+    describeUtilityControls,
+} from '../../stories/utilities-documentation';
 import { AspectRatio } from './index';
 const meta = {
     title: 'Utilities/AspectRatio',
@@ -9,7 +14,13 @@ const meta = {
         layout: 'padded',
         controls: { include: ['preset', 'ratio', 'gallery'] },
         docs: {
-            description: { component: componentDescription('AspectRatio') },
+            page: ComponentDocs,
+            description: {
+                component:
+                    utilitySummaries.AspectRatio +
+                    '\n\n' +
+                    utilityDependencyMarkdown('AspectRatio', true),
+            },
         },
     },
     args: { preset: 'square', gallery: false },
@@ -31,6 +42,7 @@ const meta = {
         template: '<CompositionDemo mode="aspect" :args="args" :locale="locale"/>',
     }),
 } satisfies Meta;
+describeUtilityControls('AspectRatio', meta.argTypes ?? {}, meta);
 export default meta;
 export const Default: StoryObj = { args: { ratio: '16x9' } };
 export const Presets: StoryObj = { args: { gallery: true } };

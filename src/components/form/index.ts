@@ -1,6 +1,7 @@
 export { default as FormFieldRenderer } from './FormFieldRenderer.vue';
 export { default as FormDateTimeRangeField } from './FormDateTimeRangeField.vue';
 export { default as FormHeader } from './FormHeader.vue';
+export { default as Form } from './Form.vue';
 export { default as FormLayout } from './FormLayout.vue';
 export { default as FormLocaleSwitcher } from './FormLocaleSwitcher.vue';
 export { default as FormRelationSummary } from './FormRelationSummary.vue';

@@ -1,12 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
 import { formStory } from '../../stories/form-fixtures';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { inlineColorVariants } from '../inline-variants';
 import { CheckboxGroup } from './index';
 
 const meta: Meta = {
     title: 'FormFields/CheckboxGroup',
-    parameters: { docs: { description: { component: componentDescription('CheckboxGroup') } } },
+    parameters: {
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('CheckboxGroup') },
+        },
+    },
     component: CheckboxGroup,
     args: { variant: 'default', size: 'default', disabled: false },
     argTypes: {
@@ -20,6 +27,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('CheckboxGroup', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

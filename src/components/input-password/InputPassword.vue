@@ -1,11 +1,12 @@
 <template>
-    <InputGroup :size="size" :data-disabled="disabled">
+    <InputGroup :class="wrapperClass" :size="size" :data-disabled="disabled">
         <InputGroupInput
             v-bind="$attrs"
             v-model="modelValue"
             :type="visible ? 'text' : 'password'"
             :size="size"
             :disabled="disabled"
+            :readonly="readonly"
             :class="props.class" />
         <InputGroupAddon v-if="showIcon">
             <IconKey class="size-4" aria-hidden="true" />
@@ -14,7 +15,7 @@
             <InputGroupButton
                 type="button"
                 :size="size === 'sm' ? 'icon-xs' : 'icon-sm'"
-                :disabled="disabled"
+                :disabled="disabled || readonly"
                 :title="actionLabel"
                 :aria-label="actionLabel"
                 :aria-pressed="visible"
@@ -39,6 +40,8 @@ const props = defineProps<{
     disabled?: boolean;
     showIcon?: boolean;
     class?: HTMLAttributes['class'];
+    wrapperClass?: HTMLAttributes['class'];
+    readonly?: boolean;
 }>();
 
 const modelValue = defineModel<string | number>();

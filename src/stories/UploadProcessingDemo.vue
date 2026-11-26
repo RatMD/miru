@@ -1,5 +1,5 @@
 <template>
-    <UiProvider :locale="locale">
+    <ContextProvider :locale="locale">
         <div class="max-w-xl space-y-3">
             <Button variant="outline" size="sm" @click="fail = !fail">
                 {{ fail ? 'Processing error enabled' : 'JPEG · 1920px · 90%' }}
@@ -15,12 +15,12 @@
                 @processing-error="message = 'Processing failed'" />
             <output aria-live="polite">{{ message }}</output>
         </div>
-    </UiProvider>
+    </ContextProvider>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Button } from '../components/button';
-import { UiProvider } from '../components/provider';
+import { ContextProvider } from '../components/provider';
 import { UploadZone } from '../components/upload-zone';
 import { resize } from '../support/resize';
 defineProps<{ locale: string }>();

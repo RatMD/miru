@@ -1,5 +1,10 @@
 <template>
     <RadioGroupItem
+        :aria-readonly="isReadonly || undefined"
+        @click.capture="guardReadonly"
+        @keydown.capture="guardReadonly"
+        @beforeinput.capture="guardReadonly"
+        @paste.capture="guardReadonly"
         data-slot="radio-group-item"
         :data-size="resolvedSize"
         :data-variant="resolvedVariant"
@@ -41,12 +46,14 @@ import { reactiveOmit } from '@vueuse/core';
 import { RadioGroupIndicator, RadioGroupItem, useForwardProps } from 'reka-ui';
 import { computed, inject } from 'vue';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 import { selectionColors } from '../selection-colors';
 import { radioGroupSizeKey, radioGroupVariantKey } from '.';
 
 const props = defineProps<
     RadioGroupItemProps & {
         class?: HTMLAttributes['class'];
+        readonly?: boolean;
         size?: 'sm' | 'default' | 'lg';
         variant?: InlineVariant;
     }
@@ -56,7 +63,8 @@ const resolvedVariant = computed(() => props.variant ?? groupVariant?.value ?? '
 const groupSize = inject(radioGroupSizeKey, undefined);
 const resolvedSize = computed(() => props.size ?? groupSize?.value ?? 'default');
 
-const delegatedProps = reactiveOmit(props, 'class', 'size', 'variant');
+const { readonly: isReadonly, guard: guardReadonly } = useReadonlyField(() => props.readonly);
+const delegatedProps = reactiveOmit(props, 'readonly', 'class', 'size', 'variant');
 
 const forwardedProps = useForwardProps(delegatedProps);
 </script>

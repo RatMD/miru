@@ -1,2 +1,1 @@
-export { default as UiProvider } from './UiProvider.vue';
-export { default as UiRoot } from './UiRoot.vue';
+export { default as ContextProvider } from './ContextProvider.vue';

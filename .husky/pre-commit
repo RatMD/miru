@@ -1,0 +1,2 @@
+printf '\nMIRU: checking lint, package, types, tests and Storybook...\n'
+npm run check || exit 1

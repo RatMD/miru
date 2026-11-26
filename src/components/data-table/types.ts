@@ -1,6 +1,8 @@
+import type { TableAddressLike, TableStatusDefinition } from '../table/types';
 import type {
     DataTableFormat,
     LucidListPayload,
+    LaravelListPayload,
     ListPayload,
     ListActionConfiguration,
     ListState,
@@ -59,25 +61,8 @@ export interface DataTableSortOrderRow {
     can_move_down: boolean;
 }
 
-export interface DataTableAddressLike {
-    company_name?: string | null;
-    recipient_name?: string | null;
-    street?: string | null;
-    house_number?: string | null;
-    address_addition?: string | null;
-    postal_code?: string | null;
-    city?: string | null;
-    state?: string | { name?: string | null } | null;
-    country?: string | { name?: string | null } | null;
-}
-
-export interface DataTableStatusDefinition {
-    label?: DataTableText;
-    labelKey?: string;
-    containerClass?: string;
-    colorClass?: string;
-    icon?: Component;
-}
+export type DataTableAddressLike = TableAddressLike;
+export type DataTableStatusDefinition = TableStatusDefinition;
 
 export interface DataTableColumnMeta {
     component?: Component;
@@ -117,8 +102,8 @@ export type DataTableRow<TData extends RowData> = Row<DataTableFeatures, TData>;
 
 export interface DataTableProps<TData extends RowData> {
     tableKey: string;
-    list: ListPayload<TData> | LucidListPayload<TData>;
-    /** Existing MIRU lists remain the default; Lucid metadata is normalized internally. */
+    list: ListPayload<TData> | LucidListPayload<TData> | LaravelListPayload<TData>;
+    /** Override createMiru's dataTable adapter with Miru, Lucid or Laravel conventions. */
     dataFormat?: DataTableFormat;
     rowKey?: string | ((item: TData, index: number) => string | number);
     rowDisabled?: (row: TData) => boolean;
@@ -144,7 +129,7 @@ export interface DataTableProps<TData extends RowData> {
     embedded?: boolean;
     toolbarOffset?: string;
     additionalQuery?: Record<string, unknown>;
-    /** Override query serialization while retaining Inertia navigation. */
+    /** Override query serialization while retaining the configured navigation adapter. */
     querySerializer?: (
         state: ListState,
         filters: Record<string, unknown>,

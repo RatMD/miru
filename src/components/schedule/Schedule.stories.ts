@@ -1,4 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { ComponentDocs } from '../../stories/ComponentDocs';
+import {
+    extensionSummaries,
+    extensionDependencyMarkdown,
+    describeExtensionControls,
+} from '../../stories/extensions-documentation';
 import ScheduleDemo from '../../stories/ScheduleDemo.vue';
 import { Schedule } from './index';
 const meta: Meta = {
@@ -11,12 +17,20 @@ const meta: Meta = {
         layout: 'padded',
         controls: { include: ['readonly', 'highlightHolidays'] },
         docs: {
+            page: ComponentDocs,
             description: {
                 component:
-                    'Reusable compact Card or full organizer. Views, filters, editing and holiday highlighting are configurable; month is the default independently of switch ordering. Host-specific mapping is documented in Schedule Integration.',
+                    extensionSummaries.Schedule +
+                    '\n\n' +
+                    extensionDependencyMarkdown('Schedule', true),
             },
         },
     },
+};
+describeExtensionControls('Schedule', meta.argTypes ?? {});
+meta.parameters = {
+    ...meta.parameters,
+    controls: { ...meta.parameters?.controls, include: Object.keys(meta.argTypes ?? {}) },
 };
 export default meta;
 function example(

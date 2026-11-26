@@ -1,5 +1,11 @@
 <template>
-    <Popover v-model:open="open">
+    <Popover
+        :open="readonly ? false : open"
+        @update:open="
+            (value) => {
+                if (!readonly) open = value;
+            }
+        ">
         <PopoverTrigger as-child>
             <Button
                 v-bind="$attrs"
@@ -93,8 +99,9 @@ defineOptions({ inheritAttrs: false });
 const props = withDefaults(
     defineProps<{
         modelValue: string;
-        size?: 'sm' | 'default';
+        size?: 'sm' | 'default' | 'lg';
         disabled?: boolean;
+        readonly?: boolean;
         invalid?: boolean;
         label?: string;
         placeholder?: string;

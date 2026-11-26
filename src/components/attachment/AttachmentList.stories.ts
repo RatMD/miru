@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { attachmentApiCopy } from '../../stories/attachment-documentation';
 import AttachmentExamples from '../../stories/AttachmentExamples.vue';
+import { AttachmentListDocs } from '../../stories/AttachmentListDocs';
 import { componentDescription } from '../../stories/component-descriptions';
 import { AttachmentList } from './index';
 const boolean = { control: 'boolean' as const };
@@ -15,6 +17,7 @@ const meta: Meta = {
     parameters: {
         layout: 'padded',
         docs: {
+            page: AttachmentListDocs,
             description: { component: componentDescription('AttachmentList') },
         },
     },
@@ -52,6 +55,32 @@ const meta: Meta = {
         template: '<AttachmentExamples mode="list" :args="args" :locale="locale"/>',
     }),
 };
+// Keep the existing example controls while sharing the API descriptions.
+for (const [name, control] of Object.entries(meta.argTypes ?? {})) {
+    if (!control) continue;
+    const description = attachmentApiCopy.AttachmentList.props[name];
+    const preview: Record<string, string> = {
+        status: 'The example upload state stored on item.status.',
+        progress: 'The example upload progress stored on item.progress.',
+    };
+    Object.assign(control, {
+        description: description ?? preview[name],
+        table: {
+            ...control.table,
+            category: description ? 'AttachmentList props' : 'Example content',
+        },
+    });
+}
+for (const [name, description] of Object.entries(attachmentApiCopy.AttachmentList.props)) {
+    meta.argTypes ??= {};
+    const control = meta.argTypes[name] ?? {};
+    meta.argTypes[name] = {
+        ...control,
+        description,
+        ...(name === 'class' || name === 'listClass' ? { control: 'text' } : {}),
+        table: { ...control.table, category: 'AttachmentList props' },
+    };
+}
 export default meta;
 export const Default: StoryObj = {};
 export const Grid: StoryObj = { args: { layout: 'grid', showPrimary: true } };

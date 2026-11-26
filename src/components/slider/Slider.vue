@@ -1,7 +1,14 @@
 <template>
     <SliderRoot
+        :data-readonly="isReadonly || undefined"
+        @click.capture="guardReadonly"
+        @keydown.capture="guardReadonly"
+        @beforeinput.capture="guardReadonly"
+        @paste.capture="guardReadonly"
+        @pointerdown.capture="guardReadonly"
         v-slot="{ modelValue: values }"
         v-bind="forwarded"
+        :required="!isReadonly && required"
         data-slot="slider"
         :data-size="size"
         :class="
@@ -33,6 +40,7 @@
             v-for="(_, index) in values || defaultValue"
             :key="index"
             data-slot="slider-thumb"
+            :aria-readonly="isReadonly || undefined"
             :aria-label="
                 thumbLabels?.[index] ||
                 (values?.length === 2
@@ -58,11 +66,13 @@ import {
 import { computed, toRef } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 
 const props = withDefaults(
     defineProps<
         SliderRootProps & {
             class?: HTMLAttributes['class'];
+            readonly?: boolean;
             variant?:
                 | 'default'
                 | 'primary'
@@ -89,9 +99,19 @@ const props = withDefaults(
         thumbAlignment: 'overflow',
     },
 );
+const { readonly: isReadonly, guard: guardReadonly } = useReadonlyField(() => props.readonly);
 const emits = defineEmits<SliderRootEmits>();
 const forwarded = useForwardPropsEmits(
-    reactiveOmit(props, 'class', 'variant', 'size', 'label', 'thumbLabels', 'showSteps'),
+    reactiveOmit(
+        props,
+        'readonly',
+        'class',
+        'variant',
+        'size',
+        'label',
+        'thumbLabels',
+        'showSteps',
+    ),
     emits,
 );
 const { trans } = useI18n();

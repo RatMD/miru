@@ -42,27 +42,27 @@ export const alertVariants = cva(
             {
                 appearance: 'soft',
                 variant: 'accent',
-                class: 'border-accent-200 bg-accent-50 text-accent-700 dark:border-accent-800/60 dark:bg-accent-950/40 dark:text-accent-400',
+                class: 'border-accent-border bg-accent-50 text-accent-700 dark:border-accent-800/60 dark:bg-accent-950/40 dark:text-accent-400',
             },
             {
                 appearance: 'soft',
                 variant: 'info',
-                class: 'border-info-200 bg-info-50 text-info-700 dark:border-info-800/60 dark:bg-info-950/40 dark:text-info-400',
+                class: 'border-info-border bg-info-50 text-info-700 dark:border-info-800/60 dark:bg-info-950/40 dark:text-info-400',
             },
             {
                 appearance: 'soft',
                 variant: 'success',
-                class: 'border-success-200 bg-success-50 text-success-700 dark:border-success-800/60 dark:bg-success-950/40 dark:text-success-400',
+                class: 'border-success-border bg-success-50 text-success-700 dark:border-success-800/60 dark:bg-success-950/40 dark:text-success-400',
             },
             {
                 appearance: 'soft',
                 variant: 'warning',
-                class: 'border-warning-200 bg-warning-50 text-warning-700 dark:border-warning-800/60 dark:bg-warning-950/40 dark:text-warning-400',
+                class: 'border-warning-border bg-warning-50 text-warning-700 dark:border-warning-800/60 dark:bg-warning-950/40 dark:text-warning-400',
             },
             {
                 appearance: 'soft',
                 variant: 'danger',
-                class: 'border-danger-200 bg-danger-50 text-danger-700 dark:border-danger-800/60 dark:bg-danger-950/40 dark:text-danger-400',
+                class: 'border-danger-border bg-danger-50 text-danger-700 dark:border-danger-800/60 dark:bg-danger-950/40 dark:text-danger-400',
             },
         ],
         defaultVariants: { variant: 'default', appearance: 'default' },

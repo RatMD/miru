@@ -1,17 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { ComponentDocs } from '../../stories/ComponentDocs';
 import FloatingAppBarControllerDemo from '../../stories/FloatingAppBarControllerDemo.vue';
 import FloatingAppBarDemo from '../../stories/FloatingAppBarDemo.vue';
+import {
+    layoutSummaries,
+    layoutDependencyMarkdown,
+    describeLayoutControls,
+    layoutApiCopy,
+} from '../../stories/layout-documentation';
 import { FloatingAppBar } from './index';
 
 const meta = {
-    title: 'Layout/AppBar',
+    title: 'Layouts/AppBar',
+    id: 'layout-appbar',
     component: FloatingAppBar,
     parameters: {
+        controls: { include: Object.keys(layoutApiCopy.FloatingAppBar.props ?? {}) },
         layout: 'padded',
         docs: {
+            page: ComponentDocs,
             description: {
                 component:
-                    'Mobile action bar with circular defaults and an optional rounded SVG hexagon. Configure shape, matching transparent cutouts, gradients, auxiliary actions and animated layout/orientation changes. The host owns translated labels, routing, state and scan workflows. See Guide for integration and migration notes.',
+                    layoutSummaries.FloatingAppBar +
+                    '\n\n' +
+                    layoutDependencyMarkdown('FloatingAppBar', true),
             },
         },
     },
@@ -56,6 +68,7 @@ const meta = {
             '<FloatingAppBarDemo :args="args" :locale="locale" :preset="preset" :autoplay="autoplay" :viewport="viewport" :surface="surface" />',
     }),
 } satisfies Meta<typeof FloatingAppBar>;
+describeLayoutControls('FloatingAppBar', meta.argTypes);
 export default meta;
 type Story = StoryObj<typeof meta>;
 const hexagonArgs = { shape: 'rounded-hexagon', appearance: 'gradient', bordered: false } as const;

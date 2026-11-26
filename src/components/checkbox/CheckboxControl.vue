@@ -1,11 +1,15 @@
 <template>
     <CheckboxRoot
+        :aria-readonly="isReadonly || undefined"
+        @click.capture="guardReadonly"
+        @keydown.capture="guardReadonly"
         v-slot="slotProps"
         data-slot="checkbox"
         :data-size="size"
         :data-variant="resolvedVariant"
         :style="selectionColors(resolvedVariant)"
         v-bind="forwarded"
+        :required="!isReadonly && required"
         :class="
             cn(
                 'peer shrink-0 cursor-pointer rounded-sm border border-input bg-background shadow-xs transition-[color,background-color,border-color,box-shadow] outline-none [&:not(:disabled):not([data-disabled])]:hover:border-muted-foreground [&:not(:disabled):not([data-disabled])]:hover:bg-ghostly',
@@ -41,6 +45,7 @@ import { reactiveOmit } from '@vueuse/core';
 import { CheckboxIndicator, CheckboxRoot, useForwardPropsEmits } from 'reka-ui';
 import { computed, inject } from 'vue';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 import { selectionColors } from '../selection-colors';
 import { checkboxVariantKey } from './context';
 
@@ -48,6 +53,7 @@ const props = withDefaults(
     defineProps<
         CheckboxRootProps & {
             class?: HTMLAttributes['class'];
+            readonly?: boolean;
             size?: 'sm' | 'default' | 'lg';
             variant?: InlineVariant;
         }
@@ -56,9 +62,10 @@ const props = withDefaults(
 );
 const groupVariant = inject(checkboxVariantKey, undefined);
 const resolvedVariant = computed(() => props.variant ?? groupVariant?.value ?? 'default');
+const { readonly: isReadonly, guard: guardReadonly } = useReadonlyField(() => props.readonly);
 const emits = defineEmits<CheckboxRootEmits>();
 
-const delegatedProps = reactiveOmit(props, 'class', 'size', 'variant');
+const delegatedProps = reactiveOmit(props, 'readonly', 'class', 'size', 'variant');
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>

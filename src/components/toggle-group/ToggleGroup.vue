@@ -7,6 +7,9 @@
         :style="{ gap: Math.max(0, spacing) * 0.25 + 'rem' }"
         v-bind="forwarded"
         :model-value="value"
+        :data-readonly="isReadonly || undefined"
+        @click.capture="guard"
+        @keydown.capture="guard"
         :class="
             cn(
                 toggleFrameVariants({ size }),
@@ -27,6 +30,7 @@ import { reactiveOmit, useVModel } from '@vueuse/core';
 import { ToggleGroupRoot, useForwardProps } from 'reka-ui';
 import { computed, provide } from 'vue';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 import { toggleFrameVariants } from '../toggle';
 import { toggleGroupStyleKey } from './context';
 
@@ -37,6 +41,7 @@ const props = withDefaults(
             variant?: ToggleVariants['variant'];
             size?: ToggleVariants['size'];
             spacing?: number;
+            readonly?: boolean;
             /** Keep one option selected for view and filter switches. */
             allowEmpty?: boolean;
         }
@@ -44,6 +49,7 @@ const props = withDefaults(
     { variant: 'default', size: 'default', spacing: 0, allowEmpty: true },
 );
 
+const { readonly: isReadonly, guard } = useReadonlyField(() => props.readonly);
 const emits = defineEmits<ToggleGroupRootEmits>();
 const value = useVModel(props, 'modelValue', emits, {
     defaultValue: props.defaultValue ?? (props.type === 'multiple' ? [] : ''),
@@ -60,6 +66,7 @@ provide(
 const forwarded = useForwardProps(
     reactiveOmit(
         props,
+        'readonly',
         'class',
         'size',
         'variant',
@@ -71,6 +78,7 @@ const forwarded = useForwardProps(
 );
 
 function updateValue(next: AcceptableValue | AcceptableValue[]): void {
+    if (props.disabled || isReadonly.value) return;
     if (
         !props.allowEmpty &&
         (next === '' || next == null || (Array.isArray(next) && next.length === 0))

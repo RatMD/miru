@@ -47,6 +47,13 @@ import { createMiru } from '@rat.md/miru/miru';
 app.use(createMiru({ locale: 'en' }));
 ```
 
+Forms use AJAX through the plain request helper by default. Inertia is an optional
+integration: install it in the host application, import `inertiaAdapter` from
+`@rat.md/miru/adapters/inertia`, and pass `createMiru({ adapter: inertiaAdapter() })`
+for Inertia form submissions, links and table navigation.
+Transport and form adapters are available from `@rat.md/miru/adapters/ajax` and
+`@rat.md/miru/adapters/inertia`. Core imports and types work without Inertia installed.
+
 `createMiru()` installs app-local configuration, i18n, the validation registry and all bundled UI directives. The synchronous
 `configure({ app, options })` hook runs before automatic plugins and can install host plugins, mutate
 the configuration or return overrides. Use `plugins: false` for manual installation inside this hook,
@@ -60,15 +67,15 @@ For fully manual installation, use `createMiruConfig`, `createMiruI18n`, `create
 `createMiruDirectives`. Configuration is exported from `@rat.md/miru/miru`; the other factories
 use the `@rat.md/miru/plugins/i18n`, `/validation` and `/directives` entry points.
 
-Wrap persistent application content once with `UiRoot`. Import components explicitly where used:
+Wrap persistent application content once with `PageRoot`. Import components explicitly where used:
 
 ```vue
 <script setup lang="ts">
-import { UiRoot } from '@rat.md/miru';
+import { PageRoot } from '@rat.md/miru';
 </script>
 
 <template>
-    <UiRoot><slot /></UiRoot>
+    <PageRoot><slot /></PageRoot>
 </template>
 ```
 
@@ -151,3 +158,49 @@ Use the Getting Started section for application setup and the component guides f
 
 [MIT License](./LICENSE.md). \
 Copyright © 2025 - 2026 rat.md
+
+## Transport and backend adapters
+
+All integrations live under `src/adapters`. AJAX is the default transport, equivalent to
+`createMiru({ adapter: ajaxAdapter() })`. Import `ajaxAdapter` from `@rat.md/miru/adapters/ajax`
+to configure shared request headers and credentials for forms and table mutations.
+
+Backend data conventions are configured independently:
+
+```ts
+import { createMiru } from '@rat.md/miru/miru';
+import { inertiaAdapter } from '@rat.md/miru/adapters/inertia';
+import { adonisAdapter } from '@rat.md/miru/adapters/adonis';
+
+app.use(createMiru({
+    adapter: inertiaAdapter(),
+    dataTable: adonisAdapter({ perPageKey: 'limit' }),
+}));
+```
+
+Use `laravelAdapter()` from `@rat.md/miru/adapters/laravel` for Laravel paginator payloads.
+Both backend adapters work with AJAX or Inertia and automatically supply table normalization
+and query serialization. Tables can override these defaults with `data-format` or a custom
+`querySerializer`. Each integration has one file in `src/adapters`: `ajax.ts`, `inertia.ts`,
+`adonis.ts` and `laravel.ts`. Shared contracts are exported from the package root. DataTable
+normalization and query helpers belong to the DataTable component; selecting an adapter
+only chooses those conventions. Inertia remains an explicit optional import.
+
+
+## Colour schemes
+
+The base stylesheet uses Miru Original. Import an optional scheme after it and put application token overrides last:
+
+```ts
+import '@rat.md/miru/style.css';
+import '@rat.md/miru/themes/modern.css';
+import './overrides.css';
+```
+
+Available schemes: `original`, `modern`, `northern-lights`, `lagoon`, `rosewood`, `golden-hour`. Light/dark mode follows the root `.dark` class or `data-theme="dark"`. Theming does not require `createMiru()`.
+
+Schemes are hand-maintained stylesheets in `src/themes/` and are copied unchanged into the package. Palette steps, foregrounds and interaction colours are explicit CSS values. The colour scheme calculator belongs to the documentation website and does not run during library builds or in your application.
+
+## Release checks
+
+`npm ci` installs the Husky pre-commit hook for this checkout. `npm run check` runs lint, package export/packing checks, build/type checks, unit/browser tests and the Storybook production build. CI and publishing use the same command. Install the test browser once with `npm run browser:install`. The complete pre-commit check can take several minutes.

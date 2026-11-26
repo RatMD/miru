@@ -1,17 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, within } from 'storybook/test';
+import { ComponentDocs } from '../stories/ComponentDocs';
 import DashboardPageDemo from '../stories/DashboardPageDemo.vue';
+import {
+    layoutSummaries,
+    layoutDependencyMarkdown,
+    describeLayoutControls,
+    layoutApiCopy,
+} from '../stories/layout-documentation';
 import { DashboardPage } from './index';
 
 const meta = {
-    title: 'Layout/DashboardPage',
+    title: 'Layouts/DashboardPage',
+    id: 'layout-dashboardpage',
     component: DashboardPage,
     parameters: {
+        controls: { include: Object.keys(layoutApiCopy.DashboardPage.props ?? {}) },
         layout: 'fullscreen',
         docs: {
+            page: ComponentDocs,
             description: {
                 component:
-                    'Configurable application shell combining an expanded Cockpit-style sidebar with the Portal icon rail. Sidebar and mobile-menu models are controlled independently; navigation, branding, search, profile, toolbars and AppBar are host-owned. Supports grouped/nested navigation, router adapters, content/page scrolling, inset/flush surfaces and responsive Sheet navigation.',
+                    layoutSummaries.DashboardPage +
+                    '\n\n' +
+                    layoutDependencyMarkdown('DashboardPage', true),
             },
         },
     },
@@ -48,6 +60,7 @@ const meta = {
         template: '<DashboardPageDemo v-bind="args" :locale="locale" />',
     }),
 } satisfies Meta;
+describeLayoutControls('DashboardPage', meta.argTypes);
 export default meta;
 type Story = StoryObj;
 

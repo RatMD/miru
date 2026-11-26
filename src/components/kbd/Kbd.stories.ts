@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { IconCommand, IconArrowUp, IconCornerDownLeft } from '@tabler/icons-vue';
+import { componentDescription } from '../../stories/component-descriptions';
+import { kbdApiCopy } from '../../stories/kbd-documentation';
+import { KbdDocs } from '../../stories/KbdDocs';
 import { Kbd, KbdGroup } from './index';
 
 const meta = {
@@ -7,20 +10,36 @@ const meta = {
     component: Kbd,
     parameters: {
         docs: {
+            page: KbdDocs,
             description: {
-                component:
-                    'Native keyboard hints with a keycap border, compact sizes and icon support. KbdGroup combines individual Kbd elements into a shortcut; provide a readable aria-label when using symbolic keys. These components describe shortcuts without registering keyboard handlers.',
+                component: componentDescription('Kbd'),
             },
         },
     },
-    args: { size: 'default' },
-    argTypes: { size: { control: 'select', options: ['sm', 'default', 'lg'] } },
+    args: { size: 'default', class: '' },
+    argTypes: {
+        class: { control: 'text' },
+        size: { control: 'select', options: ['sm', 'default', 'lg'] },
+    },
     render: (args) => ({
         components: { Kbd },
         setup: () => ({ args }),
         template: '<Kbd v-bind="args">Esc</Kbd>',
     }),
 } satisfies Meta;
+Object.assign(
+    meta.argTypes,
+    Object.fromEntries(
+        Object.entries(meta.argTypes).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: kbdApiCopy.Kbd.props[name],
+                table: { category: 'Kbd props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 export const Default: StoryObj = {};
 export const Shortcuts: StoryObj = {

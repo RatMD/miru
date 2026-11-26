@@ -1,6 +1,7 @@
 <template>
-    <div :class="cn('flex w-full min-w-0 gap-2', props.class)">
+    <div :class="cn('flex w-full min-w-0 gap-2', props.wrapperClass)">
         <Select
+            :readonly="readonly"
             :model-value="selectedCountry"
             :disabled="disabled"
             @update:model-value="changeCountry(String($event))">
@@ -27,12 +28,21 @@
                 </SelectItem>
             </SelectContent>
         </Select>
+        <input
+            v-if="name"
+            type="hidden"
+            :name="name"
+            :value="modelValue ?? ''"
+            :disabled="disabled" />
         <Input
             v-bind="$attrs"
             :id="id"
             :size="size"
             :disabled="disabled"
             :model-value="nationalNumber"
+            :class="props.class"
+            :readonly="readonly"
+            :required="required"
             type="tel"
             inputmode="numeric"
             autocomplete="tel-national"
@@ -58,6 +68,10 @@ const props = withDefaults(
         size?: 'sm' | 'default' | 'lg';
         disabled?: boolean;
         class?: HTMLAttributes['class'];
+        wrapperClass?: HTMLAttributes['class'];
+        readonly?: boolean;
+        name?: string;
+        required?: boolean;
         modelValue?: string | null;
         countries: CallingCodeOption[];
         countryCodeLabel: string;

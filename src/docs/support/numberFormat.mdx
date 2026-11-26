@@ -5,6 +5,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 # numberFormat
 
 Build locale-aware numeric formatting and a supported Intl unit from display metadata.
+Use `formatNumber` from the same module to format a concrete value directly.
 
 **Runtime:** Universal.
 
@@ -17,3 +18,25 @@ new Intl.NumberFormat('de-DE', display.format).format(12.5);
 ```
 
 Precision is clamped to 0–20. Unknown units remain available to the host as a separate input suffix.
+
+## Format a value
+
+```ts
+import { formatNumber, numberFormat } from '@rat.md/miru/support/numberFormat';
+
+formatNumber(1234.5, 'de-DE'); // "1.234,5"
+formatNumber('1234.5', 'en-US', { minimumFractionDigits: 2 }); // "1,234.50"
+formatNumber(0.875, 'en-US', { style: 'percent', maximumFractionDigits: 1 }); // "87.5%"
+
+const display = numberFormat({ unit: 'kg', decimal_places: 2 }, 'de-DE');
+formatNumber(12.5, 'de-DE', display.format); // "12,50 kg"
+```
+
+`formatNumber(value, locale = 'de-DE', options = {})` accepts numbers, bigint and numeric strings
+with a dot decimal separator. Empty, missing and non-finite values display `—`. Strings are not
+parsed as localized input. Intl options control trailing zeroes, grouping and precision; standard
+Intl rounding/defaults apply. Invalid options or locales raise the normal Intl error.
+The original `numberFormat(metadata, locale)` API is unchanged.
+
+For templates, use `v-number-format` from `@rat.md/miru/plugins/number-format`. Miru's directives
+plugin registers it globally with the app locale. See [number-format](/?path=/docs/plugins-number-format--docs).

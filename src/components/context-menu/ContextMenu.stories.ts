@@ -1,15 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, fireEvent, userEvent, waitFor, within } from 'storybook/test';
+import { componentDescription } from '../../stories/component-descriptions';
 import ContextMenuDemo from '../../stories/ContextMenuDemo.vue';
+import { describeOverlayControls } from '../../stories/overlay-documentation';
+import { OverlayDocs } from '../../stories/OverlayDocs';
 import { ContextMenu } from './index';
 const meta = {
-    title: 'Overlay/ContextMenu',
+    title: 'Overlays/ContextMenu',
+    id: 'overlay-contextmenu',
     component: ContextMenu,
     parameters: {
         docs: {
+            page: OverlayDocs,
             description: {
-                component:
-                    'Context menu adapted from Spottle using the already installed Reka primitives and Miru surfaces. Includes portal, groups, labels, shortcuts, disabled/danger items, checkbox/radio items and nested submenus. Trigger supports native contextmenu events and touch behavior; use an accessible focusable trigger. Selection events may be prevented to keep the menu open.',
+                component: componentDescription('ContextMenu'),
             },
         },
     },
@@ -21,6 +25,7 @@ const meta = {
         template: '<ContextMenuDemo v-bind="args" />',
     }),
 } satisfies Meta;
+describeOverlayControls('ContextMenu', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const NonModal: StoryObj = { args: { modal: false } };

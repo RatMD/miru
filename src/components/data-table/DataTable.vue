@@ -45,140 +45,118 @@
             :toggle-sort="toggleSort"
             :disabled="blocked"
             :loading="loading">
-            <div
-                class="bg-background"
-                :inert="blocked || undefined"
-                :class="
-                    embedded
-                        ? ''
-                        : [
-                              'overflow-x-auto border-border',
-                              variant === 'compact' ? 'border-b' : 'rounded-md border',
-                          ]
-                ">
-                <table class="w-full caption-bottom text-sm">
-                    <thead class="border-b bg-muted/40">
-                        <tr v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-                            <th
-                                v-for="header in headerGroup.headers"
-                                :key="header.id"
-                                :colspan="header.colSpan"
-                                class="text-left align-middle font-medium text-muted-foreground"
-                                :class="[
-                                    variant === 'compact' ? 'h-9 px-5 sm:px-6' : 'h-11 px-3',
-                                    ...columnClass(header.column),
-                                ]"
-                                :style="
-                                    header.subHeaders.length
-                                        ? undefined
-                                        : columnStyle(header.column)
-                                ">
-                                <button
-                                    v-if="!header.isPlaceholder && isSortable(header.column.id)"
-                                    type="button"
-                                    class="inline-flex w-full cursor-pointer items-center gap-1.5 transition-colors hover:text-foreground"
-                                    :class="alignmentClass(header.column)"
-                                    :disabled="blocked"
-                                    @click="toggleSort(header.column.id)">
-                                    <FlexRender :header="header" />
-                                    <IconArrowUp
-                                        v-if="isSorted(header.column.id, 'ASC')"
-                                        class="size-3.5 shrink-0" />
-                                    <IconArrowDown
-                                        v-else-if="isSorted(header.column.id, 'DESC')"
-                                        class="size-3.5 shrink-0" />
-                                    <IconArrowsSort v-else class="size-3.5 shrink-0 opacity-50" />
-                                </button>
-                                <div
-                                    v-else-if="!header.isPlaceholder"
-                                    class="flex"
-                                    :class="alignmentClass(header.column)">
-                                    <FlexRender :header="header" />
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <slot name="leading-rows" />
-                        <tr v-if="loading">
-                            <td
-                                :colspan="Math.max(1, table.getVisibleLeafColumns().length)"
-                                class="h-28 text-center text-muted-foreground">
-                                <slot name="loading" :table="table">
-                                    {{ loadingText || trans('common.states.loading') }}
-                                </slot>
-                            </td>
-                        </tr>
-                        <template v-else-if="table.getRowModel().rows.length">
-                            <template v-for="row in table.getRowModel().rows" :key="row.id">
-                                <slot
-                                    name="before-row"
-                                    :item="row.original"
-                                    :row="row"
-                                    :colspan="table.getVisibleLeafColumns().length" />
-                                <tr
-                                    class="border-b transition-colors hover:bg-muted/40 data-[selected=true]:bg-muted"
-                                    :class="
-                                        getRowAction(row.original)
-                                            ? 'cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
-                                            : ''
-                                    "
-                                    :data-selected="row.getIsSelected() || undefined"
-                                    :data-loading="rowLoading?.(row.original) || undefined"
-                                    :aria-busy="rowLoading?.(row.original) || undefined"
-                                    :aria-disabled="rowUnavailable(row.original) || undefined"
-                                    :inert="rowUnavailable(row.original) || undefined"
-                                    :tabindex="getRowAction(row.original) ? 0 : undefined"
-                                    :aria-label="rowActionLabel(row.original)"
-                                    @click="activateRow($event, row.original)"
-                                    @keydown="activateRow($event, row.original)">
-                                    <td
-                                        v-for="cell in row.getVisibleCells()"
-                                        :key="cell.id"
-                                        class="align-middle"
-                                        :class="[
-                                            variant === 'compact' ? 'px-5 py-2.5 sm:px-6' : 'p-3',
-                                            ...columnClass(cell.column),
-                                        ]"
-                                        :style="columnStyle(cell.column)">
-                                        <slot
-                                            :name="`cell-${cell.column.id}`"
-                                            :item="row.original"
-                                            :cell="cell"
-                                            :disabled="blocked || rowUnavailable(row.original)"
-                                            :loading="rowLoading?.(row.original) ?? false">
-                                            <DataTableCellRenderer
-                                                :cell="cell"
-                                                :actions="actions" />
-                                        </slot>
-                                    </td>
-                                </tr>
-                                <tr
-                                    v-if="row.getIsExpanded() && $slots['expanded-row']"
-                                    class="border-b">
-                                    <td :colspan="table.getVisibleLeafColumns().length" class="p-0">
-                                        <slot name="expanded-row" :item="row.original" :row="row" />
-                                    </td>
-                                </tr>
-                                <slot
-                                    name="after-row"
-                                    :item="row.original"
-                                    :row="row"
-                                    :colspan="table.getVisibleLeafColumns().length" />
-                            </template>
+            <Table :variant="variant" :embedded="embedded" :inert="blocked || undefined">
+                <TableHeader>
+                    <TableRow
+                        v-for="headerGroup in table.getHeaderGroups()"
+                        :key="headerGroup.id"
+                        :hover="false">
+                        <TableHead
+                            v-for="header in headerGroup.headers"
+                            :key="header.id"
+                            :colspan="header.colSpan"
+                            :class="columnClass(header.column)"
+                            :align="meta(header.column).align"
+                            :sortable="!header.isPlaceholder && isSortable(header.column.id)"
+                            :sort="
+                                isSorted(header.column.id, 'ASC')
+                                    ? 'asc'
+                                    : isSorted(header.column.id, 'DESC')
+                                      ? 'desc'
+                                      : false
+                            "
+                            :disabled="blocked"
+                            @sort="toggleSort(header.column.id)"
+                            :style="
+                                header.subHeaders.length ? undefined : columnStyle(header.column)
+                            ">
+                            <FlexRender
+                                v-if="!header.isPlaceholder && isSortable(header.column.id)"
+                                :header="header" />
+                            <div
+                                v-else-if="!header.isPlaceholder"
+                                class="flex"
+                                :class="alignmentClass(header.column)">
+                                <FlexRender :header="header" />
+                            </div>
+                        </TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <slot name="leading-rows" />
+                    <TableRow v-if="loading" :hover="false">
+                        <TableCell
+                            :colspan="Math.max(1, table.getVisibleLeafColumns().length)"
+                            class="h-28 text-center text-muted-foreground">
+                            <slot name="loading" :table="table">
+                                {{ loadingText || trans('common.states.loading') }}
+                            </slot>
+                        </TableCell>
+                    </TableRow>
+                    <template v-else-if="table.getRowModel().rows.length">
+                        <template v-for="row in table.getRowModel().rows" :key="row.id">
+                            <slot
+                                name="before-row"
+                                :item="row.original"
+                                :row="row"
+                                :colspan="table.getVisibleLeafColumns().length" />
+                            <TableRow
+                                :class="
+                                    getRowAction(row.original)
+                                        ? 'cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
+                                        : ''
+                                "
+                                :data-selected="row.getIsSelected() || undefined"
+                                :data-loading="rowLoading?.(row.original) || undefined"
+                                :aria-busy="rowLoading?.(row.original) || undefined"
+                                :aria-disabled="rowUnavailable(row.original) || undefined"
+                                :inert="rowUnavailable(row.original) || undefined"
+                                :tabindex="getRowAction(row.original) ? 0 : undefined"
+                                :aria-label="rowActionLabel(row.original)"
+                                @click="activateRow($event, row.original)"
+                                @keydown="activateRow($event, row.original)">
+                                <TableCell
+                                    v-for="cell in row.getVisibleCells()"
+                                    :key="cell.id"
+                                    :class="columnClass(cell.column)"
+                                    :style="columnStyle(cell.column)">
+                                    <slot
+                                        :name="`cell-${cell.column.id}`"
+                                        :item="row.original"
+                                        :cell="cell"
+                                        :disabled="blocked || rowUnavailable(row.original)"
+                                        :loading="rowLoading?.(row.original) ?? false">
+                                        <DataTableCellRenderer :cell="cell" :actions="actions" />
+                                    </slot>
+                                </TableCell>
+                            </TableRow>
+                            <TableRow
+                                v-if="row.getIsExpanded() && $slots['expanded-row']"
+                                :hover="false">
+                                <TableCell
+                                    :colspan="table.getVisibleLeafColumns().length"
+                                    class="p-0">
+                                    <slot name="expanded-row" :item="row.original" :row="row" />
+                                </TableCell>
+                            </TableRow>
+                            <slot
+                                name="after-row"
+                                :item="row.original"
+                                :row="row"
+                                :colspan="table.getVisibleLeafColumns().length" />
                         </template>
-                        <tr v-else-if="!hasLeadingRows">
-                            <td
-                                :colspan="table.getVisibleLeafColumns().length"
-                                class="h-28 text-center text-muted-foreground">
-                                <slot name="empty" :table="table">
-                                    {{ emptyText || trans('common.states.empty') }}
-                                </slot>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    </template>
+                    <TableRow v-else-if="!hasLeadingRows" :hover="false">
+                        <TableCell
+                            :colspan="table.getVisibleLeafColumns().length"
+                            class="h-28 text-center text-muted-foreground">
+                            <slot name="empty" :table="table">
+                                {{ emptyText || trans('common.states.empty') }}
+                            </slot>
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
         </slot>
 
         <DataTablePagination
@@ -222,13 +200,13 @@
 import type { ListActionConfiguration } from './contracts';
 import type { DataTableColumn, DataTableColumnMeta, DataTableProps } from './types';
 import type { RowData } from '@tanstack/vue-table';
-import { router } from '@inertiajs/vue3';
-import { IconArrowDown, IconArrowsSort, IconArrowUp } from '@tabler/icons-vue';
 import { FlexRender } from '@tanstack/vue-table';
 import { computed, provide, ref, toValue } from 'vue';
+import { useDataTableAdapter } from '../../composables/useDataTableAdapter';
 import { useI18n } from '../../composables/useI18n';
+import { useNavigation } from '../../composables/useNavigation';
 import { Alert, AlertDescription } from '../alert';
-import { normalizeDataTableList } from './adapters';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '../table';
 import { dataTableListKey, dataTableInteractionKey } from './context';
 import DataTableCellRenderer from './DataTableCellRenderer.vue';
 import DataTableConfirmation from './DataTableConfirmation.vue';
@@ -237,12 +215,12 @@ import DataTableToolbar from './DataTableToolbar.vue';
 import { useDataTable } from './useDataTable';
 import { useDataTableQuery } from './useDataTableQuery';
 const { trans, transChoice, locale } = useI18n();
+const navigation = useNavigation();
 
 const props = withDefaults(defineProps<DataTableProps<TData>>(), {
     actions: () => [],
     disabled: false,
     loading: false,
-    dataFormat: 'default',
     searchable: true,
     hasLeadingRows: false,
     showToolbar: true,
@@ -253,7 +231,8 @@ const props = withDefaults(defineProps<DataTableProps<TData>>(), {
     toolbarOffset: '0px',
 });
 
-const list = computed(() => normalizeDataTableList(props.list, props.dataFormat));
+const backend = useDataTableAdapter(() => props.dataFormat);
+const list = computed(() => backend.value.normalize(props.list));
 const selected = defineModel<string[]>('selected');
 provide(dataTableListKey, list);
 
@@ -447,7 +426,7 @@ async function executeBulkAction(): Promise<void> {
         return;
     }
     bulkActionPending.value = true;
-    router.visit(action.url, {
+    navigation.visit(action.url, {
         method: action.method,
         data: {
             action: action.key,

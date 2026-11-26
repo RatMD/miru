@@ -6,10 +6,16 @@ interface ResponseError<E> {
     status: 'error';
     message: string;
     details?: E;
+    /** Present only when preserveErrorDetails is requested. */
+    httpStatus?: number;
 }
 type Response<S, E> = ResponseSuccess<S> | ResponseError<E>;
 type Resource = string | URL;
-type Payload = BodyInit | Record<string, string> | null;
+type Payload = BodyInit | Record<string, unknown> | null;
+interface RequestOptions extends Omit<RequestInit, 'body'> {
+    /** Retain HTTP status and the server error body for adapters/validation. */
+    preserveErrorDetails?: boolean;
+}
 
 /**
  * Send a JSON-oriented HTTP request and normalize its result.
@@ -21,9 +27,10 @@ type Payload = BodyInit | Record<string, string> | null;
 async function request<S = unknown, E = unknown>(
     resource: Resource,
     payload: Payload = null,
-    options: Omit<RequestInit, 'body'> = {},
+    options: RequestOptions = {},
 ): Promise<Response<S, E>> {
-    const init: RequestInit = { ...options, method: (options.method ?? 'POST').toUpperCase() };
+    const { preserveErrorDetails, ...fetchOptions } = options;
+    const init: RequestInit = { ...fetchOptions, method: (options.method ?? 'POST').toUpperCase() };
     let url = resource.toString();
 
     if (init.method === 'GET' || init.method === 'HEAD') {
@@ -65,7 +72,9 @@ async function request<S = unknown, E = unknown>(
                 'status' in result &&
                 result.status === 'error'
             ) {
-                return result as ResponseError<E>;
+                return preserveErrorDetails
+                    ? { ...(result as ResponseError<E>), httpStatus: response.status }
+                    : (result as ResponseError<E>);
             }
 
             const message =
@@ -73,7 +82,9 @@ async function request<S = unknown, E = unknown>(
                     ? String(result.message)
                     : '[' + response.status + '] ' + response.statusText;
 
-            return { status: 'error', message };
+            return preserveErrorDetails
+                ? { status: 'error', message, details: result as E, httpStatus: response.status }
+                : { status: 'error', message };
         }
 
         if (
@@ -82,6 +93,9 @@ async function request<S = unknown, E = unknown>(
             'status' in result &&
             (result.status === 'success' || result.status === 'error')
         ) {
+            if (preserveErrorDetails && result.status === 'error') {
+                return { ...(result as ResponseError<E>), httpStatus: response.status };
+            }
             return result as Response<S, E>;
         }
 
@@ -101,7 +115,7 @@ async function request<S = unknown, E = unknown>(
 request.get = <S = unknown, E = unknown>(
     resource: Resource,
     payload: Payload = null,
-    options: Omit<RequestInit, 'body'> = {},
+    options: RequestOptions = {},
 ): Promise<Response<S, E>> => request(resource, payload, { ...options, method: 'GET' });
 
 /**
@@ -114,7 +128,7 @@ request.get = <S = unknown, E = unknown>(
 request.head = <S = unknown, E = unknown>(
     resource: Resource,
     payload: Payload = null,
-    options: Omit<RequestInit, 'body'> = {},
+    options: RequestOptions = {},
 ): Promise<Response<S, E>> => request(resource, payload, { ...options, method: 'HEAD' });
 
 /**
@@ -127,7 +141,7 @@ request.head = <S = unknown, E = unknown>(
 request.post = <S = unknown, E = unknown>(
     resource: Resource,
     payload: Payload = null,
-    options: Omit<RequestInit, 'body'> = {},
+    options: RequestOptions = {},
 ): Promise<Response<S, E>> => request(resource, payload, { ...options, method: 'POST' });
 
 /**
@@ -140,7 +154,7 @@ request.post = <S = unknown, E = unknown>(
 request.put = <S = unknown, E = unknown>(
     resource: Resource,
     payload: Payload = null,
-    options: Omit<RequestInit, 'body'> = {},
+    options: RequestOptions = {},
 ): Promise<Response<S, E>> => request(resource, payload, { ...options, method: 'PUT' });
 
 /**
@@ -153,7 +167,7 @@ request.put = <S = unknown, E = unknown>(
 request.patch = <S = unknown, E = unknown>(
     resource: Resource,
     payload: Payload = null,
-    options: Omit<RequestInit, 'body'> = {},
+    options: RequestOptions = {},
 ): Promise<Response<S, E>> => request(resource, payload, { ...options, method: 'PATCH' });
 
 /**
@@ -166,9 +180,9 @@ request.patch = <S = unknown, E = unknown>(
 request.delete = <S = unknown, E = unknown>(
     resource: Resource,
     payload: Payload = null,
-    options: Omit<RequestInit, 'body'> = {},
+    options: RequestOptions = {},
 ): Promise<Response<S, E>> => request(resource, payload, { ...options, method: 'DELETE' });
 
 // Export module
 export { request };
-export type { ResponseSuccess, ResponseError, Response, Resource, Payload };
+export type { ResponseSuccess, ResponseError, Response, Resource, Payload, RequestOptions };

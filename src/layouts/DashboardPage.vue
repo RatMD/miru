@@ -193,7 +193,6 @@ import type {
 } from './types';
 import type { Component, CSSProperties, HTMLAttributes } from 'vue';
 import { IconLayoutSidebar, IconMenu2 } from '@tabler/icons-vue';
-import { useMediaQuery } from '@vueuse/core';
 import { computed, useId, watch } from 'vue';
 import {
     Breadcrumb,
@@ -211,6 +210,7 @@ import {
     SheetTitle,
     SheetDescription,
 } from '../components/sheet';
+import { useBreakpoint } from '../composables/useBreakpoint';
 import { useI18n } from '../composables/useI18n';
 import { cn } from '../support/classNames';
 import DashboardNavigation from './dashboard/DashboardNavigation.vue';
@@ -265,7 +265,7 @@ const id = useId();
 const contentId = `dashboard-content-${id}`;
 const sidebarId = `dashboard-sidebar-${id}`;
 const mobileId = `dashboard-mobile-${id}`;
-const isDesktop = useMediaQuery('(min-width: 768px)');
+const { matches: isDesktop } = useBreakpoint({ min: 'md' });
 watch(isDesktop, (desktop) => {
     if (desktop) {
         mobileOpen.value = false;

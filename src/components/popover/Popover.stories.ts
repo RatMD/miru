@@ -3,16 +3,20 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { describeOverlayControls } from '../../stories/overlay-documentation';
+import { OverlayDocs } from '../../stories/OverlayDocs';
 import { Popover } from './index';
 const meta = {
     ...componentControls('Popover'),
-    title: 'Overlay/Popover',
+    title: 'Overlays/Popover',
+    id: 'overlay-popover',
     component: Popover,
     parameters: {
         controls: { include: controlNames('Popover') },
-        docs: { description: { component: componentDescription('Popover') } },
+        docs: { page: OverlayDocs, description: { component: componentDescription('Popover') } },
     },
 } satisfies Meta;
+describeOverlayControls('Popover', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

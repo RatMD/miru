@@ -2,16 +2,20 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { describeOverlayControls } from '../../stories/overlay-documentation';
+import { OverlayDocs } from '../../stories/OverlayDocs';
 import { Tooltip } from './index';
 const meta = {
     ...componentControls('Tooltip'),
-    title: 'Overlay/Tooltip',
+    title: 'Overlays/Tooltip',
+    id: 'overlay-tooltip',
     component: Tooltip,
     parameters: {
         controls: { include: controlNames('Tooltip') },
-        docs: { description: { component: componentDescription('Tooltip') } },
+        docs: { page: OverlayDocs, description: { component: componentDescription('Tooltip') } },
     },
 } satisfies Meta;
+describeOverlayControls('Tooltip', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

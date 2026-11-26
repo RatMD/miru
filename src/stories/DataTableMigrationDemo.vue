@@ -1,5 +1,5 @@
 <template>
-    <UiProvider locale="en-GB">
+    <ContextProvider locale="en-GB">
         <div class="space-y-4">
             <div class="flex flex-wrap gap-2">
                 <Button @click="disabled = !disabled">Toggle disabled</Button>
@@ -27,7 +27,7 @@
                 <template #empty>No records for this query</template>
             </DataTable>
         </div>
-    </UiProvider>
+    </ContextProvider>
 </template>
 <script setup lang="ts">
 import type {
@@ -40,7 +40,7 @@ import { IconExternalLink } from '@tabler/icons-vue';
 import { computed, ref } from 'vue';
 import { Button } from '../components/button';
 import { DataTable, createSelectionColumn, createActionsColumn } from '../components/data-table';
-import { UiProvider } from '../components/provider';
+import { ContextProvider } from '../components/provider';
 interface Item {
     id: string;
     name: string;

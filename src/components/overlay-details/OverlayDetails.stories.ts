@@ -2,16 +2,23 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { describeOverlayControls } from '../../stories/overlay-documentation';
+import { OverlayDocs } from '../../stories/OverlayDocs';
 import { OverlayDetails } from './index';
 const meta = {
     ...componentControls('OverlayDetails'),
-    title: 'Overlay/OverlayDetail',
+    title: 'Overlays/OverlayDetail',
+    id: 'overlay-overlaydetail',
     component: OverlayDetails,
     parameters: {
         controls: { include: controlNames('OverlayDetails') },
-        docs: { description: { component: componentDescription('OverlayDetails') } },
+        docs: {
+            page: OverlayDocs,
+            description: { component: componentDescription('OverlayDetails') },
+        },
     },
 } satisfies Meta;
+describeOverlayControls('OverlayDetails', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

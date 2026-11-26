@@ -2,15 +2,22 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import AttachmentDropzoneDemo from '../../stories/AttachmentDropzoneDemo.vue';
 import { componentDescription } from '../../stories/component-descriptions';
 import EditorExamples from '../../stories/EditorExamples.vue';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
 import { formStory } from '../../stories/form-fixtures';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { imageProcessingStory } from '../../stories/upload-processing';
 import { UploadZone } from './index';
 
 const meta: Meta = {
     title: 'FormFields/UploadZone',
-    parameters: { docs: { description: { component: componentDescription('UploadZone') } } },
+    parameters: {
+        docs: {
+            page: FormFieldDocs,
+            description: { component: componentDescription('UploadZone') },
+        },
+    },
     component: UploadZone,
-    args: { size: 'default', disabled: false },
+    args: { disabled: false },
     argTypes: {
         gallery: { control: 'boolean' },
         sortable: { control: 'boolean' },
@@ -18,7 +25,6 @@ const meta: Meta = {
         maxFiles: { control: 'number' },
         multiple: { control: 'boolean' },
         busy: { control: 'boolean' },
-        size: { control: 'select', options: ['sm', 'default', 'lg'] },
         disabled: { control: 'boolean' },
     },
     render: formStory(
@@ -26,6 +32,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeFormFieldControls('UploadZone', meta.argTypes);
 export default meta;
 export const ImageGallery: StoryObj = {
     args: { gallery: true, sortable: true, showPrimary: true, maxFiles: 12 },

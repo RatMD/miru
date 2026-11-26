@@ -1,11 +1,15 @@
 <template>
     <SwitchRoot
+        :aria-readonly="isReadonly || undefined"
+        @click.capture="guardReadonly"
+        @keydown.capture="guardReadonly"
         v-slot="slotProps"
         data-slot="switch"
         :data-size="size"
         :data-variant="variant"
         :style="trackStyle"
         v-bind="forwarded"
+        :required="!isReadonly && required"
         :class="
             cn(
                 'miru-switch peer box-border inline-flex shrink-0 cursor-pointer items-center rounded-full border border-transparent shadow-xs transition-[background-color,box-shadow] outline-none enabled:hover:shadow-[0_0_0_3px_rgb(0_0_0/0.08)] dark:enabled:hover:shadow-[0_0_0_3px_rgb(255_255_255/0.12)] focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50',
@@ -40,11 +44,13 @@ import { reactiveOmit } from '@vueuse/core';
 import { SwitchRoot, SwitchThumb, useForwardPropsEmits } from 'reka-ui';
 import { computed } from 'vue';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 
 const props = withDefaults(
     defineProps<
         SwitchRootProps & {
             class?: HTMLAttributes['class'];
+            readonly?: boolean;
             size?: 'sm' | 'default' | 'lg';
             variant?: SwitchVariant;
             /** Extra track inset in pixels; preserves thumb size and travel. */
@@ -66,9 +72,10 @@ const trackStyle = computed(() => {
     };
 });
 
+const { readonly: isReadonly, guard: guardReadonly } = useReadonlyField(() => props.readonly);
 const emits = defineEmits<SwitchRootEmits>();
 
-const delegatedProps = reactiveOmit(props, 'class', 'size', 'trackPadding', 'variant');
+const delegatedProps = reactiveOmit(props, 'readonly', 'class', 'size', 'trackPadding', 'variant');
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>
@@ -89,7 +96,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
 .miru-switch[data-variant='danger-success'] {
     --switch-on: var(--ui-success-600);
     --switch-on-hover: var(--ui-success-700);
-    --switch-thumb-on: #ffffff;
+    --switch-thumb-on: var(--ui-switch-thumb-checked, #ffffff);
 }
 .miru-switch[data-variant='danger-success'] {
     --switch-off: var(--ui-danger-600);

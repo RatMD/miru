@@ -99,8 +99,8 @@ export function formStory(template: string): StoryObj['render'] {
             };
         },
         template:
-            '<UiProvider :locale="locale"><div style="min-width:16rem;max-width:44rem;display:grid;gap:1rem">' +
+            '<ContextProvider :locale="locale"><div style="min-width:16rem;max-width:44rem;display:grid;gap:1rem">' +
             template +
-            '</div></UiProvider>',
+            '</div></ContextProvider>',
     });
 }

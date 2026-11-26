@@ -3,8 +3,8 @@
         :is="group ? 'div' : RadioGroupRoot"
         v-bind="rootProps"
         data-slot="radiobox"
-        :class="cn('flex items-center gap-2', props.class)">
-        <RadioGroupItem
+        :class="cn('flex items-center gap-2', props.wrapperClass)">
+        <RadioGroupItem :class="props.class" :readonly="readonly"
             v-bind="$attrs"
             :id="inputId"
             :value="value"
@@ -42,6 +42,8 @@ const props = defineProps<{
     required?: boolean;
     size?: 'sm' | 'default' | 'lg';
     class?: HTMLAttributes['class'];
+    wrapperClass?: HTMLAttributes['class'];
+    readonly?: boolean;
 }>();
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
 const group = inject(radioGroupSizeKey, undefined);

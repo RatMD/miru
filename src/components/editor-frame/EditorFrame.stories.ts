@@ -3,6 +3,12 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { IconLetterCaseUpper, IconBrackets } from '@tabler/icons-vue';
 import { expect, userEvent, within } from 'storybook/test';
 import { ref } from 'vue';
+import { ComponentDocs } from '../../stories/ComponentDocs';
+import {
+    utilitySummaries,
+    utilityDependencyMarkdown,
+    describeUtilityControls,
+} from '../../stories/utilities-documentation';
 import { EditorFrame } from './index';
 
 const meta = {
@@ -11,9 +17,12 @@ const meta = {
     parameters: {
         layout: 'padded',
         docs: {
+            page: ComponentDocs,
             description: {
                 component:
-                    'Shared lightweight textarea shell with label, toolbar, counter, disabled/readonly guards and an instance-local API. Attach extensions with { id, commands }; commands receive value, getSelection(), setValue(), replaceSelection(), setSelection(), focus() and execute(). Custom surfaces may replace the default slot. EditorJson and EditorMarkdown attach their own commands to this frame; TinyMCE remains independent.',
+                    utilitySummaries.EditorFrame +
+                    '\n\n' +
+                    utilityDependencyMarkdown('EditorFrame', true),
             },
         },
     },
@@ -59,6 +68,7 @@ const meta = {
             '<div class="mx-auto max-w-3xl"><EditorFrame v-bind="args" v-model="value" :extensions="extensions" /><output data-testid="value">{{ value }}</output></div>',
     }),
 } satisfies Meta;
+describeUtilityControls('EditorFrame', meta.argTypes ?? {}, meta);
 export default meta;
 export const Default: StoryObj = {};
 export const Readonly: StoryObj = { args: { readonly: true } };

@@ -1,5 +1,8 @@
 <template>
     <RadioGroupRoot
+        :aria-readonly="isReadonly || undefined"
+        @click.capture="guardReadonly"
+        @keydown.capture="guardReadonly"
         v-slot="slotProps"
         data-slot="radio-group"
         :data-variant="variant"
@@ -10,7 +13,8 @@
                 props.class,
             )
         "
-        v-bind="forwarded">
+        v-bind="forwarded"
+        :required="!isReadonly && required">
         <slot v-bind="slotProps">
             <RadioBox
                 v-for="option in options"
@@ -32,6 +36,7 @@ import { reactiveOmit } from '@vueuse/core';
 import { RadioGroupRoot, useForwardPropsEmits } from 'reka-ui';
 import { computed, provide } from 'vue';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 import { RadioBox } from '../radiobox';
 import { radioGroupSizeKey, radioGroupVariantKey } from '.';
 
@@ -39,6 +44,7 @@ const props = withDefaults(
     defineProps<
         RadioGroupRootProps & {
             class?: HTMLAttributes['class'];
+            readonly?: boolean;
             variant?: InlineVariant;
             size?: 'sm' | 'default' | 'lg';
             options?: {
@@ -59,9 +65,10 @@ provide(
     radioGroupVariantKey,
     computed(() => props.variant),
 );
+const { readonly: isReadonly, guard: guardReadonly } = useReadonlyField(() => props.readonly);
 const emits = defineEmits<RadioGroupRootEmits>();
 
-const delegatedProps = reactiveOmit(props, 'class', 'size', 'options', 'variant');
+const delegatedProps = reactiveOmit(props, 'readonly', 'class', 'size', 'options', 'variant');
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 </script>

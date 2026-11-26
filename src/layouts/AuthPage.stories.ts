@@ -1,17 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import AuthPageDemo from '../stories/AuthPageDemo.vue';
+import { ComponentDocs } from '../stories/ComponentDocs';
+import {
+    layoutSummaries,
+    layoutDependencyMarkdown,
+    describeLayoutControls,
+    layoutApiCopy,
+} from '../stories/layout-documentation';
 import { AuthPage } from './index';
 
 const meta = {
-    title: 'Layout/AuthPage',
+    title: 'Layouts/AuthPage',
+    id: 'layout-authpage',
     component: AuthPage,
     parameters: {
+        controls: { include: Object.keys(layoutApiCopy.AuthPage.props ?? {}) },
         layout: 'fullscreen',
         docs: {
+            page: ComponentDocs,
             description: {
                 component:
-                    'Responsive split or card authentication shell inspired by the SHODAN and Spottle application layouts. Form, branding and footer are host slots. Supply an image URL or visual slot; the included vector illustration follows the palette and makes no remote requests. No router, auth store or global body styles are installed.',
+                    layoutSummaries.AuthPage + '\n\n' + layoutDependencyMarkdown('AuthPage', true),
             },
         },
     },
@@ -39,6 +49,7 @@ const meta = {
         template: '<AuthPageDemo v-bind="args" :locale="locale" />',
     }),
 } satisfies Meta;
+describeLayoutControls('AuthPage', meta.argTypes);
 export default meta;
 type Story = StoryObj<typeof meta>;
 

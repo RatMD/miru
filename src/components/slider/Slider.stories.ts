@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import { ref } from 'vue';
+import { componentDescription } from '../../stories/component-descriptions';
+import { describeFormFieldControls } from '../../stories/form-fields-api-copy';
+import { FormFieldDocs } from '../../stories/FormFieldDocs';
 import { Slider } from './index';
 
 const meta = {
@@ -8,9 +11,9 @@ const meta = {
     component: Slider,
     parameters: {
         docs: {
+            page: FormFieldDocs,
             description: {
-                component:
-                    'Keyboard- and pointer-accessible slider. Values are number arrays: [value] for one thumb or [from, to] for a range. Supports min/max, step, optional step marks, minimum thumb distance, vertical/RTL orientation, theme variants, disabled state and valueCommit.',
+                component: componentDescription('Slider'),
             },
         },
     },
@@ -52,6 +55,7 @@ const meta = {
             '<div class="grid w-80 max-w-full gap-5 p-3"><Slider v-bind="args" v-model="value" label="Value" :thumb-labels="value.length === 2 ? [\'From\', \'Until\'] : [\'Value\']" /><output data-testid="value">{{ value }}</output></div>',
     }),
 } satisfies Meta;
+describeFormFieldControls('Slider', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const Steps: StoryObj = { args: { step: 10, showSteps: true } };

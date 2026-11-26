@@ -18,4 +18,19 @@ function fail() {
 }
 ```
 
-Mount UiRoot once (or use `miru.wrap(App)`) to host toasts. Methods include `success`, `warning`, `error`, `info`, `message`, `loading`, `promise` and `dismiss`. `useToaster` is a compatibility alias. Consume a host `pageToasts` feed only once in a persistent root.
+Mount PageRoot once (or use `miru.wrap(App)`) to host Reka-based toasts. Methods include `success`, `warning`, `error`, `info`, `message`, `loading`, `update`, `promise` and `dismiss`. `useToaster` is a compatibility alias. Consume a host `pageToasts` feed only once in a persistent root.
+
+Pass `useToast({ toasterId: 'uploads' })` to target `<Toast id="uploads" />`. Its `dismiss()` clears that host only; per-call `toasterId` overrides the default target. PageRoot uses the host ID configured through `createMiru({ toast: { id: 'uploads' } })` for page notifications automatically.
+
+```ts
+const notification = toast.promise(saveDocument(), {
+    loading: 'Saving…',
+    success: () => 'Saved',
+    error: 'Could not save',
+});
+// Can also be ignored for a notification without awaiting.
+const document = await notification.unwrap();
+// notification.id identifies the toast; await notification also returns the result.
+```
+
+Use `duration: 0` or `Infinity` for persistent messages and `dismissible: false` to block user dismissal. Programmatic `dismiss(id)` still closes them. `closeButton: false` hides only the close button. Actions support `closeOnClick: false` or `event.preventDefault()` to keep the toast visible. Loading notifications remain open until updated or dismissed. A late promise result cannot reopen a dismissed toast or recreate an unmounted host.

@@ -1,12 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import CalendarBookingDemo from '../../stories/CalendarBookingDemo.vue';
-import { componentDescription } from '../../stories/component-descriptions';
+import { ComponentDocs } from '../../stories/ComponentDocs';
 import { formStory } from '../../stories/form-fixtures';
+import {
+    utilitySummaries,
+    utilityDependencyMarkdown,
+    describeUtilityControls,
+} from '../../stories/utilities-documentation';
 import { Calendar } from './index';
 
 const meta: Meta = {
     title: 'Utilities/Calendar',
-    parameters: { docs: { description: { component: componentDescription('Calendar') } } },
+    parameters: {
+        docs: {
+            page: ComponentDocs,
+            description: {
+                component:
+                    utilitySummaries.Calendar +
+                    '\n\n' +
+                    utilityDependencyMarkdown('Calendar', true),
+            },
+        },
+    },
     component: Calendar as unknown as NonNullable<Meta['component']>,
     args: {
         size: 'default',
@@ -29,6 +44,7 @@ const meta: Meta = {
     ),
 };
 meta.parameters = { ...meta.parameters, controls: { include: Object.keys(meta.argTypes ?? {}) } };
+describeUtilityControls('Calendar', meta.argTypes ?? {}, meta);
 export default meta;
 export const Default: StoryObj = {};
 export const Disabled: StoryObj = { args: { disabled: true } };

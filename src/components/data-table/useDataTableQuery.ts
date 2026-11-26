@@ -1,16 +1,15 @@
 import type { DataTableFormat, ListPayload, ListState } from './contracts';
-import type { RequestPayload } from '@inertiajs/core';
 import type { MaybeRef, MaybeRefOrGetter } from 'vue';
-import { router } from '@inertiajs/vue3';
 import { toValue, unref } from 'vue';
-import { serializeLucidQuery } from './adapters';
+import { useDataTableAdapter } from '../../composables/useDataTableAdapter';
+import { useNavigation } from '../../composables/useNavigation';
 
 interface UseDataTableQueryOptions<TData> {
     list: MaybeRefOrGetter<ListPayload<TData>>;
     additionalQuery?: MaybeRefOrGetter<Record<string, unknown> | undefined>;
     onNavigate?: () => void;
     disabled?: MaybeRefOrGetter<boolean>;
-    dataFormat?: MaybeRefOrGetter<DataTableFormat>;
+    dataFormat?: MaybeRefOrGetter<DataTableFormat | undefined>;
     queryProps?: MaybeRefOrGetter<string[] | undefined>;
     querySerializer?: MaybeRef<
         | ((state: ListState, filters: Record<string, unknown>) => Record<string, unknown>)
@@ -22,10 +21,12 @@ interface UseDataTableQueryOptions<TData> {
 }
 
 /**
- * Coordinate server-owned search, filtering, sorting and pagination via Inertia.
+ * Coordinate server-owned search, filtering, sorting and pagination via host navigation.
  * Advanced search can later be added at this serialization boundary.
  */
 export function useDataTableQuery<TData>(options: UseDataTableQueryOptions<TData>) {
+    const navigation = useNavigation();
+    const backend = useDataTableAdapter(options.dataFormat);
     function visit(
         overrides: Partial<ListPayload<TData>['state']>,
         filters = toValue(options.list).filters,
@@ -44,28 +45,19 @@ export function useDataTableQuery<TData>(options: UseDataTableQueryOptions<TData
             queryHandler(state, filters);
             return;
         }
-        const serializer = unref(options.querySerializer);
-        const format = toValue(options.dataFormat) ?? 'default';
+        const serializer = unref(options.querySerializer) ?? backend.value.serializeQuery;
         const payload = {
-            ...(serializer
-                ? serializer(state, filters)
-                : format === 'lucid'
-                  ? serializeLucidQuery(state, filters)
-                  : {
-                        page: state.page,
-                        per_page: state.per_page,
-                        order_by: state.order_by,
-                        order: state.order,
-                        filters,
-                    }),
+            ...serializer(state, filters),
             ...toValue(options.additionalQuery),
-        } as RequestPayload;
+        };
 
-        router.get(window.location.pathname, payload, {
+        navigation.visit(window.location.pathname, {
+            method: 'get',
+            data: payload,
             preserveScroll: true,
             preserveState: true,
             replace,
-            only: toValue(options.queryProps) ?? (format === 'default' ? ['list'] : undefined),
+            only: toValue(options.queryProps) ?? backend.value.queryProps,
         });
     }
 

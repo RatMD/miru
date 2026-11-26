@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { progressApiCopy } from '../../stories/progress-documentation';
+import { ProgressDocs } from '../../stories/ProgressDocs';
 import { Progress } from './index';
 const meta = {
     ...componentControls('Progress'),
@@ -9,9 +11,22 @@ const meta = {
     component: Progress,
     parameters: {
         controls: { include: controlNames('Progress') },
-        docs: { description: { component: componentDescription('Progress') } },
+        docs: { page: ProgressDocs, description: { component: componentDescription('Progress') } },
     },
 } satisfies Meta;
+Object.assign(
+    meta.argTypes,
+    Object.fromEntries(
+        Object.entries(meta.argTypes).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: progressApiCopy.Progress.props[name],
+                table: { category: 'Progress props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

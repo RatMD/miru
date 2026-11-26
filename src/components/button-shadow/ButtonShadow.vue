@@ -56,8 +56,9 @@
                 :stroke-dashoffset="100 - progress" />
         </svg>
         <ButtonStatusIcon
-            v-if="statusDot"
-            :visible="!loading"
+            v-if="statusDot && !loading"
+            :pulse="statusDotPulse"
+            :ping="statusDotPing"
             :color="typeof statusDot === 'string' ? statusDot : variant"
             :small="size === 'xs'">
             <slot />
@@ -85,7 +86,9 @@ const props = withDefaults(
             variant?: NonNullable<ButtonVariants['variant']>;
             size?: ButtonVariants['size'];
             muted?: boolean;
-            statusDot?: boolean | NonNullable<ButtonVariants['variant']>;
+            statusDot?: boolean | string;
+            statusDotPulse?: boolean;
+            statusDotPing?: boolean;
             statusRing?: NonNullable<ButtonVariants['variant']> | boolean;
             timerRing?: boolean;
             timerDuration?: number;
@@ -129,6 +132,8 @@ const forwarded = reactiveOmit(
     'as',
     'type',
     'statusDot',
+    'statusDotPulse',
+    'statusDotPing',
     'statusRing',
     'timerRing',
     'timerDuration',

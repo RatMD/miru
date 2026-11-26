@@ -1,0 +1,59 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as BadgeStories from '../../components/badge/Badge.stories';
+
+<Meta title="Plugins/number-format" />
+
+# number-format
+
+Display a number using `Intl.NumberFormat` with optional precision, grouping, percentage, unit,
+currency or compact-notation options. Works on text-only elements and component roots such as
+`BadgePart` or `TableCell`.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue';
+import { vNumberFormat } from '@rat.md/miru/plugins/number-format';
+
+const quantity = ref(1234.5);
+</script>
+
+<template>
+    <span v-number-format="quantity" />
+    <span
+        v-number-format="{
+            value: quantity,
+            options: { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+        }" />
+    <span
+        v-number-format="{
+            value: 0.875,
+            locale: 'en-US',
+            options: { style: 'percent', maximumFractionDigits: 1 },
+        }" />
+</template>
+```
+
+<Canvas of={BadgeStories.FormattedNumbers} />
+
+Miru registers `v-number-format` globally through its directives plugin. Global instances follow
+the app's locale, including reactive locale changes. Standalone `vNumberFormat` defaults to de-DE.
+For a local reactive locale, use `createNumberFormatDirective(() => locale.value)`.
+An explicit binding `locale` overrides the app locale. Locale underscores are normalized to hyphens.
+
+The binding accepts a number, bigint, numeric string, null/undefined, or
+`{ value, locale?, options?: Intl.NumberFormatOptions }`. Empty or non-finite values display `—`.
+Numeric strings use a dot decimal separator and are not parsed as localized input. Trailing zeroes
+are controlled by Intl options. Invalid Intl options or locale identifiers raise the normal Intl error.
+
+The directive replaces the element's text content. Use an empty leaf element; put icons and sibling
+content outside it. It formats on mount/update, watches the configured locale and stops watching
+when unmounted. It does not format text during server rendering; use the pure helper in interpolations
+when the server-rendered text must already be formatted.
+Changes to nested reactive binding options also refresh the output.
+
+<Canvas of={BadgeStories.ReactiveNumberOptions} />
+
+```ts
+import { formatNumber } from '@rat.md/miru/support/numberFormat';
+formatNumber(1234.5, 'de-DE', { minimumFractionDigits: 2 }); // "1.234,50"
+```

@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { buttonApiCopy } from '../../stories/button-documentation';
+import { ButtonShadowDocs } from '../../stories/ButtonShadowDocs';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
@@ -9,9 +11,18 @@ const meta = {
     component: ButtonShadow,
     parameters: {
         controls: { include: controlNames('ButtonShadow') },
-        docs: { description: { component: componentDescription('ButtonShadow') } },
+        docs: {
+            page: ButtonShadowDocs,
+            description: { component: componentDescription('ButtonShadow') },
+        },
     },
 } satisfies Meta;
+for (const [name, control] of Object.entries(meta.argTypes ?? {})) {
+    if (!control) continue;
+    const description = buttonApiCopy.ButtonShadow.props[name];
+    const category = 'ButtonShadow props';
+    Object.assign(control, { description, table: { category } });
+}
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(
@@ -95,7 +106,7 @@ export const StatusDotSizes: StoryObj = {
 export const StatusDotStates: StoryObj = {
     parameters: { controls: { disable: true } },
     render: componentStory(
-        '<div class="flex items-center gap-6 p-3"><ButtonShadow variant="warning" :status-dot="true" :label="labels.warning"><IconMail/></ButtonShadow><ButtonShadow disabled status-dot="danger" :label="labels.error"><IconMail/></ButtonShadow><ButtonShadow loading status-dot="info" :label="labels.loading"><IconMail/></ButtonShadow></div>',
+        '<div class="flex items-center gap-6 p-3"><ButtonShadow variant="warning" :status-dot="true" :label="labels.warning"><IconMail/></ButtonShadow><ButtonShadow disabled status-dot="danger" :label="labels.error"><IconMail/></ButtonShadow></div>',
         'ButtonShadow',
     ),
 };

@@ -1,9 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentDescription } from '../../stories/component-descriptions';
 import CompositionDemo from '../../stories/CompositionDemo.vue';
+import { describeOverlayControls } from '../../stories/overlay-documentation';
+import { OverlayDocs } from '../../stories/OverlayDocs';
 import { Drawer } from './index';
 const meta = {
-    title: 'Overlay/Drawer',
+    title: 'Overlays/Drawer',
+    id: 'overlay-drawer',
     component: Drawer,
     parameters: {
         layout: 'padded',
@@ -18,7 +21,7 @@ const meta = {
                 'startHeight',
             ],
         },
-        docs: { description: { component: componentDescription('Drawer') } },
+        docs: { page: OverlayDocs, description: { component: componentDescription('Drawer') } },
     },
     args: {
         maxHeight: '90dvh',
@@ -52,6 +55,7 @@ const meta = {
         template: '<CompositionDemo mode="drawer" :args="args" :locale="locale"/>',
     }),
 } satisfies Meta;
+describeOverlayControls('Drawer', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {};
 export const LongContent: StoryObj = { args: { longContent: true } };

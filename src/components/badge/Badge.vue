@@ -11,7 +11,8 @@
         "
         :data-size="size ?? 'default'"
         :data-variant="variant ?? 'default'"
-        :class="cn(badgeVariants({ variant, size }), props.class)"
+        :data-appearance="appearance ?? 'auto'"
+        :class="cn(badgeVariants({ variant, size, appearance }), props.class)"
         v-bind="delegatedProps">
         <slot />
     </Primitive>
@@ -23,8 +24,9 @@ import type { PrimitiveProps } from 'reka-ui';
 import type { HTMLAttributes } from 'vue';
 import { reactiveOmit } from '@vueuse/core';
 import { Primitive } from 'reka-ui';
-import { computed } from 'vue';
+import { computed, provide } from 'vue';
 import { cn } from '../../support/classNames';
+import { badgeSizeKey } from './context';
 import { badgeVariants } from '.';
 
 const props = defineProps<
@@ -34,6 +36,7 @@ const props = defineProps<
         href?: HTMLAnchorElement['href'];
         interactive?: boolean;
         variant?: BadgeVariants['variant'];
+        appearance?: BadgeVariants['appearance'];
         size?: BadgeVariants['size'];
         class?: HTMLAttributes['class'];
     }
@@ -43,6 +46,10 @@ const element = computed(() => {
     const tag = props.asTag ?? props.as ?? (props.href ? 'a' : 'span');
     return tag === 'link' ? 'a' : tag;
 });
+provide(
+    badgeSizeKey,
+    computed(() => props.size ?? 'default'),
+);
 const delegatedProps = reactiveOmit(
     props,
     'class',
@@ -50,6 +57,7 @@ const delegatedProps = reactiveOmit(
     'asTag',
     'href',
     'variant',
+    'appearance',
     'size',
     'interactive',
 );

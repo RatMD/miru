@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" data-slot="editor-markdown" @keydown="onKeydown">
+    <div ref="container" data-slot="editor-markdown" :class="wrapperClass" @keydown="onKeydown">
         <EditorFrame
             ref="frame"
             :id="inputId"
@@ -17,6 +17,7 @@
             <template #default>
                 <Textarea
                     v-bind="$attrs"
+                    :class="props.class"
                     :id="inputId"
                     :name="name"
                     :disabled="disabled"
@@ -47,6 +48,7 @@
 import type { EditorFrameApi, EditorFrameExtension } from '../editor-frame';
 import type { MarkdownSelection, MarkdownTool } from './formatting';
 import type { MarkdownSyntax } from './formatting';
+import type { HTMLAttributes } from 'vue';
 import {
     IconBold,
     IconH1,
@@ -67,6 +69,8 @@ const { trans } = useI18n();
 
 const props = withDefaults(
     defineProps<{
+        class?: HTMLAttributes['class'];
+        wrapperClass?: HTMLAttributes['class'];
         label?: string;
         id?: string;
         name?: string;

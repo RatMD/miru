@@ -60,6 +60,7 @@
             </InputTags>
             <Tabs
                 v-else
+                :appearance="appearance"
                 v-model="tabs[variant]"
                 :variant="inherited || variant"
                 :aria-label="variant"
@@ -79,6 +80,7 @@
 </template>
 <script setup lang="ts">
 import type { InlineVariant } from '../components/inline-variants';
+import type { TabsAppearance } from '../components/tabs';
 import { ref } from 'vue';
 import { Checkbox } from '../components/checkbox';
 import { CheckboxGroup } from '../components/checkbox-group';
@@ -94,7 +96,11 @@ import { RadioGroup } from '../components/radio-group';
 import { RadioBox } from '../components/radiobox';
 import { Tabs } from '../components/tabs';
 
-defineProps<{ kind: 'checkbox' | 'radio' | 'tags' | 'tabs'; overrides?: boolean }>();
+defineProps<{
+    kind: 'checkbox' | 'radio' | 'tags' | 'tabs';
+    overrides?: boolean;
+    appearance?: TabsAppearance;
+}>();
 const inherited = ref<InlineVariant | ''>('');
 function perVariant<T>(create: () => T): Record<InlineVariant, T> {
     return Object.fromEntries(variants.map((variant) => [variant, create()])) as Record<

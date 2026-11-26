@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { paginationApiCopy } from '../../stories/pagination-documentation';
+import { PaginationDocs } from '../../stories/PaginationDocs';
 import { Pagination } from './index';
 const meta = {
     ...componentControls('Pagination'),
@@ -9,9 +11,25 @@ const meta = {
     component: Pagination,
     parameters: {
         controls: { include: controlNames('Pagination') },
-        docs: { description: { component: componentDescription('Pagination') } },
+        docs: {
+            page: PaginationDocs,
+            description: { component: componentDescription('Pagination') },
+        },
     },
 } satisfies Meta;
+Object.assign(
+    meta.argTypes,
+    Object.fromEntries(
+        Object.entries(meta.argTypes).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: paginationApiCopy.Pagination.props[name],
+                table: { category: 'Pagination props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

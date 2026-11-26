@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import CalendarBookingIntegrationDemo from '../../stories/CalendarBookingIntegrationDemo.vue';
+import { ComponentExamplesDocs as ComponentDocs } from '../../stories/ComponentDocs';
+import {
+    extensionSummaries,
+    extensionDependencyMarkdown,
+} from '../../stories/extensions-documentation';
 import { CalendarBooking } from './index';
 const meta: Meta = {
     title: 'Extensions/TimeSlots',
@@ -7,9 +12,12 @@ const meta: Meta = {
     tags: ['autodocs'],
     parameters: {
         docs: {
+            page: ComponentDocs,
             description: {
                 component:
-                    'Optional booking composition. Backend owns capacity, permissions and persistence. Toggle single/range, one/two months, loading/error; retain a booked slot or confirm a special appointment.',
+                    extensionSummaries.CalendarBooking +
+                    '\n\n' +
+                    extensionDependencyMarkdown('CalendarBooking', true),
             },
         },
     },
@@ -19,5 +27,6 @@ const meta: Meta = {
         template: '<CalendarBookingIntegrationDemo :locale="locale" />',
     }),
 };
+meta.parameters = { ...meta.parameters, controls: { disable: true } };
 export default meta;
 export const TicketBooking: StoryObj = {};

@@ -13,4 +13,4 @@ import { createMiruDirectives } from '@rat.md/miru/plugins/directives';
 app.use(createMiruDirectives({ locale: 'en', currency: 'EUR' }));
 ```
 
-`createMiru()` already installs this plugin unless disabled. It registers `v-click-outside`, `v-dayjs`, `v-filesize` / `v-file-size`, `v-price`, `v-resize` and `v-tinymce`. Each has a local `vName` export for script setup. Browser work starts in directive lifecycle hooks.
+`createMiru()` already installs this plugin unless disabled. It registers `v-click-outside`, `v-dayjs`, `v-filesize` / `v-file-size`, `v-price`, `v-number-format`, `v-resize` and `v-tinymce`. Each has a local `vName` export for script setup. Browser work starts in directive lifecycle hooks.

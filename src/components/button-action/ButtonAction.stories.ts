@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { buttonApiCopy } from '../../stories/button-documentation';
+import { ButtonActionDocs } from '../../stories/ButtonActionDocs';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
@@ -9,9 +11,18 @@ const meta = {
     component: ButtonAction,
     parameters: {
         controls: { include: controlNames('ButtonAction') },
-        docs: { description: { component: componentDescription('ButtonAction') } },
+        docs: {
+            page: ButtonActionDocs,
+            description: { component: componentDescription('ButtonAction') },
+        },
     },
 } satisfies Meta;
+for (const [name, control] of Object.entries(meta.argTypes ?? {})) {
+    if (!control) continue;
+    const description = buttonApiCopy.ButtonAction.props[name];
+    const category = 'ButtonAction props';
+    Object.assign(control, { description, table: { category } });
+}
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(
@@ -81,7 +92,7 @@ export const StatusDotSizes: StoryObj = {
 export const StatusDotStates: StoryObj = {
     parameters: { controls: { disable: true } },
     render: componentStory(
-        '<div class="flex items-center gap-6 p-3"><ButtonAction variant="warning" :status-dot="true" :title="labels.warning"><IconMail/></ButtonAction><ButtonAction disabled status-dot="danger" :title="labels.error"><IconMail/></ButtonAction><ButtonAction loading status-dot="info" :title="labels.loading"><IconMail/></ButtonAction></div>',
+        '<div class="flex items-center gap-6 p-3"><ButtonAction variant="warning" :status-dot="true" :title="labels.warning"><IconMail/></ButtonAction><ButtonAction disabled status-dot="danger" :title="labels.error"><IconMail/></ButtonAction></div>',
         'ButtonAction',
     ),
 };

@@ -141,7 +141,7 @@ export function createBadgeColumn<TData extends RowData>(
 export function createSortOrderColumn<TData extends RowData & DataTableSortOrderRow>(options: {
     labelKey: string;
     moveUrl?: (item: TData) => string;
-    /** Overrides the Inertia PATCH endpoint for local data or another transport. */
+    /** Overrides the navigation adapter's PATCH endpoint for local data or another transport. */
     moveHandler?: DataTableMoveHandler<TData>;
 }): DataTableColumnDef<TData> {
     const { trans } = useI18n();

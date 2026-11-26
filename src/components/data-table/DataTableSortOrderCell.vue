@@ -49,13 +49,14 @@
 <script setup lang="ts">
 import type { ListPayload } from './contracts';
 import type { DataTableSortOrderRow, DataTableMoveDirection } from './types';
-import { router } from '@inertiajs/vue3';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-vue';
 import { computed, inject, ref } from 'vue';
 import { useI18n } from '../../composables/useI18n';
+import { useNavigation } from '../../composables/useNavigation';
 import { Button } from '../button';
 import { dataTableInteractionKey, dataTableListKey } from './context';
 const { trans, transChoice, locale } = useI18n();
+const navigation = useNavigation();
 
 const props = defineProps<{
     item: DataTableSortOrderRow;
@@ -102,27 +103,25 @@ async function move(direction: DataTableMoveDirection): Promise<void> {
         else if (typeof value === 'string' || typeof value === 'number')
             filters[key] = String(value);
     }
-    router.patch(
-        props.moveUrl,
-        {
+    navigation.visit(props.moveUrl, {
+        method: 'patch',
+        data: {
             direction,
             page: list.state.page,
             per_page: list.state.per_page,
             filters,
         },
-        {
-            preserveScroll: true,
-            preserveState: true,
-            onStart: () => {
-                moving.value = true;
-            },
-            onError: () => {
-                failed.value = true;
-            },
-            onFinish: () => {
-                moving.value = false;
-            },
+        preserveScroll: true,
+        preserveState: true,
+        onStart: () => {
+            moving.value = true;
         },
-    );
+        onError: () => {
+            failed.value = true;
+        },
+        onFinish: () => {
+            moving.value = false;
+        },
+    });
 }
 </script>

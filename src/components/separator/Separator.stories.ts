@@ -3,6 +3,8 @@ import { expect, within } from 'storybook/test';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { separatorApiCopy } from '../../stories/separator-documentation';
+import { SeparatorDocs } from '../../stories/SeparatorDocs';
 import { Separator } from './index';
 const meta = {
     ...componentControls('Separator'),
@@ -10,9 +12,25 @@ const meta = {
     component: Separator,
     parameters: {
         controls: { include: controlNames('Separator') },
-        docs: { description: { component: componentDescription('Separator') } },
+        docs: {
+            page: SeparatorDocs,
+            description: { component: componentDescription('Separator') },
+        },
     },
 } satisfies Meta;
+Object.assign(
+    meta.argTypes,
+    Object.fromEntries(
+        Object.entries(meta.argTypes).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: separatorApiCopy.Separator.props[name],
+                table: { category: 'Separator props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

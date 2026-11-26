@@ -23,13 +23,9 @@ import type {
     ListState,
 } from '../components/data-table';
 import { computed, ref } from 'vue';
-import {
-    DataTable,
-    adaptLaravelList,
-    adaptLucidList,
-    adaptLaravelPagination,
-    serializeLucidQuery,
-} from '../components/data-table';
+import { adaptLucidList, serializeLucidQuery } from '../adapters/adonis';
+import { adaptLaravelList, adaptLaravelPagination } from '../adapters/laravel';
+import { DataTable } from '../components/data-table';
 const props = defineProps<{ backend: 'laravel' | 'lucid' | 'custom' }>();
 type Item = { id: string; name: string };
 const source = Array.from({ length: 17 }, (_, index) => ({

@@ -1,7 +1,11 @@
 import type { StorybookConfig } from '@storybook/vue3-vite';
 
 const config: StorybookConfig = {
-    stories: ['../src/**/*.stories.ts', '../src/docs/**/!(popover-tooltip).mdx'],
+    stories: [
+        '../src/**/*.stories.ts',
+        '../src/docs/installation-guide.mdx',
+        './reference/**/*.mdx',
+    ],
     addons: [
         '@storybook/addon-docs',
         '@storybook/addon-a11y',

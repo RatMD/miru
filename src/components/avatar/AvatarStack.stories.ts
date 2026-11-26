@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect } from 'storybook/test';
+import { avatarApiCopy } from '../../stories/avatar-documentation';
+import { AvatarStackDocs } from '../../stories/AvatarStackDocs';
+import { componentDescription } from '../../stories/component-descriptions';
 import { Avatar, AvatarFallback, AvatarImage, AvatarStack } from './index';
 
 const names = [
@@ -29,10 +32,8 @@ const meta = {
     },
     parameters: {
         docs: {
-            description: {
-                component:
-                    'Overlapping slot-based avatars with transparent, shape-aware cutouts instead of painted borders. Size and shape default from the stack; individual Avatar props may override them. max limits visible avatars and adds a +N indicator without consuming a place. The overflow slot receives { count }. Supports RTL through logical spacing. / Überlappende Avatare mit transparenten Ausschnitten, optionalem Limit und +N-Anzeige.',
-            },
+            page: AvatarStackDocs,
+            description: { component: componentDescription('AvatarStack') },
         },
     },
     render: (args) => ({
@@ -46,6 +47,15 @@ const meta = {
     }),
 } satisfies Meta;
 
+for (const [name, description] of Object.entries(avatarApiCopy.AvatarStack.props ?? {})) {
+    const controls = meta.argTypes as Record<string, object>;
+    controls[name] = {
+        ...controls[name],
+        description,
+        ...(name === 'class' ? { control: 'text' } : {}),
+        table: { category: 'AvatarStack props' },
+    };
+}
 export default meta;
 type Story = StoryObj<typeof meta>;
 

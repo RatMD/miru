@@ -1,6 +1,9 @@
 <template>
     <Select
         v-if="!searchable && !multiple"
+        :name="name"
+        :required="required"
+        :readonly="readonly"
         :model-value="
             selectedValues[0] ?? (clearable ? allValue : allowNone ? noneValue : undefined)
         "
@@ -51,13 +54,23 @@
     <ComboboxRoot
         v-else
         ref="combobox"
-        v-model:open="open"
+        :open="readonly ? false : open"
         :model-value="selection"
+        :name="name"
+        :required="required"
+        :readonly="readonly"
         :multiple="multiple"
+        @click.capture="guard"
+        @keydown.capture="guard"
         :disabled="disabled"
         ignore-filter
         @update:model-value="updateSelection"
-        @update:open="search = ''">
+        @update:open="
+            (value) => {
+                if (!readonly) open = value;
+                search = '';
+            }
+        ">
         <ComboboxAnchor as-child>
             <ComboboxTrigger
                 as-child
@@ -186,6 +199,7 @@ import { computed, nextTick, ref } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { cn } from '../../support/classNames';
 import { Button } from '../button';
+import { useReadonlyField } from '../field/readonly';
 import { inputVariants } from '../input';
 import {
     Select,
@@ -211,6 +225,9 @@ const props = withDefaults(
         placeholder?: string;
         emptyValue?: string;
         disabled?: boolean;
+        readonly?: boolean;
+        name?: string;
+        required?: boolean;
         id?: string;
         ariaLabel?: string;
         invalid?: boolean;
@@ -226,6 +243,7 @@ const props = withDefaults(
         size: 'sm',
     },
 );
+const { guard } = useReadonlyField(() => props.readonly);
 const emit = defineEmits<{ 'update:modelValue': [value: TValue]; blur: [] }>();
 const open = ref(false);
 const combobox = ref<{ highlightSelected: () => void } | null>(null);

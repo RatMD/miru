@@ -5,10 +5,11 @@
         :style="props.style"
         :data-editor-theme="dark ? 'dark' : 'light'"
         :data-disabled="disabled"
-        :class="cn('miru-editor relative w-full min-w-0', props.class)">
+        :class="cn('miru-editor relative w-full min-w-0', props.wrapperClass)">
         <div :key="locale + ':' + String(toolbar)" class="miru-tinymce-host">
             <Textarea
                 v-bind="$attrs"
+                :class="props.class"
                 v-tinymce="binding"
                 :model-value="modelValue"
                 :disabled="disabled"
@@ -42,6 +43,7 @@ const props = withDefaults(
         placeholder?: string;
         licenseKey?: string;
         class?: HTMLAttributes['class'];
+        wrapperClass?: HTMLAttributes['class'];
         style?: HTMLAttributes['style'];
     }>(),
     {

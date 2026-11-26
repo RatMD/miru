@@ -1,6 +1,29 @@
 <template>
-    <div>
-        <FormLayout
+    <div class="space-y-8">
+        <template v-if="exampleSection">
+            <FormLocaleSwitcher
+                v-if="exampleSection === 'translations'"
+                v-model="exampleLocale"
+                :locales="localization.locales"
+                :base-locale="localization.baseLocale"
+                class="mb-6" />
+            <FormSectionRenderer
+                v-for="section in sections"
+                :key="section.id"
+                :form="controller.form"
+                :section="section"
+                :locale="exampleLocale">
+                <template #custom="{ field, definition }">
+                    <FormWidgetDemo
+                        :widget="definition.slot"
+                        :field="field"
+                        :locale="locale"
+                        :label="copy[definition.slot as keyof typeof copy] || definition.slot" />
+                </template>
+            </FormSectionRenderer>
+        </template>
+        <Form
+            v-else
             :title="heading"
             :description="description || copy.description"
             :form="controller.form"
@@ -23,8 +46,10 @@
                     :locale="locale"
                     :label="copy[widget as keyof typeof copy] || widget" />
             </template>
-        </FormLayout>
-        <p role="status" data-test="form-feedback" class="mt-4 text-sm">{{ feedback }}</p>
+        </Form>
+        <p v-if="feedback" role="status" data-test="form-feedback" class="mt-4 text-sm">
+            {{ feedback }}
+        </p>
     </div>
 </template>
 <script setup lang="ts">
@@ -32,7 +57,7 @@ import type { FormSectionDefinition, FormActionDefinition } from '../components/
 import { IconEye, IconCopy, IconDownload, IconArchive } from '@tabler/icons-vue';
 import { computed, ref, onMounted, nextTick } from 'vue';
 import { z } from 'zod';
-import { FormLayout, literal } from '../components/form';
+import { Form, FormSectionRenderer, FormLocaleSwitcher, literal } from '../components/form';
 import { useForm } from '../composables';
 import { formShowcaseCopy } from './form-showcase-copy';
 import FormWidgetDemo from './FormWidgetDemo.vue';
@@ -45,6 +70,7 @@ const props = withDefaults(
         formError?: string;
         withErrors?: boolean;
         generator?: boolean;
+        exampleSection?: string;
     }>(),
     { locale: 'en', generator: false, withErrors: false },
 );
@@ -53,6 +79,16 @@ const heading = computed(() =>
     props.title && props.title !== 'Example profile' ? props.title : copy.value.title,
 );
 const initial = {
+    nativeText: 'MIRU',
+    nativeEmail: 'alex@example.com',
+    nativeTel: '+49123456789',
+    nativeDate: '2026-11-17',
+    nativeMonth: '2026-11',
+    nativeDatetime: '2026-11-17T09:30',
+    nativeNumber: '42',
+    nativeUrl: 'https://miru.example',
+    nativeColor: '#4f46e5',
+    nativeTime: '09:30',
     name: 'Alex Morgan',
     email: 'alex@example.com',
     translations: {
@@ -159,7 +195,7 @@ const widgets = [
     'relationships',
     'summary',
 ];
-const sections = computed<FormSectionDefinition[]>(() => {
+const allSections = computed<FormSectionDefinition[]>(() => {
     const c = copy.value,
         text = (key: keyof typeof c) => literal(c[key]);
     const general: FormSectionDefinition = {
@@ -335,21 +371,103 @@ const sections = computed<FormSectionDefinition[]>(() => {
     };
     const grid: FormSectionDefinition = {
         id: 'grid',
-        label: text('grid'),
+        label: literal('10 columns · equal widths'),
         gridColumns: 10,
         fields: [
-            { type: 'header', id: 'grid-heading', title: text('grid'), span: 10 },
             ...[1, 2, 3, 4, 5].map((n) => ({
                 type: 'input' as const,
                 name: 'grid' + n,
-                label: literal(String(n) + ' / 5'),
+                label: literal('2 / 10 · ' + n),
                 span: 2 as const,
             })),
             { type: 'spacer', id: 'grid-space', span: 2 },
         ],
     };
-    return [general, translations, selection, content, special, dates, files, relations, grid];
+    const grid12: FormSectionDefinition = {
+        id: 'grid12',
+        label: literal('12 columns · responsive'),
+        fields: [
+            { type: 'header', id: 'responsive-heading', title: literal('Header · full width') },
+            {
+                type: 'input',
+                name: 'grid1',
+                label: literal('Full → half'),
+                span: { base: 12, md: 6 },
+            },
+            {
+                type: 'input',
+                name: 'grid2',
+                label: literal('Full → half'),
+                span: { base: 12, md: 6 },
+            },
+            {
+                type: 'input',
+                name: 'grid3',
+                label: literal('Full → third'),
+                span: { base: 12, md: 4 },
+            },
+            {
+                type: 'spacer',
+                id: 'visible-gap',
+                span: { base: 12, md: 4 },
+                class: 'rounded-md border border-dashed border-border bg-muted/30 min-h-16',
+            },
+            {
+                type: 'input',
+                name: 'grid4',
+                label: literal('Full → third'),
+                span: { base: 12, md: 4 },
+            },
+        ],
+    };
+    const native: FormSectionDefinition = {
+        id: 'native',
+        label: literal('Native input types'),
+        fields: (
+            [
+                ['nativeText', 'text'],
+                ['nativeEmail', 'email'],
+                ['nativeTel', 'tel'],
+                ['nativeDate', 'date'],
+                ['nativeMonth', 'month'],
+                ['nativeDatetime', 'datetime-local'],
+                ['nativeNumber', 'number'],
+                ['nativeUrl', 'url'],
+                ['nativeColor', 'color'],
+                ['nativeTime', 'time'],
+            ] as const
+        ).map(([name, inputType]) => ({
+            type: 'input',
+            name,
+            inputType,
+            label: literal(inputType),
+            span: 6,
+        })),
+    };
+    return [
+        native,
+        general,
+        translations,
+        selection,
+        content,
+        special,
+        dates,
+        files,
+        relations,
+        grid12,
+        grid,
+    ];
 });
+const sections = computed(() =>
+    props.exampleSection
+        ? allSections.value.filter(
+              (section) =>
+                  section.id === props.exampleSection ||
+                  (props.exampleSection === 'grid' && section.id === 'grid12'),
+          )
+        : allSections.value,
+);
+const exampleLocale = ref(props.locale);
 const feedback = ref('');
 async function validate() {
     await controller.form.validate('submit');

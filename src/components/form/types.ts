@@ -31,11 +31,13 @@ export interface BaseFormFieldDefinition<TName extends string = string> {
     placeholder?: FormText;
     span?: FormColumnSpan | ResponsiveFormSpan;
     disabled?: boolean;
+    readonly?: boolean;
     required?: boolean;
     /** Show validation icons only after the field has been touched. */
     showValidation?: boolean;
     hidden?: boolean;
     class?: HTMLAttributes['class'];
+    wrapperClass?: HTMLAttributes['class'];
     inputClass?: HTMLAttributes['class'];
     localized?: boolean;
     localizedBackground?: boolean;

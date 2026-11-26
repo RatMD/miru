@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { IconArrowUpRight, IconFileText, IconCloud } from '@tabler/icons-vue';
+import { componentDescription } from '../../stories/component-descriptions';
+import { itemApiCopy } from '../../stories/item-documentation';
+import { ItemDocs } from '../../stories/ItemDocs';
 import { Button } from '../button';
 import {
     Item,
@@ -35,14 +38,17 @@ const meta = {
     parameters: {
         layout: 'padded',
         docs: {
+            page: ItemDocs,
             description: {
-                component:
-                    'Composable content/action rows adapted from Spottle. Item accepts default/outline/muted and default/sm sizes; as/asChild support semantic links or host components. ItemContent, Title, Description, Media, Actions, Header, Footer, Group and Separator compose the row. A group stays semantically neutral; choose list/listitem roles when building an actual list.',
+                component: componentDescription('Item'),
             },
         },
     },
-    args: { variant: 'outline', size: 'default' },
+    args: { variant: 'outline', size: 'default', as: 'div', asChild: false, class: '' },
     argTypes: {
+        as: { control: 'text' },
+        asChild: { control: 'boolean' },
+        class: { control: 'text' },
         variant: { control: 'select', options: ['default', 'outline', 'muted'] },
         size: { control: 'select', options: ['default', 'sm'] },
     },
@@ -53,6 +59,19 @@ const meta = {
             '<Item v-bind="args" class="mx-auto max-w-xl"><ItemMedia variant="icon"><IconFileText /></ItemMedia><ItemContent><ItemTitle>Project notes</ItemTitle><ItemDescription>Shared information for your next release.</ItemDescription></ItemContent><ItemActions><Button variant="outline" size="sm">Open</Button></ItemActions></Item>',
     }),
 } satisfies Meta;
+Object.assign(
+    meta.argTypes,
+    Object.fromEntries(
+        Object.entries(meta.argTypes).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: itemApiCopy.Item.props[name],
+                table: { category: 'Item props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 export const Default: StoryObj = {};
 export const Variants: StoryObj = {

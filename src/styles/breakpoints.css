@@ -1,0 +1,10 @@
+/* Runtime breakpoint tokens; keep aligned with constants/breakpoints.ts. */
+:where(:root) {
+    --ui-breakpoint-xxs: 364px;
+    --ui-breakpoint-xs: 576px;
+    --ui-breakpoint-sm: 640px;
+    --ui-breakpoint-md: 768px;
+    --ui-breakpoint-lg: 1024px;
+    --ui-breakpoint-xl: 1280px;
+    --ui-breakpoint-xxl: 1536px;
+}

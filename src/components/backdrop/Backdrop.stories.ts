@@ -1,15 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, within } from 'storybook/test';
 import BackdropDemo from '../../stories/BackdropDemo.vue';
+import { ComponentDocs } from '../../stories/ComponentDocs';
+import {
+    utilitySummaries,
+    utilityDependencyMarkdown,
+    describeUtilityControls,
+} from '../../stories/utilities-documentation';
 import { Backdrop } from './index';
 const meta = {
     title: 'Utilities/Backdrop',
     component: Backdrop,
     parameters: {
         docs: {
+            page: ComponentDocs,
             description: {
                 component:
-                    'Decorative fixed/absolute dimming layer, with optional uniform or radially faded blur. The HL Portal-style radial mask starts strongest at origin and fades to transparency at the farthest corner. Numeric origins are viewport pixels when fixed and container-relative pixels when absolute. interactive emits clicks; the host owns open state, dismissal and focus.',
+                    utilitySummaries.Backdrop +
+                    '\n\n' +
+                    utilityDependencyMarkdown('Backdrop', true),
             },
         },
     },
@@ -25,6 +34,7 @@ const meta = {
         template: '<BackdropDemo :args="args" />',
     }),
 } satisfies Meta;
+describeUtilityControls('Backdrop', meta.argTypes ?? {}, meta);
 export default meta;
 export const Default: StoryObj = {};
 export const Blur: StoryObj = { args: { blur: 'lg' } };

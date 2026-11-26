@@ -153,34 +153,27 @@
     }
 }
 @layer utilities {
-    [data-input-otp-container]:hover:not(:has(input:disabled))
-        [data-slot='input-otp-slot']:not([data-active='true']) {
+    [data-slot='input-pin']:hover:not(:has(input:disabled))
+        [data-slot='input-pin-slot']:not([data-active='true']) {
         border-color: var(--ui-muted-foreground);
     }
-    [data-input-otp-container]:has(input[aria-valid='true']):not(:has(input[aria-invalid='true']))
-        [data-slot='input-otp-slot'] {
+    [data-slot='input-pin']:has(input[data-valid='true']):not(:has(input[aria-invalid='true']))
+        [data-slot='input-pin-slot'] {
         border-color: var(--ui-success);
     }
-    [data-input-otp-container]:hover:not(:has(input:disabled)):has(input[aria-valid='true']):not(
+    [data-slot='input-pin']:hover:not(:has(input:disabled)):has(input[data-valid='true']):not(
             :has(input[aria-invalid='true'])
         )
-        [data-slot='input-otp-slot']:not([data-active='true']) {
+        [data-slot='input-pin-slot']:not([data-active='true']) {
         border-color: var(--ui-success-hover);
     }
-    [data-input-otp-container]:has(input[aria-invalid='true']) [data-slot='input-otp-slot'] {
+    [data-slot='input-pin']:has(input[aria-invalid='true']) [data-slot='input-pin-slot'] {
         border-color: var(--ui-danger);
     }
-    [data-input-otp-container]:hover:not(:has(input:disabled)):has(input[aria-invalid='true'])
-        [data-slot='input-otp-slot']:not([data-active='true']) {
+    [data-slot='input-pin']:hover:not(:has(input:disabled)):has(input[aria-invalid='true'])
+        [data-slot='input-pin-slot']:not([data-active='true']) {
         border-color: var(--ui-danger-hover);
     }
-}
-
-/* The picker ships unlayered vendor CSS, so its surface overrides must also be unlayered. */
-.miru-color-picker .ck-cp-container {
-    max-width: 100%;
-    border-radius: max(0px, calc(var(--ui-radius) - 2px));
-    box-shadow: none;
 }
 
 @layer utilities {

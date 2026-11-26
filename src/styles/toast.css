@@ -1,0 +1,232 @@
+.miru-toaster {
+    --toast-gap: 12px;
+    --toast-lift: 12px;
+    --toast-sign: -1;
+    position: fixed;
+    z-index: 100;
+    width: var(--toast-width, min(370px, calc(100vw - 32px)));
+    height: calc(
+        var(--reka-toast-frontmost-height, 0px) + (var(--toast-limit, 3) - 1) * var(--toast-lift)
+    );
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    outline: none;
+    pointer-events: none;
+}
+.miru-toast-message {
+    --toast-offset: calc(var(--reka-toast-index, 0) * var(--toast-lift) * var(--toast-sign));
+    --toast-scale: calc(1 - var(--reka-toast-index, 0) * 0.05);
+    position: absolute;
+    bottom: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    height: var(--reka-toast-frontmost-height, auto);
+    z-index: calc(100 - var(--reka-toast-index, 0));
+    transform: translateY(var(--toast-offset)) scale(var(--toast-scale))
+        translate3d(var(--reka-toast-swipe-move-x, 0px), var(--reka-toast-swipe-move-y, 0px), 0);
+    transform-origin: bottom center;
+    transition:
+        transform 220ms ease,
+        height 220ms ease,
+        opacity 180ms ease;
+    pointer-events: auto;
+    outline: none;
+    animation: miru-toast-in 180ms ease;
+}
+.miru-toaster[data-position^='top'] .miru-toast-message {
+    top: 0;
+    bottom: auto;
+    transform-origin: top center;
+}
+.miru-toaster[data-expanded] .miru-toast-message {
+    --toast-offset: calc(
+        (var(--reka-toast-offset-y, 0px) + var(--reka-toast-index, 0) * var(--toast-gap)) *
+            var(--toast-sign)
+    );
+    --toast-scale: 1;
+    height: var(--reka-toast-height, auto);
+}
+.miru-toaster[data-expanded] {
+    height: var(--toast-expanded-height, auto);
+    pointer-events: auto;
+}
+.miru-toast-message[data-limited] {
+    opacity: 0;
+    pointer-events: none;
+}
+.miru-toast-message[data-state='closed'] {
+    pointer-events: none;
+    animation: miru-toast-out 180ms ease forwards;
+}
+.miru-toast-message[data-swipe='move'] {
+    transition: none;
+}
+.miru-toast-surface {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 76px;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 1rem;
+}
+.miru-toast-surface::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 4px;
+    background: var(--ui-neutral-400);
+}
+.miru-toast-message[data-type='success'] .miru-toast-surface::before {
+    background: var(--ui-success-500);
+}
+.miru-toast-message[data-type='info'] .miru-toast-surface::before {
+    background: var(--ui-info-500);
+}
+.miru-toast-message[data-type='warning'] .miru-toast-surface::before {
+    background: var(--ui-warning-500);
+}
+.miru-toast-message[data-type='error'] .miru-toast-surface::before {
+    background: var(--ui-danger-500);
+}
+.miru-toast-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    margin-inline-start: 0.75rem;
+}
+.miru-toast-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.75rem;
+}
+.miru-toast-content {
+    min-width: 0;
+    flex: 1;
+    padding: 0.875rem 2.75rem 0.875rem 1rem;
+    overflow-wrap: anywhere;
+}
+.miru-toast-icon + .miru-toast-content {
+    padding-inline-start: 0.5rem;
+}
+.miru-toast-close {
+    position: absolute;
+    top: 0.5rem;
+    inset-inline-end: 0.5rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.5rem;
+    background: transparent;
+    cursor: pointer;
+    transition:
+        background-color 180ms ease,
+        color 180ms ease;
+}
+.miru-toast-close:focus-visible {
+    outline: 2px solid var(--ui-ring);
+    outline-offset: 1px;
+}
+.miru-toast-message:focus-visible .miru-toast-surface {
+    outline: 2px solid var(--ui-ring);
+    outline-offset: 2px;
+}
+.miru-toast-message[data-close-position$='left'] .miru-toast-close {
+    inset-inline-end: auto;
+    inset-inline-start: 0.5rem;
+}
+.miru-toast-message[data-close-position$='left'] .miru-toast-content {
+    padding-inline-start: 2.75rem;
+    padding-inline-end: 1rem;
+}
+.miru-toast-message[data-close-position$='left'] .miru-toast-icon {
+    margin-inline-start: 2.75rem;
+}
+.miru-toast-message[data-close-position^='bottom'] .miru-toast-close {
+    top: auto;
+    bottom: 0.5rem;
+}
+.miru-toaster[data-inline='true'] {
+    position: relative;
+    z-index: auto;
+    inset: auto;
+    translate: none;
+    width: min(370px, 100%);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--toast-gap);
+    margin-inline: auto;
+}
+.miru-toaster[data-inline='true'] .miru-toast-message {
+    position: relative;
+    inset: auto;
+    height: auto;
+    transform: none;
+}
+.miru-toast-message[data-rich-colors='true'] {
+    --toast-status-color: var(--ui-neutral-200);
+    --toast-status-bg: var(--ui-neutral-50);
+}
+.miru-toast-message[data-rich-colors='true'][data-type='success'] {
+    --toast-status-color: var(--ui-success-200);
+    --toast-status-bg: var(--ui-success-50);
+}
+.miru-toast-message[data-rich-colors='true'][data-type='info'] {
+    --toast-status-color: var(--ui-info-200);
+    --toast-status-bg: var(--ui-info-50);
+}
+.miru-toast-message[data-rich-colors='true'][data-type='warning'] {
+    --toast-status-color: var(--ui-warning-200);
+    --toast-status-bg: var(--ui-warning-50);
+}
+.miru-toast-message[data-rich-colors='true'][data-type='error'] {
+    --toast-status-color: var(--ui-danger-200);
+    --toast-status-bg: var(--ui-danger-50);
+}
+.miru-toast-message[data-rich-colors='true'] .miru-toast-surface {
+    background: var(--toast-status-bg);
+    border-color: var(--toast-status-color);
+}
+.miru-toaster[data-theme='dark'][data-appearance='graphite']
+    .miru-toast-message[data-rich-colors='true']
+    .miru-toast-surface {
+    background: color-mix(in srgb, var(--toast-status-color) 12%, var(--ui-neutral-950));
+    border-color: color-mix(in srgb, var(--toast-status-color) 40%, transparent);
+}
+@keyframes miru-toast-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes miru-toast-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .miru-toast-message {
+        animation-duration: 1ms;
+        transition-duration: 1ms;
+    }
+}

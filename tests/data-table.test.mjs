@@ -3,11 +3,9 @@ import { test } from 'vitest';
 import {
     adaptLucidList,
     adaptLucidPagination,
-    normalizeDataTableList,
     serializeLucidQuery,
-    adaptLaravelPagination,
-    adaptLaravelList,
-} from '../src/components/data-table/adapters.ts';
+} from '../src/adapters/adonis.ts';
+import { adaptLaravelPagination, adaptLaravelList } from '../src/adapters/laravel.ts';
 import {
     appliedFilterValue,
     filterDraft,
@@ -15,6 +13,7 @@ import {
     filterValueLabel,
     hasFilterValue,
 } from '../src/components/data-table/filter-values.ts';
+import { normalizeDataTableList } from '../src/components/data-table/normalization.ts';
 import { dataTableRowId } from '../src/components/data-table/selection.ts';
 
 const pagination = (overrides = {}) => ({
@@ -195,6 +194,8 @@ test('selection keys survive reorder, support composite keys and reject missing 
 const { readFile } = await import('node:fs/promises');
 const ts = (await import('typescript')).default;
 const { ref, toValue, unref } = await import('vue');
+const { computed } = await import('vue');
+const { resolveDataTableAdapter } = await import('../src/components/data-table/normalization.ts');
 const querySource = await readFile(
     new URL('../src/components/data-table/useDataTableQuery.ts', import.meta.url),
     'utf8',
@@ -206,12 +207,19 @@ function queryFixture(options = {}) {
     const exports = {};
     const calls = [];
     let cleared = 0;
-    new Function('exports', 'router', 'toValue', 'unref', 'serializeLucidQuery', queryOutput)(
+    new Function(
+        'exports',
+        'useNavigation',
+        'useDataTableAdapter',
+        'toValue',
+        'unref',
+        queryOutput,
+    )(
         exports,
-        { get: (...args) => calls.push(args) },
+        () => ({ visit: (url, { data, ...options }) => calls.push([url, data, options]) }),
+        (format) => computed(() => resolveDataTableAdapter(toValue(format) ?? 'default')),
         toValue,
         unref,
-        serializeLucidQuery,
     );
     const list = adaptLucidList({
         results: pagination(),

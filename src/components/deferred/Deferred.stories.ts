@@ -1,17 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { defineComponent, h } from 'vue';
+import { ComponentDocs } from '../../stories/ComponentDocs';
 import DeferredDemo from '../../stories/DeferredDemo.vue';
 import DeferredReplaceDemo from '../../stories/DeferredReplaceDemo.vue';
+import {
+    utilitySummaries,
+    utilityDependencyMarkdown,
+    describeUtilityControls,
+} from '../../stories/utilities-documentation';
 import { Deferred } from './index';
 const meta = {
     title: 'Utilities/Deferred',
     component: Deferred,
     parameters: {
         docs: {
+            page: ComponentDocs,
             description: {
                 component:
-                    'Vue Suspense boundary with delayed loading, error/timeout slots and retry(). Pass a dynamic component loader (including import() modules) or async setup children in the default slot. Loader receives AbortSignal and attempt; retry, changed loaders and unmount abort the previous attempt. timeout=0 disables the client-side timeout. No additional dependency.',
+                    utilitySummaries.Deferred +
+                    '\n\n' +
+                    utilityDependencyMarkdown('Deferred', true),
             },
         },
     },
@@ -27,6 +36,7 @@ const meta = {
         template: '<DeferredDemo v-bind="args" />',
     }),
 } satisfies Meta;
+describeUtilityControls('Deferred', meta.argTypes ?? {}, meta);
 export default meta;
 export const Default: StoryObj = {};
 export const Retry: StoryObj = {

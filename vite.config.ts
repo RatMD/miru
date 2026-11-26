@@ -33,7 +33,14 @@ function publicModuleEntries(group: 'composables' | 'support'): Record<string, s
         ]),
     );
 }
-const externalPackages = [...Object.keys(dependencies), ...Object.keys(peerDependencies)];
+// Optional adapters use the host's Inertia installation, even though MIRU only
+// installs it as a development dependency for building and testing those entries.
+const externalPackages = [
+    ...Object.keys(dependencies),
+    ...Object.keys(peerDependencies),
+    '@inertiajs/core',
+    '@inertiajs/vue3',
+];
 export default defineConfig({
     base: './',
     plugins: [vue(), tailwindcss()],
@@ -45,14 +52,20 @@ export default defineConfig({
                 plugins: fileURLToPath(new URL('./src/plugins/index.ts', import.meta.url)),
                 miru: fileURLToPath(new URL('./src/miru.ts', import.meta.url)),
                 ...Object.fromEntries(
+                    ['ajax', 'adonis', 'laravel', 'inertia'].map((name) => [
+                        `adapters/${name}`,
+                        fileURLToPath(new URL(`./src/adapters/${name}.ts`, import.meta.url)),
+                    ]),
+                ),
+                ...Object.fromEntries(
                     [
                         'click-outside',
                         'dayjs',
                         'filesize',
                         'price',
+                        'number-format',
                         'resize',
                         'tinymce',
-                        'inertia',
                         'i18n',
                         'directives',
                         'validation',

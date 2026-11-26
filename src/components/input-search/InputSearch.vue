@@ -1,5 +1,5 @@
 <template>
-    <div data-slot="input-search" :class="cn('relative', props.class)">
+    <div data-slot="input-search" :class="cn('relative', props.wrapperClass)">
         <IconSearch
             aria-hidden="true"
             :class="
@@ -23,6 +23,7 @@
                 cn(
                     size === 'sm' && iconAlign !== 'top' ? 'pl-8' : 'pl-9',
                     hasValue && !readonly && 'pr-9',
+                    props.class,
                     inputClass,
                 )
             " />
@@ -59,6 +60,7 @@ const props = defineProps<{
     readonly?: boolean;
     iconAlign?: 'center' | 'top';
     class?: HTMLAttributes['class'];
+    wrapperClass?: HTMLAttributes['class'];
     inputClass?: HTMLAttributes['class'];
 }>();
 const modelValue = defineModel<string | number>();

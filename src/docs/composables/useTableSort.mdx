@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useTableSort" />
+
+# useTableSort
+
+Optional local single-column sorting for plain arrays, refs or getters. It copies the source array
+and never performs requests or changes the original order.
+
+```ts
+import { ref } from 'vue';
+import { useTableSort } from '@rat.md/miru/composables';
+
+const items = ref([
+    { id: 1, name: 'Hosting', amount: 29 },
+    { id: 2, name: 'Support', amount: 9 },
+]);
+const { sortedRows, sortBy, directionFor, sort } = useTableSort(items);
+
+sortBy('amount'); // ascending; call again for descending, then original source order
+directionFor('amount'); // 'asc', 'desc' or false
+sort.value = null; // reset
+```
+
+Use `sortedRows` for a `v-for` and connect `TableHead` with
+`:sort="directionFor('amount')" @sort="sortBy('amount')"` and `sortable`.
+An optional second argument sets the initial order: `{ key: 'amount', direction: 'asc' }`.
+Switching columns starts ascending. Numbers and dates sort by value, strings use natural
+case-insensitive comparison in the runtime's locale, and null/undefined values stay last.
+Source updates are reactive. For nested objects or custom business order, provide your own
+computed array instead. See the Table guide for a full component example.

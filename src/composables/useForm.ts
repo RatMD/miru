@@ -1,10 +1,11 @@
+import type { AjaxFormOptions } from '../adapters/ajax';
 import type {
-    Errors,
-    Page,
-    RequestPayload,
-    UseHttpSubmitOptions,
-    VisitOptions,
-} from '@inertiajs/core';
+    InertiaFormOptions,
+    FormAdapterSelection,
+    FormMethod,
+    FormPayload,
+    FormServerErrors,
+} from '../types/adapters';
 import type {
     AnyFormApi,
     DeepKeys,
@@ -13,13 +14,14 @@ import type {
 } from '@tanstack/vue-form';
 import type { MaybeRefOrGetter, ComputedRef, Ref } from 'vue';
 import type { z } from 'zod';
-import { router, useHttp } from '@inertiajs/vue3';
 import { useForm as useTanStackForm } from '@tanstack/vue-form';
-import { computed, ref, toValue } from 'vue';
+import { computed, inject, ref, toValue } from 'vue';
+import { resolveFormAdapter } from '../components/form/adapter';
 import { useI18n } from '../composables/useI18n';
+import { miruOptionsKey } from '../miru';
 
 // Available HTTP methods
-export type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
+export type Method = FormMethod;
 
 // Submit definitions
 export interface SubmitDefinition {
@@ -61,7 +63,7 @@ export type JsonResponse<TResult = unknown, TDetails = unknown> =
 
 // Form Result
 export type FormResult<TSchema extends ObjectSchema, TResult = unknown> = JsonResponse<
-    TResult | Page,
+    TResult,
     FormErrorDetails<FormValues<TSchema>>
 >;
 
@@ -70,32 +72,32 @@ export interface SubmitContext<TSchema extends ObjectSchema> {
     method: Method;
     url: string;
     values: FormValues<TSchema>;
-    payload: RequestPayload;
+    payload: FormPayload;
 }
 
 // Options
-export type InertiaOptions = Omit<
-    VisitOptions,
-    'method' | 'data' | 'onSuccess' | 'onError' | 'onCancel'
->;
+/** @deprecated Import InertiaFormOptions from the optional adapters/inertia entry point. */
+export type InertiaOptions = InertiaFormOptions;
 export type HttpResponse<TResult> = TResult | JsonResponse<TResult>;
-export type FormHttp<TResult = unknown> = ReturnType<typeof useHttp<object, HttpResponse<TResult>>>;
-export type HttpOptions<TResult> = Omit<
-    UseHttpSubmitOptions<HttpResponse<TResult>, object>,
-    'onSuccess' | 'onError'
->;
+/** @deprecated Use AjaxFormOptions and requestOptions. */
+export type HttpOptions<TResult = unknown> = AjaxFormOptions;
 export interface FormOptions<TSchema extends ObjectSchema, TResult = unknown> {
     schema: TSchema;
     submit: MaybeRefOrGetter<Submit>;
+    /** @deprecated json selects AJAX; inertia selects the Inertia adapter. */
     mode?: SubmitMode;
+    adapter?: FormAdapterSelection;
+    requestOptions?: (context: SubmitContext<TSchema>) => AjaxFormOptions;
+    /** Custom adapter-specific options; takes precedence over requestOptions/visitOptions. */
+    adapterOptions?: (context: SubmitContext<TSchema>) => unknown;
     initialValues: FormValues<TSchema>;
     visitOptions?: (context: SubmitContext<TSchema>) => InertiaOptions;
     httpOptions?: (context: SubmitContext<TSchema>) => HttpOptions<TResult>;
-    transformValues?: (values: FormValues<TSchema>) => RequestPayload;
+    transformValues?: (values: FormValues<TSchema>) => FormPayload;
     /** Run validated host work (for example label printing) before starting the request. */
     beforeSubmit?: (context: SubmitContext<TSchema>) => void | Promise<void>;
     resetFields?: Array<FieldPath<FormValues<TSchema>>>;
-    mapErrors?: (errors: Errors) => TypedErrors<FormValues<TSchema>>;
+    mapErrors?: (errors: Record<string, string>) => TypedErrors<FormValues<TSchema>>;
     onSuccess?: (context: {
         result: FormResult<TSchema, TResult>;
         values: FormValues<TSchema>;
@@ -127,7 +129,6 @@ export type FormApiFor<TValues> = ReturnType<
 >;
 export interface FormController<TSchema extends ObjectSchema, TResult = unknown> {
     form: FormApiFor<FormValues<TSchema>>;
-    http: FormHttp<TResult>;
     loading: ComputedRef<boolean>;
     formError: Ref<string | undefined>;
     submit: ComputedRef<SubmitDefinition>;
@@ -154,15 +155,6 @@ function parseSubmit(submit: Submit): SubmitDefinition {
  * @param value
  * @returns
  */
-function isJsonResponse(value: unknown): value is JsonResponse {
-    return (
-        typeof value === 'object' &&
-        value !== null &&
-        'status' in value &&
-        (value.status === 'success' || value.status === 'error')
-    );
-}
-
 /**
  * @param error
  * @returns
@@ -211,8 +203,8 @@ function firstErrorMessage(errors: readonly unknown[]): string | undefined {
  * @param values
  * @returns
  */
-function toRequestPayload(values: object): RequestPayload {
-    return values as unknown as RequestPayload;
+function toFormPayload(values: object): FormPayload {
+    return values as Record<string, unknown>;
 }
 
 /**
@@ -264,7 +256,7 @@ export function useForm<TSchema extends ObjectSchema, TResult = unknown>(
     const submit = computed<SubmitDefinition>(() => parseSubmit(toValue(config.submit)));
 
     // Composables
-    const http: FormHttp<TResult> = useHttp<object, HttpResponse<TResult>>({});
+    const miru = inject(miruOptionsKey, {});
 
     // Values
     let currentSubmit: SubmitDefinition | undefined;
@@ -292,9 +284,9 @@ export function useForm<TSchema extends ObjectSchema, TResult = unknown>(
             currentValues = values;
 
             const target = currentSubmit ?? submit.value;
-            const payload: RequestPayload = config.transformValues
+            const payload: FormPayload = config.transformValues
                 ? config.transformValues(values)
-                : toRequestPayload(values);
+                : toFormPayload(values);
             const context: SubmitContext<TSchema> = {
                 method: target.method,
                 url: target.url,
@@ -304,8 +296,35 @@ export function useForm<TSchema extends ObjectSchema, TResult = unknown>(
 
             await config.beforeSubmit?.(context);
 
+            const selection =
+                config.adapter ??
+                (config.mode
+                    ? config.mode === 'json'
+                        ? 'ajax'
+                        : 'inertia'
+                    : (miru.formAdapter ?? 'ajax'));
+            const adapter = await resolveFormAdapter(selection, miru.formAdapters);
+            const response = await adapter.submit({
+                ...context,
+                options:
+                    config.adapterOptions?.(context) ??
+                    config.requestOptions?.(context) ??
+                    config.httpOptions?.(context) ??
+                    config.visitOptions?.(context),
+                cancelledMessage: trans('common.form.transport.cancelled'),
+                unprocessedMessage: trans('common.form.transport.unprocessed'),
+            });
             currentResult =
-                config.mode === 'json' ? await submitJson(context) : await submitInertia(context);
+                response.status === 'success'
+                    ? (response as Result)
+                    : {
+                          status: 'error',
+                          message: response.message,
+                          details: {
+                              source: response.source,
+                              errors: normalizeErrors(response.errors ?? {}),
+                          },
+                      };
         },
         onSubmitInvalid: ({ formApi, value }) => {
             currentValues = value;
@@ -365,17 +384,19 @@ export function useForm<TSchema extends ObjectSchema, TResult = unknown>(
      * @param errors
      * @returns
      */
-    function normalizeErrors(errors: Errors): ErrorsForForm {
-        if (config.mapErrors) {
-            return config.mapErrors(errors);
+    function normalizeErrors(errors: FormServerErrors): ErrorsForForm {
+        const messages: Record<string, string> = {};
+        for (const [field, value] of Object.entries(errors)) {
+            const message = typeof value === 'string' ? value : value[0];
+            if (message) messages[field] = message;
         }
-
-        const normalized: Record<string, string> = {};
-        for (const [field, message] of Object.entries(errors)) {
-            const normalizedField = field.replace(/\.(\d+)(?=\.|$)/g, '[$1]');
-            normalized[normalizedField] = message;
-        }
-        return normalized as ErrorsForForm;
+        if (config.mapErrors) return config.mapErrors(messages);
+        return Object.fromEntries(
+            Object.entries(messages).map(([field, message]) => [
+                field.replace(/\.(\d+)(?=\.|$)/g, '[$1]'),
+                message,
+            ]),
+        ) as ErrorsForForm;
     }
 
     /**
@@ -415,7 +436,7 @@ export function useForm<TSchema extends ObjectSchema, TResult = unknown>(
                 ...metadata,
                 isTouched: true,
                 errorMap: {
-                    ...metadata.errorMap,
+                    ...metadata?.errorMap,
                     onServer: message,
                 },
             }));
@@ -424,107 +445,6 @@ export function useForm<TSchema extends ObjectSchema, TResult = unknown>(
 
     /**
      * @param context
-     * @returns
-     */
-    async function submitInertia(context: SubmitContext<TSchema>): Promise<Result> {
-        return await new Promise<Result>((resolve) => {
-            let settled = false;
-
-            const settle = (result: Result): void => {
-                if (settled) {
-                    return;
-                }
-
-                settled = true;
-                resolve(result);
-            };
-
-            const options = config.visitOptions?.(context) ?? {};
-
-            router.visit(context.url, {
-                preserveState: 'errors',
-                ...options,
-                method: context.method,
-                data: context.payload,
-                onSuccess: (page) => {
-                    settle({
-                        status: 'success',
-                        result: page,
-                    });
-                },
-                onError: (errors) => {
-                    settle({
-                        status: 'error',
-                        details: {
-                            source: 'server',
-                            errors: normalizeErrors(errors),
-                        },
-                    });
-                },
-                onCancel: () => {
-                    settle({
-                        status: 'error',
-                        message: trans('common.form.transport.cancelled'),
-                        details: {
-                            source: 'transport',
-                            errors: {},
-                        },
-                    });
-                },
-            });
-        });
-    }
-
-    /**
-     * @param context
-     * @returns
-     */
-    async function submitJson(context: SubmitContext<TSchema>): Promise<Result> {
-        let validationErrors: ErrorsForForm | undefined;
-
-        try {
-            http.transform(() => context.payload);
-
-            const options = config.httpOptions?.(context) ?? {};
-            const response = await http.submit(context.method, context.url, {
-                ...options,
-                onError: (errors) => {
-                    validationErrors = normalizeErrors(errors);
-                },
-            });
-
-            if (validationErrors) {
-                return {
-                    status: 'error',
-                    details: {
-                        source: 'server',
-                        errors: validationErrors,
-                    },
-                };
-            }
-            if (isJsonResponse(response)) {
-                return response as Result;
-            }
-
-            return {
-                status: 'success',
-                result: response as TResult,
-            };
-        } catch (error: unknown) {
-            return {
-                status: 'error',
-                message: errorMessage(error, trans('common.form.transport.unknown')),
-                details: {
-                    source: 'transport',
-                    errors: {},
-                },
-            };
-        }
-    }
-
-    /**
-     * @param method
-     * @param url
      * @returns
      */
     async function onSubmit(method?: Method, url?: string): Promise<Result | undefined> {
@@ -611,13 +531,12 @@ export function useForm<TSchema extends ObjectSchema, TResult = unknown>(
 
     // Loading State
     const loading = computed(() => {
-        return submitting.value || http.processing;
+        return submitting.value;
     });
 
     // Export
     return {
         form: form as unknown as FormApiFor<Values>,
-        http,
         loading,
         formError,
         submit,

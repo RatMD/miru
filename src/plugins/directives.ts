@@ -6,6 +6,7 @@ import directiveClickOutside from './click-outside';
 import { createDayjsDirective } from './dayjs';
 import directiveFilesize from './filesize';
 import { createI18nContext } from './i18n';
+import { createNumberFormatDirective } from './number-format';
 import { createPriceDirective } from './price';
 import directiveResize from './resize';
 import { vTinymce, configureTinymce } from './tinymce';
@@ -17,6 +18,7 @@ export * from './click-outside';
 export * from './resize';
 export { default as directiveDayJs, vDayjs, createDayjsDirective } from './dayjs';
 export * from './filesize';
+export * from './number-format';
 export { default as directivePrice, vPrice, formatPrice, createPriceDirective } from './price';
 export interface UiDirectiveOptions {
     locale?: MaybeRefOrGetter<string | undefined>;
@@ -33,6 +35,7 @@ export function createUiDirectives(options: UiDirectiveOptions = {}) {
         filesize: directiveFilesize,
         dayjs: createDayjsDirective(locale),
         price: createPriceDirective(locale, options.currency),
+        'number-format': createNumberFormatDirective(locale),
     };
 }
 export function installUiDirectives(app: App, options: UiDirectiveOptions = {}): void {
@@ -44,6 +47,7 @@ export function installUiDirectives(app: App, options: UiDirectiveOptions = {}):
     app.directive('filesize', directives.filesize);
     app.directive('file-size', directives.filesize);
     app.directive('price', directives.price);
+    app.directive('number-format', directives['number-format']);
     app.directive('resize', directives.resize);
 }
 

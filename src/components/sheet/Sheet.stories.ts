@@ -2,16 +2,20 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
+import { describeOverlayControls } from '../../stories/overlay-documentation';
+import { OverlayDocs } from '../../stories/OverlayDocs';
 import { Sheet } from './index';
 const meta = {
     ...componentControls('Sheet'),
-    title: 'Overlay/Sheet',
+    title: 'Overlays/Sheet',
+    id: 'overlay-sheet',
     component: Sheet,
     parameters: {
         controls: { include: controlNames('Sheet') },
-        docs: { description: { component: componentDescription('Sheet') } },
+        docs: { page: OverlayDocs, description: { component: componentDescription('Sheet') } },
     },
 } satisfies Meta;
+describeOverlayControls('Sheet', meta.argTypes);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory(

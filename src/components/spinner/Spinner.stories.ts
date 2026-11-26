@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { expect, within } from 'storybook/test';
+import { componentDescription } from '../../stories/component-descriptions';
+import { spinnerApiCopy } from '../../stories/spinner-documentation';
+import { SpinnerDocs } from '../../stories/SpinnerDocs';
 import { Spinner, spinnerColorVariants } from './index';
 
 const meta = {
@@ -7,6 +10,7 @@ const meta = {
     component: Spinner,
     args: { variant: 'primary', size: 'default', mode: 'spin', decorative: false },
     argTypes: {
+        class: { control: 'text' },
         variant: { control: 'select', options: spinnerColorVariants },
         size: { control: 'select', options: ['xs', 'sm', 'default', 'lg', 'xl'] },
         mode: { control: 'select', options: ['spin', 'steps'] },
@@ -15,9 +19,9 @@ const meta = {
     },
     parameters: {
         docs: {
+            page: SpinnerDocs,
             description: {
-                component:
-                    'Loading indicators using Tabler Loader2 (continuous spin) or LoaderQuarter (8 stepped turns). Supports all semantic colors, five sizes, localized labels and reduced motion.',
+                component: componentDescription('Spinner'),
             },
         },
     },
@@ -27,6 +31,19 @@ const meta = {
         template: '<Spinner v-bind="args" />',
     }),
 } satisfies Meta<typeof Spinner>;
+Object.assign(
+    meta.argTypes ?? {},
+    Object.fromEntries(
+        Object.entries(meta.argTypes ?? {}).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: spinnerApiCopy.Spinner.props[name],
+                table: { category: 'Spinner props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 type Story = StoryObj<typeof meta>;
 
@@ -42,6 +59,7 @@ export const Steps: Story = {
     },
 };
 export const ColorsAndSizes: Story = {
+    name: 'Colours and sizes',
     parameters: { controls: { disable: true } },
     render: () => ({
         components: { Spinner },

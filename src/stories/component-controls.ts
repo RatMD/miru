@@ -145,6 +145,7 @@ const definitions: Record<string, Definition> = {
             format: boolean,
             lineNumbers: boolean,
             maxHeight: text,
+            class: text,
         },
         parts: {
             root: [
@@ -168,6 +169,8 @@ const definitions: Record<string, Definition> = {
             condensed: false,
             lineNumbers: true,
             maxHeight: '24rem',
+            label: '',
+            class: '',
         },
         argTypes: {
             value: text,
@@ -176,11 +179,15 @@ const definitions: Record<string, Definition> = {
             condensed: boolean,
             lineNumbers: boolean,
             maxHeight: text,
+            label: text,
+            class: text,
         },
     },
     ButtonAction: {
         args: {
             statusDot: false,
+            statusDotPulse: false,
+            statusDotPing: false,
             variant: 'primary',
             size: 'default',
             shape: 'default',
@@ -194,6 +201,8 @@ const definitions: Record<string, Definition> = {
         },
         argTypes: {
             statusDot: { control: 'select', options: [false, true, ...buttonColorVariants] },
+            statusDotPulse: boolean,
+            statusDotPing: boolean,
             variant: select(buttonColorVariants.filter((v) => v !== 'ghost' && v !== 'ghostly')),
             size: select(['xs', 'sm', 'default', 'lg']),
             shape: select(['default', 'round']),
@@ -209,6 +218,8 @@ const definitions: Record<string, Definition> = {
     ButtonShadow: {
         args: {
             statusDot: false,
+            statusDotPulse: false,
+            statusDotPing: false,
             statusRing: false,
             timerRing: false,
             timerDuration: 5000,
@@ -223,6 +234,8 @@ const definitions: Record<string, Definition> = {
         },
         argTypes: {
             statusDot: { control: 'select', options: [false, true, ...buttonColorVariants] },
+            statusDotPulse: boolean,
+            statusDotPing: boolean,
             statusRing: { control: 'select', options: [false, true, ...buttonColorVariants] },
             timerRing: boolean,
             timerDuration: number(100, 60000, 100),
@@ -238,25 +251,48 @@ const definitions: Record<string, Definition> = {
             loading: boolean,
         },
     },
-    FormLayout: {
+    Form: {
         args: { title: 'Example profile', description: '', loading: false, formError: '' },
         argTypes: { ...title, loading: boolean, formError: text },
     },
     Field: {
         args: {
-            showValidation: false,
-            valid: false,
-            invalid: false,
+            disabled: false,
+            loading: false,
+            ariaInvalid: false,
+            ariaValid: false,
+            showValidation: true,
             orientation: 'vertical',
             class: '',
         },
         argTypes: {
+            disabled: {
+                ...preview(boolean),
+                description: 'Disable the composed Input; explicitly bound by this example.',
+            },
+            loading: {
+                ...preview(boolean),
+                description:
+                    'Show a spinner, mark the field busy and disable its Input in this example.',
+            },
+            ariaInvalid: {
+                ...boolean,
+                type: { name: 'boolean' },
+                name: 'aria-invalid',
+                description: 'Validation state of Field, mirrored explicitly to the Input.',
+            },
+            ariaValid: {
+                ...boolean,
+                type: { name: 'boolean' },
+                name: 'aria-valid',
+                description:
+                    'Success-state input alias. Output uses data-valid; invalid takes precedence.',
+            },
             showValidation: boolean,
-            valid: boolean,
-            invalid: boolean,
             orientation: select(['vertical', 'horizontal', 'responsive']),
             class: text,
         },
+        parts: { root: ['showValidation', 'ariaInvalid', 'ariaValid', 'orientation', 'class'] },
     },
     Label: {
         args: {
@@ -349,6 +385,7 @@ const definitions: Record<string, Definition> = {
     Badge: {
         args: {
             variant: 'default',
+            appearance: 'auto',
             size: 'default',
             label: 'Ready',
             as: 'span',
@@ -358,38 +395,21 @@ const definitions: Record<string, Definition> = {
         },
         argTypes: {
             ...badge,
+            appearance: select(['auto', 'solid', 'soft']),
             as: select(['span', 'link']),
             href: text,
             label: preview(text),
             showIcon: preview(boolean),
             class: text,
         },
-        parts: { root: ['variant', 'size', 'as', 'href', 'class'] },
-    },
-    BadgeCounter: {
-        args: {
-            variant: 'default',
-            size: 'default',
-            value: '1234.50',
-            label: 'Items',
-            numberPosition: 'left',
-            fractionDigits: 2,
-            class: '',
-        },
-        argTypes: {
-            ...badge,
-            value: text,
-            label: text,
-            numberPosition: select(['left', 'right']),
-            fractionDigits: number(0, 20),
-            class: text,
-        },
+        parts: { root: ['variant', 'appearance', 'size', 'as', 'href', 'class'] },
     },
     BadgeCopy: {
         args: {
             content: 'SH-2026-001',
             label: 'Copy reference',
             variant: 'default',
+            appearance: 'auto',
             size: 'default',
             iconPosition: 'left',
             wrapper: true,
@@ -400,13 +420,23 @@ const definitions: Record<string, Definition> = {
             content: text,
             label: text,
             ...badge,
+            appearance: select(['auto', 'solid', 'soft']),
             iconPosition: select(['left', 'right']),
             wrapper: boolean,
             showIcon: preview(boolean),
             class: text,
         },
         parts: {
-            root: ['content', 'label', 'variant', 'size', 'iconPosition', 'wrapper', 'class'],
+            root: [
+                'content',
+                'label',
+                'variant',
+                'appearance',
+                'size',
+                'iconPosition',
+                'wrapper',
+                'class',
+            ],
         },
     },
     Breadcrumb: {
@@ -452,8 +482,20 @@ const definitions: Record<string, Definition> = {
         parts: { root: ['class', 'border'] },
     },
     CardChart: {
-        args: { ...titleArgs, empty: false, emptyLabel: 'No data available' },
-        argTypes: { ...title, empty: boolean, emptyLabel: text },
+        args: {
+            ...titleArgs,
+            empty: false,
+            emptyLabel: 'No data available',
+            contentClass: '',
+            emptyClass: 'flex h-72 items-center justify-center text-sm text-muted-foreground',
+        },
+        argTypes: {
+            ...title,
+            empty: boolean,
+            emptyLabel: text,
+            contentClass: text,
+            emptyClass: text,
+        },
     },
     Marker: {
         args: { ...titleArgs, showIcon: true, class: '' },
@@ -477,8 +519,10 @@ const definitions: Record<string, Definition> = {
             mode: 'full',
             variant: 'ghost',
             connected: false,
+            class: '',
         },
         argTypes: {
+            class: text,
             connected: boolean,
             mode: select(['full', 'compact', 'navigation', 'simple']),
             variant: select(['outline', 'ghost']),
@@ -495,6 +539,7 @@ const definitions: Record<string, Definition> = {
         },
         parts: {
             root: [
+                'class',
                 'itemsPerPage',
                 'total',
                 'siblingCount',
@@ -640,20 +685,46 @@ const definitions: Record<string, Definition> = {
         args: {
             modelValue: 'overview',
             variant: 'primary',
+            appearance: 'line',
+            bordered: false,
+            activeIndicator: false,
+            drawerShowAllTabs: true,
             orientation: 'horizontal',
             inset: false,
             collapseOverflow: true,
             content: true,
+            unmountOnHide: true,
+            contentClass: '',
         },
         argTypes: {
             modelValue: select(['overview', 'activity']),
             variant: select(inlineColorVariants),
+            appearance: select(['line', 'buttons']),
+            bordered: boolean,
+            activeIndicator: boolean,
+            drawerShowAllTabs: boolean,
             orientation: select(['horizontal', 'vertical']),
             inset: boolean,
             collapseOverflow: boolean,
             content: boolean,
+            unmountOnHide: boolean,
+            contentClass: text,
         },
-        parts: { root: ['variant', 'orientation', 'inset', 'collapseOverflow', 'content'] },
+        parts: {
+            root: [
+                'variant',
+                'appearance',
+                'bordered',
+                'activeIndicator',
+                'drawerShowAllTabs',
+                'orientation',
+                'inset',
+                'collapseOverflow',
+                'content',
+                'unmountOnHide',
+                'contentClass',
+            ],
+        },
     },
     Popover: {
         args: { open: false, modal: false, side: 'bottom', align: 'center', sideOffset: 4 },
@@ -712,6 +783,9 @@ const definitions: Record<string, Definition> = {
             duration: 4000,
             visibleToasts: 3,
             theme: 'system',
+            swipeDirection: 'right',
+            disableSwipe: false,
+            swipeThreshold: 50,
         },
         argTypes: {
             inline: boolean,
@@ -730,6 +804,9 @@ const definitions: Record<string, Definition> = {
             duration: number(500, 30000, 500),
             visibleToasts: number(1, 10),
             theme: select(['light', 'dark', 'system']),
+            swipeDirection: select(['up', 'down', 'left', 'right']),
+            disableSwipe: boolean,
+            swipeThreshold: number(10, 200, 10),
         },
     },
     DataTable: {

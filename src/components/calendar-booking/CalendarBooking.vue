@@ -49,17 +49,15 @@
                     :disabled="disabled || loading || (!item.available && !item.retained)"
                     :aria-pressed="booking.slot.value === item.value"
                     @click="booking.selectSlot(item.value)">
-                    <template v-slot:[item]>
-                        <slot name="slot" :selected="booking.slot.value === item.value">
-                            {{ item.label }}
-                            <span v-if="showCapacity" class="text-xs">
-                                {{ Math.max(0, item.capacity - item.used) }}/{{ item.capacity }}
-                            </span>
-                            <span v-if="item.retained" class="text-xs">
-                                {{ trans('common.schedule.retained') }}
-                            </span>
-                        </slot>
-                    </template>
+                    <slot name="slot" :selected="booking.slot.value === item.value">
+                        {{ item.label }}
+                        <span v-if="showCapacity" class="text-xs">
+                            {{ Math.max(0, item.capacity - item.used) }}/{{ item.capacity }}
+                        </span>
+                        <span v-if="item.retained" class="text-xs">
+                            {{ trans('common.schedule.retained') }}
+                        </span>
+                    </slot>
                 </Button>
             </div>
             <p v-if="!slots.length && !loading" class="text-sm text-muted-foreground">

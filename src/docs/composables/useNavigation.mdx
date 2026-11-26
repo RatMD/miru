@@ -1,0 +1,20 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Composables/useNavigation" />
+
+# useNavigation
+
+Read the current application’s navigation adapter inside Vue setup. The returned service follows the configuration installed by `createMiru`; it falls back to ordinary browser navigation when no adapter is supplied.
+
+```ts
+import { useNavigation } from '@rat.md/miru/composables';
+
+const navigation = useNavigation();
+function openProjects() {
+    navigation.visit('/projects', { data: { page: 1 } });
+}
+```
+
+`navigation.link` is the optional SPA link component. `visit(url, options)` accepts a method, data, scroll/state preferences, partial-reload keys and lifecycle callbacks. Each adapter implements the options it supports: the browser fallback performs full page visits, while the Inertia adapter uses its router.
+
+Install `inertiaAdapter()` through `createMiru({ adapter })` to share Inertia navigation with forms and DataTable. See [Adapters](/docs/guide/adapters) for configuration. Applications own destination URLs and permissions.

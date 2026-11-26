@@ -1,7 +1,17 @@
 import type { BreakpointMap, BreakpointValue } from '../constants/breakpoints';
 import type { ScreenOrientation } from './useClient';
 import type { MaybeRefOrGetter } from 'vue';
-import { computed, hasInjectionContext, inject, toValue } from 'vue';
+import {
+    computed,
+    hasInjectionContext,
+    inject,
+    toValue,
+    shallowRef,
+    onMounted,
+    onScopeDispose,
+    watch,
+    getCurrentInstance,
+} from 'vue';
 import { defaultBreakpoints } from '../constants/breakpoints';
 import { miruOptionsKey } from '../miru';
 import { useClient } from './useClient';
@@ -22,8 +32,40 @@ function useBreakpoint(options: MaybeRefOrGetter<BreakpointOptions> = {}) {
     const config = hasInjectionContext() ? inject(miruOptionsKey, {}) : {};
     const client = useClient();
     const settings = computed(() => toValue(options));
+    const cssBreakpoints = shallowRef<BreakpointMap>({});
+    function readTokens() {
+        if (typeof document === 'undefined') return;
+        const style = getComputedStyle(document.documentElement);
+        const fontSize = Number.parseFloat(style.fontSize) || 16;
+        const values: Record<string, number> = {};
+        for (const name of Object.keys({
+            ...defaultBreakpoints,
+            ...config.breakpoints,
+            ...settings.value.breakpoints,
+        })) {
+            const raw = style.getPropertyValue(`--ui-breakpoint-${name}`).trim();
+            const match = raw.match(/^(\d+(?:\.\d+)?)(px|rem)?$/);
+            if (match) values[name] = Number(match[1]) * (match[2] === 'rem' ? fontSize : 1);
+        }
+        cssBreakpoints.value = values;
+    }
+    let observer: MutationObserver | undefined;
+    function observeTokens() {
+        readTokens();
+        observer = new MutationObserver(readTokens);
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class', 'style', 'data-theme'],
+        });
+        observer.observe(document.head, { childList: true, subtree: true, characterData: true });
+    }
+    if (getCurrentInstance()) onMounted(observeTokens);
+    else if (typeof document !== 'undefined') observeTokens();
+    onScopeDispose(() => observer?.disconnect(), true);
+    watch(() => client.screen.width, readTokens);
     const breakpoints = computed(() => ({
         ...defaultBreakpoints,
+        ...cssBreakpoints.value,
         ...config.breakpoints,
         ...settings.value.breakpoints,
     }));
@@ -76,7 +118,10 @@ function useBreakpoint(options: MaybeRefOrGetter<BreakpointOptions> = {}) {
     );
 
     return {
-        dispose: client.dispose,
+        dispose: () => {
+            observer?.disconnect();
+            client.dispose();
+        },
         matches,
         width,
         height,

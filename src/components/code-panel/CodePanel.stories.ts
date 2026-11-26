@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { codeApiCopy } from '../../stories/code-documentation';
+import { CodePanelDocs } from '../../stories/CodePanelDocs';
 import { componentControls, controlNames } from '../../stories/component-controls';
 import { componentDescription } from '../../stories/component-descriptions';
 import { componentStory } from '../../stories/component-fixtures';
@@ -9,9 +11,25 @@ const meta = {
     component: CodePanel,
     parameters: {
         controls: { include: controlNames('CodePanel') },
-        docs: { description: { component: componentDescription('CodePanel') } },
+        docs: {
+            page: CodePanelDocs,
+            description: { component: componentDescription('CodePanel') },
+        },
     },
 } satisfies Meta;
+Object.assign(
+    meta.argTypes,
+    Object.fromEntries(
+        Object.entries(meta.argTypes).map(([name, control]) => [
+            name,
+            {
+                ...control,
+                description: codeApiCopy.CodePanel.props[name],
+                table: { category: 'CodePanel props' },
+            },
+        ]),
+    ),
+);
 export default meta;
 export const Default: StoryObj = {
     render: componentStory('<CodePanel v-bind="controlProps()"/>', 'CodePanel'),

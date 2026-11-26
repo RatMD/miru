@@ -1,5 +1,5 @@
 <template>
-    <UiProvider :locale="locale" :translate="translate">
+    <ContextProvider :locale="locale" :translate="translate">
         <div
             class="w-full min-w-0 space-y-4"
             data-slot="data-table-showcase"
@@ -140,7 +140,7 @@
             </div>
             <output aria-live="polite" class="block text-sm">{{ feedback }}</output>
         </div>
-    </UiProvider>
+    </ContextProvider>
 </template>
 <script setup lang="ts">
 import type {
@@ -172,7 +172,7 @@ import {
     createDateTimeColumn,
     createAddressColumn,
 } from '../components/data-table';
-import { UiProvider } from '../components/provider';
+import { ContextProvider } from '../components/provider';
 import { dataTableShowcaseCopy } from './data-table-showcase-copy';
 type Scenario = keyof typeof dataTableShowcaseCopy.en.headings;
 interface Unit {

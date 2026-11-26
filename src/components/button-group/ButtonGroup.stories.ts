@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
+import { buttonApiCopy } from '../../stories/button-documentation';
+import { ButtonGroupDocs } from '../../stories/ButtonGroupDocs';
 import { componentDescription } from '../../stories/component-descriptions';
 import CompositionDemo from '../../stories/CompositionDemo.vue';
 import { ButtonGroup } from './index';
@@ -11,6 +13,7 @@ const meta = {
             include: ['orientation', 'size', 'shape', 'disabled', 'iconOnly', 'actionButtons'],
         },
         docs: {
+            page: ButtonGroupDocs,
             description: { component: componentDescription('ButtonGroup') },
         },
     },
@@ -36,6 +39,18 @@ const meta = {
         template: '<CompositionDemo mode="buttons" :args="args" :locale="locale"/>',
     }),
 } satisfies Meta;
+for (const [name, control] of Object.entries(meta.argTypes)) {
+    const description = buttonApiCopy.ButtonGroup.props[name];
+    const examples: Record<string, string> = {
+        disabled: 'Disable the example child buttons.',
+        iconOnly: 'Show icon-only child buttons in the example.',
+        actionButtons: 'Use ButtonAction components in the example.',
+    };
+    Object.assign(control, {
+        description: description ?? examples[name],
+        table: { category: description ? 'ButtonGroup props' : 'Example content' },
+    });
+}
 export default meta;
 export const Default: StoryObj = {};
 export const Vertical: StoryObj = { args: { orientation: 'vertical' } };

@@ -2,6 +2,7 @@
     <TabsRoot
         data-slot="tabs"
         :data-variant="variant"
+        :data-appearance="appearance"
         v-model="model"
         class="w-full max-w-full min-w-0 overflow-hidden"
         :class="{ 'flex min-h-0': isVertical }"
@@ -11,57 +12,80 @@
             ref="tabBar"
             class="relative min-w-0 border-border"
             :class="[
-                isVertical ? 'w-52 shrink-0 border-r' : 'shrink-0 border-b',
+                isVertical ? 'w-52 shrink-0' : 'shrink-0',
+                appearance === 'line' && (isVertical ? 'border-r' : 'border-b'),
                 inset && !isVertical ? 'px-4 md:px-6' : '',
             ]">
             <TabsList
                 class="relative flex min-w-0 flex-nowrap gap-1 overflow-hidden"
-                :class="{ 'flex-col py-3': isVertical }"
+                :class="{ 'flex-col': isVertical, 'py-3': isVertical && appearance === 'line' }"
                 :aria-label="ariaLabel">
-                <TabsTrigger
-                    data-slot="tabs-trigger"
-                    :data-variant="tabVariant(tab)"
+                <div
                     v-for="tab in visibleTabs"
                     :key="tab.value"
-                    :value="tab.value"
-                    :disabled="tab.disabled"
-                    :data-line-tab-value="tab.value"
-                    class="relative inline-flex shrink-0 cursor-pointer items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors duration-200 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:text-muted-foreground"
-                    :class="[
-                        { 'w-full text-left': isVertical },
-                        activeTextClass(tab),
-                        tab.class,
-                        !isVertical && tab.separatorBefore
-                            ? 'ml-6 before:absolute before:top-1/2 before:-left-3 before:h-5 before:-translate-y-1/2 before:border-l before:border-border'
-                            : '',
-                    ]">
-                    <span v-if="tab.icon" class="relative inline-flex shrink-0">
-                        <component :is="tab.icon" class="size-4 shrink-0" aria-hidden="true" />
+                    class="relative shrink-0"
+                    :class="{ 'w-full': isVertical }">
+                    <TabsTrigger
+                        data-slot="tabs-trigger"
+                        :data-variant="tabVariant(tab)"
+                        :value="tab.value"
+                        :disabled="tab.disabled"
+                        :data-line-tab-value="tab.value"
+                        class="relative inline-flex shrink-0 cursor-pointer items-center gap-2 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors duration-200 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:text-muted-foreground"
+                        :class="[
+                            { 'w-full text-left': isVertical },
+                            triggerSpacingClass,
+                            appearance === 'buttons' && buttonTabClass(tab),
+                            activeTextClass(tab),
+                            tab.class,
+                            $slots['tab-action'] && tab.badge !== undefined && 'pr-14',
+                            !isVertical && tab.separatorBefore
+                                ? 'ml-6 before:absolute before:top-1/2 before:-left-3 before:h-5 before:-translate-y-1/2 before:border-l before:border-border'
+                                : '',
+                        ]">
                         <span
-                            v-if="tab.attention && tab.attentionPosition === 'icon'"
-                            class="absolute -top-1 -right-1 size-2 rounded-full bg-danger-600 ring-2 ring-background"
+                            v-if="
+                                appearance === 'buttons' && activeIndicator && tab.value === model
+                            "
+                            data-slot="tabs-active-indicator"
+                            aria-hidden="true"
+                            class="pointer-events-none absolute inset-y-2 left-0 w-0.5 rounded-r bg-current"
+                            :class="tab.indicatorClass" />
+                        <span v-if="tab.icon" class="relative inline-flex shrink-0">
+                            <component :is="tab.icon" class="size-4 shrink-0" aria-hidden="true" />
+                            <span
+                                v-if="tab.attention && tab.attentionPosition === 'icon'"
+                                class="absolute -top-1 -right-1 size-2 rounded-full bg-danger-600 ring-2 ring-background"
+                                role="img"
+                                :aria-label="tab.attention"
+                                :title="tab.attention" />
+                        </span>
+                        {{ tab.label }}
+                        <span
+                            v-if="tab.attention && (tab.attentionPosition !== 'icon' || !tab.icon)"
+                            class="size-2 shrink-0 rounded-full bg-danger"
                             role="img"
                             :aria-label="tab.attention"
                             :title="tab.attention" />
-                    </span>
-                    {{ tab.label }}
-                    <span
-                        v-if="tab.attention && (tab.attentionPosition !== 'icon' || !tab.icon)"
-                        class="size-2 shrink-0 rounded-full bg-danger"
-                        role="img"
-                        :aria-label="tab.attention"
-                        :title="tab.attention" />
-                    <Badge
-                        v-if="tab.badge !== undefined"
-                        variant="ghostly"
-                        class="-ml-1 rounded-full px-1.5 text-xs">
-                        {{ tab.badge }}
-                    </Badge>
-                </TabsTrigger>
+                        <Badge
+                            v-if="tab.badge !== undefined && !$slots['tab-action']"
+                            variant="ghostly"
+                            class="-ml-1 rounded-full px-1.5 text-xs">
+                            {{ tab.badge }}
+                        </Badge>
+                    </TabsTrigger>
+                    <div
+                        v-if="$slots['tab-action'] && tab.badge !== undefined"
+                        class="absolute top-1/2 right-3 -translate-y-1/2"
+                        data-slot="tabs-action">
+                        <slot name="tab-action" :tab="tab" />
+                    </div>
+                </div>
 
                 <Popover v-if="hiddenTabs.length > 0 && isDesktop" v-model:open="overflowOpen">
                     <PopoverTrigger as-child>
                         <Button
+                            data-tabs-overflow-trigger
                             type="button"
                             variant="ghost"
                             size="sm"
@@ -71,75 +95,19 @@
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent align="end" class="w-56 p-1">
-                        <Button
-                            v-for="tab in hiddenTabs"
-                            :key="tab.value"
-                            type="button"
-                            variant="ghost"
-                            class="w-full justify-start"
-                            :class="[
-                                tab.class,
-                                tab.value === model
-                                    ? inlineTextVariants({ variant: tabVariant(tab) })
-                                    : '',
-                            ]"
-                            :disabled="tab.disabled"
-                            @click="selectOverflowTab(tab)">
-                            <span v-if="tab.icon" class="relative inline-flex shrink-0">
-                                <component
-                                    :is="tab.icon"
-                                    class="size-4 shrink-0"
-                                    aria-hidden="true" />
-                                <span
-                                    v-if="tab.attention && tab.attentionPosition === 'icon'"
-                                    class="absolute -top-1 -right-1 size-2 rounded-full bg-danger-600 ring-2 ring-background"
-                                    role="img"
-                                    :aria-label="tab.attention"
-                                    :title="tab.attention" />
-                            </span>
-                            {{ tab.label }}
-                            <span
-                                v-if="
-                                    tab.attention && (tab.attentionPosition !== 'icon' || !tab.icon)
-                                "
-                                class="size-2 shrink-0 rounded-full bg-danger"
-                                role="img"
-                                :aria-label="tab.attention"
-                                :title="tab.attention" />
-                            <Badge
-                                v-if="tab.badge !== undefined"
-                                variant="ghostly"
-                                class="ml-auto rounded-full">
-                                {{ tab.badge }}
-                            </Badge>
-                        </Button>
-                    </PopoverContent>
-                </Popover>
-
-                <Drawer v-else-if="hiddenTabs.length > 0" v-model:open="overflowOpen">
-                    <DrawerTrigger as-child>
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            class="ml-auto size-10 shrink-0 p-0"
-                            :aria-label="trans('common.accessibility.more')">
-                            <IconDots class="size-5" />
-                        </Button>
-                    </DrawerTrigger>
-                    <DrawerContent class="md:hidden">
-                        <DrawerHeader class="border-b pr-12">
-                            <DrawerTitle>{{ trans('common.accessibility.more') }}</DrawerTitle>
-                            <DrawerDescription>{{ ariaLabel }}</DrawerDescription>
-                        </DrawerHeader>
-                        <div class="overflow-y-auto p-2">
+                        <div v-for="tab in hiddenTabs" :key="tab.value" class="relative">
                             <Button
-                                v-for="tab in hiddenTabs"
-                                :key="tab.value"
                                 type="button"
                                 variant="ghost"
                                 class="w-full justify-start"
-                                :class="tab.class"
+                                :data-state="tab.value === model ? 'active' : 'inactive'"
+                                :aria-current="tab.value === model ? 'true' : undefined"
+                                :class="[
+                                    tab.class,
+                                    $slots['tab-action'] && tab.badge !== undefined && 'pr-14',
+                                    activeTextClass(tab),
+                                    buttonTabVariants({ variant: tabVariant(tab) }),
+                                ]"
                                 :disabled="tab.disabled"
                                 @click="selectOverflowTab(tab)">
                                 <span v-if="tab.icon" class="relative inline-flex shrink-0">
@@ -165,18 +133,98 @@
                                     :aria-label="tab.attention"
                                     :title="tab.attention" />
                                 <Badge
-                                    v-if="tab.badge !== undefined"
+                                    v-if="tab.badge !== undefined && !$slots['tab-action']"
                                     variant="ghostly"
                                     class="ml-auto rounded-full">
                                     {{ tab.badge }}
                                 </Badge>
                             </Button>
+                            <div
+                                v-if="$slots['tab-action'] && tab.badge !== undefined"
+                                class="absolute top-1/2 right-3 -translate-y-1/2"
+                                data-slot="tabs-action">
+                                <slot name="tab-action" :tab="tab" />
+                            </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+
+                <Drawer v-else-if="hiddenTabs.length > 0" v-model:open="overflowOpen">
+                    <DrawerTrigger as-child>
+                        <Button
+                            data-tabs-overflow-trigger
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            class="ml-auto size-10 shrink-0 p-0"
+                            :aria-label="trans('common.accessibility.more')">
+                            <IconDots class="size-5" />
+                        </Button>
+                    </DrawerTrigger>
+                    <DrawerContent class="md:hidden">
+                        <DrawerHeader class="border-b pr-12">
+                            <DrawerTitle>{{ trans('common.accessibility.more') }}</DrawerTitle>
+                            <DrawerDescription>{{ ariaLabel }}</DrawerDescription>
+                        </DrawerHeader>
+                        <div class="overflow-y-auto p-2">
+                            <div v-for="tab in drawerTabs" :key="tab.value" class="relative">
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    class="w-full justify-start"
+                                    :data-state="tab.value === model ? 'active' : 'inactive'"
+                                    :aria-current="tab.value === model ? 'true' : undefined"
+                                    :class="[
+                                        tab.class,
+                                        $slots['tab-action'] && tab.badge !== undefined && 'pr-14',
+                                        activeTextClass(tab),
+                                        buttonTabVariants({ variant: tabVariant(tab) }),
+                                    ]"
+                                    :disabled="tab.disabled"
+                                    @click="selectOverflowTab(tab)">
+                                    <span v-if="tab.icon" class="relative inline-flex shrink-0">
+                                        <component
+                                            :is="tab.icon"
+                                            class="size-4 shrink-0"
+                                            aria-hidden="true" />
+                                        <span
+                                            v-if="tab.attention && tab.attentionPosition === 'icon'"
+                                            class="absolute -top-1 -right-1 size-2 rounded-full bg-danger-600 ring-2 ring-background"
+                                            role="img"
+                                            :aria-label="tab.attention"
+                                            :title="tab.attention" />
+                                    </span>
+                                    {{ tab.label }}
+                                    <span
+                                        v-if="
+                                            tab.attention &&
+                                            (tab.attentionPosition !== 'icon' || !tab.icon)
+                                        "
+                                        class="size-2 shrink-0 rounded-full bg-danger"
+                                        role="img"
+                                        :aria-label="tab.attention"
+                                        :title="tab.attention" />
+                                    <Badge
+                                        v-if="tab.badge !== undefined && !$slots['tab-action']"
+                                        variant="ghostly"
+                                        class="ml-auto rounded-full">
+                                        {{ tab.badge }}
+                                    </Badge>
+                                </Button>
+                                <div
+                                    v-if="$slots['tab-action'] && tab.badge !== undefined"
+                                    class="absolute top-1/2 right-3 -translate-y-1/2"
+                                    data-slot="tabs-action">
+                                    <slot name="tab-action" :tab="tab" />
+                                </div>
+                            </div>
                         </div>
                     </DrawerContent>
                 </Drawer>
             </TabsList>
 
             <span
+                v-if="appearance === 'line'"
                 aria-hidden="true"
                 data-slot="tabs-indicator"
                 class="pointer-events-none absolute bg-current opacity-0 transition-[transform,width,height,opacity,color] duration-300 ease-out"
@@ -210,8 +258,16 @@
                     v-for="tab in tabs"
                     :key="tab.value"
                     :data-line-tab-measure="tab.value"
-                    :style="tab.separatorBefore ? { paddingLeft: '40px' } : undefined"
-                    class="inline-flex shrink-0 items-center gap-2 px-4 py-3 text-sm font-medium">
+                    :style="
+                        !isVertical && tab.separatorBefore
+                            ? { paddingLeft: appearance === 'buttons' ? '36px' : '40px' }
+                            : undefined
+                    "
+                    class="inline-flex shrink-0 items-center gap-2 text-sm font-medium"
+                    :class="[
+                        triggerSpacingClass,
+                        appearance === 'buttons' && bordered && 'border border-border',
+                    ]">
                     <span v-if="tab.icon" class="relative inline-flex shrink-0">
                         <component :is="tab.icon" class="size-4 shrink-0" aria-hidden="true" />
                         <span
@@ -228,8 +284,11 @@
                         role="img"
                         :aria-label="tab.attention"
                         :title="tab.attention" />
+                    <span
+                        v-if="$slots['tab-action'] && tab.badge !== undefined"
+                        class="w-10 shrink-0" />
                     <Badge
-                        v-if="tab.badge !== undefined"
+                        v-if="tab.badge !== undefined && !$slots['tab-action']"
                         variant="ghostly"
                         class="-ml-1 rounded-full px-1.5 text-xs">
                         {{ tab.badge }}
@@ -279,13 +338,15 @@ export interface TabItem {
     /** Optional color for the animated indicator when this tab is selected. */
     indicatorClass?: HTMLAttributes['class'];
 }
+
+export type TabsAppearance = 'line' | 'buttons';
 </script>
 
 <script setup lang="ts">
 import { IconDots } from '@tabler/icons-vue';
-import { useMediaQuery } from '@vueuse/core';
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui';
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
+import { useBreakpoint } from '../../composables/useBreakpoint';
 import { useI18n } from '../../composables/useI18n';
 import { cn } from '../../support/classNames';
 import { Badge } from '../badge';
@@ -300,6 +361,7 @@ import {
 } from '../drawer';
 import { inlineActiveTextVariants, inlineTextVariants } from '../inline-variants';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover';
+import { buttonTabVariants } from './variants';
 const { trans, transChoice, locale } = useI18n();
 
 /** Prefer an item's explicit variant, then its legacy status tone, then the root variant. */
@@ -310,6 +372,14 @@ function activeTextClass(tab: TabItem): string {
     return inlineActiveTextVariants({ variant: tabVariant(tab) });
 }
 
+function buttonTabClass(tab: TabItem) {
+    return [
+        'rounded-md disabled:hover:bg-transparent [&:not(:disabled):not([data-state=active])]:hover:bg-muted/50',
+        buttonTabVariants({ variant: tabVariant(tab) }),
+        props.bordered && 'border border-border',
+    ];
+}
+
 const TAB_GAP = 4;
 const OVERFLOW_TRIGGER_WIDTH = 40;
 
@@ -317,6 +387,12 @@ const props = withDefaults(
     defineProps<{
         tabs: TabItem[];
         variant?: InlineVariant;
+        /** Visual treatment, independent of the color variant. */
+        appearance?: TabsAppearance;
+        /** Add a themed outline to each button-style tab. */
+        bordered?: boolean;
+        /** Add a left-hand color marker to the active button-style tab. */
+        activeIndicator?: boolean;
         modelValue?: string;
         defaultValue?: string;
         ariaLabel?: string;
@@ -328,14 +404,18 @@ const props = withDefaults(
         orientation?: 'horizontal' | 'vertical';
         /** Keep every tab visible when the caller reserves enough space. */
         collapseOverflow?: boolean;
+        /** Mobile overflow drawer lists all tabs; desktop popovers always list only hidden tabs. */
+        drawerShowAllTabs?: boolean;
         contentClass?: HTMLAttributes['class'];
     }>(),
     {
         variant: 'primary',
+        appearance: 'line',
         content: true,
         unmountOnHide: true,
         orientation: 'horizontal',
         collapseOverflow: true,
+        drawerShowAllTabs: true,
     },
 );
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
@@ -344,14 +424,24 @@ const tabBar = ref<HTMLElement>();
 const measurementList = ref<HTMLElement>();
 const visibleValues = ref<string[]>(props.tabs.map((tab) => tab.value));
 const overflowOpen = ref(false);
-const isDesktop = useMediaQuery('(min-width: 768px)');
+const { matches: isDesktop } = useBreakpoint({ min: 'md' });
 const indicator = reactive({ left: 0, top: 0, width: 0, height: 0, visible: false });
 const isVertical = computed(() => props.orientation === 'vertical');
+const triggerSpacingClass = computed(() =>
+    props.appearance === 'buttons' ? 'px-3 py-2' : 'px-4 py-3',
+);
 let resizeObserver: ResizeObserver | undefined;
 
+const internalValue = ref(props.defaultValue ?? props.tabs[0]?.value ?? '');
+watch(() => props.modelValue, (value) => {
+    if (value !== undefined) internalValue.value = value;
+}, { immediate: true });
 const model = computed<string>({
-    get: () => props.modelValue ?? props.defaultValue ?? props.tabs[0]?.value ?? '',
-    set: (value) => emit('update:modelValue', String(value)),
+    get: () => props.modelValue ?? internalValue.value,
+    set: (value) => {
+        if (props.modelValue === undefined) internalValue.value = String(value);
+        emit('update:modelValue', String(value));
+    },
 });
 const visibleTabs = computed(() =>
     props.collapseOverflow
@@ -363,6 +453,7 @@ const hiddenTabs = computed(() =>
         ? props.tabs.filter((tab) => !visibleValues.value.includes(tab.value))
         : [],
 );
+const drawerTabs = computed(() => (props.drawerShowAllTabs ? props.tabs : hiddenTabs.value));
 
 onMounted(() => {
     resizeObserver = new ResizeObserver(updateLayout);
@@ -386,7 +477,7 @@ watch(
 );
 watch(model, updateLayout);
 watch(
-    () => [isVertical.value, props.collapseOverflow],
+    () => [isVertical.value, props.collapseOverflow, props.appearance, props.bordered],
     () => {
         overflowOpen.value = false;
         void nextTick(updateLayout);
@@ -472,6 +563,10 @@ function visibleWidth(values: string[], widths: Map<string, number>): number {
 }
 
 function updateIndicator(): void {
+    if (props.appearance !== 'line') {
+        indicator.visible = false;
+        return;
+    }
     const activeTab = Array.from(
         tabBar.value?.querySelectorAll<HTMLElement>('[data-line-tab-value]') ?? [],
     ).find((element) => element.dataset.lineTabValue === model.value);
@@ -491,6 +586,7 @@ function updateIndicator(): void {
 }
 
 function selectOverflowTab(tab: TabItem): void {
+    if (tab.disabled) return;
     overflowOpen.value = false;
     model.value = tab.value;
 }

@@ -11,7 +11,7 @@
                 effectiveStatus === 'error'
                     ? 'border-danger/60 bg-danger/5'
                     : effectiveStatus === 'success'
-                      ? 'border-success-500 bg-success-50 text-success-800 dark:bg-success-950/30 dark:text-success-300'
+                      ? 'border-success-border bg-success-50 text-success-800 dark:bg-success-950/30 dark:text-success-300'
                       : dragging
                         ? 'border-primary bg-primary/10'
                         : 'border-border bg-background',

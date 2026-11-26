@@ -14,8 +14,9 @@
         :class="cn('miru-button-action justify-self-start', props.class)"
         :style="colors">
         <ButtonStatusIcon
-            v-if="statusDot"
-            :visible="!loading"
+            v-if="statusDot && !loading"
+            :pulse="statusDotPulse"
+            :ping="statusDotPing"
             :color="typeof statusDot === 'string' ? statusDot : variant"
             :small="size === 'xs'">
             <slot />
@@ -49,7 +50,9 @@ const props = withDefaults(
             borderless?: ButtonActionBorderless;
             iconOnly?: boolean;
             muted?: boolean;
-            statusDot?: boolean | NonNullable<ButtonVariants['variant']>;
+            statusDot?: boolean | string;
+            statusDotPulse?: boolean;
+            statusDotPing?: boolean;
             label?: string;
             title?: string;
             disabled?: boolean;
@@ -80,6 +83,8 @@ const forwarded = reactiveOmit(
     'variant',
     'muted',
     'statusDot',
+    'statusDotPulse',
+    'statusDotPing',
     'borderless',
     'label',
     'title',
@@ -108,9 +113,11 @@ const colors = computed<CSSProperties>(() => {
             : 'color-mix(in srgb, var(--action-dark-ink) 24%, var(--ui-action-background, var(--ui-background)))',
         '--action-border-idle': v === 'outline' ? 'var(--ui-border)' : 'var(--action-display-ink)',
         '--action-hover-bg': neutral ? 'var(--ui-neutral-100)' : 'var(--ui-' + v + '-100)',
-        '--action-active-bg': 'var(--ui-' + v + '-active)',
+        '--action-active-bg': neutral ? 'var(--ui-ghost-active)' : 'var(--ui-' + v + '-active)',
         '--action-active-border': neutral ? 'var(--ui-neutral-500)' : 'var(--ui-' + v + '-950)',
-        '--action-active-foreground': 'var(--ui-' + v + '-foreground)',
+        '--action-active-foreground': neutral
+            ? 'var(--ui-foreground)'
+            : 'var(--ui-' + v + '-foreground)',
     };
 });
 </script>
@@ -125,7 +132,6 @@ const colors = computed<CSSProperties>(() => {
         var(--action-active-bg)
     );
     --action-display-active-border: var(--action-active-border);
-    --button-status-dot-cutout: var(--ui-action-background, var(--ui-background));
     --action-border-current: var(--action-border-idle);
     background-color: var(--ui-action-background, var(--ui-background));
     color: var(--action-display-ink);
@@ -147,13 +153,11 @@ const colors = computed<CSSProperties>(() => {
 .miru-button-action:not(:disabled):not([aria-disabled='true']):not([data-disabled]):hover,
 .miru-button-action:not(:disabled):not([aria-disabled='true']):not([data-disabled]):focus-visible {
     --action-border-current: var(--action-border-idle);
-    --button-status-dot-cutout: var(--action-display-hover-bg);
     background-color: var(--action-display-hover-bg);
     color: var(--action-display-ink);
 }
 .miru-button-action:not(:disabled):not([aria-disabled='true']):not([data-disabled]):active {
     --action-border-current: var(--action-display-active-border);
-    --button-status-dot-cutout: var(--action-display-active-bg);
     background-color: var(--action-display-active-bg);
     color: var(--action-display-active-ink);
 }

@@ -36,7 +36,7 @@
                 @click="types = []">
                 {{ trans('common.datatable.all') }}
             </Badge>
-            <FilterBadges
+            <FilterBar
                 :items="filterItems"
                 :disabled="disabled || loading"
                 @remove="toggle"
@@ -113,7 +113,7 @@ import { computed } from 'vue';
 import { useI18n } from '../../composables/useI18n';
 import { cn } from '../../support/classNames';
 import { Badge } from '../badge';
-import { FilterBadges } from '../filter-badges';
+import { FilterBar } from '../filter-bar';
 import { ScrollArea } from '../scroll-area';
 const props = withDefaults(
     defineProps<{

@@ -1,5 +1,9 @@
 <template>
     <SelectTrigger
+        :aria-readonly="isReadonly || undefined"
+        @click.capture="guardReadonly"
+        @keydown.capture="guardReadonly"
+        @pointerdown.capture="guardReadonly"
         data-slot="select-trigger"
         :data-size="resolvedSize"
         :data-shape="resolvedShape"
@@ -36,10 +40,12 @@ import { reactiveOmit } from '@vueuse/core';
 import { SelectIcon, SelectTrigger, useForwardProps } from 'reka-ui';
 import { computed, inject, watch } from 'vue';
 import { cn } from '../../support/classNames';
+import { useReadonlyField } from '../field/readonly';
 import { selectShapeKey, selectSizeKey, selectTriggerSizeKey } from './context';
 
 const props = defineProps<
     SelectTriggerProps & {
+        readonly?: boolean;
         class?: HTMLAttributes['class'];
         size?: SelectSize;
         shape?: SelectShape;
@@ -59,6 +65,7 @@ watch(
     { immediate: true, flush: 'sync' },
 );
 
-const delegatedProps = reactiveOmit(props, 'class', 'size', 'shape');
+const { readonly: isReadonly, guard: guardReadonly } = useReadonlyField(() => props.readonly);
+const delegatedProps = reactiveOmit(props, 'readonly', 'class', 'size', 'shape');
 const forwardedProps = useForwardProps(delegatedProps);
 </script>

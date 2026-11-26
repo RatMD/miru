@@ -137,7 +137,6 @@ export interface ListFilterRange {
     to?: string | number;
 }
 
-/** Lucid pagination is accepted without an Adonis runtime dependency. */
 export interface LucidPagination<T> {
     data: T[];
     meta: {
@@ -168,4 +167,15 @@ export interface LucidListPayload<T> {
     state?: LucidListState;
 }
 
-export type DataTableFormat = 'default' | 'lucid';
+export type DataTableFormat = 'default' | 'lucid' | 'laravel';
+
+export type DataTableSource<T> = ListPayload<T> | LucidListPayload<T> | LaravelListPayload<T>;
+
+/** Backend data conventions, independent of AJAX/Inertia navigation. */
+export interface DataTableBackendAdapter {
+    format: DataTableFormat;
+    normalize<T>(source: DataTableSource<T>, path?: string): ListPayload<T>;
+    serializeQuery(state: ListState, filters: Record<string, unknown>): Record<string, unknown>;
+    /** Partial-reload prop defaults used by navigation integrations that support them. */
+    queryProps?: string[];
+}
