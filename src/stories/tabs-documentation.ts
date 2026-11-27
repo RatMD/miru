@@ -75,6 +75,7 @@ export const tabsApiCopy: Record<
         },
         events: { 'update:modelValue': 'Emitted when a tab is selected, with its value.' },
         slots: {
+            'tab-action': 'An action beside a tab badge; exposes the tab definition.',
             '[tab.value]': 'Content for the matching tab value; use one named slot per panel.',
         },
         defaults: { bordered: 'false', activeIndicator: 'false', inset: 'false' },

@@ -291,6 +291,8 @@ export const utilityApiCopy: Record<string, Copy> = {
     },
     EditorFrame: {
         props: {
+            wrapperClass:
+                'Additional CSS classes for the outer editor frame, label and counter container.',
             ...common,
             modelValue: 'The editor source string; bind with v-model.',
             id: 'The id of the default textarea.',
@@ -542,5 +544,3 @@ export function describeUtilityControls(
         controls: { ...meta.parameters?.controls, include: Object.keys(argTypes) },
     };
 }
-
-

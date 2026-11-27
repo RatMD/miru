@@ -15,7 +15,9 @@ const result = spawnSync(
     },
 );
 assert.equal(result.status, 0, result.stderr);
-const [pack] = JSON.parse(result.stdout);
+const packed = JSON.parse(result.stdout);
+const [pack] = Array.isArray(packed) ? packed : Object.values(packed);
+assert.ok(pack && Array.isArray(pack.files), 'Unexpected npm pack JSON output.');
 const paths = pack.files.map(({ path }) => path);
 for (const required of ['dist/index.js', 'dist/index.d.ts', 'dist/style.css', 'package.json']) {
     assert.ok(paths.includes(required), `Missing package file: ${required}`);

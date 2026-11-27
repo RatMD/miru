@@ -23,6 +23,10 @@ Mount PageRoot once (or use `miru.wrap(App)`) to host Reka-based toasts. Methods
 Pass `useToast({ toasterId: 'uploads' })` to target `<Toast id="uploads" />`. Its `dismiss()` clears that host only; per-call `toasterId` overrides the default target. PageRoot uses the host ID configured through `createMiru({ toast: { id: 'uploads' } })` for page notifications automatically.
 
 ```ts
+// Replace this operation with your application’s save request.
+async function saveDocument() {
+    return { id: 'document-1' };
+}
 const notification = toast.promise(saveDocument(), {
     loading: 'Saving…',
     success: () => 'Saved',
